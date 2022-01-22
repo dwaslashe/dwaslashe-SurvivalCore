@@ -1,0 +1,49 @@
+package xyz.dwaslashe.survivalcore.utils;
+
+import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+
+public class LocationApi {
+
+    public static boolean isSafe(org.bukkit.Location loc) {
+        Block feet = loc.getBlock();
+        if (!feet.getType().isTransparent() &&
+                !feet.getLocation().add(0.0D, 1.0D, 0.0D).getBlock().getType().isTransparent()) {
+            System.out.println("Not safe, cause: feet not transparent");
+            return false;
+        }
+        Block head = feet.getRelative(BlockFace.UP);
+        if (!head.getType().isTransparent()) {
+            System.out.println("Not safe, cause: head not  transparent");
+            return false;
+        }
+        Block ground = feet.getRelative(BlockFace.DOWN);
+        if (!ground.getType().isSolid()) {
+            System.out.println("Not safe, cause: ground not solid");
+            return false;
+        }
+        Biome biome = loc.getBlock().getBiome();
+        if (biome == Biome.OCEAN || biome == Biome.DEEP_OCEAN || biome == Biome.COLD_OCEAN || biome == Biome.DEEP_COLD_OCEAN || biome == Biome.DEEP_FROZEN_OCEAN || biome == Biome.DEEP_LUKEWARM_OCEAN || biome == Biome.DEEP_OCEAN || biome == Biome.FROZEN_OCEAN || biome == Biome.LUKEWARM_OCEAN || biome == Biome.WARM_OCEAN || biome == Biome.RIVER || biome == Biome.FROZEN_RIVER) {
+            System.out.println("Not safe, cause: invalid biome");
+            return false;
+        }
+        System.out.println("Safe!");
+        return true;
+    }
+
+    public static org.bukkit.Location getRandomLocation(World world) {
+        int xMax = 650;
+        int zMax = -650;
+        int xMin = 100;
+        int zMin = -100;
+        int x = RandomApi.getRandomInt(xMin, xMax);
+        int z = RandomApi.getRandomInt(zMin, zMax);
+        int y = world.getHighestBlockYAt(x, z) + 1;
+        org.bukkit.Location loc = new org.bukkit.Location(world, x, y, z);
+        if (!isSafe(loc))
+            return getRandomLocation(world);
+        return loc;
+    }
+}
