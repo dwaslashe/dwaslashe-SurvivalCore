@@ -17,7 +17,6 @@ public class AutoBossBarTask extends BukkitRunnable {
             return;
         } else if(id >= Main.pluginConfig.getAuto().getBossbar().getMessages().size()) id = 0;{
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Api.fixColor(Main.pluginConfig.getAuto().getBossbar().getMessages().get(id)));
-            Api.sendLog(Api.fixColor(Main.pluginConfig.getAuto().getBossbar().getMessages().get(id)));
             ++id;
         }
     }

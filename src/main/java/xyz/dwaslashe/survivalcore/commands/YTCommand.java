@@ -1,14 +1,15 @@
-package xyz.dwaslashe.survivalcore.commands.groups;
+package xyz.dwaslashe.survivalcore.commands;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
+import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.List;
 
-public class VipCommand extends Command {
-    public VipCommand() {
-        super("vip", "/vip", "");
+public class YTCommand extends Command {
+    public YTCommand() {
+        super("yt", "/yt", "");
         setOnlyPlayer(true);
     }
 
@@ -19,9 +20,8 @@ public class VipCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        if (args.length >= 0) {
-            Player player = (Player)sender;
-            player.chat("/rangi");
+        for (String s : Main.pluginCommands.getCommands().getYt().getYt()) {
+            Api.sendMessage(sender, s);
         }
     }
 }

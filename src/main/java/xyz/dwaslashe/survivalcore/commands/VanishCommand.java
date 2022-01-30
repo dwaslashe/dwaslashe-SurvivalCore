@@ -191,30 +191,39 @@ public class VanishCommand extends Command implements Listener {
                 e.setCancelled(true);
                 if (e.getSlot() == 9) {
                     vanishObject.setBuild(!vanishObject.isBuild());
+                    player.getOpenInventory().close();
                     openGui(0, player);
                 } else if (e.getSlot() == 10) {
                     vanishObject.setPvp(!vanishObject.isPvp());
+                    player.getOpenInventory().close();
                     openGui(0, player);
                 } else if (e.getSlot() == 11) {
                     vanishObject.setPve(!vanishObject.isPve());
+                    player.getOpenInventory().close();
                     openGui(0, player);
                 } else if (e.getSlot() == 12) {
                     vanishObject.setInteract(!vanishObject.isInteract());
+                    player.getOpenInventory().close();
                     openGui(0, player);
                 } else if (e.getSlot() == 13) {
                     vanishObject.setUseful(!vanishObject.isUseful());
+                    player.getOpenInventory().close();
                     openGui(0, player);
                 } else if (e.getSlot() == 14) {
                     vanishObject.setPickup(!vanishObject.isPickup());
+                    player.getOpenInventory().close();
                     openGui(0, player);
                 } else if (e.getSlot() == 15) {
                     vanishObject.setDrop(!vanishObject.isDrop());
+                    player.getOpenInventory().close();
                     openGui(0, player);
                 } else if (e.getSlot() == 16) {
                     vanishObject.setShoot(!vanishObject.isShoot());
+                    player.getOpenInventory().close();
                     openGui(0, player);
                 } else if (e.getSlot() == 17) {
                     vanishObject.setCamera(!vanishObject.isCamera());
+                    player.getOpenInventory().close();
                     openGui(0, player);
                 }
             });

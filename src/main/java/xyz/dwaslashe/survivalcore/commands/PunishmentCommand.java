@@ -13,10 +13,8 @@ import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.helpers.InventoryHelper;
 import xyz.dwaslashe.survivalcore.utils.Api;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -29,6 +27,7 @@ public class PunishmentCommand extends Command implements Listener {
     }
     @Override
     public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
+        if (args.length == 1) return Collections.singletonList("[players]");
         return null;
     }
 

@@ -1,6 +1,5 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,7 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.utils.Api;
-import xyz.upperlevel.spigot.book.BookUtil;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -9,7 +9,7 @@
 
     <groupId>xyz.dwaslashe</groupId>
     <artifactId>dwaslashe-SurvivalCore</artifactId>
-    <version>0.0.1-private</version>
+    <version>0.0.2-private</version>
 
     <repositories>
         <repository>

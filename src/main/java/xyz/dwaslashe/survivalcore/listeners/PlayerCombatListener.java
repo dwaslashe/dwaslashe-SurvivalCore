@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.*;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.objects.Logout;
@@ -39,12 +38,16 @@ public class PlayerCombatListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onDamage(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof Player && !e.isCancelled() && (e.getDamager() instanceof Player)) {
-            Logout logout = Logout.get(((Player) e.getEntity()).getPlayer());
+            Logout logout = Logout.get(((Player) e.getDamager()).getPlayer());
+            Logout logout_damager = Logout.get(((Player) e.getEntity()).getPlayer());
             logout.setTime("20s");
+            logout_damager.setTime("20s");
             if (e.getDamager() instanceof Player) {
                 logout.setAttacker(((Player) e.getDamager()).getPlayer());
+                logout_damager.setAttacker(((Player) e.getDamager()).getPlayer());
             }
             logout.create();
+            logout_damager.create();
         }
     }
 

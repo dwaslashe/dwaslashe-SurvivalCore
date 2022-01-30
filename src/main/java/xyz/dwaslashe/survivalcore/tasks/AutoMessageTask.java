@@ -16,7 +16,6 @@ public class AutoMessageTask extends BukkitRunnable {
             return;
         } else if(id >= Main.pluginConfig.getAuto().getMessages().getMessages().size()) id = 0;{
             Api.sendBroadcast(Api.fixColor(Main.pluginConfig.getAuto().getMessages().getMessages().get(id)));
-            Api.sendLog(Api.fixColor(Main.pluginConfig.getAuto().getMessages().getMessages().get(id)));
             ++id;
         }
     }

@@ -326,7 +326,7 @@ public class OthersListener implements Listener {
                     public void run() {
                         event.getBlock().setType(Material.AIR);
                     }
-                }.runTaskLater(Main.getPlugin(), 20 * 5);
+                }.runTaskLater(Main.getPlugin(), 20 * 50);
             } else if (!player.hasPermission("core.place.end")) {
                 World end = Bukkit.getWorld("world_the_end");
                 if (end.getName().equalsIgnoreCase(event.getBlock().getWorld().getName())) {
@@ -336,7 +336,7 @@ public class OthersListener implements Listener {
                         public void run() {
                             event.getBlock().setType(Material.AIR);
                         }
-                    }.runTaskLater(Main.getPlugin(), 20 * 5);
+                    }.runTaskLater(Main.getPlugin(), 20 * 50);
                 }
             }
         }

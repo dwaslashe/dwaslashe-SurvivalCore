@@ -45,7 +45,7 @@ public class TeleportManager {
                     return;
                 }
                 toEnd -= 1;
-                user.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8» &aTeleportacja nastapi za &e{seconds}sek &7do konca! &8«".replace("{seconds}", toEnd + "")));
+                user.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8» &aTeleportacja nastapi za &e{seconds}sek &ado konca! &8«".replace("{seconds}", toEnd + "")));
             }
         }.runTaskTimer(Main.getPlugin(), 0, 20));
     }

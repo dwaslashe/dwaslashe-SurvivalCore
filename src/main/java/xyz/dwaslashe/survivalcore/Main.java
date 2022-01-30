@@ -14,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xyz.dwaslashe.survivalcore.commands.*;
-import xyz.dwaslashe.survivalcore.commands.groups.*;
 import xyz.dwaslashe.survivalcore.commands.managers.CommandManager;
 import xyz.dwaslashe.survivalcore.configs.PluginCommands;
 import xyz.dwaslashe.survivalcore.configs.PluginConfig;
@@ -185,15 +184,13 @@ public class Main extends JavaPlugin {
         CommandManager.register(new WbCommand(), true);
         CommandManager.register(new WebsiteCommand(), true);
         CommandManager.register(new VanishCommand(), true);
-        CommandManager.register(new MVPCommand(), true);
-        CommandManager.register(new MVPPlusCommand(), true);
-        CommandManager.register(new SVipCommand(), true);
-        CommandManager.register(new VipCommand(), true);
+        CommandManager.register(new RankCommand(), true);
         CommandManager.register(new YTCommand(), true);
         CommandManager.register(new SunCommand(), true);
         CommandManager.register(new StormCommand(), true);
         CommandManager.register(new PraceCommand(), true);
         CommandManager.register(new PrefixCommand(), true);
+        CommandManager.register(new GlowingCommand(), true);
     }
 
     public void loadTasks() {
@@ -209,6 +206,7 @@ public class Main extends JavaPlugin {
         registerEvent(new PlayerChatListener(), true);
         registerEvent(new OthersListener(), true);
         registerEvent(new MediaCommand(), true);
+        registerEvent(new RankCommand(), true);
         registerEvent(new PunishmentCommand(), true);
         registerEvent(new PlayerQuitListener(), true);
         registerEvent(new PlayerCombatListener(), true);
