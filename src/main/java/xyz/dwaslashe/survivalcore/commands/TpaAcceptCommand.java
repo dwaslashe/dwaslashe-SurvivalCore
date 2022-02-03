@@ -23,7 +23,7 @@ public class TpaAcceptCommand extends Command {
             TpaCommand.currentRequest.remove(p.getName());
             if (p2 != null) {
                 TeleportManager.teleport(p2, 5, p.getLocation());
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zakecptowałeś teleportacje gracza &e" + p2.getName());
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zakecptowałeś teleportacje gracza &e" + p2.getDisplayName());
             } else {
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&7Nie masz prosby o teleportacje! &8<<");
             }

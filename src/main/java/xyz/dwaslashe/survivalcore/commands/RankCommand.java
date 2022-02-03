@@ -56,7 +56,7 @@ public class RankCommand extends Command implements Listener {
                 inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setOwner(player.getName());
                     itemMeta.setDisplayName(Api.fixColor(ChatApi.getPrefix(player) + "&7" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby przejś")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("")));
                 });
             });
 
@@ -215,6 +215,7 @@ public class RankCommand extends Command implements Listener {
                             " &8>> &f/glowing &8- &7Błyszczenie",
                             " &8>> &f/plot close &8- &7Zamyka działke",
                             " &8>> &f/plot open &8- &7Otwiera działke",
+                            " &8>> &f/kolornick &8- &7Otwiera menu wyboru zmiany koloru nicku",
                             "",
                             " &a&nKliknij prawym żeby podejrzeć link!"
                     )));
@@ -238,6 +239,7 @@ public class RankCommand extends Command implements Listener {
                             " &8>> &7Może pisać na czacie bez opóźnienia",
                             " &8>> &7Limit postawionych działek jest zwiększony do &e4",
                             " &8>> &7Może działke mieć do &e50&7 kratek",
+                            " &8>> &7Może zmieniać kolor swojego nicku",
                             " &8>> &7Może do działki dodać &e20&7 osób",
                             "",
                             " &a&nKliknij prawym żeby podejrzeć link!"
@@ -291,6 +293,7 @@ public class RankCommand extends Command implements Listener {
                             " &8>> &f/gamma &8- &7Włącza widzenie w ciemności",
                             " &8>> &f/plot close &8- &7Zamyka działke",
                             " &8>> &f/plot open &8- &7Otwiera działke",
+                            " &8>> &f/kolornick &8- &7Otwiera menu wyboru zmiany koloru nicku",
                             "",
                             " &a&nKliknij prawym żeby podejrzeć link!"
                     )));
@@ -316,6 +319,7 @@ public class RankCommand extends Command implements Listener {
                             " &8>> &7Limit postawionych działek jest zwiększony do &e5",
                             " &8>> &7Może działke mieć do &e60&7 kratek",
                             " &8>> &7Może do działki dodać &e22&7 osób",
+                            " &8>> &7Może zmieniać kolor/gradient swojego nicku",
                             " &8>> &f&nMoże latać na swojej działce!",
                             "",
                             " &a&nKliknij prawym żeby podejrzeć link!"

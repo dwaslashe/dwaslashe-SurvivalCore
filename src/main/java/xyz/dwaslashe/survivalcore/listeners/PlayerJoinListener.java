@@ -47,31 +47,34 @@ public class PlayerJoinListener implements Listener {
                     .title("Nowosci")
                     .pages(
                             new BookUtil.PageBuilder()
-                                    .add(Api.fixColor("&d&lCo dodaliśmy? 30.01.2022"))
+                                    .add(Api.fixColor("&d&lCo dodaliśmy? 03.01.2022"))
                                     .newLine().newLine()
-                                    .add(Api.fixColor("&5* &8dodaliśmy komende /glowing, dla rangi premium"))
+                                    .add(Api.fixColor("&5* &8dodaliśmy komende /incognito, dla rang administracyjnych i yt"))
                                     .newLine().newLine()
-                                    .add(Api.fixColor("&a&lCo zmieniliśmy? 30.01.2022"))
-                                    .newLine().newLine()
-                                    .add(Api.fixColor("&2* &8zmieniliśmy regulamin"))
+                                    .add(Api.fixColor("&5* &8dodaliśmy komende /kolornick, do wyboru koloru/gradientu nicku dla rang MVP tylko kolor a dla MVP+ tylko kolor i gradient"))
                                     .build(),
                             new BookUtil.PageBuilder()
-                                    .add(Api.fixColor("&2* &8zmieniliśmy antylogout i teraz druga osoba też dostaje antyloga"))
+                                    .add(Api.fixColor("&5* &8dodaliśmy w komendzie /invsee, wygląd armoru gracza"))
                                     .newLine().newLine()
-                                    .add(Api.fixColor("&2* &8zmieniliśmy komendę /rangi"))
+                                    .add(Api.fixColor("&a&lCo zmieniliśmy? 03.01.2022"))
+                                    .newLine().newLine()
+                                    .add(Api.fixColor("&2* &8zmieniliśmy wygląd nicku na tabie, sidebarze i w większości wiadomościach na czacie"))
                                     .build(),
                             new BookUtil.PageBuilder()
+                                    .add(Api.fixColor("&2* &8zmieniliśmy komendę /list"))
+                                    .newLine().newLine()
+                                    .add(Api.fixColor("&2* &8zmieniliśmy wiadomości gdy ktoś coś kupi w itemshopie"))
+                                    .newLine()
                                     .add(Api.fixColor("&b&lCo naprawiliśmy? 30.01.2022"))
-                                    .newLine().newLine()
-                                    .add(Api.fixColor("&3* &8naprawiono format pieniędzy na tabie i sidebarze"))
-                                    .newLine().newLine()
-                                    .add(Api.fixColor("&3* &8naprawiono literówki w wiadomościach"))
+                                    .newLine()
+                                    .add(Api.fixColor("&3* &8naprawiliśmy wiadomości w /socialspy"))
                                     .build(),
                             new BookUtil.PageBuilder()
+                                    .add(Api.fixColor("&3* &8naprawiono literówki w wiadomościach"))
                                     .newLine().newLine()
-                                    .add(Api.fixColor("&3* &8naprawiono panel od vanisha"))
-                                    .newLine().newLine()
-                                    .add(Api.fixColor("&3* &8naprawiono komende /media"))
+                                    .add(Api.fixColor("&3* &8naprawiono komende /night"))
+                                    .build(),
+                            new BookUtil.PageBuilder()
                                     .newLine().newLine()
                                     .build()
                     )
@@ -89,10 +92,10 @@ public class PlayerJoinListener implements Listener {
             //        " \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n              &7Witaj na serwerze <#FF3131>&lHOTMC</#ba1c11> \n \n    &7Dołączyłeś do trybu &#10f70c&lSURVIVAL + DZIAŁKI V2".replace("{PLAYER}", p.getName()).replace("{PREFIX}", ChatApi.getPrefix(p)).replace("{ONLINE}", Bukkit.getOnlinePlayers().size() + ""));
 
             if (p.hasPermission("core.join.vip")) {
-                Api.sendBroadcast(Main.pluginConfig.getJoin().getVipbroadcast().replace("{PLAYER}", p.getName()).replace("{PREFIX}", ChatApi.getPrefix(p)));
+                Api.sendBroadcast(Main.pluginConfig.getJoin().getVipbroadcast().replace("{PLAYER}", p.getDisplayName()).replace("{PREFIX}", ChatApi.getPrefix(p)));
             }
             for (Player all : Bukkit.getOnlinePlayers()) {
-                all.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor("&8>> &aGracz &e" + p.getName() + " &adołączył na serwer! &8<<")));
+                all.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor("&8>> &aGracz &e" + p.getDisplayName() + " &adołączył na serwer! &8<<")));
             }
             BossBar bar = Bukkit.createBossBar(Api.fixColor(Main.pluginConfig.getJoin().getBossbarmessage()), BarColor.WHITE, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
             bar.addPlayer(p.getPlayer());

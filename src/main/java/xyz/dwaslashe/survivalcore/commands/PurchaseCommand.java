@@ -1,5 +1,6 @@
 package xyz.dwaslashe.survivalcore.commands;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -21,9 +22,13 @@ public class PurchaseCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender s, String[] args) {
-        if (args.length == 1) {
-            OfflinePlayer p2 = Bukkit.getOfflinePlayer(args[0]);
-            Api.sendBroadcast("&e&lDZIĘKUJEMY &8>> &fGracz &e" + p2.getName() + " &fkupił u nas coś w sklepie! &eDziękujemy za wsparcie serwera!");
+        OfflinePlayer p2 = Bukkit.getOfflinePlayer(args[0]);
+        if (args.length == 0) {
+            wrongUsage();
+        } else if (args.length == 1) {
+            Api.sendBroadcast("&#FFF01F&lDZIĘKUJEMY &8>> &fGracz &e" + p2.getName() + " &fkupił u nas coś w sklepie! &#FFF01FDziękujemy za wsparcie serwera!");
+        } else if (args.length >= 2) {
+            Api.sendBroadcast("&#FFF01F&lDZIĘKUJEMY &8>> &fGracz &e" + p2.getName() + " &fkupił u nas &b" + StringUtils.join(args, " ", 1, args.length) + "&f! &#FFF01FDziękujemy za wsparcie serwera!");
         }
     }
 }

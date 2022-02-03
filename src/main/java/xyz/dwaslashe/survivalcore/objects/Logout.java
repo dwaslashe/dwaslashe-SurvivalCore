@@ -65,7 +65,7 @@ public class Logout {
     public void create() {
         if (!this.exists()) {
             LogoutManager.getLogouts().add(this);
-            final BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &7Nie logaj sie przez &a " + this.time + " &8&l- " + Main.pluginConfig.getMessages().getIp() + " &8<<"), BarColor.RED, BarStyle.SOLID, new BarFlag[0]);
+            final BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &7Nie logaj sie przez &a " + this.time + " &8&l-" + Main.pluginConfig.getMessages().getIp() + " &8<<"), BarColor.RED, BarStyle.SOLID, new BarFlag[0]);
             bar.addPlayer(this.player);
             (new BukkitRunnable() {
                 public void run() {

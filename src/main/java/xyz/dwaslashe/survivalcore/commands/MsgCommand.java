@@ -57,7 +57,7 @@ public class MsgCommand extends Command {
                     .map(o -> o = Bukkit.getPlayer((String) o))
                     .filter(Objects::nonNull)
                     .forEach(po -> {
-                        ((Player) po).sendMessage(Api.fixColor("&c&lSocialSPY &8[ #edc72f" + p.getName() + " &8> #edc72fTY &8] &8» #edc72f" + msg));
+                        ((Player) po).sendMessage(Api.fixColor("&c&lSocialSPY &8[ #edc72f" + p.getName() + " &8> #edc72f" + p2.getName() + " &8] &8» #edc72f" + msg));
                     });
             Api.sendMessage(p, "&8[ #edc72fTY &8> #edc72f" + p2.getName() + " &8] &8» #edc72f" + msg);
             Api.sendMessage(p2, "&8[ #edc72f" + p.getName() + " &8> #edc72fTY &8] &8» #edc72f" + msg);

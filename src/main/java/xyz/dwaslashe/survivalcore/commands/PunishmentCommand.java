@@ -78,7 +78,7 @@ public class PunishmentCommand extends Command implements Listener {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setOwner(offlinePlayer.getName());
-                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&e" + offlinePlayer.getName()));
+                    itemMeta.setDisplayName(Api.fixColor(offlinePlayer.getName()));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &7Ping&8: &a" + (offlinePlayer.isOnline() ? Api.getPing(offlinePlayer.getPlayer()) : "&cnie można pobrać pingu"), " &7UUID&8: &a" + offlinePlayer.getUniqueId())));
                 });
             });
@@ -113,7 +113,7 @@ public class PunishmentCommand extends Command implements Listener {
                     itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.mute") ? "&aPomyślnie posiadasz permisje do tej funkcji" : "&cPomyślnie posiadasz permisje do tej funkcji", "", " &f&nKliknij aby przejść dalej!")));
                 });
             });
-//ale dzialalo :thinking:
+
             inventoryHelper.click(e -> {
                 e.setCancelled(true);
                 if (e.getSlot() == 11) {

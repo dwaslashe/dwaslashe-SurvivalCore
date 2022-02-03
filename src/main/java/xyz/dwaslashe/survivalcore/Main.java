@@ -186,11 +186,15 @@ public class Main extends JavaPlugin {
         CommandManager.register(new VanishCommand(), true);
         CommandManager.register(new RankCommand(), true);
         CommandManager.register(new YTCommand(), true);
+        CommandManager.register(new NightCommand(), true);
         CommandManager.register(new SunCommand(), true);
         CommandManager.register(new StormCommand(), true);
         CommandManager.register(new PraceCommand(), true);
         CommandManager.register(new PrefixCommand(), true);
+        CommandManager.register(new PrefixCommand(), true);
         CommandManager.register(new GlowingCommand(), true);
+        CommandManager.register(new IncognitoCommand(), true);
+        CommandManager.register(new NickColorCommand(), true);
     }
 
     public void loadTasks() {
@@ -206,10 +210,12 @@ public class Main extends JavaPlugin {
         registerEvent(new PlayerChatListener(), true);
         registerEvent(new OthersListener(), true);
         registerEvent(new MediaCommand(), true);
+        registerEvent(new IncognitoCommand(), true);
         registerEvent(new RankCommand(), true);
         registerEvent(new PunishmentCommand(), true);
         registerEvent(new PlayerQuitListener(), true);
         registerEvent(new PlayerCombatListener(), true);
+        registerEvent(new NickColorCommand(), true);
         registerEvent(new VanishCommand.VanishEvent(), true);
         //registerEvent(new CustomItemListener(), true);
         InventoryHelper.implement(this);

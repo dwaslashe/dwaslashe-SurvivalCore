@@ -51,7 +51,7 @@ public class TpaCommand extends Command {
 
     public void sendRequest(Player p, Player p2) {
         Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aWysłano prośbe o teleportacje");
-        Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + p.getName() + " &aprosi o teleportacje. &aAby zakceptować teleportacje wpisz &e/tpaccept&a, aby anulować teleportację wpisz &e/tpadeny");
+        Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + p.getDisplayName() + " &aprosi o teleportacje. &aAby zakceptować teleportacje wpisz &e/tpaccept&a, aby anulować teleportację wpisz &e/tpadeny");
         currentRequest.put(p2.getName(), p.getName());
     }
 

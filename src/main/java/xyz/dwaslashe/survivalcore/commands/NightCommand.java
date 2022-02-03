@@ -31,7 +31,7 @@ public class NightCommand extends Command {
             if (CooldownManager.checkDelay(p) == true) {
                 return;
             }
-            CooldownManager.addColdown(p, "10m");
+            CooldownManager.addColdown(p, "1m");
             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś pogode");
             Bukkit.getWorld("world").setTime(14000);
         }

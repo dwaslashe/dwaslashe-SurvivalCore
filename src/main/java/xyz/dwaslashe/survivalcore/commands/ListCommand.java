@@ -24,8 +24,8 @@ public class ListCommand extends Command {
     public void commandExecute(CommandSender sender, String[] args) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            stringBuilder.append(", ").append(ChatApi.getPrefix(onlinePlayer) + onlinePlayer.getName());
+            stringBuilder.append(", ").append(ChatApi.getPrefix(onlinePlayer) + onlinePlayer.getDisplayName());
         }
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&7Graczy &f" + Bukkit.getOnlinePlayers().size() + "&8/&7" + Bukkit.getMaxPlayers() + " &8(&f" + stringBuilder.toString().replaceFirst(", ", "") + "&8)");
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&7Graczy &f" + Bukkit.getOnlinePlayers().size() + "&8/&7" + Bukkit.getMaxPlayers() + " &8(&7" + stringBuilder.toString().replaceFirst(", ", "") + "&8)");
     }
 }

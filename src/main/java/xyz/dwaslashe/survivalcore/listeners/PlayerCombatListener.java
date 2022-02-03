@@ -58,7 +58,7 @@ public class PlayerCombatListener implements Listener {
         if (logout.getTime() > System.currentTimeMillis()) {
             for (String string : Main.pluginConfig.getAntylogout().getCommands()) {
                 if (string.toLowerCase().equalsIgnoreCase(command)) {
-                    Api.sendMessage(e.getPlayer(), " &8>> &cKomenda jest wyłączona podczas walki!");
+                    Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cKomenda jest wyłączona podczas walki!");
                     e.setCancelled(true);
                     break;
                 }
@@ -131,7 +131,7 @@ public class PlayerCombatListener implements Listener {
         Logout logout = Logout.get(e.getPlayer());
         if (logout.getTime() > System.currentTimeMillis()) {
             e.getPlayer().setHealth(0.0D);
-            e.setQuitMessage(Api.fixColor("&c&lANTY-LOGOUT &8>> &7Gracz &f" + e.getPlayer().getName() + " &7wylogował się podczas walki! Ostatni atakujący to &f" + (logout.getAttacker() != null && logout.getAttacker().isOnline() ? logout.getAttacker().getName() : "Nie wiadomo kto")));
+            e.setQuitMessage(Api.fixColor("&c&lANTY-LOGOUT &8>> &7Gracz &f" + e.getPlayer().getDisplayName() + " &7wylogował się podczas walki! Ostatni atakujący to &f" + (logout.getAttacker() != null && logout.getAttacker().isOnline() ? logout.getAttacker().getName() : "Nie wiadomo kto")));
             logout.remove();
         }
 
