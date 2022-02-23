@@ -6,6 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.model.User;
+import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.HashMap;
@@ -25,7 +27,7 @@ public class PlayerQuitListener implements Listener {
                     @Override
                     public void run() {
                         if ((double) p.getLocation().getYaw() == LocYaw.get(uuid)) {
-                            p.kickPlayer(Api.fixColor("&#F23D07&lANTY-AFK \n \n &fZostałeś wyrzucony za \nnie ruszanie się przez &e6 minut!"));
+                            Api.sendPlayerToServer(p, "lobbyafk");
                         }
                     }
                 }, 20 * 60);
@@ -41,7 +43,9 @@ public class PlayerQuitListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         e.setQuitMessage(null);
         Player p = e.getPlayer();
-
-        LocYaw.remove(p.getUniqueId());
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(), () -> {
+            LocYaw.remove(p.getUniqueId());
+            Main.getPlugin().getUserCache().getOnline(p.getName()).ifPresent(user -> user.setOnline(false));
+        }, 5);
     }
 }

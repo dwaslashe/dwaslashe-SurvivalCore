@@ -18,26 +18,23 @@ import java.util.List;
 @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
 public class PluginConfig extends OkaeriConfig {
 
+    private Core core = new Core();
     private Database database = new Database();
     private Messages messages = new Messages();
     private Cooldown cooldown = new Cooldown();
     private Chat chat = new Chat();
+    private Events events = new Events();
     private Join join = new Join();
     private Auto auto = new Auto();
     private Antylogout antylogout = new Antylogout();
-    private Spawn spawn = new Spawn();
 
-    //Cords spawn
+    //Core
     @Getter @Setter
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
-    public static class Spawn extends OkaeriConfig {
+    public static class Core extends OkaeriConfig {
 
-        @Comment("Cords spawn")
-        private int x = 45;
-        private int y = 88;
-        private int z = 82;
-        private int yaw = 179;
-        private int pitch = 3;
+        @Comment("Your license:")
+        private String license = "K6ZT-OLCY-VHQP-JXNX";
 
     }
 
@@ -66,6 +63,15 @@ public class PluginConfig extends OkaeriConfig {
         private String prefix = " &8>> &7";
         private String discord = "dc.wywrotkamc.pl";
         private String website = "www.wywrotkamc.pl";
+        private String data = "18.02.2022";
+    }
+
+    //Events
+    @Getter @Setter
+    @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
+    public static class Events extends OkaeriConfig {
+
+        private boolean lavagrieffing = true;
     }
 
     //Auto Tasks
@@ -80,7 +86,7 @@ public class PluginConfig extends OkaeriConfig {
         public static class BossBarAuto extends OkaeriConfig {
 
             private int time = 1;
-            private List<String> messages = Arrays.asList("&a✉ &8>> &7Sprawdź nasz discord &bhttps://discord.gg/6eacnBS", "");
+            private List<String> messages = Arrays.asList("Zapraszająć znajomych na serwer wspierasz nas! &c❤ color:green");
 
         }
 
@@ -90,7 +96,7 @@ public class PluginConfig extends OkaeriConfig {
         public static class MessagesAuto extends OkaeriConfig {
 
             private int time = 1;
-            private List<String> messages = Arrays.asList("color:green Zapraszająć znajomych na serwer wspierasz nas! &c❤", "");
+            private List<String> messages = Arrays.asList("&a✉ &8>> &7Sprawdź nasz discord &bhttps://discord.gg/6eacnBS");
 
         }
     }
@@ -121,13 +127,92 @@ public class PluginConfig extends OkaeriConfig {
         private String off = "&c&LCZAT ZOSTAŁ WYŁĄCZONY";
         private String clear = "&b&lCZAT ZOSTAŁ WYCZYSZCZONY";
 
+        private List<String> blocktabcommands = Arrays.asList("/br",
+                "/brush",
+                "/desel",
+                "/deselect",
+                "/sel",
+                "/toggleplace",
+                ";",
+                "?",
+                "alonsotags",
+                "artp",
+                "aspawner",
+                "axerrnicknamer",
+                "beastwithdraw",
+                "xpbottle",
+                "bwithdraw",
+                "bellyflop",
+                "bpl",
+                "bplugins",
+                "br",
+                "brush",
+                "bserverutils",
+                "bsu",
+                "cc",
+                "ccreate",
+                "cmil",
+                "cmilib",
+                "command",
+                "insaneshops",
+                "core",
+                "crate",
+                "crates",
+                "crazycrate",
+                "crazycrates",
+                "gbellyflop",
+                "gcrawl",
+                "glay",
+                "gsit",
+                "gspin",
+                "hd",
+                "hdv",
+                "holo",
+                "hologram",
+                "holograms",
+                "holographicdisplays",
+                "icanhasbukkit",
+                "jday",
+                "key",
+                "keys",
+                "lbans",
+                "listwarn",
+                "listwarnings",
+                "litebans",
+                "lbans",
+                "warninglist",
+                "warnlist",
+                "lwarning",
+                "mineeconomy",
+                "minemarriages",
+                "minephysics",
+                "mineplots",
+                "minerandomtp",
+                "none",
+                "papi",
+                "placeholderapi",
+                "playerkits",
+                "reg",
+                "regions",
+                "region",
+                "rg",
+                "shopgui",
+                "shopguiplus",
+                "viaver",
+                "viaversion",
+                "vulcan",
+                "vvbukkit",
+                "worldedit",
+                "zauction",
+                "about");
+
         private BlockWordsChat blockwords = new BlockWordsChat();
 
         @Getter @Setter
         public static class BlockWordsChat extends OkaeriConfig {
 
             private List<String> words = Arrays.asList("kutas", "kurwa", "chuj");
-            private String command = "mute {PLAYER} 5m Słowa";
+            private String command = "mute {PLAYER} 15m Słowa";
 
         }
 

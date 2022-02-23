@@ -32,7 +32,7 @@ public class HatCommand extends Command {
         CooldownManager.addColdown(p, "1m");
         ItemStack hand = p.getItemInHand();
         ItemStack head = p.getInventory().getHelmet();
-        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie założyłeś &e" + hand + " &ana głowe");
+        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie założyłeś item na głowe");
         if (hand == null && hand.getType() == Material.AIR) {
             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cMusisz coś trzymać w ręce");
             return;

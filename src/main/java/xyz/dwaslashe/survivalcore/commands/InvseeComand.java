@@ -41,7 +41,7 @@ public class InvseeComand extends Command {
             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aOtworzyłeś ekwipunek gracza &e" + p2.getName());
         } else if (args.length == 2) {
             if (args[1].equalsIgnoreCase("armor")) {
-                Inventory inv = Bukkit.createInventory(p, 9, "Armor - " + p2.getName());
+                Inventory inv = Bukkit.createInventory(p, 9, "Armor gracza " + p2.getName());
                 if (p2.getInventory().getHelmet() != null && p2.getInventory().getHelmet().getType() != Material.AIR)
                     inv.setItem(0, p2.getInventory().getHelmet().clone());
                 if (p2.getInventory().getChestplate() != null && p2.getInventory().getChestplate().getType() != Material.AIR)

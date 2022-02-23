@@ -12,7 +12,7 @@ import java.util.List;
 public class GlowingCommand extends Command {
     public GlowingCommand() {
         super("glowing", "/glowing <on, off>", "");
-        setPermission("glowing.tools");
+        setPermission("core.command.glowing");
         setOnlyPlayer(true);
     }
 

@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class AbyssTask extends BukkitRunnable {
 
-    private static int time = 900;
+    private static int time = 300;
 
     private static boolean opened = false;
 
@@ -43,25 +43,25 @@ public class AbyssTask extends BukkitRunnable {
     public void run() {
         setTime(getTime() - 1);
         if (getTime() == 900) {
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e15 minut");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e15 minut");
         } else if (getTime() == 600) {
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e10 minut");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e10 minut");
         } else if (getTime() == 300) {
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e5 minut");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e5 minut");
         } else if (getTime() == 120) {
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e2 minuty");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e2 minuty");
         } else if (getTime() == 30) {
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e30 sekund");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e30 sekund");
         } else if (getTime() == 15) {
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e15 sekund");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e15 sekund");
         } else if (getTime() == 5) {
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e5 sekund");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e5 sekund");
         } else if (getTime() == 3) {
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e3 sekundy");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e3 sekundy");
         } else if (getTime() == 2) {
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e2 sekundy");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e2 sekundy");
         } else if (getTime() == 1) {
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e1 sekundy");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e1 sekundy");
         } else if (getTime() == 0) {
             abyssList.clear();
 
@@ -79,16 +79,16 @@ public class AbyssTask extends BukkitRunnable {
                 }
             }));
 
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aPrzeniesiono &e" + ref.moved + " &aprzedmiotów do otchłani!");
-            Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aOtchłan zostanie otwarta za &e5 sekund!");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzeniesiono &e" + ref.moved + " &aprzedmiotów do otchłani!");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aOtchłan zostanie otwarta za &e5 sekund!");
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 AbyssTask.opened = true;
-                Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &aOtchlan została otwarta &e/otchlan");
+                Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aOtchlan została otwarta &e/otchlan");
             },  100L);
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 AbyssTask.opened = false;
                 AbyssTask.setTime(320);
-                Api.sendBroadcast("&#fe019a&lOTCHŁAŃ &8>> &cOtchlan zostala zamknieta!");
+                Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &cOtchlan zostala zamknieta!");
             },  1200L);
         }
     }

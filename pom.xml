@@ -9,7 +9,7 @@
 
     <groupId>xyz.dwaslashe</groupId>
     <artifactId>dwaslashe-SurvivalCore</artifactId>
-    <version>0.0.3-private</version>
+    <version>0.0.4-private</version>
 
     <repositories>
         <repository>
@@ -52,6 +52,13 @@
     </pluginRepositories>
 
     <dependencies>
+        <dependency>
+            <groupId>nbt-api</groupId>
+            <artifactId>nbt</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/item-nbt-api-plugin-2.9.1.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
@@ -201,6 +208,10 @@
                                 <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>
                                     <shadedPattern>xyz.dwaslashe.libs.zaxxer.hikari</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                                    <shadedPattern>xyz.dwaslashe.libs.changeme.nbtapi</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

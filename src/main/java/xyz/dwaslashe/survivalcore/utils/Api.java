@@ -1,13 +1,19 @@
 package xyz.dwaslashe.survivalcore.utils;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.neznamy.tab.api.chat.rgb.RGBUtils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,12 +31,33 @@ public class Api {
         return message.stream().map(Api::fixColor).collect(Collectors.toList());
     }
 
+    public static void sendPlayerToServer(Player player, String server) {
+        try {
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(b);
+            out.writeUTF("Connect");
+            out.writeUTF(server);
+            player.sendPluginMessage(Main.getPlugin(), "BungeeCord", b.toByteArray());
+            b.close();
+            out.close();
+        }
+        catch (Exception e) {
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz się dołączyć do serwera &e" + server);
+        }
+    }
+
     public static void sendMessage(CommandSender sender, String message) {
-        sender.sendMessage(fixColor(message));
+        sender.sendMessage(PlaceholderAPI.setPlaceholders((OfflinePlayer) sender, fixColor(message)));
     }
 
     public static void sendLog(String message) {
         Bukkit.getConsoleSender().sendMessage(fixColor(message));
+    }
+
+    public static void sendAbyssNotify(String message){
+        Main.getPlugin().getUserCache().getOnlineUserMap().forEach((name, user) -> {
+            if(user.abyss()) sendMessage(((UserImpl)user).getPlayer(), message);
+        });
     }
 
     public static void sendBroadcast(String message) {
@@ -38,17 +65,7 @@ public class Api {
     }
 
     public static int getPing(Player p) {
-        String v = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        if (!p.getClass().getName().equals("org.bukkit.craftbukkit." + v + ".entity.CraftPlayer")) {
-            p = Bukkit.getPlayer(p.getUniqueId());
-        }
-        try {
-            int ping = p.getPing();
-            return ping;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return p.getPing();
     }
 
     public static boolean isFloat(String arg) {

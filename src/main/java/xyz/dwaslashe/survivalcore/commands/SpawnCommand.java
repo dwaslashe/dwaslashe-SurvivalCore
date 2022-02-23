@@ -1,13 +1,11 @@
 package xyz.dwaslashe.survivalcore.commands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.managers.TeleportManager;
+import xyz.dwaslashe.survivalcore.model.impl.WarpImpl;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.List;
@@ -25,31 +23,25 @@ public class SpawnCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Player p = (Player)sender;
-        World world = Bukkit.getWorld("world");
-        Location loc = new Location(world, Main.pluginConfig.getSpawn().getX(), Main.pluginConfig.getSpawn().getY(), Main.pluginConfig.getSpawn().getZ(), Main.pluginConfig.getSpawn().getYaw(), Main.pluginConfig.getSpawn().getPitch());
-        if (args.length == 0) {
-            if (p.isOp()) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na spawn");
-                p.teleport(loc);
+
+        if(sender instanceof Player player){
+            if(args.length == 1){
+                if(args[0].equalsIgnoreCase("set")){
+                    Main.getPlugin().getWarpCache().getWarp("spawn").ifPresentOrElse(warp -> {
+                        ((WarpImpl)warp).entry(warp1 -> warp1.setLocation(player.getLocation())).addToSQL();
+                    }, () -> ((WarpImpl)Main.getPlugin().getWarpCache().getOrCreate("spawn")).entry(warp -> warp.setLocation(player.getLocation())).addToSQL());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aNowa lokalizacja &espawnu &azostała ustawiona");
+                } else sender.sendMessage(getUsage());
             } else {
-                TeleportManager.teleport(p, 5, loc);
+                Main.getPlugin().getWarpCache().getWarp("spawn").ifPresentOrElse(warp -> {
+                    if (player.hasPermission("core.command.admin")) {
+                        player.teleport(warp.location());
+                    } else {
+                        TeleportManager.teleport(player, 5, warp.location());
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na &espawn");
+                    }
+                }, () -> Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma warpa &espawn"));
             }
-        }
-
-        if (args.length == 1) {
-            if (!p.hasPermission("core.command.admin")) {
-                p.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.admin&8) &8<<"));
-                return;
-            }
-
-            Player p2 = Bukkit.getPlayer(args[0]);
-            p2.teleport(loc);
-            Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aZostałes przeteleportowany na &espawn");
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano gracza &a" + p2.getName() + " &ana spawn");
-        }
-        if (args.length > 1) {
-            wrongUsage();
         }
     }
 }

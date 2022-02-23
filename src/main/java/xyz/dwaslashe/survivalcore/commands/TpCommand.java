@@ -42,8 +42,8 @@ public class TpCommand extends Command {
             if (p2 != null && p3 != null) {
                 Location loc = p3.getLocation();
                 p2.teleport(loc);
-                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + p3.getName() + " &ateleportowal sie do ciebie!");
-                Api.sendMessage(p3, Main.pluginConfig.getMessages().getPrefix() + "&aZostales przeteleportowany do &e" + p2.getName());
+                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + p3.getName() + " &aprzeteleportowal Ciebie do siebie!");
+                Api.sendMessage(p3, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowałeś do siebie gracza &e" + p2.getName());
             } else {
                 offlinePlayer();
                 return;

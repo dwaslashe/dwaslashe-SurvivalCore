@@ -13,14 +13,17 @@ import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.command.UnknownCommandEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -40,60 +43,61 @@ import java.util.Optional;
 
 @Getter @Setter
 public class OthersListener implements Listener {
-    protected String appendDigit(int i){
-        return i <= 9 ? "0" + i : i+"";
+    protected String appendDigit(int i) {
+        return i <= 9 ? "0" + i : i + "";
     }
+
     ZonedDateTime timeZone = TimerApi.getZoneDate("UTC+1");
     public static final List<Player> cancel = Lists.newArrayList();
     private int id = 0;
 
     @EventHandler
-    public void onUnknownCommand(PlayerCommandPreprocessEvent e) {
-        if (!(e.isCancelled())) {
-            Player p = e.getPlayer();
-            String msg = e.getMessage().split(" ")[0];
-            HelpTopic topic = Bukkit.getServer().getHelpMap().getHelpTopic(msg);
-            if (topic == null) {
-                p.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &7Komenda &f" + msg + " &7nie istnieje &8<<"), 10, 40, 10);
-                e.setCancelled(true);
-                if (topic == null) {
-                    BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &7Komenda &f" + msg + " &7nie istnieje &8<<"), BarColor.RED, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
-                    bar.addPlayer(p.getPlayer());
-                    bar.setProgress(1);
-                    int[] bar_color = {0};
-                    Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
-                        @Override
-                        public void run() {
-                            if (p.getPlayer() != null && p.getPlayer().isOnline()) {
-                                if (bar.getProgress() > 0.02) {
-                                    bar.setProgress(bar.getProgress() - 0.02);
-                                    ++bar_color[0];
-                                    if (bar_color[0] == 1) {
-                                        bar.setColor(BarColor.WHITE);
-                                    } else if (bar_color[0] == 2) {
-                                        bar.setColor(BarColor.BLUE);
-                                    } else if (bar_color[0] == 3) {
-                                        bar.setColor(BarColor.GREEN);
-                                    } else if (bar_color[0] == 4) {
-                                        bar.setColor(BarColor.PINK);
-                                    } else if (bar_color[0] == 5) {
-                                        bar.setColor(BarColor.PURPLE);
-                                    } else if (bar_color[0] == 6) {
-                                        bar.setColor(BarColor.RED);
-                                    } else {
-                                        bar_color[0] = 0;
-                                    }
-                                } else {
-                                    bar.setVisible(false);
-                                    bar.removePlayer(p.getPlayer());
-                                }
-                            } else {
-                                bar.removePlayer(p.getPlayer());
-                            }
-                        }
-                    }, 0, 2);
-                }
+    public void onCommandTabSend(PlayerCommandSendEvent event) {
+        Player p = event.getPlayer();
+        if (!p.hasPermission("core.command.tabcomplete.bypass")) {
+            for (String string : Main.pluginConfig.getChat().getBlocktabcommands()) {
+                event.getCommands().remove(string);
             }
+        }
+    }
+
+    @EventHandler
+    public void onUnknown(UnknownCommandEvent event) {
+        event.setMessage(null);
+        if(event.getSender() instanceof Player p) {
+            p.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &7Komenda &f/" + event.getCommandLine() + " &7nie istnieje &8<<"), 10, 40, 10);
+            BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &7Komenda &f/" + event.getCommandLine() + " &7nie istnieje &8<<"), BarColor.RED, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
+            bar.addPlayer(p.getPlayer());
+            bar.setProgress(1);
+            int[] bar_color = {0};
+            Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), () -> {
+                if (p.getPlayer() != null && p.getPlayer().isOnline()) {
+                    if (bar.getProgress() > 0.02) {
+                        bar.setProgress(bar.getProgress() - 0.02);
+                        ++bar_color[0];
+                        if (bar_color[0] == 1) {
+                            bar.setColor(BarColor.WHITE);
+                        } else if (bar_color[0] == 2) {
+                            bar.setColor(BarColor.BLUE);
+                        } else if (bar_color[0] == 3) {
+                            bar.setColor(BarColor.GREEN);
+                        } else if (bar_color[0] == 4) {
+                            bar.setColor(BarColor.PINK);
+                        } else if (bar_color[0] == 5) {
+                            bar.setColor(BarColor.PURPLE);
+                        } else if (bar_color[0] == 6) {
+                            bar.setColor(BarColor.RED);
+                        } else {
+                            bar_color[0] = 0;
+                        }
+                    } else {
+                        bar.setVisible(false);
+                        bar.removePlayer(p.getPlayer());
+                    }
+                } else {
+                    bar.removePlayer(p.getPlayer());
+                }
+            }, 0, 2);
         }
     }
 
@@ -108,6 +112,7 @@ public class OthersListener implements Listener {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, -50));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 2));
             } else if (e.getClickedBlock().toString().toLowerCase().contains("bed")) {
+                e.setUseInteractedBlock(Event.Result.DENY);
                 e.setCancelled(true);
             }
         }
@@ -205,19 +210,21 @@ public class OthersListener implements Listener {
     @EventHandler
     public void onFromTo(BlockFromToEvent e) {
         Material type = e.getBlock().getType();
-        if (e.getBlock().getY() >= 50) {
-            if (type == Material.WATER || type == Material.LEGACY_STATIONARY_WATER || type == Material.LAVA || type == Material.LEGACY_STATIONARY_LAVA) {
-                Block b = e.getToBlock();
-                if (b.getType() == Material.AIR) {
-                    if (generatesCobble(type, b)) {
-                        e.setCancelled(true);
+        if (Main.pluginConfig.getEvents().isLavagrieffing()) {
+            if (e.getBlock().getY() >= 50) {
+                if (type == Material.WATER || type == Material.LEGACY_STATIONARY_WATER || type == Material.LAVA || type == Material.LEGACY_STATIONARY_LAVA) {
+                    Block b = e.getToBlock();
+                    if (b.getType() == Material.AIR) {
+                        if (generatesCobble(type, b)) {
+                            e.setCancelled(true);
+                        }
                     }
-                }
-            } else if (type == Material.LAVA || type == Material.LEGACY_STATIONARY_LAVA) {
-                Block b = e.getToBlock();
-                if (b.getType() == Material.AIR) {
-                    if (lavaFlow(type, b)) {
-                        e.setCancelled(true);
+                } else if (type == Material.LAVA || type == Material.LEGACY_STATIONARY_LAVA) {
+                    Block b = e.getToBlock();
+                    if (b.getType() == Material.AIR) {
+                        if (lavaFlow(type, b)) {
+                            e.setCancelled(true);
+                        }
                     }
                 }
             }
@@ -264,22 +271,19 @@ public class OthersListener implements Listener {
             meta.setLore(Api.fixColor(Arrays.asList("", " &7Data&8: &e" +
                     appendDigit(timeZone.getDayOfMonth()) + "/" +
                     appendDigit(timeZone.getMonthValue()) + "/" +
-                    appendDigit(timeZone.getYear()) + " " +
-                    appendDigit(timeZone.getHour()) + ":" +
-                    appendDigit(timeZone.getMinute()) + ":" + appendDigit(timeZone.getSecond()), "", " &7" + e.getEntity().getPlayer().getUniqueId())));
+                    appendDigit(timeZone.getYear()) + " ", "", " &7" + e.getEntity().getPlayer().getUniqueId())));
             item.setItemMeta((ItemMeta) meta);
             e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), item);
-            e.setDeathMessage(null);
         }
     }
 
     @EventHandler
     public void onReSpawnPlayer(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
-        World world = Bukkit.getWorld("world");
         if (p.getBedSpawnLocation() == null) {
-            Location loc = new Location(world, Main.pluginConfig.getSpawn().getX(), Main.pluginConfig.getSpawn().getY(), Main.pluginConfig.getSpawn().getZ(), Main.pluginConfig.getSpawn().getYaw(), Main.pluginConfig.getSpawn().getPitch());
-            e.setRespawnLocation(loc);
+            Main.getPlugin().getWarpCache().getWarp("spawn").ifPresentOrElse(warp -> {
+                e.setRespawnLocation(warp.location());
+            }, () -> Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma warpa &espawn"));
         }
     }
 

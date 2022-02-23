@@ -131,7 +131,7 @@ public class PlayerCombatListener implements Listener {
         Logout logout = Logout.get(e.getPlayer());
         if (logout.getTime() > System.currentTimeMillis()) {
             e.getPlayer().setHealth(0.0D);
-            e.setQuitMessage(Api.fixColor("&c&lANTY-LOGOUT &8>> &7Gracz &f" + e.getPlayer().getDisplayName() + " &7wylogował się podczas walki! Ostatni atakujący to &f" + (logout.getAttacker() != null && logout.getAttacker().isOnline() ? logout.getAttacker().getName() : "Nie wiadomo kto")));
+            e.setQuitMessage(Api.fixColor("&#FF3131&lANTY-LOGOUT &8>> &7Gracz &f" + e.getPlayer().getDisplayName() + " &7wylogował się podczas walki! Ostatni atakujący to &f" + (logout.getAttacker() != null && logout.getAttacker().isOnline() ? logout.getAttacker().getName() : "Nie wiadomo kto")));
             logout.remove();
         }
 

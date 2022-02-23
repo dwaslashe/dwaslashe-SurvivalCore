@@ -6,14 +6,16 @@ import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
 
 public class BossBarApi {
 
     public static void sendGlobal(BarColor color, BarStyle style, int time, String message) {
         org.bukkit.boss.BossBar bar = Bukkit.createBossBar(message, color, style, new BarFlag[0]);
-        for (Player all : Bukkit.getOnlinePlayers()) {
-            bar.addPlayer(all);
-        }
+        Main.getPlugin().getUserCache().getOnlineUserMap().forEach((name, user) -> {
+            UserImpl impl = (UserImpl) user;
+            if(impl.isAutobar()) bar.addPlayer(impl.getPlayer());
+        });
         bar.setProgress(1);
         Main.getPlugin().getServer().getScheduler().runTaskLater(Main.getPlugin(), bar::removeAll, time * 20);
         Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {

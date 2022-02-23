@@ -20,6 +20,7 @@ public class DatabaseConnector {
     public Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             this.connection = dataSource.getConnection();
+
         }
         return connection;
     }

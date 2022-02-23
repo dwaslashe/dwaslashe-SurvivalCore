@@ -14,7 +14,7 @@ import java.util.List;
 public class TpHereCommand extends Command {
     public TpHereCommand() {
         super("tphere", "/tphere <nick>", "");
-        setPermission("core.commmand.tphere");
+        setPermission("core.command.tphere");
     }
 
     @Override

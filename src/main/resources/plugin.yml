@@ -3,7 +3,7 @@ name: dwaslashe-SurvivalCore
 version: 1.0.0
 author: [dwaslashe]
 website: dwaslashe.xyz
-description: Survival Core
+description: Core for Servers Survival
 api-version: 1.18
 depend:
   - Vault

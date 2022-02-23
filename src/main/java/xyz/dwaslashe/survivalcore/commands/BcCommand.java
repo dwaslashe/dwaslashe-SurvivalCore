@@ -17,7 +17,7 @@ import java.util.List;
 public class BcCommand extends Command {
     public BcCommand() {
         super("bc", "/bc <chat, title, bar, all, bossbar>", "", "broadcast");
-        setPermission("bc.tools");
+        setPermission("core.command.bc");
     }
 
     @Override
@@ -38,12 +38,13 @@ public class BcCommand extends Command {
                 for (int lenght = 1; lenght < args.length; lenght++)
                     msg = msg + args[lenght] + " ";
                 for (Player all : Bukkit.getOnlinePlayers())
-                    all.sendTitle(Api.fixColor("#E8E8E8lOGŁOSZENIE"), Api.fixColor("&8>> &r" + msg + " &8<<"));
+                    all.sendTitle(Api.fixColor("#E8E8E8&lOGŁOSZENIE"), Api.fixColor("&8>> &r" + msg + " &8<<"));
             } else if (args[0].equalsIgnoreCase("bossbar")) {
                 BossBarApi.sendGlobalParse(args);
             } else if (args[0].equalsIgnoreCase("all")) {
                 BossBarApi.sendGlobalParse(args);
-                Api.sendBroadcast("#E8E8E8&lOGŁOSZENIE &8>> &r" + StringUtils.join(args, " ", 1, args.length));String msg = "";
+                Api.sendBroadcast("#E8E8E8&lOGŁOSZENIE &8>> &r" + StringUtils.join(args, " ", 1, args.length));
+                String msg = "";
                 for (int lenght = 1; lenght < args.length; lenght++)
                     msg = msg + args[lenght] + " ";
                 for (Player all : Bukkit.getOnlinePlayers()) {

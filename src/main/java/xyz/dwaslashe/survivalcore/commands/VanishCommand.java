@@ -39,7 +39,16 @@ public class VanishCommand extends Command implements Listener {
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
         Player player = (Player)sender;
-        if(args.length == 2){
+        VanishObject vanishObject = VanishObject.get(player.getName());
+        if (args.length == 0) {
+            if (vanishObject.isEnable()) {
+                vanishObject.setEnable(false);
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor(" &8>> &cVanish został wyłączony &8<<")));
+            } else {
+                vanishObject.setEnable(true);
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor(" &8>> &aVanish został włączony &8<<")));
+            }
+        } else if(args.length == 2){
             player = Bukkit.getPlayer(args[1]);
         }
         if(args.length >= 1){
@@ -47,7 +56,6 @@ public class VanishCommand extends Command implements Listener {
                 wrongUsage();
             } else {
                 if(player != null){
-                    VanishObject vanishObject = VanishObject.get(player.getName());
                     if(args[0].equalsIgnoreCase("on")){
                         vanishObject.setEnable(true);
                         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor(" &8>> &aVanish został włączony &8<<")));
@@ -68,7 +76,7 @@ public class VanishCommand extends Command implements Listener {
                     }
                 } else offlinePlayer();
             }
-        } else wrongUsage();
+        }
     }
 
     private void openGui(int guiID, Player player) {

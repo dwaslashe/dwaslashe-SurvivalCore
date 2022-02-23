@@ -50,19 +50,19 @@ public class GmCommand extends Command {
                 return;
             } else if (args[0].equalsIgnoreCase("0")) {
                 p2.setGameMode(GameMode.SURVIVAL);
-                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &esurvival &przez &e" + p.getName());
+                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &esurvival &aprzez &e" + p.getName());
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &esurvival &adla &e" + p2.getName());
             } else if (args[0].equalsIgnoreCase("1")) {
                 p2.setGameMode(GameMode.CREATIVE);
-                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &ecreative &przez &e" + p.getName());
+                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &ecreative &aprzez &e" + p.getName());
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &ecreative &adla &e" + p2.getName());
             } else if (args[0].equalsIgnoreCase("2")) {
                 p2.setGameMode(GameMode.ADVENTURE);
-                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &eadventure &przez &e" + p.getName());
+                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &eadventure &aprzez &e" + p.getName());
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &eadventure &adla &e" + p2.getName());
             } else if (args[0].equalsIgnoreCase("3")) {
                 p2.setGameMode(GameMode.SPECTATOR);
-                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &espectator &przez &e" + p.getName());
+                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &espectator &aprzez &e" + p.getName());
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &espectator &adla &e" + p2.getName());
             }
         } else wrongUsage();

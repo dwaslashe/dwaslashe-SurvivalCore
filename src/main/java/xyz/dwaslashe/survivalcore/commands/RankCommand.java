@@ -6,6 +6,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.helpers.InventoryHelper;
 import xyz.dwaslashe.survivalcore.utils.Api;
@@ -47,7 +48,7 @@ public class RankCommand extends Command implements Listener {
             ItemStack clock = inventoryHelper.prepareItemStack(Material.CLOCK, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&aOTWARCIE TRYBU"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &6⚠ &eData startu&8: &717.12.2021")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &6⚠ &eData startu&8: &7" + Main.pluginConfig.getMessages().getData())));
                 });
             });
 
@@ -140,7 +141,7 @@ public class RankCommand extends Command implements Listener {
                                 " &8>> &f/wb &8- &7Przenośny crafting",
                                 " &8>> &f/sun &8- &7Słoneczna pogoda",
                                 " &8>> &f/storm &8- &7Deszczowa pogoda",
-                                " &8>> &f/day &8- &7Ujawnia dzień",
+                                //" &8>> &f/day &8- &7Ujawnia dzień",
                                 " &8>> &f/ec &8- &7Otwiera EnderChest",
                                 " &8>> &f/repair &8- &7Naprawia narzędzie w ręce",
                                 " &8>> &f/plot close &8- &7Zamyka działke",
@@ -208,8 +209,8 @@ public class RankCommand extends Command implements Listener {
                             " &8>> &f/wb &8- &7Przenośny crafting",
                             " &8>> &f/sun &8- &7Słoneczna pogoda",
                             " &8>> &f/storm &8- &7Deszczowa pogoda",
-                            " &8>> &f/day &8- &7Ujawnia dzień",
-                            " &8>> &f/night &8- &7Ujawnia noc",
+                            //" &8>> &f/day &8- &7Ujawnia dzień",
+                            //" &8>> &f/night &8- &7Ujawnia noc",
                             " &8>> &f/ec &8- &7Otwiera EnderChest",
                             " &8>> &f/repair &8- &7Naprawia narzędzie w ręce",
                             " &8>> &f/glowing &8- &7Błyszczenie",
@@ -282,8 +283,8 @@ public class RankCommand extends Command implements Listener {
                             " &8>> &f/wb &8- &7Przenośny crafting",
                             " &8>> &f/sun &8- &7Słoneczna pogoda",
                             " &8>> &f/storm &8- &7Deszczowa pogoda",
-                            " &8>> &f/day &8- &7Ujawnia dzień",
-                            " &8>> &f/night &8- &7Ujawnia noc",
+                            //" &8>> &f/day &8- &7Ujawnia dzień",
+                            //" &8>> &f/night &8- &7Ujawnia noc",
                             " &8>> &f/ec &8- &7Otwiera EnderChest",
                             " &8>> &f/repair &8- &7Naprawia narzędzie w ręce",
                             " &8>> &f/repair all &8- &7Naprawia wszystkie narzędzie w equ",
