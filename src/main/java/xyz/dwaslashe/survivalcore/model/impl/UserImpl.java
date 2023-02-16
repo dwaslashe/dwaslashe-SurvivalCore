@@ -10,7 +10,7 @@ public class UserImpl implements User {
     private final String name;
     private Player player;
 
-    private boolean autobar = true, autochat = true, chat = true, abyss = false, online;
+    private boolean autobar = true, autochat = true, chat = true, death = true, abyss = true, online;
 
     public UserImpl(String name){
         this.name = name;
@@ -32,6 +32,10 @@ public class UserImpl implements User {
         this.abyss = abyss;
     }
 
+    public void setDeath(boolean death) {
+        this.death = death;
+    }
+
     public void setAutochat(boolean autochat) {
         this.autochat = autochat;
     }
@@ -48,6 +52,11 @@ public class UserImpl implements User {
     @Override
     public boolean abyss() {
         return abyss;
+    }
+
+    @Override
+    public boolean death() {
+        return death;
     }
 
     @Override

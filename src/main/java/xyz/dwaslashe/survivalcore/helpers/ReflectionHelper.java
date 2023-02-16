@@ -1,6 +1,8 @@
 package xyz.dwaslashe.survivalcore.helpers;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,6 +17,7 @@ import java.util.function.Function;
 /**
  * @Author WuShei
  */
+@Getter @Setter
 public class ReflectionHelper {
 
     private static String NMS_PREFIX = "net.minecraft.server";
@@ -68,6 +71,7 @@ public class ReflectionHelper {
     }
 
     public static Class<?> getOcbClass(String name) {
+        System.out.println(OCB_PREFIX + name);
         try {
             return Class.forName(OCB_PREFIX + name);
         } catch (ClassNotFoundException e) {

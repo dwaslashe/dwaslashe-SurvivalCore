@@ -1,7 +1,6 @@
 package xyz.dwaslashe.survivalcore.commands;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;

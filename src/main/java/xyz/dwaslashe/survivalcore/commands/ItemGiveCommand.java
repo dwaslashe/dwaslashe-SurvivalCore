@@ -38,7 +38,7 @@ public class ItemGiveCommand extends Command {
             Main.getPlugin().getItemCache().getItem(id).ifPresentOrElse(customItem -> {
                 Main.getPlugin().getUserCache().getOnline(args[1]).ifPresentOrElse(user -> {
                     customItem.give(((UserImpl)user).getPlayer());
-                    ((UserImpl) user).getPlayer().sendMessage("Otrzymales przedmiot o id " + customItem.id());
+                    //((UserImpl) user).getPlayer().sendMessage("Otrzymales przedmiot o id " + customItem.id());
                     Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dano użytkownikowi &e" + user.name() + " &aprzedmiot o id &e" + customItem.id());
                 }, () -> offlinePlayer());
             }, () -> Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cItem o tym &eid &cnie istnieje"));

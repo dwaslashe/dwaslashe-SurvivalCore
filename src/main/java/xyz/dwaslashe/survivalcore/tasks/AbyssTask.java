@@ -43,25 +43,21 @@ public class AbyssTask extends BukkitRunnable {
     public void run() {
         setTime(getTime() - 1);
         if (getTime() == 900) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e15 minut");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#FFF67915 minut");
         } else if (getTime() == 600) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e10 minut");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#FFF67910 minut");
         } else if (getTime() == 300) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e5 minut");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#FFF6795 minut");
         } else if (getTime() == 120) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e2 minuty");
-        } else if (getTime() == 30) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e30 sekund");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#FFF6792 minuty");
         } else if (getTime() == 15) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e15 sekund");
-        } else if (getTime() == 5) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e5 sekund");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#FFF67915 sekund");
         } else if (getTime() == 3) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e3 sekundy");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#FFF6793 sekundy");
         } else if (getTime() == 2) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e2 sekundy");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#FFF6792 sekundy");
         } else if (getTime() == 1) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzedmioty zostaną przeniesione do otchłani za &e1 sekundy");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#FFF6791 sekunde");
         } else if (getTime() == 0) {
             abyssList.clear();
 
@@ -79,16 +75,15 @@ public class AbyssTask extends BukkitRunnable {
                 }
             }));
 
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aPrzeniesiono &e" + ref.moved + " &aprzedmiotów do otchłani!");
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aOtchłan zostanie otwarta za &e5 sekund!");
+            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzeniesiono &#FFF679" + ref.moved + " &#7DE95Fprzedmiotów do otchłani! Otchłan zostanie otwarta za &#FFF6795 sekund!");
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 AbyssTask.opened = true;
-                Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &aOtchlan została otwarta &e/otchlan");
+                Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FOtchlan została otwarta &#FFF679/otchlan");
             },  100L);
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 AbyssTask.opened = false;
                 AbyssTask.setTime(320);
-                Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &cOtchlan zostala zamknieta!");
+                Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#FF301FOtchlan zostala zamknieta!");
             },  1200L);
         }
     }

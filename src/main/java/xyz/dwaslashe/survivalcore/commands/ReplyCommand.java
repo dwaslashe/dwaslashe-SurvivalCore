@@ -50,34 +50,36 @@ public class ReplyCommand extends Command {
                         .map(o -> o = Bukkit.getPlayer((String) o))
                         .filter(Objects::nonNull)
                         .forEach(po -> {
-                            ((Player) po).sendMessage(Api.fixColor("&c&lSocialSPY &8[ #edc72f" + p.getName() + " &8> #edc72f" + p2.getName() + " &8] &8» #edc72f" + msg));
+                            ((Player) po).sendMessage(Api.fixColor("&c&lSocialSPY &8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003" + p2.getDisplayName() + " &8] &8» &#E7E7E7" + msg));
                         });
-                Api.sendMessage(p, "&8[ #edc72fTY &8> #edc72f" + p2.getName() + " &8] &8» #edc72f" + msg);
-                Api.sendMessage(p2, "&8[ #edc72f" + p.getName() + " &8> #edc72fTY &8] &8» #edc72f" + msg);
-                BossBar bar = Bukkit.createBossBar(Api.fixColor("&8[ #edc72f" + p.getName() + " &8> #edc72fTY &8] &8» #edc72f" + msg), BarColor.YELLOW, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC  );
-                bar.addPlayer(p2);
-                bar.setProgress(1);
-                int[] bar_color = {0};
-                Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        if (p.getPlayer() != null && p.getPlayer().isOnline()) {
-                            if (bar.getProgress() > 0.02) {
-                                bar.setProgress(bar.getProgress() - 0.02);
-                                ++bar_color[0];
-                                if (bar_color[0] == 1) {
-                                    bar.setColor(BarColor.YELLOW);
+                Api.sendMessage(p, "&8[ &#B3F003TY &8> &#B3F003" + p2.getDisplayName() + " &8] &8» &#E7E7E7" + msg);
+                Api.sendMessage(p2, "&8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg);
+                if (Main.pluginConfig.getEvents().isBossbarmsg()) {
+                    BossBar bar = Bukkit.createBossBar(Api.fixColor("&8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg), BarColor.YELLOW, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
+                    bar.addPlayer(p2);
+                    bar.setProgress(1);
+                    int[] bar_color = {0};
+                    Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
+                        @Override
+                        public void run() {
+                            if (p.getPlayer() != null && p.getPlayer().isOnline()) {
+                                if (bar.getProgress() > 0.02) {
+                                    bar.setProgress(bar.getProgress() - 0.02);
+                                    ++bar_color[0];
+                                    if (bar_color[0] == 1) {
+                                        bar.setColor(BarColor.YELLOW);
+                                    } else {
+                                    }
                                 } else {
+                                    bar.setVisible(false);
+                                    bar.removePlayer(p2.getPlayer());
                                 }
                             } else {
-                                bar.setVisible(false);
                                 bar.removePlayer(p2.getPlayer());
                             }
-                        } else {
-                            bar.removePlayer(p2.getPlayer());
                         }
-                    }
-                }, 0, 2);
+                    }, 0, 2);
+                }
             }
         }
     }

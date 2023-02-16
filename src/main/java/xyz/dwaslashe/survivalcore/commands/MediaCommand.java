@@ -34,7 +34,7 @@ public class MediaCommand extends Command implements Listener {
     private void openGui(int guiID, Player player) {
         //0
         if (guiID == 0) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Social Media", 3);
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "Social Media", 4);
 
             ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
@@ -46,24 +46,30 @@ public class MediaCommand extends Command implements Listener {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&eStrona WWW"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby przejść do strony!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#ffff00Strona WWW"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby przejść do strony!")));
                 });
             });
             ItemStack facebook = inventoryHelper.prepareItemStack(Material.LEGACY_SKULL_ITEM, itemStack -> {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGViNDYxMjY5MDQ0NjNmMDdlY2ZjOTcyYWFhMzczNzNhMjIzNTliNWJhMjcxODIxYjY4OWNkNTM2N2Y3NTc2MiJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&bFacebook"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby przejść do facebook'a!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#21F8F6Facebook"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby przejść do facebook'a!")));
                 });
             });
             ItemStack discord = inventoryHelper.prepareItemStack(Material.LEGACY_SKULL_ITEM, itemStack -> {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzg3M2MxMmJmZmI1MjUxYTBiODhkNWFlNzVjNzI0N2NiMzlhNzVmZjFhODFjYmU0YzhhMzliMzExZGRlZGEifX19");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&9Discord"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby przejść do discorda!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#7289daDiscord"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby przejść do discorda!")));
+                });
+            });
+
+            ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
+                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                    itemMeta.setDisplayName(Api.fixColor("&#FF3131Zamknij"));
                 });
             });
 
@@ -78,6 +84,8 @@ public class MediaCommand extends Command implements Listener {
                 } else if (e.getSlot() == 15) {
                     player.closeInventory();
                     player.chat("/facebook");
+                } else if (e.getSlot() == 31) {
+                    player.closeInventory();
                 }
             });
 
@@ -87,7 +95,9 @@ public class MediaCommand extends Command implements Listener {
             inventoryHelper.setItem(13, website);
             inventoryHelper.setItem(14, glass_black);
             inventoryHelper.setItem(15, facebook);
-            inventoryHelper.setItemRange(16, 27, glass_black);
+            inventoryHelper.setItemRange(16, 36, glass_black);
+
+            inventoryHelper.setItem(31, back);
 
             inventoryHelper.open(player);
         }

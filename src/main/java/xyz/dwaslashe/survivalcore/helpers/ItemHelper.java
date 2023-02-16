@@ -4,10 +4,14 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import xyz.dwaslashe.survivalcore.utils.Api;
+import xyz.dwaslashe.survivalcore.utils.ItemApi;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -44,17 +48,25 @@ public class ItemHelper extends ItemStack {
         return this;
     }
 
-    public void setDisplayName(String title) {
-        withMeta(itemMeta -> itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', title)));
+    public ItemHelper setLore(List<String> lore){
+        ItemMeta itemMeta = getItemMeta();
+        itemMeta.setLore(Api.fixColor(lore));
+        setItemMeta(itemMeta);
+        return this;
     }
 
+    public void setDisplayName(String title) {
+        withMeta(itemMeta -> itemMeta.setDisplayName(Api.fixColor(title)));
+    }
+    public void addEnchant(Enchantment enchantment, int level){
+        ItemMeta itemMeta = getItemMeta();
+        itemMeta.addEnchant(enchantment, level, true);
+        setItemMeta(itemMeta);
+        return;
+    }
 
     public void addAttributeModifier(Attribute attribute, double value, AttributeModifier.Operation operation, EquipmentSlot equipmentSlot) {
         withMeta(itemMeta -> itemMeta.addAttributeModifier(attribute, new AttributeModifier(UUID.randomUUID(), attribute.getKey().getKey(), value, operation, equipmentSlot)));
-    }
-
-    public void removeAttributeModifier(Attribute attribute) {
-        withMeta(itemMeta -> itemMeta.removeAttributeModifier(attribute));
     }
 
     public void setAttributeModifier(Attribute attribute, AttributeModifier attributeModifier) {
@@ -62,15 +74,6 @@ public class ItemHelper extends ItemStack {
             itemMeta.removeAttributeModifier(attribute);
             itemMeta.addAttributeModifier(attribute, attributeModifier);
         });
-    }
-
-    public void setRepairCost(int cost) {
-        itemStack(itemStack -> itemStack.setRepairCost(cost));
-    }
-
-    public ItemHelper itemStack(Consumer<net.minecraft.world.item.ItemStack> itemStackConsumer) {
-        itemStackConsumer.accept(net.minecraft.world.item.ItemStack.fromBukkitCopy(this));
-        return this;
     }
 
 }

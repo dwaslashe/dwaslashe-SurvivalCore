@@ -1,5 +1,7 @@
 package xyz.dwaslashe.survivalcore.objects;
 
+import me.smaks6.plugin.utilities.Enum.Nokaut;
+import me.smaks6.plugin.utilities.PlayerUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -70,6 +72,18 @@ public class Logout {
             (new BukkitRunnable() {
                 public void run() {
                     if (Logout.this.player != null && Logout.this.player.isOnline()) {
+
+                        //if(!PlayerUtility.isNull(player)) {
+                        //    return;
+                        //}
+                        //if (PlayerUtility.getState(player).equals(Nokaut.CARRY)) {
+                        //    Logout.this.remove();
+                        //    bar.setVisible(false);
+                        //    bar.removePlayer(Logout.this.player);
+                        //    this.cancel();
+                        //    return;
+                        //}
+
                         if (Logout.this.time > System.currentTimeMillis()) {
                             bar.setTitle(Api.fixColor("&8>> &7Nie logaj sie przez &a" + TimerApi.secondsToString(Logout.this.getTime()) + " &8&l- " + Main.pluginConfig.getMessages().getIp() + " &8<<"));
                         } else {

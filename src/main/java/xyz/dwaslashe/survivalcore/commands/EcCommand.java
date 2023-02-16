@@ -12,12 +12,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class EcCommand extends Command {
-
     public EcCommand() {
         super("ec", "/ec <nick>", "");
         setPermission("core.command.ec");
         setOnlyPlayer(true);
     }
+
     @Override
     public void commandExecute(CommandSender s, String[] args) {
         Player p = (Player) s;

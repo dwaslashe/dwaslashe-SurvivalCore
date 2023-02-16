@@ -43,10 +43,10 @@ public class VanishCommand extends Command implements Listener {
         if (args.length == 0) {
             if (vanishObject.isEnable()) {
                 vanishObject.setEnable(false);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor(" &8>> &cVanish został wyłączony &8<<")));
+                Api.sendActionBar(player, "&8>> &cVanish został wyłączony &8<<");
             } else {
                 vanishObject.setEnable(true);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor(" &8>> &aVanish został włączony &8<<")));
+                Api.sendActionBar(player, "&8>> &aVanish został włączony &8<<");
             }
         } else if(args.length == 2){
             player = Bukkit.getPlayer(args[1]);
@@ -58,18 +58,18 @@ public class VanishCommand extends Command implements Listener {
                 if(player != null){
                     if(args[0].equalsIgnoreCase("on")){
                         vanishObject.setEnable(true);
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor(" &8>> &aVanish został włączony &8<<")));
+                        Api.sendActionBar(player, "&8>> &aVanish został włączony &8<<");
                     } else if(args[0].equalsIgnoreCase("off")) {
                         vanishObject.setEnable(false);
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor(" &8>> &cVanish został wyłączony &8<<")));
+                        Api.sendActionBar(player, "&8>> &cVanish został wyłączony &8<<");
                     } if (!player.hasPermission("core.command.vanish.more")) {
                         player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.vanish.more&8) &8<<"));
                         return;
                     } else if(args[0].equalsIgnoreCase("check")){
                         if(sender.getName().equalsIgnoreCase(player.getName())){
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor(" &8>> &7Twój vanish jest " + (vanishObject.isEnable() ? "&awłączony" : "&cwyłączony" + " &8<<"))));
+                            Api.sendActionBar(player, " &8>> &7Twój vanish jest " + (vanishObject.isEnable() ? "&awłączony" : "&cwyłączony" + " &8<<"));
                         } else {
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor(" &8>> &7Vanish gracza &a" + player.getName() + " &7jest " + (vanishObject.isInteract() ? "&awłączony" : "&cwyłączony" + " &8<<"))));
+                            Api.sendActionBar(player, " &8>> &7Vanish gracza &a" + player.getName() + " &7jest " + (vanishObject.isInteract() ? "&awłączony" : "&cwyłączony" + " &8<<"));
                         }
                     } else if(args[0].equalsIgnoreCase("panel") && sender instanceof Player){
                         openGui(0, player);
@@ -87,57 +87,57 @@ public class VanishCommand extends Command implements Listener {
 
             ItemStack build = inventoryHelper.prepareItemStack(Material.GRASS_BLOCK, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&E&LBudowanie"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby włączyć/wyłączyć opcje!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFC42EBudowanie"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby włączyć/wyłączyć opcje!")));
                 });
             });
 
             ItemStack pvp = inventoryHelper.prepareItemStack(Material.DIAMOND_SWORD, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&e&lPlayer VS Player"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby włączyć/wyłączyć opcje!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFC42EPlayer VS Player"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby włączyć/wyłączyć opcje!")));
                 });
             });
 
             ItemStack pve = inventoryHelper.prepareItemStack(Material.SKELETON_SKULL, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&e&lPlayer VS Entity"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby włączyć/wyłączyć opcje!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFC42EPlayer VS Entity"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby włączyć/wyłączyć opcje!")));
                 });
             });
 
             ItemStack interact = inventoryHelper.prepareItemStack(Material.CHEST, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&E&LInterakcja z blokami"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby włączyć/wyłączyć opcje!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFC42EInterakcja z blokami"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby włączyć/wyłączyć opcje!")));
                 });
             });
 
             ItemStack useful = inventoryHelper.prepareItemStack(Material.LAVA_BUCKET, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&E&LRozlewanie/Zabieranie"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby włączyć/wyłączyć opcje!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFC42ERozlewanie/Zabieranie"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby włączyć/wyłączyć opcje!")));
                 });
             });
 
             ItemStack pickup = inventoryHelper.prepareItemStack(Material.HOPPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&E&Podnoszenie przedmiotów"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby włączyć/wyłączyć opcje!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFC42EPodnoszenie przedmiotów"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby włączyć/wyłączyć opcje!")));
                 });
             });
 
             ItemStack drop = inventoryHelper.prepareItemStack(Material.DROPPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&E&Wyrzucanie przedmiotów"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby włączyć/wyłączyć opcje!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFC42EWyrzucanie przedmiotów"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby włączyć/wyłączyć opcje!")));
                 });
             });
 
             ItemStack shoot = inventoryHelper.prepareItemStack(Material.BOW, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&E&LStrzelanie"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby włączyć/wyłączyć opcje!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFC42EStrzelanie"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby włączyć/wyłączyć opcje!")));
                 });
             });
 
@@ -288,7 +288,7 @@ public class VanishCommand extends Command implements Listener {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 VanishObject vanishObject = VanishObject.get(player);
                 if(vanishObject.isEnable()){
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Api.fixColor("&8>> &aVanish jest uruchomiony &8<<")));
+                    Api.sendActionBar(player, "&8>> &aVanish jest uruchomiony &8<<");
 
                 }
             });

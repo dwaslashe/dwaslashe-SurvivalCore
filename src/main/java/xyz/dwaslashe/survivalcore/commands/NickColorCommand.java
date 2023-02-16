@@ -39,7 +39,7 @@ public class NickColorCommand extends Command implements Listener {
     private void openGui(int guiID, Player player) {
         //0
         if (guiID == 0) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Wybierz menu kolorów", 3);
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "Wybierz menu kolorów", 4);
 
             ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
@@ -51,24 +51,44 @@ public class NickColorCommand extends Command implements Listener {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDRiMDM3OTRiOWIzZTNiNWQwN2UzYmU2OGI5NmFmODdkZjIxNWMzNzUyZTU0NzM2YzgwZjdkNTBiZDM0MzdhNCJ9fX0=");
                 inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&eInformacje"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &7Twój nick&8: &e" + player.getDisplayName(), " &7Twój prawdziwy nick&8: &e" + player.getName(), "", " &f&nKliknij aby zresetować kolor nicku!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#00FFFFInformacje"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList(" ",
+                            " &#39FF14Twój nick&8: &#FFF01F" + player.getDisplayName(),
+                            " &#39FF14Twój prawdziwy nick&8: &#FFF01F" + player.getName(),
+                            "",
+                            " &#FBFD8C&nKliknij aby zresetować kolor nicku!")));
                 });
             });
 
             ItemStack nametag_color = inventoryHelper.prepareItemStack(Material.NAME_TAG, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&eWybierz Kolor"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &7Wybór gradientu jest tylko od rangi &#FFF01F&lMVP", " &7Posiadasz permisje&8: &e" + (player.hasPermission("core.command.nickcolor.color") ? "&aTak" : "&cNie"), "", " &f&nKliknij aby przejść do menu wyboru!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFC42EWybierz Kolor"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("",
+                            " &#FBFD8C&nKliknij aby przejść do menu wyboru!")));
                 });
             });
 
             ItemStack nametag_gradient = inventoryHelper.prepareItemStack(Material.NAME_TAG, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.addEnchant(Enchantment.DURABILITY, 10, true);
-                    itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                    itemMeta.setDisplayName(Api.fixColor("&dWybierz Gradient"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &7Wybór gradientu jest tylko od rangi &#B026FF&lMVP+", " &7Posiadasz permisje&8: &e" + (player.hasPermission("core.command.nickcolor.gradient") ? "&aTak" : "&cNie"), "", " &f&nKliknij aby przejść do menu wyboru!")));
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    itemMeta.setDisplayName(Api.fixColor("&#FF10F0Wybierz Gradient"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("",
+                            " &#FBFD8C&nKliknij aby przejść do menu wyboru!")));
+                });
+            });
+
+            ItemStack nametag_nopermission = inventoryHelper.prepareItemStack(Material.RED_STAINED_GLASS_PANE, itemStack -> {
+                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                    itemMeta.setDisplayName(Api.fixColor("&#FF3131Brak permisji"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("",
+                            " &#f53b3bWybór gradientu jest tylko od rangi &#B026FF&lM&#b73bff&lV&#bf51ff&lP&#c767ff&l+")));
+                });
+            });
+
+            ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
+                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                    itemMeta.setDisplayName(Api.fixColor("&#FF3131Zamknij"));
                 });
             });
 
@@ -88,16 +108,22 @@ public class NickColorCommand extends Command implements Listener {
                     if (player.hasPermission("core.command.nickcolor.gradient")) {
                         openGui(2, player);
                     } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz do tego permisji!");
+                } else if (e.getSlot() == 31) {
+                    player.closeInventory();
                 }
             });
 
-            inventoryHelper.setItemRange(0, 11, glass_black);
+            inventoryHelper.setItemRange(0, 36, glass_black);
             inventoryHelper.setItem(11, nametag_color);
             inventoryHelper.setItem(12, glass_black);
             inventoryHelper.setItem(13, rainbow);
             inventoryHelper.setItem(14, glass_black);
-            inventoryHelper.setItem(15, nametag_gradient);
-            inventoryHelper.setItemRange(16, 27, glass_black);
+            if (player.hasPermission("core.command.nickcolor.gradient")) {
+                inventoryHelper.setItem(15, nametag_gradient);
+            } else {
+                inventoryHelper.setItem(15, nametag_nopermission);
+            }
+            inventoryHelper.setItem(31, back);
 
             inventoryHelper.open(player);
         }
@@ -114,56 +140,56 @@ public class NickColorCommand extends Command implements Listener {
             ItemStack orange = inventoryHelper.prepareItemStack(Material.ORANGE_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#FE5000" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby zmienić kolor nicku!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby zmienić kolor nicku!")));
                 });
             });
 
             ItemStack magenta = inventoryHelper.prepareItemStack(Material.MAGENTA_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#EA00FF" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby zmienić kolor nicku!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby zmienić kolor nicku!")));
                 });
             });
 
             ItemStack blue = inventoryHelper.prepareItemStack(Material.LIGHT_BLUE_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#21F8F6" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby zmienić kolor nicku!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby zmienić kolor nicku!")));
                 });
             });
 
             ItemStack yellow = inventoryHelper.prepareItemStack(Material.YELLOW_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#FFF01F" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby zmienić kolor nicku!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby zmienić kolor nicku!")));
                 });
             });
 
             ItemStack lime = inventoryHelper.prepareItemStack(Material.LIME_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#39ff14" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby zmienić kolor nicku!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby zmienić kolor nicku!")));
                 });
             });
 
             ItemStack gray = inventoryHelper.prepareItemStack(Material.GRAY_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#808080" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby zmienić kolor nicku!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby zmienić kolor nicku!")));
                 });
             });
 
             ItemStack white = inventoryHelper.prepareItemStack(Material.WHITE_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#F5F5F5" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby zmienić kolor nicku!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby zmienić kolor nicku!")));
                 });
             });
 
             ItemStack pink = inventoryHelper.prepareItemStack(Material.PINK_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#fe019a" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby zmienić kolor nicku!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby zmienić kolor nicku!")));
                 });
             });
 
@@ -231,56 +257,56 @@ public class NickColorCommand extends Command implements Listener {
             ItemStack orange = inventoryHelper.prepareItemStack(Material.ORANGE_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#FE5000" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać pierwszy kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać pierwszy kolor gradientu!")));
                 });
             });
 
             ItemStack magenta = inventoryHelper.prepareItemStack(Material.MAGENTA_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#EA00FF" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać pierwszy kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać pierwszy kolor gradientu!")));
                 });
             });
 
             ItemStack blue = inventoryHelper.prepareItemStack(Material.LIGHT_BLUE_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#21F8F6" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać pierwszy kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać pierwszy kolor gradientu!")));
                 });
             });
 
             ItemStack yellow = inventoryHelper.prepareItemStack(Material.YELLOW_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#FFF01F" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać pierwszy kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać pierwszy kolor gradientu!")));
                 });
             });
 
             ItemStack lime = inventoryHelper.prepareItemStack(Material.LIME_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#39ff14" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać pierwszy kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać pierwszy kolor gradientu!")));
                 });
             });
 
             ItemStack gray = inventoryHelper.prepareItemStack(Material.GRAY_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#808080" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać pierwszy kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać pierwszy kolor gradientu!")));
                 });
             });
 
             ItemStack white = inventoryHelper.prepareItemStack(Material.WHITE_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#F5F5F5" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać pierwszy kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać pierwszy kolor gradientu!")));
                 });
             });
 
             ItemStack pink = inventoryHelper.prepareItemStack(Material.PINK_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#fe019a" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać pierwszy kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać pierwszy kolor gradientu!")));
                 });
             });
 
@@ -351,56 +377,56 @@ public class NickColorCommand extends Command implements Listener {
             ItemStack orange = inventoryHelper.prepareItemStack(Material.ORANGE_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#FE5000" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać drugi kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać drugi kolor gradientu!")));
                 });
             });
 
             ItemStack magenta = inventoryHelper.prepareItemStack(Material.MAGENTA_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#EA00FF" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać drugi kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać drugi kolor gradientu!")));
                 });
             });
 
             ItemStack blue = inventoryHelper.prepareItemStack(Material.LIGHT_BLUE_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#21F8F6" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać drugi kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać drugi kolor gradientu!")));
                 });
             });
 
             ItemStack yellow = inventoryHelper.prepareItemStack(Material.YELLOW_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#FFF01F" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać drugi kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać drugi kolor gradientu!")));
                 });
             });
 
             ItemStack lime = inventoryHelper.prepareItemStack(Material.LIME_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#39ff14" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać drugi kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać drugi kolor gradientu!")));
                 });
             });
 
             ItemStack gray = inventoryHelper.prepareItemStack(Material.GRAY_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#808080" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać drugi kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać drugi kolor gradientu!")));
                 });
             });
 
             ItemStack white = inventoryHelper.prepareItemStack(Material.WHITE_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#F5F5F5" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać drugi kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać drugi kolor gradientu!")));
                 });
             });
 
             ItemStack pink = inventoryHelper.prepareItemStack(Material.PINK_DYE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#fe019a" + player.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wybrać drugi kolor gradientu!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wybrać drugi kolor gradientu!")));
                 });
             });
 

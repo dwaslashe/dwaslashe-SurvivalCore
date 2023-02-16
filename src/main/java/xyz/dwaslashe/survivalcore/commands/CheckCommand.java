@@ -1,0 +1,137 @@
+package xyz.dwaslashe.survivalcore.commands;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.cache.TestWarpCache;
+import xyz.dwaslashe.survivalcore.commands.managers.Command;
+import xyz.dwaslashe.survivalcore.objects.TestWarp;
+import xyz.dwaslashe.survivalcore.utils.Api;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class CheckCommand extends Command implements Listener {
+    private static List<String> cmds = Arrays.asList("/rl", "/sprawdz", "/helpop", "/pomoc", "/msg", "/replay", "/message", "/tell", "/r", "/scoreboard", "/sidebar");
+    public static List<String> checks = new ArrayList();
+    public CheckCommand() {
+        super("sprawdz", "/sprawdz <gracz> <info, czysty, wykryto, przyznanie>", "", "check");
+        setPermission("core.command.check");
+    }
+
+    @Override
+    public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
+        if (args.length == 1) return Collections.singletonList("[players]");
+        else if (args.length == 2) return Api.startsWith(Arrays.asList("info", "czysty", "wykryto", "przyznanie"), args[0]);
+        return null;
+    }
+
+    @Override
+    public void commandExecute(CommandSender p, String[] args) {
+        if (args.length == 0) {
+            wrongUsage();
+        } else if(args.length >= 1) {
+            if (Bukkit.getPlayer(args[0]) == null) {
+                offlinePlayer();
+            } else {
+                Player s = Bukkit.getPlayer(args[0]);
+                if (args.length == 1) {
+                    if (!checks.contains(s.getName())) {
+                        checks.add(s.getName());
+                        Api.sendBroadcast("&c&lSPRAWDZANY &8>> &aGracz &e" + s.getName() + " &ajest sprawdzany przez &e" + p.getName());
+                        Api.sendMessage(s, "&8&m                             ");
+                        Api.sendMessage(s, "&8|");
+                        Api.sendMessage(s, "&8| &c&lJESTEŚ SPRAWDZANY!");
+                        Api.sendMessage(s, "&8| &fLogout &8= &eban 5d");
+                        Api.sendMessage(s, "&8| &fPrzyznanie sie &8= &eban 2d");
+                        Api.sendMessage(s, "&8| &fWykrycie &8= &eban 5d");
+                        Api.sendMessage(s, "&8|");
+                        Api.sendMessage(s, "&8| &c&oPamietaj, aby się słuchać administratora, inaczej zostaniesz ukarany!");
+                        Api.sendMessage(s, "&8|");
+                        Api.sendMessage(s, "&8&m                             ");
+
+                        TestWarp warp = TestWarpCache.getInstance().get("sprawdzarka");
+                        if (warp != null) {
+                            s.teleport(warp.getLocation());
+                        } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma ustawionej lokalizacji &esprawdzarki");
+
+                        (new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                if (checks.contains(s.getName())) {
+                                    Api.sendActionBar(s, "&8>> &cJestes sprawdzany przez &e" + p.getName() + " &8<<");
+                                } else {
+                                    this.cancel();
+                                }
+                            }
+                        }).runTaskTimer(Main.getPlugin(), 0, 20);
+                    } else {
+                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cjest juz sprawdzany");
+                    }
+                } else if (args.length == 2) {
+                    if (args[1].equalsIgnoreCase("info")) {
+                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + s.getName() + " &a" + (checks.contains(s.getName()) ? "jest sprawdzany(-a)" : "nie jest sprawdzany"));
+                    } else if (args[1].equalsIgnoreCase("przyznanie")) {
+                        if (checks.contains(s.getName())) {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + s.getName() + " 2d przyznanie sie do uzywania niedozwolonego oprogramowania");
+                            checks.remove(s.getName());
+                        } else {
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cnie jest sprawdzany");
+                        }
+                    } else if (args[1].equalsIgnoreCase("wykryto")) {
+                        if (checks.contains(s.getName())) {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + s.getName() + " 5d wykryto niedozwolone oprogramowanie");
+                            checks.remove(s.getName());
+                        } else {
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cnie jest sprawdzany");
+                        }
+                    } else if (args[1].equalsIgnoreCase("czysty")) {
+                        if (checks.contains(s.getName())) {
+                            checks.remove(s.getName());
+                            Api.sendBroadcast(Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + s.getName() + " &aokazał sie nie winny, gdyz nie posiada niedozwolonego oprogramowania");
+                        } else {
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cnie jest sprawdzany");
+                        }
+                    } else {
+                        wrongUsage();
+                    }
+                } else {
+                    wrongUsage();
+                }
+            }
+        }
+    }
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e){
+        String name = e.getPlayer().getName();
+        if(checks.contains(name)){
+            e.setCancelled(true);
+            Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cPodczas sprawdzania dozwolone jest tylko uzywanie komend &e" + cmds.toString());
+        }
+    }
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent e){
+        String name = e.getPlayer().getName();
+        if(checks.contains(name)){
+            if(!cmds.contains(e.getMessage().split(" ")[0])){
+                e.setCancelled(true);
+            }
+        }
+    }
+    @EventHandler
+    public void onLogout(PlayerQuitEvent e){
+        String name = e.getPlayer().getName();
+        if(checks.contains(name)){
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + e.getPlayer().getName() + " 5d Logout podczas sprawdzania");
+        }
+    }
+}

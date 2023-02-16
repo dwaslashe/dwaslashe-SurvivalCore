@@ -12,7 +12,7 @@ public class CustomItemImpl implements CustomItem {
     private final int id;
     private ItemStack itemStack;
 
-    private List<PotionEffect> a = new ArrayList<>(), b = new ArrayList<>();
+    private List<PotionEffect> a = new ArrayList<>(), b = new ArrayList<>(), c = new ArrayList<>();
 
     public CustomItemImpl(int id, ItemStack itemStack){
         this.id = id;
@@ -27,6 +27,11 @@ public class CustomItemImpl implements CustomItem {
     @Override
     public ItemStack item() {
         return itemStack;
+    }
+
+    @Override
+    public List<PotionEffect> whenInSecondHand() {
+        return c;
     }
 
     @Override

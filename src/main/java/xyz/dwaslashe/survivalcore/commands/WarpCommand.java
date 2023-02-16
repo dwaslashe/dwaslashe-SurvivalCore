@@ -1,101 +1,67 @@
 package xyz.dwaslashe.survivalcore.commands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
+import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.cache.TestWarpCache;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
-import xyz.dwaslashe.survivalcore.helpers.InventoryHelper;
 import xyz.dwaslashe.survivalcore.managers.TeleportManager;
+import xyz.dwaslashe.survivalcore.objects.TestWarp;
 import xyz.dwaslashe.survivalcore.utils.Api;
-
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WarpCommand extends Command implements Listener {
     public WarpCommand() {
-        super("warp", "/warp", "", "waprs", "warpy");
+        super("warp", "/warp", "", "warps", "warpy");
         setOnlyPlayer(true);
     }
 
     @Override
     public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
+        if(args.length == 1){
+            return Api.startsWith(new ArrayList<>(TestWarpCache.getInstance().getWarpMap().keySet()), args[0]);
+        }
         return null;
     }
 
+    @SneakyThrows
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        System.out.println("1");
         Player p = (Player) sender;
-        if (args.length >= 0){
-            System.out.println("2");
-            openGui(1, p);
-        }
-    }
+        if (args.length == 0) {
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aLista dostępnych warpów &e" + String.join(", ", new ArrayList<>(TestWarpCache.getInstance().getWarpMap().keySet())));
+        } else if (args.length == 1) {
+            TestWarp warp = TestWarpCache.getInstance().get(args[0]);
+            if(warp == null){
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie ma takiego warpa!");
+                return;
+            } else if(warp.getName().equalsIgnoreCase("sprawdzarka")){
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cTen warp jest zablokowany!");
+                return;
+            }
+            if (p.hasPermission("core.command.admin")) {
+                p.teleport(warp.getLocation());
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na &e" + args[0]);
+            } else {
+                TeleportManager.teleport(p, 5, warp.getLocation());
+            }
 
-    private void openGui(int guiID, Player player) {
-        //0
-        if (guiID == 1) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Lista warpów", 4);
-
-            ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(" ");
-                });
-            });
-
-            ItemStack kasyno = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&dKasyno"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby przeteleportować się na warp!")));
-                });
-            });
-
-            ItemStack skrzynie = inventoryHelper.prepareItemStack(Material.CHEST, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&eSkrzynie"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby przeteleportować się na warp!")));
-                });
-            });
-
-            ItemStack end = inventoryHelper.prepareItemStack(Material.END_PORTAL_FRAME, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&dEnd"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby przeteleportować się na warp!")));
-                });
-            });
-
-            inventoryHelper.click(e -> {
-                World world = Bukkit.getWorld("world");
-                World worldend = Bukkit.getWorld("world_the_end");
-                e.setCancelled(true);
-                if (e.getSlot() == 11) {
-                    player.getOpenInventory().close();
-                    Location loc = new Location(world, 3464, 72, 1773, -154, 3);
-                    TeleportManager.teleport(player, 5, loc);
-                } else if (e.getSlot() == 12) {
-                    player.getOpenInventory().close();
-                    Location loc = new Location(world, 24, 87, 39, 0, 4);
-                    TeleportManager.teleport(player, 5, loc);
-                } else if (e.getSlot() == 13) {
-                    player.getOpenInventory().close();
-                    Location loc = new Location(worldend, 88, 58, 0, 90, 2);
-                    TeleportManager.teleport(player, 5, loc);
-                }
-            });
-
-            inventoryHelper.setItemRange(0, 11, glass_black);
-            //inventoryHelper.setItem(11, kasyno);
-            //inventoryHelper.setItem(12, skrzynie);
-            //inventoryHelper.setItem(13, end);
-            inventoryHelper.setItemRange(16, 21, glass_black);
-            inventoryHelper.setItemRange(24, 36, glass_black);
-
-            inventoryHelper.open(player);
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("set") && sender.hasPermission("core.command.admin")) {
+            TestWarpCache cache = TestWarpCache.getInstance();
+            TestWarp warp = cache.get(args[1]);
+            if(warp == null){
+                warp = cache.compute(args[1]);
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aWarp &e" + warp.getName() + " &azostał pomyślnie stworzony!");
+            } else {
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zaktulizowano istniejący warp!");
+            }
+            warp.setLocation(p.getLocation());
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("remove") && sender.hasPermission("core.command.admin")) {
+            TestWarpCache.getInstance().getWarpMap().remove(args[1]);
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie usunięto warp!");
         }
     }
 }

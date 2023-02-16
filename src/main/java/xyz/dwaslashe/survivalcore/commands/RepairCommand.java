@@ -22,8 +22,7 @@ public class RepairCommand extends Command {
 
     @Override
     public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
-        if (args.length == 2) return Collections.singletonList("[players]");
-        else if (args.length == 1) return Api.startsWith(Arrays.asList("all"), args[0]);
+        if (args.length == 1) return Api.startsWith(Arrays.asList("all"), args[0]);
         return null;
     }
 

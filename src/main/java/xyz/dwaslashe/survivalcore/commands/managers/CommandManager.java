@@ -2,10 +2,28 @@ package xyz.dwaslashe.survivalcore.commands.managers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.craftbukkit.v1_18_R1.CraftServer;
+import xyz.dwaslashe.survivalcore.helpers.ReflectionHelper;
+
+import java.lang.reflect.Field;
 
 public class CommandManager {
-    public static SimpleCommandMap commandMap = ((CraftServer) Bukkit.getServer()).getCommandMap();
+
+    private static final Class<?> CraftServerClass = ReflectionHelper.getOcbClass("CraftServer");
+    private static Field commandMapField;
+
+    public static SimpleCommandMap commandMap;
+
+    static {
+        try {
+            commandMapField = CraftServerClass.getDeclaredField("commandMap");
+            commandMapField.setAccessible(true);
+            commandMap = (SimpleCommandMap) commandMapField.get(Bukkit.getServer());
+            commandMapField.setAccessible(false);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public static void register(xyz.dwaslashe.survivalcore.commands.managers.Command command, boolean enable){
         if (enable == true) {

@@ -34,10 +34,10 @@ public class LocationApi {
     }
 
     public static org.bukkit.Location getRandomLocation(World world) {
-        int xMax = 650;
-        int zMax = -650;
-        int xMin = 100;
-        int zMin = -100;
+        int xMax = 1650;
+        int zMax = -1650;
+        int xMin = 1000;
+        int zMin = -1000;
         int x = RandomApi.getRandomInt(xMin, xMax);
         int z = RandomApi.getRandomInt(zMin, zMax);
         int y = world.getHighestBlockYAt(x, z) + 1;

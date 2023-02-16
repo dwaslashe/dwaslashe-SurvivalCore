@@ -11,7 +11,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,32 +100,35 @@ public class ItemApi {
         this.itemStack.setItemMeta(meta);
         return this;
     }
-    public ItemApi setOwner(String owner){
-        SkullMeta meta = (SkullMeta)itemStack.getItemMeta();
+    public ItemApi setOwnerURL(String texture) {
+
+        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "");
+        gameProfile.getProperties().put("textures", new Property("textures", texture));
+        try {
+            Field field = meta.getClass().getDeclaredField("profile");
+            field.setAccessible(true);
+            field.set(meta, gameProfile);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        itemStack.setItemMeta(meta);
+
+        return this;
+    }
+
+    public ItemApi setOwner(String owner) {
+        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
         meta.setOwner(owner);
         itemStack.setItemMeta(meta);
         return this;
     }
-    public ItemApi setOwnerURL(String url){
-        SkullMeta meta = (SkullMeta) this.itemStack.getItemMeta();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
 
-        profile.getProperties().put("textures", new Property("textures", url));
-
-        try
-        {
-            Field profileField = meta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(meta, profile);
-
-        }
-        catch (IllegalArgumentException|NoSuchFieldException|SecurityException | IllegalAccessException error)
-        {
-            error.printStackTrace();
-        }
-        this.itemStack.setItemMeta(meta);
-        return this;
+    private void meta(Class<SkullMeta> skullMetaClass, Object o) {
     }
+
     public String getOwner(){
         SkullMeta meta = (SkullMeta) this.itemStack.getItemMeta();
         return meta.getOwner();

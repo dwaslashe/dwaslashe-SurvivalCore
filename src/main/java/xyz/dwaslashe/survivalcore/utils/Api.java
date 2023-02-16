@@ -3,17 +3,24 @@ package xyz.dwaslashe.survivalcore.utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.neznamy.tab.api.chat.rgb.RGBUtils;
 import net.md_5.bungee.api.ChatColor;
+import net.minecraft.network.chat.IChatBaseComponent;
+import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R2.util.CraftChatMessage;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.configs.PluginConfig;
+import xyz.dwaslashe.survivalcore.helpers.IconHelper;
+import xyz.dwaslashe.survivalcore.model.User;
 import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +29,7 @@ public class Api {
 
     public static String fixColor(String message) {
         RGBUtils rgbUtils = RGBUtils.getInstance();
-        return message == null ? "" : ChatColor.translateAlternateColorCodes('&', rgbUtils.convertToBukkitFormat(message, true))
+        return message == null ? "" : ChatColor.translateAlternateColorCodes('&', rgbUtils.convertToBukkitFormat(IconHelper.transformIcons(message, PluginConfig.IMAGES_CHAT), true))
                 .replace(">>", "»")
                 .replace("<<", "«");
     }
@@ -47,7 +54,9 @@ public class Api {
     }
 
     public static void sendMessage(CommandSender sender, String message) {
-        sender.sendMessage(PlaceholderAPI.setPlaceholders((OfflinePlayer) sender, fixColor(message)));
+        if(sender instanceof Player player){
+            player.sendMessage(PlaceholderAPI.setPlaceholders(player, fixColor(message)));
+        } else sender.sendMessage(fixColor(message));
     }
 
     public static void sendLog(String message) {
@@ -60,8 +69,21 @@ public class Api {
         });
     }
 
+    public static void sendDeathNotify(String message){
+        Main.getPlugin().getUserCache().getOnlineUserMap().forEach((name, user) -> {
+            if(user.death()) sendMessage(((UserImpl)user).getPlayer(), message);
+        });
+    }
+
+    public static boolean sendDeathMessage(Player player){
+        User user = Main.getPlugin().getUserCache().getOnlineUserMap().get(player.getName());
+        return user != null && user.death();
+    }
+
+
     public static void sendBroadcast(String message) {
-        Bukkit.getOnlinePlayers().forEach(player -> sendMessage(player, fixColor(message)));
+        String fixedMessage = fixColor(message);
+        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(fixedMessage));
     }
 
     public static int getPing(Player p) {
@@ -101,12 +123,27 @@ public class Api {
         }
     }
 
-    public static boolean inventoryFull(Player player) {
-        if (player.getInventory().contains(Material.AIR)) {
-        } else {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cTwój ekwipunek jest pełny! Zwolnij mniejsce!");
+    public static void sendActionBar(Player player, String message) {
+        IChatBaseComponent iChatBaseComponent = CraftChatMessage.fromString(fixColor(message))[0];
+        ClientboundSystemChatPacket clientboundSystemChatPacket;
+        try {
+            Class<?> clazz = Class.forName(ClientboundSystemChatPacket.class.getName());
+            Constructor<?> constructor = clazz.getConstructor(IChatBaseComponent.class, int.class);
+
+            clientboundSystemChatPacket = (ClientboundSystemChatPacket) constructor.newInstance(iChatBaseComponent, 2);
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            clientboundSystemChatPacket = new ClientboundSystemChatPacket(iChatBaseComponent, true);
         }
-        return false;
+        ((CraftPlayer) player).getHandle().b.a(clientboundSystemChatPacket);
+    }
+
+    public static void giveOrDrop(Player player, ItemStack itemStack) {
+        if (itemStack != null) {
+            player.getInventory().addItem(new ItemStack[]{itemStack}).values().forEach((i) -> {
+                player.getWorld().dropItem(player.getLocation(), i);
+            });
+            player.updateInventory();
+        }
     }
 
 }

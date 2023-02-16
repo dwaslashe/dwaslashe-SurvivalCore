@@ -4,12 +4,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import xyz.dwaslashe.survivalcore.Main;
@@ -49,6 +51,21 @@ public class PlayerCombatListener implements Listener {
             logout.create();
             logout_damager.create();
         }
+
+        if (e.getDamager() instanceof Projectile projectile && projectile.getShooter() instanceof Player) {
+            if (e.getDamager() instanceof Player) {
+                Logout logout = Logout.get(((Player) e.getDamager()).getPlayer());
+                Logout logout_damager = Logout.get(((Player) e.getEntity()).getPlayer());
+                logout.setTime("20s");
+                logout_damager.setTime("20s");
+                if (e.getDamager() instanceof Player) {
+                    logout.setAttacker(((Player) e.getDamager()).getPlayer());
+                    logout_damager.setAttacker(((Player) e.getDamager()).getPlayer());
+                }
+                logout.create();
+                logout_damager.create();
+            }
+        }
     }
 
     @EventHandler
@@ -63,6 +80,28 @@ public class PlayerCombatListener implements Listener {
                     break;
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onGliding(EntityToggleGlideEvent e){
+        Player player = (Player) e.getEntity();
+        Logout logout = Logout.get(player);
+
+        if (e.isGliding()) {
+            if (logout.getTime() > System.currentTimeMillis()) {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz latać podczas walki!");
+                e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onCommand(PlayerPortalEvent e) {
+        Logout logout = Logout.get(e.getPlayer());
+        if (logout.getTime() > System.currentTimeMillis()) {
+            Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wejść do portalu podczas walki!");
+            e.setCancelled(true);
         }
     }
 

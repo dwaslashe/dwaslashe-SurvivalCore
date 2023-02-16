@@ -21,6 +21,8 @@ public interface CustomItem {
 
     ItemStack item();
 
+    List<PotionEffect> whenInSecondHand();
+
     List<PotionEffect> whenWear();
 
     List<PotionEffect> whenInHand();

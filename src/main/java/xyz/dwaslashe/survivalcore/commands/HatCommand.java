@@ -29,7 +29,7 @@ public class HatCommand extends Command {
         if (CooldownManager.checkDelay(p) == true) {
             return;
         }
-        CooldownManager.addColdown(p, "1m");
+        CooldownManager.addColdown(p, "30s");
         ItemStack hand = p.getItemInHand();
         ItemStack head = p.getInventory().getHelmet();
         Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie założyłeś item na głowe");

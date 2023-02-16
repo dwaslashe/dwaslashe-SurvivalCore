@@ -12,7 +12,7 @@ import java.util.List;
 
 public class AbyssCommand extends Command {
     public AbyssCommand() {
-        super("abyss", "/otchlan", "", "otchlan", "otchłań");
+        super("otchlan", "/otchlan", "", "otchłań");
         setOnlyPlayer(true);
     }
 

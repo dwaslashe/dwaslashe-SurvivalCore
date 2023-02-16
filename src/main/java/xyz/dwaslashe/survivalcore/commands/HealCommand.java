@@ -32,7 +32,8 @@ public class HealCommand extends Command {
                 return;
             }
             CooldownManager.addColdown(p, "10m");
-            p.setHealth(20.0D);
+            double health = p.getMaxHealth();
+            p.setHealth(health);
             p.setFoodLevel(20);
             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie się &euleczyłeś");
         } else if (args.length == 1) {
@@ -45,9 +46,10 @@ public class HealCommand extends Command {
                 offlinePlayer();
                 return;
             } else {
-                p2.setHealth(20.0D);
+                double health = p2.getMaxHealth();
+                p2.setHealth(health);
                 p2.setFoodLevel(20);
-                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś &euleczyłeś &aprzez " + p.getName());
+                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś &euleczony &aprzez " + p.getName());
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie &euleczyłeś &agracza " + p2.getName());
             }
         }

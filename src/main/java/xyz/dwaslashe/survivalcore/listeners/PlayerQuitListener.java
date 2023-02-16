@@ -1,6 +1,7 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,11 +24,12 @@ public class PlayerQuitListener implements Listener {
         if (LocYaw.get(uuid) != null) {
             if ((double) p.getLocation().getYaw() == LocYaw.get(uuid)) {
                 p.sendTitle(Api.fixColor("&#F23D07&lANTY-AFK"), Api.fixColor("&8>> &fe, śpisz? &8<<"));
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_SNARE, 10, 10);
                 Bukkit.getScheduler().runTaskLater(Main.getPlugin(), new Runnable() {
                     @Override
                     public void run() {
-                        if ((double) p.getLocation().getYaw() == LocYaw.get(uuid)) {
-                            Api.sendPlayerToServer(p, "lobbyafk");
+                        if (((double) p.getLocation().getYaw()) == LocYaw.get(uuid)) {
+                            Api.sendPlayerToServer(p, "LOBBYAFK");
                         }
                     }
                 }, 20 * 60);

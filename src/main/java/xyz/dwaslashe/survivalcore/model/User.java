@@ -6,6 +6,8 @@ public interface User {
 
     boolean abyss();
 
+    boolean death();
+
     boolean autochat();
 
     boolean autobar();

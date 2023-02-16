@@ -9,15 +9,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.dwaslashe.survivalcore.utils.Api;
+import org.bukkit.profile.PlayerProfile;
 
+import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -37,17 +39,12 @@ public class InventoryHelper implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     private void onClick(InventoryClickEvent event){
-        if(event.getCurrentItem() == null) return;
+        if(event.getCurrentItem() == null || event.getClickedInventory().getType().equals(InventoryType.PLAYER)) return;
 
         InventoryHelper inventoryHelper = InventoryHelper.inventoryHelperMap.get(event.getWhoClicked().getName());
-        if(inventoryHelper == null || inventoryHelper.eventConsumer == null) return;
+        if(inventoryHelper == null || inventoryHelper.eventConsumer == null || !inventoryHelper.getInventory().equals(event.getClickedInventory())) return;
 
         inventoryHelper.eventConsumer.accept(event);
-    }
-
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event){
-        inventoryHelperMap.remove(event.getPlayer().getName());
     }
 
     private Inventory inventory;
@@ -110,12 +107,18 @@ public class InventoryHelper implements Listener {
     }
 
     public void editSkullMetaWithProperty(ItemStack itemStack, String texture){
+
         SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        profile.getProperties().put("textures", new Property("textures", texture));
 
-        xyz.dwaslashe.survivalcore.helpers.ReflectionHelper.setFieldValue(meta, "profile", profile);
-
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "");
+        gameProfile.getProperties().put("textures", new Property("textures", texture));
+        try {
+            Field field = meta.getClass().getDeclaredField("profile");
+            field.setAccessible(true);
+            field.set(meta, gameProfile);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         itemStack.setItemMeta(meta);
     }
 
@@ -164,7 +167,7 @@ public class InventoryHelper implements Listener {
         setItemRangeWithIgnoringOtherItems(from, to, itemStack);
     }
 
-    public void setItemRangeWithIgnoringOtherItems(int from, int to, ItemStack itemStack){ // bardziej laguje, ale ignoruje sloty gdzie jest item, o kurwa, zajebiste xd
+    public void setItemRangeWithIgnoringOtherItems(int from, int to, ItemStack itemStack){
         checkBounds(0, from);
         checkBounds(from, to);
         checkBounds(to, inventory.getSize());

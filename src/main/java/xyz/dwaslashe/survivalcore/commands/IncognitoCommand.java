@@ -40,7 +40,7 @@ public class IncognitoCommand extends Command implements Listener {
     private void openGui(int guiID, Player player) {
         //0
         if (guiID == 0) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Incognito", 3);
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "Incognito", 4);
 
             ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
@@ -50,15 +50,15 @@ public class IncognitoCommand extends Command implements Listener {
 
             ItemStack on = inventoryHelper.prepareItemStack(Material.LIME_CONCRETE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&aWłącz incognito"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby włączyć lub zmienić incognito!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#008443Włącz incognito"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby włączyć lub zmienić incognito!")));
                 });
             });
 
             ItemStack off = inventoryHelper.prepareItemStack(Material.RED_CONCRETE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&cWyłącz incognito"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f&nKliknij aby wyłączyćincognito!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FF3131Wyłącz incognito"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby wyłączyć incognito!")));
                 });
             });
 
@@ -66,8 +66,14 @@ public class IncognitoCommand extends Command implements Listener {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjI3NGUxNjA1MjMzNDI1MDkxZjdiMjgzN2E0YmI4ZjRjODA0ZGFjODBkYjllNGY1OTlmNTM1YzAzYWZhYjBmOCJ9fX0=");
                 inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&eInformacje"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &7Twój nick&8: &e" + player.getDisplayName(), " &7Twój prawdziwy nick&8: &e" + player.getName())));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFC42EInformacje"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &#39FF14Twój nick&8: &#FFF01F" + player.getDisplayName(), " &#39FF14Twój prawdziwy nick&8: &#FFF01F" + player.getName())));
+                });
+            });
+
+            ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
+                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                    itemMeta.setDisplayName(Api.fixColor("&#FF3131Zamknij"));
                 });
             });
 
@@ -76,15 +82,19 @@ public class IncognitoCommand extends Command implements Listener {
                 if (e.getSlot() == 11) {
                     player.getOpenInventory().close();
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś &eincognito!");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " " + generate(10) + " nickonly");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &7" + generate(10) + " nickonly");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set prefix.1000.");
                 } else if (e.getSlot() == 15) {
                     player.closeInventory();
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPomyślnie wyłączyłeś &eincognito!");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " " + player.getName() + " nickonly");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &r" + player.getName());
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission unset prefix.1000.");
+                } else if (e.getSlot() == 31) {
+                    player.closeInventory();
                 }
             });
 
-            inventoryHelper.setItemRange(0, 10, glass_black);
+            inventoryHelper.setItemRange(0, 36, glass_black);
             inventoryHelper.setItem(10, glass_black);
             inventoryHelper.setItem(11, on);
             inventoryHelper.setItem(12, glass_black);
@@ -92,7 +102,7 @@ public class IncognitoCommand extends Command implements Listener {
             inventoryHelper.setItem(14, glass_black);
             inventoryHelper.setItem(15, off);
             inventoryHelper.setItem(16, glass_black);
-            inventoryHelper.setItemRange(17, 27, glass_black);
+            inventoryHelper.setItem(31, back);
 
             inventoryHelper.open(player);
         }

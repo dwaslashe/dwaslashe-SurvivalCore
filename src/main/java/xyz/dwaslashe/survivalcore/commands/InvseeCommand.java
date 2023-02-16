@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class InvseeComand extends Command {
-    public InvseeComand() {
+public class InvseeCommand extends Command {
+    public InvseeCommand() {
         super("invsee", "/invsee <nick> <armor>", "");
         setPermission("core.command.invsee");
         setOnlyPlayer(true);
@@ -32,7 +32,9 @@ public class InvseeComand extends Command {
     public void commandExecute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         Player p2 = Bukkit.getPlayer(args[0]);
-        if (args.length == 1) {
+        if (args.length == 0 ) {
+            wrongUsage();
+        } else if (args.length == 1) {
             if (p2 == null) {
                 offlinePlayer();
                 return;
@@ -53,6 +55,6 @@ public class InvseeComand extends Command {
                 p.openInventory(inv);
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aOtworzyłeś armor gracza &e" + p2.getName());
             }
-        } else wrongUsage();
+        }
     }
 }

@@ -41,25 +41,25 @@ public class Abyss {
         if (AbyssTask.abyssList.size() > page + 1) {
             this.inventory.setItem(inventory.getSize() - 1, new ItemApi(Material.PLAYER_HEAD, 1, (short) 3)
                     .setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19")
-                    .setName("&eNastepna strona")
-                    .setLore(List.of("", " &f&nKliknij aby przejść na nastepną strone!"))
+                    .setName("&#39FF14Nastepna strona")
+                    .setLore(List.of("", " &#FBFD8C&nKliknij aby przejść na nastepną strone!"))
                     .getItemStack());
         } else {
             this.inventory.setItem(inventory.getSize() - 1, new ItemApi(Material.PLAYER_HEAD, 1, (short) 3)
                     .setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzZkMWZhYmRmM2UzNDI2NzFiZDlmOTVmNjg3ZmUyNjNmNDM5ZGRjMmYxYzllYThmZjE1YjEzZjFlN2U0OGI5In19fQ==")
-                    .setName("&cBrak kolejnej strony")
+                    .setName("&#FF3131Brak kolejnej strony")
                     .getItemStack());
         }
         if (page > 0) {
             this.inventory.setItem(inventory.getSize() - 2, new ItemApi(Material.PLAYER_HEAD, 1, (short) 3)
                     .setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==")
-                    .setName("&ePoprzednia strona")
-                    .setLore(List.of("", " &f&nKliknij aby przejść na poprzednią strone!"))
+                    .setName("&#39FF14Poprzednia strona")
+                    .setLore(List.of("", " &#FBFD8C&nKliknij aby przejść na poprzednią strone!"))
                     .getItemStack());
         } else {
             this.inventory.setItem(inventory.getSize() - 2, new ItemApi(Material.PLAYER_HEAD, 1, (short) 3)
                     .setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzZkMWZhYmRmM2UzNDI2NzFiZDlmOTVmNjg3ZmUyNjNmNDM5ZGRjMmYxYzllYThmZjE1YjEzZjFlN2U0OGI5In19fQ==")
-                    .setName("&cBrak poprzedniej strony")
+                    .setName("&#FF3131Brak poprzedniej strony")
                     .getItemStack());
         }
     }

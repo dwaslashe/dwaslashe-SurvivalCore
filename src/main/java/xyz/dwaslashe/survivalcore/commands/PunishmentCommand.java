@@ -72,7 +72,7 @@ public class PunishmentCommand extends Command implements Listener {
                     itemMeta.setDisplayName(" ");
                 });
             });
-            ItemStack barrier = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> itemMeta.setDisplayName(Api.fixColor("&cZamknij"))));
+            ItemStack barrier = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> itemMeta.setDisplayName(Api.fixColor("&#FF3131Zamknij"))));
 
             ItemStack player_info = inventoryHelper.prepareItemStack(Material.LEGACY_SKULL_ITEM, itemStack -> {
                 itemStack.setDurability((short) 3);
@@ -86,7 +86,7 @@ public class PunishmentCommand extends Command implements Listener {
             ItemStack player_history = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> inventoryHelper
                     .editMetaForItemStack(itemStack, itemMeta -> {
                         itemMeta.setDisplayName(Api.fixColor("&eHistoria"));
-                        itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &f&nKliknij lewym aby zobaczyc historie gracza!")));
+                        itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &#FBFD8C&nKliknij lewym aby zobaczyc historie gracza!")));
                     }));
 
             ItemStack ban = inventoryHelper.prepareItemStack(Material.LEGACY_SKULL_ITEM, itemStack -> {
@@ -94,7 +94,7 @@ public class PunishmentCommand extends Command implements Listener {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTZiMWQ0OTQ3NzYzOTE3ODE0YWUxNjMyYjgyMDY5NjA5ODkyNzg5NWFhYWYxMjRjZDI5ZWIzNTg1NmFhYTViOSJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&cBan"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.ban") ? "&aPomyślnie posiadasz permisje do tej funkcji" : "&cPomyślnie posiadasz permisje do tej funkcji", "", " &f&nKliknij aby przejść dalej!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.ban") ? "&aPomyślnie posiadasz permisje do tej funkcji" : "&cPomyślnie posiadasz permisje do tej funkcji", "", " &#FBFD8C&nKliknij aby przejść dalej!")));
                 });
             });
             ItemStack kick = inventoryHelper.prepareItemStack(Material.LEGACY_SKULL_ITEM, itemStack -> {
@@ -102,7 +102,7 @@ public class PunishmentCommand extends Command implements Listener {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTZiMWQ0OTQ3NzYzOTE3ODE0YWUxNjMyYjgyMDY5NjA5ODkyNzg5NWFhYWYxMjRjZDI5ZWIzNTg1NmFhYTViOSJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&cKick"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.kick") ? "&aPomyślnie posiadasz permisje do tej funkcji" : "&cPomyślnie posiadasz permisje do tej funkcji", "", " &f&nKliknij aby przejść dalej!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.kick") ? "&aPomyślnie posiadasz permisje do tej funkcji" : "&cPomyślnie posiadasz permisje do tej funkcji", "", " &#FBFD8C&nKliknij aby przejść dalej!")));
                 });
             });
             ItemStack mute = inventoryHelper.prepareItemStack(Material.LEGACY_SKULL_ITEM, itemStack -> {
@@ -110,7 +110,7 @@ public class PunishmentCommand extends Command implements Listener {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTZiMWQ0OTQ3NzYzOTE3ODE0YWUxNjMyYjgyMDY5NjA5ODkyNzg5NWFhYWYxMjRjZDI5ZWIzNTg1NmFhYTViOSJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&cMute"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.mute") ? "&aPomyślnie posiadasz permisje do tej funkcji" : "&cPomyślnie posiadasz permisje do tej funkcji", "", " &f&nKliknij aby przejść dalej!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.mute") ? "&aPomyślnie posiadasz permisje do tej funkcji" : "&cPomyślnie posiadasz permisje do tej funkcji", "", " &#FBFD8C&nKliknij aby przejść dalej!")));
                 });
             });
 
@@ -199,7 +199,7 @@ public class PunishmentCommand extends Command implements Listener {
                     inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
                         itemMeta.setOwner(offlinePlayer.getName());
                         itemMeta.setDisplayName(Api.fixColor("&e" + reason));
-                        itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &f&nKliknij aby przejsc dalej!")));
+                        itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby przejsc dalej!")));
                     });
                 });
 
@@ -294,7 +294,7 @@ public class PunishmentCommand extends Command implements Listener {
                     inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
                         itemMeta.setOwner(offlinePlayer.getName());
                         itemMeta.setDisplayName(Api.fixColor("&e" + reason));
-                        itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &f&nKliknij aby przejsc dalej!")));
+                        itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby przejsc dalej!")));
                     });
                 });
 
@@ -365,7 +365,7 @@ public class PunishmentCommand extends Command implements Listener {
                     inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
                         itemMeta.setOwner(offlinePlayer.getName());
                         itemMeta.setDisplayName(Api.fixColor("&e" + reason));
-                        itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &f&nKliknij aby przejsc dalej!")));
+                        itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby przejsc dalej!")));
                     });
                 });
 
@@ -457,7 +457,7 @@ public class PunishmentCommand extends Command implements Listener {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmZlN2Q0NjMyMjQ3N2Q2MWQ0MWMxODc4OGY1YzFhZmQyNGVkNTI2ZWIzZWQ4NDEyN2YyMTJlMjUxNWIxODgzIn19fQ==");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&e" + time));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &f&nKliknij aby zbanować gracza!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby zbanować gracza!")));
                 });
             });
 
@@ -543,7 +543,7 @@ public class PunishmentCommand extends Command implements Listener {
         });
         ItemStack anvil = inventoryHelper.prepareItemStack(Material.ANVIL, itemStack -> {
             inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &f&nKliknij aby dodać niestandardowy czas!")));
+                itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby dodać niestandardowy czas!")));
                 itemMeta.setDisplayName(Api.fixColor("&bNiestandardowy czas"));
             });
         });
@@ -571,7 +571,7 @@ public class PunishmentCommand extends Command implements Listener {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmZlN2Q0NjMyMjQ3N2Q2MWQ0MWMxODc4OGY1YzFhZmQyNGVkNTI2ZWIzZWQ4NDEyN2YyMTJlMjUxNWIxODgzIn19fQ==");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&e" + time));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &f&nKliknij aby wyciszyć gracza!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby wyciszyć gracza!")));
                 });
             });
 
@@ -707,7 +707,7 @@ public class PunishmentCommand extends Command implements Listener {
                             " &7Gracz &a" + offlinePlayer.getName(),
                             " &7Aktualny czas wyciszenia&8: &anic",
                             "",
-                            " &f&nKliknij aby wyciszyć gracza"
+                            " &#FBFD8C&nKliknij aby wyciszyć gracza"
                     )
             ));
         }, new ItemStack(Material.ANVIL));
@@ -743,7 +743,7 @@ public class PunishmentCommand extends Command implements Listener {
                                     " &7Gracz &a" + offlinePlayer.getName(),
                                     " &7Aktualny czas wyciszenia&8: &a" + (time.get() < 0 ? "nic" : getTime(time.get())),
                                     "",
-                                    " &f&nKliknij aby wyciszyć gracza"
+                                    " &#FBFD8C&nKliknij aby wyciszyć gracza"
                             )
                     ));
                 }, new ItemStack(Material.ANVIL));
@@ -769,7 +769,7 @@ public class PunishmentCommand extends Command implements Listener {
                                     " &7Gracz &a" + offlinePlayer.getName(),
                                     " &7Aktualny czas wyciszenia&8: &a" + (time.get() < 0 ? "nic" : getTime(time.get())),
                                     "",
-                                    " &f&nKliknij aby wyciszyć gracza"
+                                    " &#FBFD8C&nKliknij aby wyciszyć gracza"
                             )
                     ));
                 }, new ItemStack(Material.ANVIL));
