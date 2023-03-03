@@ -7,8 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import xyz.dwaslashe.survivalcore.Main;
-import xyz.dwaslashe.survivalcore.model.User;
-import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
+import xyz.dwaslashe.survivalcore.tasks.PlayerTask;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.HashMap;
@@ -47,7 +46,7 @@ public class PlayerQuitListener implements Listener {
         Player p = e.getPlayer();
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(), () -> {
             LocYaw.remove(p.getUniqueId());
-            Main.getPlugin().getUserCache().getOnline(p.getName()).ifPresent(user -> user.setOnline(false));
         }, 5);
+        PlayerTask.getBarMap().remove(p.getUniqueId());
     }
 }

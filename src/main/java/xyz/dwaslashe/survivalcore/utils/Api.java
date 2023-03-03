@@ -2,6 +2,7 @@ package xyz.dwaslashe.survivalcore.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.neznamy.tab.api.chat.rgb.RGBUtils;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
@@ -12,10 +13,10 @@ import org.bukkit.craftbukkit.v1_19_R2.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.configs.PluginConfig;
 import xyz.dwaslashe.survivalcore.helpers.IconHelper;
-import xyz.dwaslashe.survivalcore.model.User;
-import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
+import xyz.dwaslashe.survivalcore.objects.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -59,27 +60,35 @@ public class Api {
         } else sender.sendMessage(fixColor(message));
     }
 
+    public static void sendMessage(CommandSender sender, Component component) {
+        if(sender instanceof Player player) {
+            User user = UserCache.getInstance().compute(player.getUniqueId());
+            if (user.getChat() == 0) {
+                Main.getPlugin().getAudience().sender(player).sendMessage(component);
+            }
+        }
+    }
+
+
     public static void sendLog(String message) {
         Bukkit.getConsoleSender().sendMessage(fixColor(message));
     }
 
     public static void sendAbyssNotify(String message){
-        Main.getPlugin().getUserCache().getOnlineUserMap().forEach((name, user) -> {
-            if(user.abyss()) sendMessage(((UserImpl)user).getPlayer(), message);
-        });
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            User user = UserCache.getInstance().compute(all.getUniqueId());
+            if (user.getAbyss() == 0) {
+                sendMessage(all, message);
+            }
+        }
     }
 
-    public static void sendDeathNotify(String message){
-        Main.getPlugin().getUserCache().getOnlineUserMap().forEach((name, user) -> {
-            if(user.death()) sendMessage(((UserImpl)user).getPlayer(), message);
-        });
+    public static void sendDeathNotify(Player player, String message){
+        User user = UserCache.getInstance().compute(player.getUniqueId());
+        if (user.getDeaths() == 0) {
+            sendMessage(player, message);
+        }
     }
-
-    public static boolean sendDeathMessage(Player player){
-        User user = Main.getPlugin().getUserCache().getOnlineUserMap().get(player.getName());
-        return user != null && user.death();
-    }
-
 
     public static void sendBroadcast(String message) {
         String fixedMessage = fixColor(message);

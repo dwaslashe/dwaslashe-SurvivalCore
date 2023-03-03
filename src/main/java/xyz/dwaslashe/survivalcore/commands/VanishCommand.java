@@ -1,7 +1,5 @@
 package xyz.dwaslashe.survivalcore.commands;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -15,9 +13,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.dwaslashe.survivalcore.Main;
@@ -58,10 +54,10 @@ public class VanishCommand extends Command implements Listener {
                 if(player != null){
                     if(args[0].equalsIgnoreCase("on")){
                         vanishObject.setEnable(true);
-                        Api.sendActionBar(player, "&8>> &aVanish został włączony &8<<");
+                        Api.sendActionBar(player, "&8>> &#39FF14Vanish został włączony &8<<");
                     } else if(args[0].equalsIgnoreCase("off")) {
                         vanishObject.setEnable(false);
-                        Api.sendActionBar(player, "&8>> &cVanish został wyłączony &8<<");
+                        Api.sendActionBar(player, "&8>> &#f00c0cVanish został wyłączony &8<<");
                     } if (!player.hasPermission("core.command.vanish.more")) {
                         player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.vanish.more&8) &8<<"));
                         return;

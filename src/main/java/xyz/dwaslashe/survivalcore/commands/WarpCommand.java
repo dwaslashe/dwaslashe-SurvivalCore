@@ -5,10 +5,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import xyz.dwaslashe.survivalcore.Main;
-import xyz.dwaslashe.survivalcore.cache.TestWarpCache;
+import xyz.dwaslashe.survivalcore.cache.WarpCache;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.managers.TeleportManager;
-import xyz.dwaslashe.survivalcore.objects.TestWarp;
+import xyz.dwaslashe.survivalcore.objects.Warp;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class WarpCommand extends Command implements Listener {
     @Override
     public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
         if(args.length == 1){
-            return Api.startsWith(new ArrayList<>(TestWarpCache.getInstance().getWarpMap().keySet()), args[0]);
+            return Api.startsWith(new ArrayList<>(WarpCache.getInstance().getWarpMap().keySet()), args[0]);
         }
         return null;
     }
@@ -32,9 +32,9 @@ public class WarpCommand extends Command implements Listener {
     public void commandExecute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length == 0) {
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aLista dostępnych warpów &e" + String.join(", ", new ArrayList<>(TestWarpCache.getInstance().getWarpMap().keySet())));
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aLista dostępnych warpów &e" + String.join(", ", new ArrayList<>(WarpCache.getInstance().getWarpMap().keySet())));
         } else if (args.length == 1) {
-            TestWarp warp = TestWarpCache.getInstance().get(args[0]);
+            Warp warp = WarpCache.getInstance().get(args[0]);
             if(warp == null){
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie ma takiego warpa!");
                 return;
@@ -50,8 +50,8 @@ public class WarpCommand extends Command implements Listener {
             }
 
         } else if (args.length == 2 && args[0].equalsIgnoreCase("set") && sender.hasPermission("core.command.admin")) {
-            TestWarpCache cache = TestWarpCache.getInstance();
-            TestWarp warp = cache.get(args[1]);
+            WarpCache cache = WarpCache.getInstance();
+            Warp warp = cache.get(args[1]);
             if(warp == null){
                 warp = cache.compute(args[1]);
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aWarp &e" + warp.getName() + " &azostał pomyślnie stworzony!");
@@ -60,7 +60,7 @@ public class WarpCommand extends Command implements Listener {
             }
             warp.setLocation(p.getLocation());
         } else if (args.length == 2 && args[0].equalsIgnoreCase("remove") && sender.hasPermission("core.command.admin")) {
-            TestWarpCache.getInstance().getWarpMap().remove(args[1]);
+            WarpCache.getInstance().getWarpMap().remove(args[1]);
             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie usunięto warp!");
         }
     }

@@ -1,6 +1,5 @@
 package xyz.dwaslashe.survivalcore.helpers;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -9,7 +8,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.dwaslashe.survivalcore.utils.Api;
-import xyz.dwaslashe.survivalcore.utils.ItemApi;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,7 +46,7 @@ public class ItemHelper extends ItemStack {
         return this;
     }
 
-    public ItemHelper setLore(List<String> lore){
+    public ItemHelper setListLore(List<String> lore){
         ItemMeta itemMeta = getItemMeta();
         itemMeta.setLore(Api.fixColor(lore));
         setItemMeta(itemMeta);

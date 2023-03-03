@@ -1,6 +1,6 @@
 package xyz.dwaslashe.survivalcore.objects;
 
-import xyz.dwaslashe.survivalcore.cache.TestUserCache;
+import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.database.db.api.stereotype.DataObject;
 import xyz.dwaslashe.survivalcore.database.db.api.stereotype.PrimaryKey;
 import xyz.dwaslashe.survivalcore.database.db.api.stereotype.Value;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 @DataObject(table = "users")
-public class TestUser {
+public class User {
 
     @PrimaryKey(value = @Value(key = "uniqueID", type = "VARCHAR(64)"))
     private final UUID uuid;
@@ -36,11 +36,14 @@ public class TestUser {
     @Value(key = "discordchat", type = "INT(16)")
     private int discordchat;
 
-    public TestUser(UUID uuid) {
+    @Value(key = "chat", type = "INT(16)")
+    private int chat;
+
+    public User(UUID uuid) {
         this.uuid = uuid;
     }
 
-    public TestUser(ResultSet resultSet){
+    public User(ResultSet resultSet){
         try {
             this.uuid = UUID.fromString(resultSet.getString("uniqueID"));
             this.nickName = resultSet.getString("nickName");
@@ -50,6 +53,7 @@ public class TestUser {
             this.autobossbar = resultSet.getInt("autobossbar");
             this.deaths = resultSet.getInt("deaths");
             this.discordchat = resultSet.getInt("discordchat");
+            this.chat = resultSet.getInt("chat");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -67,7 +71,7 @@ public class TestUser {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-        TestUserCache.getInstance().getToUpdate().add(this);
+        UserCache.getInstance().getToUpdate().add(this);
     }
 
     //Discord Account ID
@@ -77,7 +81,7 @@ public class TestUser {
 
     public void setDiscordIdAccount(String discordIdAccount) {
         this.discordIdAccount = discordIdAccount;
-        TestUserCache.getInstance().getToUpdate().add(this);
+        UserCache.getInstance().getToUpdate().add(this);
     }
 
     //Abyss
@@ -87,7 +91,7 @@ public class TestUser {
 
     public void setAbyss(int abyss) {
         this.abyss = abyss;
-        TestUserCache.getInstance().getToUpdate().add(this);
+        UserCache.getInstance().getToUpdate().add(this);
     }
 
     //AutoMsg
@@ -97,7 +101,7 @@ public class TestUser {
 
     public void setAutomsg(int automsg) {
         this.automsg = automsg;
-        TestUserCache.getInstance().getToUpdate().add(this);
+        UserCache.getInstance().getToUpdate().add(this);
     }
 
     //AutoBossBar
@@ -107,7 +111,7 @@ public class TestUser {
 
     public void setAutobossbar(int autobossbar) {
         this.autobossbar = autobossbar;
-        TestUserCache.getInstance().getToUpdate().add(this);
+        UserCache.getInstance().getToUpdate().add(this);
     }
 
     //Deaths
@@ -117,7 +121,7 @@ public class TestUser {
 
     public void setDeaths(int deaths) {
         this.deaths = deaths;
-        TestUserCache.getInstance().getToUpdate().add(this);
+        UserCache.getInstance().getToUpdate().add(this);
     }
 
     //DiscordChat
@@ -127,6 +131,16 @@ public class TestUser {
 
     public void setDiscordchat(int discordchat) {
         this.discordchat = discordchat;
-        TestUserCache.getInstance().getToUpdate().add(this);
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    //Chat
+    public int getChat() {
+        return chat;
+    }
+
+    public void setChat(int chat) {
+        this.chat = chat;
+        UserCache.getInstance().getToUpdate().add(this);
     }
 }

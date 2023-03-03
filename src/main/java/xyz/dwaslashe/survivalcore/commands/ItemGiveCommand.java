@@ -1,9 +1,10 @@
 package xyz.dwaslashe.survivalcore.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
-import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.Arrays;
@@ -28,6 +29,8 @@ public class ItemGiveCommand extends Command {
         if(args.length == 0){
             wrongUsage();
         } else if(args.length == 2){
+            Player p2 = Bukkit.getPlayer(args[1]);
+
             Integer id;
             try {
                 id = Integer.parseInt(args[0]);
@@ -35,12 +38,10 @@ public class ItemGiveCommand extends Command {
                 wrongUsage();
                 return;
             }
+
             Main.getPlugin().getItemCache().getItem(id).ifPresentOrElse(customItem -> {
-                Main.getPlugin().getUserCache().getOnline(args[1]).ifPresentOrElse(user -> {
-                    customItem.give(((UserImpl)user).getPlayer());
-                    //((UserImpl) user).getPlayer().sendMessage("Otrzymales przedmiot o id " + customItem.id());
-                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dano użytkownikowi &e" + user.name() + " &aprzedmiot o id &e" + customItem.id());
-                }, () -> offlinePlayer());
+                customItem.give(p2);
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dano użytkownikowi &e" + p2.getName() + " &aprzedmiot o id &e" + customItem.id());
             }, () -> Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cItem o tym &eid &cnie istnieje"));
         } else sender.sendMessage(getUsage());
     }

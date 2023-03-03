@@ -1,6 +1,7 @@
 package xyz.dwaslashe.survivalcore;
 
 import org.bukkit.Location;
+import org.bukkit.enchantments.Enchantment;
 import xyz.dwaslashe.survivalcore.database.db.DatabaseConfiguration;
 import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
@@ -13,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
@@ -36,9 +36,10 @@ import xyz.dwaslashe.survivalcore.helpers.ReflectionHelper;
 import xyz.dwaslashe.survivalcore.listeners.*;
 import xyz.dwaslashe.survivalcore.model.CustomItem;
 import xyz.dwaslashe.survivalcore.model.impl.CustomItemImpl;
+import xyz.dwaslashe.survivalcore.objects.UserTree;
 import xyz.dwaslashe.survivalcore.parsers.LocationParser;
-import xyz.dwaslashe.survivalcore.objects.TestUser;
-import xyz.dwaslashe.survivalcore.objects.TestWarp;
+import xyz.dwaslashe.survivalcore.objects.User;
+import xyz.dwaslashe.survivalcore.objects.Warp;
 import xyz.dwaslashe.survivalcore.placeholder.PlaceholderHooks;
 import xyz.dwaslashe.survivalcore.tasks.*;
 import xyz.dwaslashe.survivalcore.utils.Api;
@@ -91,7 +92,6 @@ public class Main extends JavaPlugin {
     public static PluginRank pluginRank;
 
     //Others
-    private final UserCache userCache = new UserCache();
     private final ItemCache itemCache = new ItemCache();
 
     public static Main plugin;
@@ -145,21 +145,7 @@ public class Main extends JavaPlugin {
             it.load(true);
         });
 
-        //DatabaseConnector databaseConnector = new DatabaseConnector(pluginConfig);
-        //getter = new DatabaseGetter();
-        //getter.setDatabaseConnector(databaseConnector);
-//
-        //getter.createTable("warps", "primary key(name)", Arrays.asList("name varchar(64)", "location varchar(2048)", "permission varchar(64)"));
-//
-        //getter.createTable("discord", "primary key(uuid)", Arrays.asList("uuid varchar(64)", "discordid varchar(64)"));
-//
-        //ResultSet rs = databaseConnector.getConnection().prepareStatement("select * from `warps`").executeQuery();
-        //while (rs.next()) {
-        //    warpCache.addFromSQL(rs);
-        //}
-        //rs.close();
-
-        connector = new DatabaseConnector(new DatabaseConfiguration("212.23.222.83", "pterodactyluser", "zvJ6rzyP)tNjKOhB", "survival_test", 3306, true));
+        connector = new DatabaseConnector(new DatabaseConfiguration(pluginConfig.getDatabase().getHost(), pluginConfig.getDatabase().getUsername(), pluginConfig.getDatabase().getPassword(), pluginConfig.getDatabase().getTable(), pluginConfig.getDatabase().getPort(), pluginConfig.getDatabase().isSsl()));
 
         pluginConfig.load();
         pluginCommands.load();
@@ -178,16 +164,16 @@ public class Main extends JavaPlugin {
         registerPlaceholder();
 
         if (pluginConfig.getRecipes().isWeed()) {
-            Bukkit.getServer().addRecipe((Recipe) OthersListener.getRecipeWeed());
+            Bukkit.getServer().addRecipe(OthersListener.getRecipeWeed());
         }
         if (pluginConfig.getRecipes().isKokaina()) {
-            Bukkit.getServer().addRecipe((Recipe) OthersListener.getRecipeKokaina());
+            Bukkit.getServer().addRecipe(OthersListener.getRecipeKokaina());
         }
         if (pluginConfig.getRecipes().isMagnet()) {
-            Bukkit.getServer().addRecipe((Recipe) OthersListener.getRecipeMagnet());
+            Bukkit.getServer().addRecipe(OthersListener.getRecipeMagnet());
         }
         if (pluginConfig.getRecipes().isEnchanted_apple()) {
-            Bukkit.getServer().addRecipe((Recipe) OthersListener.getRecipeEnchantedApple());
+            Bukkit.getServer().addRecipe(OthersListener.getRecipeEnchantedApple());
         }
 
         if (pluginConfig.getEvents().isAntyafk()) {
@@ -204,23 +190,32 @@ public class Main extends JavaPlugin {
 
         connector.getSerializerMap().put(Location.class, new LocationParser());
 
-        connector.registerDataObjectToScan(TestUser.class);
-        connector.getScanner(TestUser.class).ifPresent(UserDataObjectScanner -> UserDataObjectScanner.load(TestUserCache.getInstance()));
+        connector.registerDataObjectToScan(User.class);
+        connector.getScanner(User.class).ifPresent(UserDataObjectScanner -> UserDataObjectScanner.load(UserCache.getInstance()));
 
-        connector.registerDataObjectToScan(TestWarp.class);
-        connector.getScanner(TestWarp.class).ifPresent(WarpDataObjectScanner -> WarpDataObjectScanner.load(TestWarpCache.getInstance()));
+        connector.registerDataObjectToScan(UserTree.class);
+        connector.getScanner(UserTree.class).ifPresent(UserDataObjectScanner -> UserDataObjectScanner.load(UserTreeCache.getInstance()));
+
+        connector.registerDataObjectToScan(Warp.class);
+        connector.getScanner(Warp.class).ifPresent(WarpDataObjectScanner -> WarpDataObjectScanner.load(WarpCache.getInstance()));
 
         getServer().getScheduler().runTaskTimer(this, () -> {
-            Set<TestUser> UserSet = new HashSet<>(TestUserCache.getInstance().getToUpdate());
-            connector.getScanner(TestUser.class).ifPresent(scanner -> {
+            Set<User> UserSet = new HashSet<>(UserCache.getInstance().getToUpdate());
+            connector.getScanner(User.class).ifPresent(scanner -> {
                 UserSet.forEach(scanner::update);
-                TestUserCache.getInstance().getToUpdate().removeAll(UserSet);
+                UserCache.getInstance().getToUpdate().removeAll(UserSet);
             });
 
-            Set<TestWarp> WarpSet = new HashSet<>(TestWarpCache.getInstance().getToUpdate());
-            connector.getScanner(TestWarp.class).ifPresent(scanner -> {
+            Set<UserTree> UserTreeSet = new HashSet<>(UserTreeCache.getInstance().getToUpdate());
+            connector.getScanner(UserTree.class).ifPresent(scanner -> {
+                UserTreeSet.forEach(scanner::update);
+                UserTreeCache.getInstance().getToUpdate().removeAll(UserTreeSet);
+            });
+
+            Set<Warp> WarpSet = new HashSet<>(WarpCache.getInstance().getToUpdate());
+            connector.getScanner(Warp.class).ifPresent(scanner -> {
                 WarpSet.forEach(scanner::update);
-                TestWarpCache.getInstance().getToUpdate().removeAll(WarpSet);
+                WarpCache.getInstance().getToUpdate().removeAll(WarpSet);
             });
 
 
@@ -231,12 +226,16 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         //Database
-        connector.getScanner(TestUser.class).ifPresent(scanner -> {
-            TestUserCache.getInstance().getToUpdate().forEach(scanner::update);
+        connector.getScanner(User.class).ifPresent(scanner -> {
+            UserCache.getInstance().getToUpdate().forEach(scanner::update);
         });
 
-        connector.getScanner(TestWarp.class).ifPresent(scanner -> {
-            TestWarpCache.getInstance().getToUpdate().forEach(scanner::update);
+        connector.getScanner(UserTree.class).ifPresent(scanner -> {
+            UserTreeCache.getInstance().getToUpdate().forEach(scanner::update);
+        });
+
+        connector.getScanner(Warp.class).ifPresent(scanner -> {
+            WarpCache.getInstance().getToUpdate().forEach(scanner::update);
         });
 
         try {
@@ -285,7 +284,6 @@ public class Main extends JavaPlugin {
         CommandManager.register(new SpawnCommand(), pluginConfig.getCommands().isSpawn());
         CommandManager.register(new TntCommand(), pluginConfig.getCommands().isTnt());
         CommandManager.register(new CoreCommand(), true);
-        CommandManager.register(new TestCommand(), true);
         CommandManager.register(new TpaAcceptCommand(), pluginConfig.getCommands().isTeleportplayer());
         CommandManager.register(new TpaCommand(), pluginConfig.getCommands().isTeleportplayer());
         CommandManager.register(new TpaDenyCommand(), pluginConfig.getCommands().isTeleportplayer());
@@ -319,6 +317,7 @@ public class Main extends JavaPlugin {
         CommandManager.register(new IgnoreCommand(), pluginConfig.getCommands().isIgnore());
         CommandManager.register(new UnIgnoreCommand(), pluginConfig.getCommands().isUnignore());
         CommandManager.register(new EnchantCommand(), pluginConfig.getCommands().isEnchant());
+        CommandManager.register(new PhysicsCommand(), pluginConfig.getCommands().isPhysics());
     }
 
     public void loadTasks() {
@@ -354,7 +353,9 @@ public class Main extends JavaPlugin {
     }
 
     public void loadEvents() {
+        registerEvent(new RegionListener(), true);
         registerEvent(new PlayerJoinListener(), true);
+        registerEvent(new BlockBreakListener(), pluginConfig.getCommands().isPhysics());
         registerEvent(new PlayerChatListener(), true);
         registerEvent(new OthersListener(), true);
         registerEvent(new PlayerQuitListener(), true);
@@ -393,6 +394,7 @@ public class Main extends JavaPlugin {
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         itemHelper.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH,10, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 
         CustomItemImpl item = new CustomItemImpl(1, itemHelper);
         item.whenWear().add(new PotionEffect(PotionEffectType.SPEED, 60, 2));
@@ -405,6 +407,8 @@ public class Main extends JavaPlugin {
         itemHelper.setLore(Api.fixColor(Arrays.asList("", " &aItem daje &eSZYBKOŚĆ 3!")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+
         item = new CustomItemImpl(2, itemHelper);
         item.whenWear().add(new PotionEffect(PotionEffectType.SPEED, 60, 2));
         itemCache.register(item);
@@ -416,9 +420,10 @@ public class Main extends JavaPlugin {
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         itemHelper.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH,4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 
         item = new CustomItemImpl(3, itemHelper);
-        item.whenWear().add(new PotionEffect(PotionEffectType.NIGHT_VISION, 80, 2));
+        item.whenWear().add(new PotionEffect(PotionEffectType.NIGHT_VISION, 80, 3));
         itemCache.register(item);
 
         //Kilof Górnika

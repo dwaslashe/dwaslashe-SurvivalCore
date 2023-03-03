@@ -120,7 +120,7 @@ public class PlayerCombatListener implements Listener {
             Player player = event.getPlayer();
             if (logout.getTime() > System.currentTimeMillis()) {
                 for (String unavailableRegion : Main.pluginConfig.getAntylogout().getRegions()) {
-                    if (RegionApi.getRegion(locationTo, unavailableRegion) && logout.getTime() > System.currentTimeMillis()) {
+                    if (RegionApi.isInRegion(locationTo, unavailableRegion) && logout.getTime() > System.currentTimeMillis()) {
                         Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cTen region jest niedostępny podczas walki!");
                         player.setVelocity(event.getTo().toVector().subtract(locationFrom.toVector()).multiply(-3));
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
@@ -146,7 +146,7 @@ public class PlayerCombatListener implements Listener {
             Player player = e.getPlayer();
             if (logout.getTime() > System.currentTimeMillis()) {
                 for (String unavailableRegion : Main.pluginConfig.getAntylogout().getRegions()) {
-                    if (RegionApi.getRegion(locationTo, unavailableRegion) && logout.getTime() > System.currentTimeMillis()) {
+                    if (RegionApi.isInRegion(locationTo, unavailableRegion) && logout.getTime() > System.currentTimeMillis()) {
                         Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cTen region jest niedostępny podczas walki!");
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
                         e.setCancelled(true);

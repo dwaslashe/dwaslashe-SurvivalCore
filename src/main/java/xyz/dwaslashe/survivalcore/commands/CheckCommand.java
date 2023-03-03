@@ -10,9 +10,9 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.dwaslashe.survivalcore.Main;
-import xyz.dwaslashe.survivalcore.cache.TestWarpCache;
+import xyz.dwaslashe.survivalcore.cache.WarpCache;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
-import xyz.dwaslashe.survivalcore.objects.TestWarp;
+import xyz.dwaslashe.survivalcore.objects.Warp;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class CheckCommand extends Command implements Listener {
                         Api.sendMessage(s, "&8|");
                         Api.sendMessage(s, "&8&m                             ");
 
-                        TestWarp warp = TestWarpCache.getInstance().get("sprawdzarka");
+                        Warp warp = WarpCache.getInstance().get("sprawdzarka");
                         if (warp != null) {
                             s.teleport(warp.getLocation());
                         } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma ustawionej lokalizacji &esprawdzarki");

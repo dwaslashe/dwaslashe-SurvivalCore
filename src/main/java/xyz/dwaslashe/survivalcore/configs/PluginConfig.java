@@ -7,6 +7,7 @@ import lombok.Setter;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Getter @Setter
 @Header("#")
@@ -44,7 +45,7 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Webhook extends OkaeriConfig {
 
-        private String webhook_chat = "https://discord.com/api/webhooks/1074325022069506139/oF9UlTePt01X-T0KEVA2t-DaN2NTYyrXFvYFDmcXGXkFEMcKImLWQfsgiUCJaorTOO1v";
+        private String webhook_chat = "https://discord.com/api/webhooks/1073397959481372716/iRDO2TDr0s5hsJYwQevBU1JK1sfpMOZiJzv_X0ov-R6i5lzpgf52H1VhLQ1HGNxp1vlc";
         private boolean enable_chat = true;
 
     }
@@ -102,6 +103,7 @@ public class PluginConfig extends OkaeriConfig {
         private boolean nobedexplose = true;
         private boolean signcolor = true;
         private boolean blockwords = true;
+        private boolean blockregex = true;
         private boolean antyafk = true;
         private boolean antyxraymessage = true;
         private boolean joinbossbarflesh = true;
@@ -115,6 +117,7 @@ public class PluginConfig extends OkaeriConfig {
         private boolean bossbarmsg = false;
         private boolean bossbarunknowncommand = false;
         private boolean samemessagesend = true;
+        private boolean cooldownchat = true;
     }
 
     //Events
@@ -136,6 +139,7 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Commands extends OkaeriConfig {
 
+        private boolean physics = true;
         private boolean broadcast = true;
         private boolean enchant = true;
         private boolean texturpack = false;
@@ -340,6 +344,15 @@ public class PluginConfig extends OkaeriConfig {
 
             private List<String> words = Arrays.asList("kutas", "kurwa", "chuj");
             private String command = "mute {PLAYER} 15m Słowa";
+
+        }
+
+        private BlockRegexChat blockRegexChat = new BlockRegexChat();
+
+        @Getter @Setter
+        public static class BlockRegexChat extends OkaeriConfig {
+
+            private String command = "mute {PLAYER} 30m Reklama";
 
         }
 

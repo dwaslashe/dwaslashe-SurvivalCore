@@ -1,6 +1,5 @@
 package xyz.dwaslashe.survivalcore.commands;
 
-import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -11,8 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
-import xyz.dwaslashe.survivalcore.managers.CooldownManager;
-import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.Collections;

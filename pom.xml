@@ -9,7 +9,7 @@
 
     <groupId>xyz.dwaslashe</groupId>
     <artifactId>dwaslashe-SurvivalCore</artifactId>
-    <version>0.0.6-stable</version>
+    <version>0.0.7-stable</version>
 
     <repositories>
         <repository>
@@ -22,7 +22,12 @@
         </repository>
         <repository>
             <id>papermc</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>minecraft-libraries</id>
+            <name>Minecraft Libraries</name>
+            <url>https://libraries.minecraft.net</url>
         </repository>
         <repository>
             <id>sk89q-repo</id>
@@ -39,11 +44,6 @@
         <repository>
             <id>krypton</id>
             <url>https://repo.kryptonmc.org/releases</url>
-        </repository>
-        <repository>
-            <id>minecraft-libraries</id>
-            <name>Minecraft Libraries</name>
-            <url>https://libraries.minecraft.net</url>
         </repository>
         <repository> <!-- for development builds -->
             <id>sonatype-oss-snapshots1</id>
@@ -66,6 +66,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.63.Final</version>
+        </dependency>
+
+        <!--
+        Net Kyori
+        -->
+        <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.12.0</version>
@@ -75,6 +84,18 @@
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.2.0</version>
         </dependency>
+
+        <!--
+        Depends Jar
+        -->
+
+        <dependency>
+            <groupId>paper</groupId>
+            <artifactId>paper</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/purpur-1.19.3.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>authlib</artifactId>
@@ -83,21 +104,18 @@
             <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/authlib-3.11.49.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>me.smaks6</groupId>
-            <artifactId>Nokaut</artifactId>
+            <groupId>axer.nickanmer</groupId>
+            <artifactId>NickNamer</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/Nokaut-0.0.1-stable.jar</systemPath>
+            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/AxerrNicknamer-v1.2.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net.dv8tion</groupId>
-            <artifactId>JDA</artifactId>
-            <version>5.0.0-alpha.20</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.ben-manes.caffeine</groupId>
-            <artifactId>caffeine</artifactId>
-            <version>3.1.1</version>
+            <groupId>wg.regions</groupId>
+            <artifactId>WGRegionsEvent</artifactId>
+            <version>0.0.1</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/WGRegionEvents.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>nbt-api</groupId>
@@ -106,24 +124,25 @@
             <scope>system</scope>
             <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/item-nbt-api-plugin-2.9.2.jar</systemPath>
         </dependency>
+
+        <!--
         <dependency>
-            <groupId>paper</groupId>
-            <artifactId>paper</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/paper-1.19.3.jar</systemPath>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>5.0.0-alpha.20</version>
         </dependency>
+        -->
+
+
+        <!--
+        API paper and spigot
+        -->
+
         <dependency>
-            <groupId>purpur</groupId>
-            <artifactId>purpur</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/purpur-1.19.3.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>brigadier</artifactId>
-            <version>1.0.18</version>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.19.3-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -132,10 +151,60 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.papermc.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.19.3-R0.1-SNAPSHOT</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>plugin-annotations</artifactId>
+            <version>1.2.3-SNAPSHOT</version>
+        </dependency>
+
+        <!--
+        Okaeri
+        -->
+
+        <dependency>
+            <groupId>eu.okaeri</groupId>
+            <artifactId>okaeri-pluralize</artifactId>
+            <version>1.1.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.okaeri</groupId>
+            <artifactId>okaeri-configs-yaml-bukkit</artifactId>
+            <version>3.4.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.okaeri</groupId>
+            <artifactId>okaeri-configs-yaml-snakeyaml</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.okaeri</groupId>
+            <artifactId>okaeri-configs-serdes-bukkit</artifactId>
+            <version>3.2.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.okaeri</groupId>
+            <artifactId>okaeri-configs-core</artifactId>
+            <version>3.4.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.9.2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>brigadier</artifactId>
+            <version>1.0.18</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.1.1</version>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -165,50 +234,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>eu.okaeri</groupId>
-            <artifactId>okaeri-configs-core</artifactId>
-            <version>3.4.2</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>eu.okaeri</groupId>
-            <artifactId>okaeri-configs-serdes-bukkit</artifactId>
-            <version>3.2.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>eu.okaeri</groupId>
-            <artifactId>okaeri-pluralize</artifactId>
-            <version>1.1.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>eu.okaeri</groupId>
-            <artifactId>okaeri-configs-yaml-bukkit</artifactId>
-            <version>3.4.2</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>eu.okaeri</groupId>
-            <artifactId>okaeri-configs-yaml-snakeyaml</artifactId>
-            <version>3.2.0</version>
-        </dependency>
-        <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
             <version>5.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.9.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -241,8 +275,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>16</source>
-                    <target>16</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>

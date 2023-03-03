@@ -1,9 +1,6 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
@@ -18,15 +15,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xyz.dwaslashe.survivalcore.Main;
-import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
 import xyz.dwaslashe.survivalcore.tasks.PlayerTask;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.ChatApi;
 import xyz.dwaslashe.survivalcore.utils.ItemApi;
 import xyz.dwaslashe.survivalcore.utils.LocationApi;
 import xyz.upperlevel.spigot.book.BookUtil;
-
-import java.util.Arrays;
 
 public class PlayerJoinListener implements Listener {
 
@@ -67,10 +61,6 @@ public class PlayerJoinListener implements Listener {
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(), () -> {
 
             Api.sendMessage(p, Main.pluginConfig.getJoin().getMessage());
-
-            UserImpl user = (UserImpl) Main.getPlugin().getUserCache().getOrCreate(p.getName());
-            user.setPlayer(p);
-            user.setOnline(true);
 
             //Create book in join
             ItemStack book = BookUtil.writtenBook()

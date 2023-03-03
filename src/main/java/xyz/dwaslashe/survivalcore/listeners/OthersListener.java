@@ -18,7 +18,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -32,13 +31,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.dwaslashe.survivalcore.Main;
-import xyz.dwaslashe.survivalcore.cache.TestWarpCache;
-import xyz.dwaslashe.survivalcore.commands.ChatCommand;
+import xyz.dwaslashe.survivalcore.cache.WarpCache;
 import xyz.dwaslashe.survivalcore.commands.managers.CommandManager;
 import xyz.dwaslashe.survivalcore.objects.Abyss;
-import xyz.dwaslashe.survivalcore.objects.Logout;
-import xyz.dwaslashe.survivalcore.objects.TestWarp;
-import xyz.dwaslashe.survivalcore.tasks.PlayerTask;
+import xyz.dwaslashe.survivalcore.objects.Warp;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.ItemApi;
 import xyz.dwaslashe.survivalcore.utils.RegionApi;
@@ -52,20 +48,24 @@ public class OthersListener implements Listener {
     protected String appendDigit(int i) {
         return i <= 9 ? "0" + i : i + "";
     }
-    HashMap<Player, String> previousMessages = new HashMap<>();
 
-    ZonedDateTime timeZone = TimerApi.getZoneDate("GMT+1");
     public static final Map<UUID, Integer> playerCooldownMap = new HashMap<>();
     public static final List<Player> cancel = Lists.newArrayList();
     private int id = 0;
 
     private static ItemStack enchanted_golden_apple = new ItemApi(Material.ENCHANTED_GOLDEN_APPLE).getItemStack();
 
+    public static ItemStack magnet = new ItemApi(Material.LIGHTNING_ROD)
+            .setName("&#FF10F0Magnez")
+            .setLore(Arrays.asList("", " &fMając magnez w ekwipunku itemy", " &fktóre niszczysz idą do twojego ekwipunku!"))
+            .getItemStack();
+
+
     @EventHandler
     public void onBreakBlock(BlockDropItemEvent event) {
         List<Item> items = event.getItems();
         Player player = event.getPlayer();
-        if (PlayerTask.containsmagnet.contains(player)) {
+        if (player.getInventory().contains(magnet)) {
             if (event.getBlock().getType() == Material.FURNACE) {
                 event.setCancelled(true);
                 Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego zrobić!");
@@ -75,21 +75,6 @@ public class OthersListener implements Listener {
             }
         }
     }
-
-    //asdasdasdasd zrobic afk
-    //@EventHandler
-    //public void onMoveWG(PlayerMoveEvent e) {
-    //    Player p = e.getPlayer();
-    //        if (RegionApi.getRegion(p.getLocation(), "area-pvp")) {
-    //            if (RegionApi.getRegion(p.getLocation(), "area-pvp")) {
-    //                e.setCancelled(false);
-    //            } else {
-    //                e.setCancelled(true);
-    //            }
-    //        } else {
-    //            e.setCancelled(true);
-    //        }
-    //    }
 
     @EventHandler
     public void onCommandTabSend(PlayerCommandSendEvent event) {
@@ -113,21 +98,6 @@ public class OthersListener implements Listener {
             event.getPlayer().sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&e{permission}&8) &8<<".replace("{permission}", command.getPermission())));
             event.setCancelled(true);
         } else return;
-    }
-
-    @EventHandler
-    public void onPlayerChatSameMessage(PlayerChatEvent event) {
-        Player player = event.getPlayer();
-        String message = event.getMessage();
-        if (Main.pluginConfig.getEvents().isSamemessagesend()) {
-            if (previousMessages.containsKey(player)) {
-                if (message.equalsIgnoreCase(previousMessages.get(player))) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać znowu takiej samej wiadomości!");
-                    event.setCancelled(true);
-                }
-            }
-            previousMessages.put(player, message);
-        }
     }
 
     @EventHandler
@@ -212,19 +182,19 @@ public class OthersListener implements Listener {
         ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_kokaina"), kokaina);
         rec.shape(new String[] { "AAA", "BBB", "AAA" });
         rec.setIngredient('A', Material.SUGAR);
-        rec.setIngredient('B', Material.SNOW);
+        rec.setIngredient('B', Material.LEGACY_SNOW_BALL);
         return rec;
     }
 
     public static ShapedRecipe getRecipeWeed() {
         ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_weed"), weed);
         rec.shape(new String[] { "DDD", "DDD", "DDD" });
-        rec.setIngredient('D', Material.SUGAR);
+        rec.setIngredient('D', Material.DRIED_KELP_BLOCK);
         return rec;
     }
 
     public static ShapedRecipe getRecipeMagnet() {
-        ItemStack item = PlayerTask.magnet;
+        ItemStack item = magnet;
         ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_magnet"), item);
         rec.shape(new String[] { "ADA", "BCB", "BBB" });
         rec.setIngredient('A', Material.REDSTONE_BLOCK);
@@ -289,17 +259,6 @@ public class OthersListener implements Listener {
     }
 
     @EventHandler
-    public void onChat(PlayerChatEvent e) {
-        Player p = e.getPlayer();
-        if (ChatCommand.disablechat.get(ChatCommand.TYPE.AVAILABLE) == true) {
-            if (!p.hasPermission("core.chat.bypass")) {
-                e.setCancelled(true);
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cCzat jest wyłączony!");
-            }
-        }
-    }
-
-    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         if (e.getItem() == null) return;
@@ -336,27 +295,6 @@ public class OthersListener implements Listener {
     }
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
-        String message = e.getMessage();
-        message = message.toLowerCase();
-        List<String> wordsInMessage = Arrays.asList(message.split(" "));
-        if (Main.pluginConfig.getEvents().isBlockwords()) {
-            for (String word : Main.pluginConfig.getChat().getBlockwords().getWords()) {
-                if (wordsInMessage.contains(word.toLowerCase())) {
-                    if (p.hasPermission("core.chat.block.bypass")) {
-                        break;
-                    }
-                    Bukkit.getScheduler().runTask(Main.getPlugin(), () -> {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Main.pluginConfig.getChat().getBlockwords().getCommand().replace("{PLAYER}", p.getName()));
-                    });
-                    break;
-                }
-            }
-        }
-    }
-
-    @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getCurrentItem() == null) return;
         if (cancel.contains(event.getWhoClicked()))
@@ -377,44 +315,6 @@ public class OthersListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onCloseAbyss(InventoryCloseEvent e) {
         Optional.ofNullable(Abyss.getOpenAbyssMap().get(e.getPlayer().getName())).ifPresent(abyss -> Abyss.getOpenAbyssMap().remove(e.getPlayer().getName()));
-    }
-
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-        Player p = e.getPlayer();
-        if (p.hasPermission("core.join.freeze")) {
-            Location to = e.getFrom();
-            to.setPitch(e.getTo().getPitch());
-            to.setYaw(e.getTo().getYaw());
-            e.setTo(to);
-        }
-    }
-
-    @EventHandler
-    public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
-        Player p = e.getPlayer();
-        if (p.hasPermission("core.join.freeze")) {
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&bJesteś zamrożony! Nie możesz używac komend!");
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onBreakBlock(BlockBreakEvent e) {
-        Player p = e.getPlayer();
-        if (p.hasPermission("core.join.freeze")) {
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&bJesteś zamrożony! Nie możesz tego zrobić!");
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onPlaceBlock(BlockPlaceEvent e) {
-        Player p = e.getPlayer();
-        if (p.hasPermission("core.join.freeze")) {
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&bJesteś zamrożony! Nie możesz tego zrobić!");
-            e.setCancelled(true);
-        }
     }
 
     @EventHandler
@@ -494,12 +394,15 @@ public class OthersListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         if (Main.pluginConfig.getEvents().isDeathplayerhead()) {
+            ZonedDateTime timeZone = TimerApi.getZoneDate("GMT+1");
             if (e.getEntity() instanceof Player) {
                 ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
                 SkullMeta meta = (SkullMeta) item.getItemMeta();
                 meta.setOwner(e.getEntity().getName());
                 meta.setDisplayName(Api.fixColor("&6Głowa gracza&8: &a" + e.getEntity().getName()));
-                meta.setLore(Api.fixColor(Arrays.asList("", " &7Data&8: &e" +
+                meta.setLore(Api.fixColor(Arrays.asList("", " &7Data&8: &e" +                         appendDigit(timeZone.getHour()) + ":" +
+                        appendDigit(timeZone.getMinute()) + ", " +
+
                         appendDigit(timeZone.getDayOfMonth()) + "/" +
                         appendDigit(timeZone.getMonthValue()) + "/" +
                         appendDigit(timeZone.getYear()) + " ", "", " &7" + e.getEntity().getPlayer().getUniqueId())));
@@ -514,7 +417,7 @@ public class OthersListener implements Listener {
         Player p = e.getPlayer();
         if (Main.pluginConfig.getEvents().isNorespawnteleporttospawn()) {
             if (p.getBedSpawnLocation() == null) {
-                TestWarp warp = TestWarpCache.getInstance().get("spawn");
+                Warp warp = WarpCache.getInstance().get("spawn");
                 if (warp != null) {
                     e.setRespawnLocation(warp.getLocation());
                 } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma warpa &espawn");
@@ -582,5 +485,4 @@ public class OthersListener implements Listener {
             }
         }
     }
-
 }

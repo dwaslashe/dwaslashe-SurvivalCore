@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.helpers.InventoryHelper;
+import xyz.dwaslashe.survivalcore.listeners.OthersListener;
 import xyz.dwaslashe.survivalcore.tasks.PlayerTask;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
@@ -52,7 +53,7 @@ public class MagnetCommand extends Command implements Listener {
                     return;
                 }
                 Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś graczu &e" + p2.getName() + " &dMagnez");
-                Api.giveOrDrop(p2, PlayerTask.magnet);
+                Api.giveOrDrop(p2, OthersListener.magnet);
             }
         }
     }

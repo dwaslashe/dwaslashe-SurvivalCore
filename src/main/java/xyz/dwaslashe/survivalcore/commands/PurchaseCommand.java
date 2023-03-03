@@ -35,7 +35,7 @@ public class PurchaseCommand extends Command {
         } else if (args.length >= 2) {
             Api.sendBroadcast("&#FFC42E&lDZIĘKUJEMY &8>> &fGracz &e" + p2.getName() + " &fkupił u nas &b" + StringUtils.join(args, " ", 1, args.length) + "&f! &#FFC42EDziękujemy za wsparcie serwera!");
             for (Player all : Bukkit.getOnlinePlayers()) {
-                all.sendTitle(Api.fixColor("&#FFC42E&lDZIĘKUJEMY"), Api.fixColor("&8>> &r&fGracz &e" + p2.getName() + " &fkupił u nas " + StringUtils.join(args, " ", 1, args.length) + " &8<<"));
+                all.sendTitle(Api.fixColor("&#FFC42E&lDZIĘKUJEMY"), Api.fixColor("&8>> &r&fGracz &e" + p2.getName() + " &fkupił u nas &b" + StringUtils.join(args, " ", 1, args.length) + " &8<<"));
             }
         }
     }

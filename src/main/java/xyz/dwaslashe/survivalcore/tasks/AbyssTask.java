@@ -58,15 +58,16 @@ public class AbyssTask extends BukkitRunnable {
             Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#FFF6792 sekundy");
         } else if (getTime() == 1) {
             Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#FFF6791 sekunde");
-        } else if (getTime() == 0) {
+        }
+        if (getTime() == 0) {
             abyssList.clear();
 
-            var ref = new Object(){
+            var ref = new Object() {
                 int moved = 0;
             };
 
             Bukkit.getWorlds().forEach(world -> world.getEntities().forEach(entity -> {
-                if(entity instanceof Item){
+                if (entity instanceof Item) {
                     Item item = (Item) entity;
                     ItemStack itemStack = item.getItemStack();
                     ref.moved += itemStack.getAmount();
@@ -74,17 +75,17 @@ public class AbyssTask extends BukkitRunnable {
                     entity.remove();
                 }
             }));
-
             Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzeniesiono &#FFF679" + ref.moved + " &#7DE95Fprzedmiotów do otchłani! Otchłan zostanie otwarta za &#FFF6795 sekund!");
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 AbyssTask.opened = true;
                 Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FOtchlan została otwarta &#FFF679/otchlan");
-            },  100L);
+            }, 100L);
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 AbyssTask.opened = false;
                 AbyssTask.setTime(320);
                 Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#FF301FOtchlan zostala zamknieta!");
-            },  1200L);
+            }, 1200L);
+
         }
     }
 }

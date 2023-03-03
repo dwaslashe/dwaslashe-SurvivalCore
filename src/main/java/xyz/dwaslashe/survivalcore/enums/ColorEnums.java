@@ -18,10 +18,10 @@ public enum ColorEnums {
     LIGHT_PURPLE('d', "<light_purple>"),
     YELLOW('e', "<yellow>"),
     WHITE('f', "<white>"),
-    BOLD('l', "<bold>"),
-    STRIKETHROUGH('m', "<strikethrough>"),
-    UNDERLINE('n', "<underline>"),
-    ITALIC('o', "<italic>"),
+    BOLD('l', "<b>"),
+    STRIKETHROUGH('m', "<st>"),
+    UNDERLINE('n', "<u>"),
+    ITALIC('o', "<i>"),
     RESET('r', "<reset>");
 
     String key;

@@ -1,40 +1,44 @@
 package xyz.dwaslashe.survivalcore.cache;
 
-import xyz.dwaslashe.survivalcore.model.User;
-import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
+import xyz.dwaslashe.survivalcore.objects.User;
+import xyz.dwaslashe.survivalcore.database.db.api.DatabaseCache;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Consumer;
 
-public class UserCache {
+public class UserCache implements DatabaseCache<User> {
 
-    private final Map<String, User> userMap = new HashMap<>();
-    private final Map<String, User> onlineUserMap = new HashMap<>();
+    private static UserCache instance;
 
-    public Map<String, User> getOnlineUserMap() {
-        return onlineUserMap;
+    public static UserCache getInstance() {
+        if(instance == null) instance = new UserCache();
+        return instance;
     }
 
-    public Map<String, User> getUserMap() {
+    private final Map<UUID, User> userMap = new HashMap<>();
+
+    private final Set<User> toUpdate = new HashSet<>();
+
+    public Set<User> getToUpdate() {
+        return toUpdate;
+    }
+
+    public User compute(UUID uuid){
+        return userMap.computeIfAbsent(uuid, User::new);
+    }
+
+    public User compute(UUID uuid, Consumer<User> consumer){
+        User user = userMap.computeIfAbsent(uuid, User::new);
+        consumer.accept(user);
+        return user;
+    }
+
+    public Map<UUID, User> getUserMap() {
         return userMap;
     }
 
-    public User getOrCreate(String name){
-        return userMap.computeIfAbsent(name, UserImpl::new);
+    @Override
+    public void add(User user) {
+        userMap.put(user.getUuid(), user);
     }
-
-    public Optional<User> get(String name){
-        return Optional.ofNullable(userMap.get(name));
-    }
-
-    public Optional<User> getOnline(String name){
-        return Optional.ofNullable(onlineUserMap.get(name));
-    }
-
-    public void setOnline(User user, boolean activity){
-        onlineUserMap.remove(user.name());
-        if(activity) onlineUserMap.put(user.name(), user);
-    }
-
 }

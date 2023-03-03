@@ -1,8 +1,11 @@
 package xyz.dwaslashe.survivalcore.tasks;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.dwaslashe.survivalcore.Main;
-import xyz.dwaslashe.survivalcore.model.impl.UserImpl;
+import xyz.dwaslashe.survivalcore.cache.UserCache;
+import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 public class AutoMessageTask extends BukkitRunnable {
@@ -16,10 +19,12 @@ public class AutoMessageTask extends BukkitRunnable {
         if(Main.pluginConfig.getAuto().getMessages().getMessages().isEmpty()){
             return;
         } else if(id >= Main.pluginConfig.getAuto().getMessages().getMessages().size()) id = 0;{
-            Main.getPlugin().getUserCache().getOnlineUserMap().forEach((name, user) -> {
-                UserImpl impl = (UserImpl) user;
-                if(impl.isAutochat()) impl.getPlayer().sendMessage(Api.fixColor(Main.pluginConfig.getAuto().getMessages().getMessages().get(id)));
-            });
+            for (Player all : Bukkit.getOnlinePlayers()) {
+                User user = UserCache.getInstance().compute(all.getUniqueId());
+                if (user.getAutomsg() == 0) {
+                    Api.sendMessage(all, Main.pluginConfig.getAuto().getMessages().getMessages().get(id));
+                }
+            }
             ++id;
         }
     }

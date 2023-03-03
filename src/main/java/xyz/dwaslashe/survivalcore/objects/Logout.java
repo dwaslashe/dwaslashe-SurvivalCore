@@ -1,7 +1,5 @@
 package xyz.dwaslashe.survivalcore.objects;
 
-import me.smaks6.plugin.utilities.Enum.Nokaut;
-import me.smaks6.plugin.utilities.PlayerUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
