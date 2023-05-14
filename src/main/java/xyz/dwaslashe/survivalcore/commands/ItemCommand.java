@@ -41,7 +41,7 @@ public class ItemCommand extends Command {
             if (p.getItemInHand() != null || p.getItemInHand().getType() != Material.AIR) {
                 if (args.length >= 2) {
                     if (args[0].equalsIgnoreCase("name")) {
-                        if (args[1].contains("Banknot")) {
+                        if (args[1].contains("Banknot") && args[1].contains("Butelka doświadczenia") && args[1].contains("AUTO") && args[1].contains("DRILL" ) && args[1].contains("TRAKTOR") && args[1].contains("SPADOCHRON") && args[1].contains("HELIKOPTER") && args[1].contains("ROBOT")) {
                             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego zrobić!");
                             return;
                         }
@@ -54,13 +54,15 @@ public class ItemCommand extends Command {
                             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aOpis przedmiotu został usuniety");
                             return;
                         } else {
-                            String[] texts = StringUtils.join(args, " ", 1, args.length).replace("||", "4414").split("4414");
-                            p.setItemInHand(new ItemApi(p.getItemInHand()).setLore(new ArrayList()).getItemStack());
-                            for (String text : texts) {
-                                p.setItemInHand(new ItemApi(p.getItemInHand()).addLore(text).getItemStack());
+                            if (p.getItemInHand() != null) {
+                                String[] texts = StringUtils.join(args, " ", 1, args.length).replace("||", "4414").split("4414");
+                                p.setItemInHand(new ItemApi(p.getItemInHand()).setLore(new ArrayList()).getItemStack());
+                                for (String text : texts) {
+                                    p.setItemInHand(new ItemApi(p.getItemInHand()).addLore(text).getItemStack());
+                                }
+                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cOpis przedmiotu został zmieniony");
+                                return;
                             }
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cOpis przedmiotu został zmieniony");
-                            return;
                         }
                     } else if (args[0].equalsIgnoreCase("info")) {
                         Api.sendMessage(p, " &8[ &a&lINFORMACJE O PRZEDMIOCIE &8]\n" +

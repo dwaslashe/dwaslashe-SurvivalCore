@@ -95,6 +95,12 @@ public class PlayerChatListener implements Listener {
             return true;
         });
         events.add((s, event) -> {
+            if (event.signedMessage().message().trim().startsWith("@")) {
+                return false;
+            }
+            return true;
+        });
+        events.add((s, event) -> {
             Player player = event.getPlayer();
             //Check if player send twice same message
             if (Main.pluginConfig.getEvents().isSamemessagesend()) {
@@ -152,7 +158,7 @@ public class PlayerChatListener implements Listener {
                                     }
                                     ZonedDateTime timeZone = TimerApi.getZoneDate("GMT+1");
                                     Component component = MiniMessage.miniMessage().deserialize(
-                                            "<hover:show_text:\" <#F79B2E>Oznaczenie <#f47e07>@" + onlinePlayer.getName() + "\n\n <#E7E7E7>Kliknij w oznaczoną wiadomość, aby\n <#E7E7E7>napisać do użytkownika\n\n <#77d916>Wiadomość wysłana<dark_gray>: <#9c9898>" + appendDigit(timeZone.getHour()) + ":" + appendDigit(timeZone.getMinute()) +  " ⌚\"><click:suggest_command:/msg " + onlinePlayer.getName() + " >" + f + onlinePlayer.getName() + "</click></hover>" + ColorEnums.translateAlternateColorCodes(ref.color));
+                                            "<hover:show_text:\" <#F79B2E>Oznaczenie <#f47e07>@" + onlinePlayer.getName() + "\n\n <#E7E7E7>Kliknij w oznaczoną wiadomość, aby\n <#E7E7E7>napisać do użytkownika\n\n <#77d916>Wiadomość wysłana: <#ffd56c>" + appendDigit(timeZone.getHour()) + ":" + appendDigit(timeZone.getMinute()) +  " <#ffc942>⌚\"><click:suggest_command:/msg " + onlinePlayer.getName() + " >" + f + onlinePlayer.getName() + "</click></hover>" + ColorEnums.translateAlternateColorCodes(ref.color));
                                     return Tag.inserting(Component.empty().append(component));
 
                                 }
@@ -169,9 +175,9 @@ public class PlayerChatListener implements Listener {
 
         ItemStack itemStack = player.getItemInHand();
 
-        TagResolver resolver = TagResolver.builder().tag("item", (argumentQueue, context) -> Tag.inserting(Component.empty().append(MiniMessage.miniMessage().deserialize(ColorEnums.translateAlternateColorCodes("<show_item><#1ff0a0>[" + itemStack.getI18NDisplayName() + "<#1ff0a0>]</show_item>"), TagResolver.resolver("show_item", (argumentQueue1, context1) -> Tag.styling(b -> b.hoverEvent(player.getItemInHand().asHoverEvent()))))))).build();
+        TagResolver item = TagResolver.builder().tag("item", (argumentQueue, context) -> Tag.inserting(Component.empty().append(MiniMessage.miniMessage().deserialize(ColorEnums.translateAlternateColorCodes("<show_item><#1ff0a0>[" + itemStack.getI18NDisplayName() + "<#1ff0a0>]</show_item>"), TagResolver.resolver("show_item", (argumentQueue1, context1) -> Tag.styling(b -> b.hoverEvent(player.getItemInHand().asHoverEvent()))))))).build();
 
-        resolvers.add(resolver);
+        resolvers.add(item);
 
         if (player.hasPermission("core.chat.admin")) {
             resolvers.add(StandardTags.color());
@@ -239,7 +245,7 @@ public class PlayerChatListener implements Listener {
         if (userManager.getUser(player.getName()) == null) {
             realName = player.getName();
         } else realName = userManager.getUser(player.getName()).getCustomName();
-        String finalRealName = PlaceholderAPI.setPlaceholders(player, "<hover:show_text:\" <#4287f5>Statystyki gracza <#9c9898>" + realName + "\n \n <#E7E7E7>Saldo&8: <#FFF88F>%survivalcore_money% <#FFC42E>$\n <#E7E7E7>Śmierci&8: <#ff6e6e>%statistic_deaths% <#ff4545>☠\n <#E7E7E7>Zabójstwa&8: <#4DFFFF>%statistic_player_kills% <#1AE6E6>⚔\n <#E7E7E7>Przegrane godziny&8: <#ffd56c>%statistic_hours_played%g <#ffc942>⌚\n <#E7E7E7>Wykopane bloki&8: <#10F70C>%statistic_mine_block% <#09b106>⛏\n\"><click:suggest_command:/msg " + player.getName() + " >" + realName + "</click></hover>");
+        String finalRealName = PlaceholderAPI.setPlaceholders(player, "<hover:show_text:\" <#4287f5>Statystyki gracza <#9c9898>" + realName + "\n \n <#E7E7E7>Saldo: <#FFF88F>%survivalcore_money% <#FFC42E>$\n <#E7E7E7>Śmierci: <#ff6e6e>%statistic_deaths% <#ff4545>☠\n <#E7E7E7>Zabójstwa: <#4DFFFF>%statistic_player_kills% <#1AE6E6>⚔\n <#E7E7E7>Przegrane godziny: <#ffd56c>%statistic_hours_played%g <#ffc942>⌚\n <#E7E7E7>Wykopane bloki: <#10F70C>%statistic_mine_block% <#09b106>⛏\n <#E7E7E7>Punkty rankingu: <#4eed6e>%mineteams_profile_ranking%pkt\n\"><click:suggest_command:/msg " + player.getName() + " >" + realName + "</click></hover>");
 
         String message;
         if (player.hasPermission("core.chat.rainbow")) {

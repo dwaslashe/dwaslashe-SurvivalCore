@@ -9,7 +9,9 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
+import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.Collections;
@@ -71,9 +73,13 @@ public class MsgCommand extends Command {
 
             Api.sendMessage(p, "&8[ &#B3F003TY &8> &#B3F003" + p2.getDisplayName() + " &8] &8» &#E7E7E7" + msg);
             Api.sendMessage(p2, "&8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg);
-            if (Main.pluginConfig.getEvents().isBossbarmsg()) {
-                BossBar bar = Bukkit.createBossBar(Api.fixColor("&8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg), BarColor.YELLOW, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
-                bar.addPlayer(p2);
+            User userPlayer = UserCache.getInstance().compute(p.getUniqueId());
+            User userPlayer2 = UserCache.getInstance().compute(p2.getUniqueId());
+            if (userPlayer.getMsgbossbar() == 0) {
+                BossBar bar = Bukkit.createBossBar(Api.fixColor("&8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg), BarColor.GREEN, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
+                if (userPlayer2.getMsgbossbar() == 0) {
+                    bar.addPlayer(p2);
+                }
                 bar.setProgress(1);
                 int[] bar_color = {0};
                 Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
@@ -84,14 +90,14 @@ public class MsgCommand extends Command {
                                 bar.setProgress(bar.getProgress() - 0.02);
                                 ++bar_color[0];
                                 if (bar_color[0] == 1) {
-                                    bar.setColor(BarColor.YELLOW);
+                                    bar.setColor(BarColor.GREEN);
                                 } else {
                                 }
-                            } else {
+                            } else if (userPlayer2.getMsgbossbar() == 0) {
                                 bar.setVisible(false);
                                 bar.removePlayer(p2.getPlayer());
                             }
-                        } else {
+                        } else if (userPlayer2.getMsgbossbar() == 0) {
                             bar.removePlayer(p2.getPlayer());
                         }
                     }

@@ -17,15 +17,12 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xyz.dwaslashe.survivalcore.cache.*;
 import xyz.dwaslashe.survivalcore.commands.*;
-import xyz.dwaslashe.survivalcore.commands.lifesteal.CheckProfileCommand;
-import xyz.dwaslashe.survivalcore.commands.lifesteal.ReviveCommand;
 import xyz.dwaslashe.survivalcore.commands.managers.CommandManager;
 import xyz.dwaslashe.survivalcore.configs.PluginCommands;
 import xyz.dwaslashe.survivalcore.configs.PluginConfig;
@@ -36,10 +33,8 @@ import xyz.dwaslashe.survivalcore.helpers.ReflectionHelper;
 import xyz.dwaslashe.survivalcore.listeners.*;
 import xyz.dwaslashe.survivalcore.model.CustomItem;
 import xyz.dwaslashe.survivalcore.model.impl.CustomItemImpl;
-import xyz.dwaslashe.survivalcore.objects.UserTree;
+import xyz.dwaslashe.survivalcore.objects.*;
 import xyz.dwaslashe.survivalcore.parsers.LocationParser;
-import xyz.dwaslashe.survivalcore.objects.User;
-import xyz.dwaslashe.survivalcore.objects.Warp;
 import xyz.dwaslashe.survivalcore.placeholder.PlaceholderHooks;
 import xyz.dwaslashe.survivalcore.tasks.*;
 import xyz.dwaslashe.survivalcore.utils.Api;
@@ -199,6 +194,12 @@ public class Main extends JavaPlugin {
         connector.registerDataObjectToScan(Warp.class);
         connector.getScanner(Warp.class).ifPresent(WarpDataObjectScanner -> WarpDataObjectScanner.load(WarpCache.getInstance()));
 
+        connector.registerDataObjectToScan(PlayerWarp.class);
+        connector.getScanner(PlayerWarp.class).ifPresent(WarpDataObjectScanner -> WarpDataObjectScanner.load(PlayerWarpCache.getInstance()));
+
+        connector.registerDataObjectToScan(DragonLevel.class);
+        connector.getScanner(DragonLevel.class).ifPresent(DragonLevelDataObjectScanner -> DragonLevelDataObjectScanner.load(DragonLevelCache.getInstance()));
+
         getServer().getScheduler().runTaskTimer(this, () -> {
             Set<User> UserSet = new HashSet<>(UserCache.getInstance().getToUpdate());
             connector.getScanner(User.class).ifPresent(scanner -> {
@@ -218,6 +219,17 @@ public class Main extends JavaPlugin {
                 WarpCache.getInstance().getToUpdate().removeAll(WarpSet);
             });
 
+            Set<PlayerWarp> PlayerWarpSet = new HashSet<>(PlayerWarpCache.getInstance().getToUpdate());
+            connector.getScanner(PlayerWarp.class).ifPresent(scanner -> {
+                PlayerWarpSet.forEach(scanner::update);
+                PlayerWarpCache.getInstance().getToUpdate().removeAll(PlayerWarpSet);
+            });
+
+            Set<DragonLevel> DragonLevelSet = new HashSet<>(DragonLevelCache.getInstance().getToUpdate());
+            connector.getScanner(DragonLevel.class).ifPresent(scanner -> {
+                DragonLevelSet.forEach(scanner::update);
+                DragonLevelCache.getInstance().getToUpdate().removeAll(DragonLevelSet);
+            });
 
         }, 20, 20 * 10);
     }
@@ -236,6 +248,14 @@ public class Main extends JavaPlugin {
 
         connector.getScanner(Warp.class).ifPresent(scanner -> {
             WarpCache.getInstance().getToUpdate().forEach(scanner::update);
+        });
+
+        connector.getScanner(PlayerWarp.class).ifPresent(scanner -> {
+            PlayerWarpCache.getInstance().getToUpdate().forEach(scanner::update);
+        });
+
+        connector.getScanner(DragonLevel.class).ifPresent(scanner -> {
+            DragonLevelCache.getInstance().getToUpdate().forEach(scanner::update);
         });
 
         try {
@@ -307,17 +327,19 @@ public class Main extends JavaPlugin {
         CommandManager.register(new RewardCommand(), pluginConfig.getCommands().isReward());
         CommandManager.register(new PingCommand(), pluginConfig.getCommands().isPing());
         CommandManager.register(new GodModCommand(), pluginConfig.getCommands().isGodmod());
-        CommandManager.register(new MarketCommand(), pluginConfig.getCommands().isMarketaliases());
+        CommandManager.register(new PlayerWarpCommand(), pluginConfig.getCommands().isPlayerwarp());
         CommandManager.register(new MagnetCommand(), pluginConfig.getCommands().isMagnet());
         CommandManager.register(new CheckCommand(), pluginConfig.getCommands().isCheck());
         CommandManager.register(new AdmitsCommand(), pluginConfig.getCommands().isCheck());
-        CommandManager.register(new ReviveCommand(), pluginConfig.getCommands().isLifestealaliases());
-        CommandManager.register(new CheckProfileCommand(), pluginConfig.getCommands().isLifestealaliases());
         CommandManager.register(new PraceCommand(), pluginConfig.getCommands().isPracealiases());
         CommandManager.register(new IgnoreCommand(), pluginConfig.getCommands().isIgnore());
         CommandManager.register(new UnIgnoreCommand(), pluginConfig.getCommands().isUnignore());
         CommandManager.register(new EnchantCommand(), pluginConfig.getCommands().isEnchant());
         CommandManager.register(new PhysicsCommand(), pluginConfig.getCommands().isPhysics());
+        CommandManager.register(new WithdrawCommand(), pluginConfig.getCommands().isWithdraw());
+        CommandManager.register(new XPBottleCommand(), pluginConfig.getCommands().isXpbottle());
+        CommandManager.register(new TikTokCommand(), pluginConfig.getCommands().isTiktok());
+        CommandManager.register(new WorldCommand(), pluginConfig.getCommands().isWorld());
     }
 
     public void loadTasks() {
@@ -353,6 +375,7 @@ public class Main extends JavaPlugin {
     }
 
     public void loadEvents() {
+        registerEvent(new DragonLevelListener(), pluginConfig.getEvents().isDragonlevel());
         registerEvent(new RegionListener(), true);
         registerEvent(new PlayerJoinListener(), true);
         registerEvent(new BlockBreakListener(), pluginConfig.getCommands().isPhysics());
@@ -390,7 +413,7 @@ public class Main extends JavaPlugin {
         //Korona
         ItemHelper itemHelper = new ItemHelper(Material.GOLDEN_HELMET);
         itemHelper.setDisplayName(Api.fixColor("&#FDBD01Korona"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &aItem daje &c5 serc &ai &eSZYBKOŚĆ 3!")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item daje &c5 serc &#E7E7E7i &bSZYBKOŚĆ 3!")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         itemHelper.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH,10, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
@@ -404,7 +427,7 @@ public class Main extends JavaPlugin {
         //Buty Sonika
         itemHelper = new ItemHelper(Material.DIAMOND_BOOTS);
         itemHelper.setDisplayName(Api.fixColor("&#21F8F6Buty Sonika"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &aItem daje &eSZYBKOŚĆ 3!")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item daje &bSZYBKOŚĆ 3!")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
@@ -416,7 +439,7 @@ public class Main extends JavaPlugin {
         //Hełm Orka
         itemHelper = new ItemHelper(Material.DIAMOND_HELMET);
         itemHelper.setDisplayName(Api.fixColor("&#008443Hełm Orka"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &aItem daje &c2 serca &ai &eWIDZENIE W CIEMNOŚCI 3!")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item daje &c2 serca &#E7E7E7i &bWIDZENIE W CIEMNOŚCI 3!")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         itemHelper.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH,4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
@@ -429,7 +452,7 @@ public class Main extends JavaPlugin {
         //Kilof Górnika
         itemHelper = new ItemHelper(Material.DIAMOND_PICKAXE);
         itemHelper.setDisplayName(Api.fixColor("&#FF5F1FKilof Górnika"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &aItem zabiera &c5 serc&a &ai daje &eSZBYKIE KOPANIE 2, ŚLEPOTA 2!")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item zabiera &c5 serc &#E7E7E7i daje &bSZBYKIE KOPANIE 2, ŚLEPOTA 2!")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         itemHelper.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH,-10, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
@@ -442,7 +465,7 @@ public class Main extends JavaPlugin {
         //Pałka Policjanta
         itemHelper = new ItemHelper(Material.STICK);
         itemHelper.setDisplayName(Api.fixColor("&#808080Pałka Policjanta"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &aItem posiada odrzut &e6&a &ai w ręce daje &ePOWOLNOŚĆ 2, ŚLEPOTA 2!")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item posiada odrzut &b6&#E7E7E7 i daje &bPOWOLNOŚĆ 2, ŚLEPOTA 2!")));
         itemHelper.addEnchant(Enchantment.KNOCKBACK, 6);
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
@@ -454,7 +477,7 @@ public class Main extends JavaPlugin {
         //Tarcza Policjanta
         itemHelper = new ItemHelper(Material.SHIELD);
         itemHelper.setDisplayName(Api.fixColor("&#808080Tarcza Policjanta"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &aItem daje &eODPORNOSC 2!")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item daje &bODPORNOSC 2!")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         item = new CustomItemImpl(6, itemHelper);
@@ -464,7 +487,7 @@ public class Main extends JavaPlugin {
         //Tarcza Sapera
         itemHelper = new ItemHelper(Material.SHIELD);
         itemHelper.setDisplayName(Api.fixColor("&#023020Tarcza Sapera"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &aItem daje &eODPORNOSC 3!, ODPORNOŚĆ PRZED OGNIEM 1")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item daje &bODPORNOSC 3!, ODPORNOŚĆ PRZED OGNIEM 1")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         item = new CustomItemImpl(7, itemHelper);

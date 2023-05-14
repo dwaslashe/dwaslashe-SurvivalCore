@@ -55,7 +55,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 1"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#FF3131B E D E O S I A R A",
                             " &#FF3131wie co chce i będzie to miała",
@@ -73,7 +73,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 2"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#FF10F0Hej randka?",
                             " &#FF10F0Pięknie dziś wyglądasz <3",
@@ -91,7 +91,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 3"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#FFC42ES E X O H O L I K",
                             " &#c930aegrzeczne dupy nie chcą ze mną chodzić",
@@ -109,7 +109,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 4"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#21F8F6Na górze róże na dole fiołki",
                             " &#21F8F6my się kochamy jak dwa aniołki",
@@ -127,7 +127,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 5"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#FF10F0My girl ->",
                             "",
@@ -144,7 +144,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 6"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#0394fc<- My boy",
                             "",
@@ -161,7 +161,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 7"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#0394fcGOMBAO33 MATA",
                             " &#0394fcpomiot liryczny..",
@@ -179,7 +179,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 8"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#FDBD01Midas, Midas, Midas!",
                             " &#FDBD01Wszystko, czego tylko dotknę",
@@ -198,7 +198,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 9"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#FF3131Mordo wiertara jakbym był Skrillexem",
                             " &#FF3131Muza napierdala przez głośnik USB",
@@ -216,7 +216,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 10"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#0394fcMłody jeżyk bo chciałbym tylko przeżyć",
                             " &#0394fcSuszyć jedynki po prostu zęby szczerzyć",
@@ -234,7 +234,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 11"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#FF5F1FRuda tańczy jak szalona",
                             " &#FF5F1FKrzyczy piszczy to jest ona",
@@ -252,7 +252,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 12"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#008443Rzucam worki w tłum tłum",
                             " &#008443Kto łapie ten jara",
@@ -270,7 +270,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 13"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#feb1e0Jeśli będzie trzeba, zrobię to co będzie trzeba",
                             " &#feb1e0Sprzedam delfinowi wodę, jeśli będzie trzeba",
@@ -288,7 +288,7 @@ public class AboveNameShopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Tytuł 14"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             "",
-                            " &6&l ⭐ &#FFF01FTekst tytułu:",
+                            " &6&l⭐ &#FFF01FTekst tytułu:",
                             "",
                             " &#1F51FFOd małego mówią mi, że jestem poj*bany",
                             " &#1F51FFRobię poj*bany kwit, po dwie bańki od reklamy",

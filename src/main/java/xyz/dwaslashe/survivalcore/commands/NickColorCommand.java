@@ -677,7 +677,7 @@ public class NickColorCommand extends Command implements Listener {
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
                 } else if (e.getSlot() == 11) {
                     player.getOpenInventory().close();
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#FE5000:>" + player.getName() + "</gradient>");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#FE5000>" + player.getName() + "</gradient>");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
                 } else if (e.getSlot() == 12) {
                     player.getOpenInventory().close();

@@ -32,10 +32,10 @@ public class CoreCommand extends Command {
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&7Plugin wykonany przez dwaslashe, kontakt discord #FF500Bdwaslashe v2#5620");
             } else {
                 if (args[0].equalsIgnoreCase("server")) {
-                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&7Cały ram&8: &f" + (Runtime.getRuntime().totalMemory() / 1024 / 1024) + "&8/&7" + (Runtime.getRuntime().maxMemory() / 1024 / 1024));
-                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&7Użyty ram&8: &f" + ((Runtime.getRuntime().totalMemory() / 1024 / 1024) - (Runtime.getRuntime().freeMemory() / 1024 / 1024)));
-                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&7Nie użyty ram&8: &f" + (Runtime.getRuntime().freeMemory() / 1024 / 1024));
-                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&7Procesory&8: &f" + (Runtime.getRuntime().availableProcessors()));
+                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aCały ram&8: &f" + (Runtime.getRuntime().totalMemory() / 1024 / 1024) + "&8/&7" + (Runtime.getRuntime().maxMemory() / 1024 / 1024));
+                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aUżyty ram&8: &f" + ((Runtime.getRuntime().totalMemory() / 1024 / 1024) - (Runtime.getRuntime().freeMemory() / 1024 / 1024)));
+                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie użyty ram&8: &f" + (Runtime.getRuntime().freeMemory() / 1024 / 1024));
+                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aProcesory&8: &f" + (Runtime.getRuntime().availableProcessors()));
                 } else {
                     if (args[0].equalsIgnoreCase("reload")) {
                         Api.sendMessage(p,Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeładowano Plugin!");

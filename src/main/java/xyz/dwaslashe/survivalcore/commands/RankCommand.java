@@ -37,7 +37,7 @@ public class RankCommand extends Command implements Listener {
     private void openGui(int guiID, Player player) {
         //0
         if (guiID == 0) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Lista Rang", 6);
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "Lista rang", 6);
 
             ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {

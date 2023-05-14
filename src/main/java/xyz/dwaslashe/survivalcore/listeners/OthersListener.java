@@ -11,6 +11,7 @@ import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.command.Command;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -22,6 +23,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,7 +40,6 @@ import xyz.dwaslashe.survivalcore.objects.Abyss;
 import xyz.dwaslashe.survivalcore.objects.Warp;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.ItemApi;
-import xyz.dwaslashe.survivalcore.utils.RegionApi;
 import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
 import java.time.ZonedDateTime;
@@ -57,7 +59,7 @@ public class OthersListener implements Listener {
 
     public static ItemStack magnet = new ItemApi(Material.LIGHTNING_ROD)
             .setName("&#FF10F0Magnez")
-            .setLore(Arrays.asList("", " &fMając magnez w ekwipunku itemy", " &fktóre niszczysz idą do twojego ekwipunku!"))
+            .setLore(Arrays.asList("", " &#E7E7E7Mając magnez w ekwipunku itemy", " &#E7E7E7które niszczysz idą do twojego ekwipunku!"))
             .getItemStack();
 
 
@@ -89,13 +91,13 @@ public class OthersListener implements Listener {
     }
 
     @EventHandler
-    public void handleCommandUseEvent(PlayerCommandPreprocessEvent event){
+    public void handleCommandUseEvent(PlayerCommandPreprocessEvent event) {
         String commandName = event.getMessage().split(" ")[0].replaceFirst("/", "");
         Command command = CommandManager.commandMap.getCommand(commandName);
-        if(command == null) return;
+        if (command == null) return;
         //if (!command.getPermission().isEmpty()) return;
-        if(!command.testPermissionSilent(event.getPlayer())){
-            event.getPlayer().sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&e{permission}&8) &8<<".replace("{permission}", command.getPermission())));
+        if (!command.testPermissionSilent(event.getPlayer())) {
+            event.getPlayer().sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#FF3131Nie posiadasz uprawnien &8(&#FFC42E{permission}&8) &8<<".replace("{permission}", command.getPermission())));
             event.setCancelled(true);
         } else return;
     }
@@ -118,16 +120,16 @@ public class OthersListener implements Listener {
         (new BukkitRunnable() {
             public void run() {
                 for (UUID uuid : playerCooldownMap.keySet()) {
-                    if (((Integer)playerCooldownMap.get(uuid)).intValue() == 1) {
+                    if (((Integer) playerCooldownMap.get(uuid)).intValue() == 1) {
                         playerCooldownMap.remove(uuid);
                         if (Bukkit.getPlayer(uuid) != null)
                             Bukkit.getPlayer(uuid).sendMessage(Api.fixColor(Main.pluginConfig.getMessages().getPrefix() + "&aMożesz użyć perły!"));
                         continue;
                     }
-                    playerCooldownMap.put(uuid, Integer.valueOf(((Integer)playerCooldownMap.get(uuid)).intValue() - 1));
+                    playerCooldownMap.put(uuid, Integer.valueOf(((Integer) playerCooldownMap.get(uuid)).intValue() - 1));
                 }
             }
-        }).runTaskTimer((Plugin)plugin, 0L, 20L);
+        }).runTaskTimer((Plugin) plugin, 0L, 20L);
     }
 
     public Integer getTimeRemaining(Player p) {
@@ -180,7 +182,7 @@ public class OthersListener implements Listener {
 
     public static ShapedRecipe getRecipeKokaina() {
         ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_kokaina"), kokaina);
-        rec.shape(new String[] { "AAA", "BBB", "AAA" });
+        rec.shape(new String[]{"AAA", "BBB", "AAA"});
         rec.setIngredient('A', Material.SUGAR);
         rec.setIngredient('B', Material.LEGACY_SNOW_BALL);
         return rec;
@@ -188,7 +190,7 @@ public class OthersListener implements Listener {
 
     public static ShapedRecipe getRecipeWeed() {
         ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_weed"), weed);
-        rec.shape(new String[] { "DDD", "DDD", "DDD" });
+        rec.shape(new String[]{"DDD", "DDD", "DDD"});
         rec.setIngredient('D', Material.DRIED_KELP_BLOCK);
         return rec;
     }
@@ -196,7 +198,7 @@ public class OthersListener implements Listener {
     public static ShapedRecipe getRecipeMagnet() {
         ItemStack item = magnet;
         ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_magnet"), item);
-        rec.shape(new String[] { "ADA", "BCB", "BBB" });
+        rec.shape(new String[]{"ADA", "BCB", "BBB"});
         rec.setIngredient('A', Material.REDSTONE_BLOCK);
         rec.setIngredient('B', Material.IRON_INGOT);
         rec.setIngredient('C', Material.STICK);
@@ -206,7 +208,7 @@ public class OthersListener implements Listener {
 
     public static ShapedRecipe getRecipeEnchantedApple() {
         ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_enchanted_apple"), enchanted_golden_apple);
-        rec.shape(new String[] { "ABA", "BCB", "ABA" });
+        rec.shape(new String[]{"ABA", "BCB", "ABA"});
         rec.setIngredient('A', Material.NETHERITE_INGOT);
         rec.setIngredient('B', Material.GOLD_BLOCK);
         rec.setIngredient('C', Material.GOLDEN_APPLE);
@@ -214,14 +216,14 @@ public class OthersListener implements Listener {
     }
 
     @EventHandler
-        public void onCommand(PlayerCommandPreprocessEvent e){
+    public void onCommand(PlayerCommandPreprocessEvent e) {
         if (Main.pluginConfig.getEvents().isUnknowncommand()) {
             if (Bukkit.getHelpMap().getHelpTopic(e.getMessage().split(" ")[0]) == null) {
                 Player p = e.getPlayer();
                 e.setCancelled(true);
-                p.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &7Komenda &f" + e.getMessage().split(" ")[0] + " &7nie istnieje &8<<"));
+                p.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#FF3131Komenda &#FFC42E" + e.getMessage().split(" ")[0] + " &#FF3131nie istnieje &8<<"));
                 if (Main.pluginConfig.getEvents().isBossbarunknowncommand()) {
-                    BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &7Komenda &f" + e.getMessage().split(" ")[0] + " &7nie istnieje &8<<"), BarColor.RED, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
+                    BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &#FF3131Komenda &#FFC42E" + e.getMessage().split(" ")[0] + " &#FF3131nie istnieje &8<<"), BarColor.RED, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
                     bar.addPlayer(p.getPlayer());
                     bar.setProgress(1);
                     int[] bar_color = {0};
@@ -308,7 +310,7 @@ public class OthersListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onClickAbyss(InventoryClickEvent e) {
-        if(e.getCurrentItem() == null) return;
+        if (e.getCurrentItem() == null) return;
         Optional.ofNullable(Abyss.getOpenAbyssMap().get(e.getWhoClicked().getName())).ifPresent(abyss -> abyss.onAbyssClick(e));
     }
 
@@ -392,6 +394,20 @@ public class OthersListener implements Listener {
     }
 
     @EventHandler
+    public void PlayerInteract(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        if (e.getItem() == null) return;
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if (e.getClickedBlock().getType().equals(Material.DRIED_KELP_BLOCK)) {
+                if (e.getItem().getType() != Material.FLINT_AND_STEEL) return;
+                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 150, 50));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, -50));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 2));
+            }
+        }
+    }
+
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         if (Main.pluginConfig.getEvents().isDeathplayerhead()) {
             ZonedDateTime timeZone = TimerApi.getZoneDate("GMT+1");
@@ -399,13 +415,13 @@ public class OthersListener implements Listener {
                 ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
                 SkullMeta meta = (SkullMeta) item.getItemMeta();
                 meta.setOwner(e.getEntity().getName());
-                meta.setDisplayName(Api.fixColor("&6Głowa gracza&8: &a" + e.getEntity().getName()));
-                meta.setLore(Api.fixColor(Arrays.asList("", " &7Data&8: &e" +                         appendDigit(timeZone.getHour()) + ":" +
+                meta.setDisplayName(Api.fixColor("&#f5b042Głowa gracza: &#eef743" + e.getEntity().getName()));
+                meta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Data: &#ffd56c" + appendDigit(timeZone.getHour()) + ":" +
                         appendDigit(timeZone.getMinute()) + ", " +
 
                         appendDigit(timeZone.getDayOfMonth()) + "/" +
                         appendDigit(timeZone.getMonthValue()) + "/" +
-                        appendDigit(timeZone.getYear()) + " ", "", " &7" + e.getEntity().getPlayer().getUniqueId())));
+                        appendDigit(timeZone.getYear()) + " &#ffc942⌚", "", " &#9c9898" + e.getEntity().getPlayer().getUniqueId())));
                 item.setItemMeta((ItemMeta) meta);
                 e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), item);
             }
@@ -419,41 +435,102 @@ public class OthersListener implements Listener {
             if (p.getBedSpawnLocation() == null) {
                 Warp warp = WarpCache.getInstance().get("spawn");
                 if (warp != null) {
-                    e.setRespawnLocation(warp.getLocation());
+                    Location loc = new Location(Bukkit.getWorld("spawn"), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
+                    e.setRespawnLocation(loc);
                 } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma warpa &espawn");
             }
         }
     }
 
+
     @EventHandler
     private void noteRedeem(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (e.getMaterial() != null) {
-            if (e.getMaterial().equals(Material.PAPER)) {
-                ItemStack note = e.getItem();
-                if (note.getItemMeta().getDisplayName().equals(Api.fixColor("&f&lBanknot &8(&7prawy przycisk&8)"))) {
-                    ItemMeta im = note.getItemMeta();
-                    if (!im.hasLore()) {
-                        return;
+        if (e.getMaterial() == Material.PAPER) {
+            if (e.getAction() == Action.RIGHT_CLICK_AIR) {
+                if (e.getHand().equals(EquipmentSlot.HAND)) {
+                    ItemStack itemInHand = p.getItemInHand();
+                    if (itemInHand.getItemMeta().getDisplayName().contains("Banknot gotówki")) {
+                        if (itemInHand.getItemMeta().getEnchantLevel(Enchantment.DURABILITY) == 11) {
+                            if (!itemInHand.getItemMeta().hasLore()) {
+                                return;
+                            }
+                            float amount = Float.parseFloat(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).replace('$', ' ').replace("Wartość:", " "));
+                            Main.getVaultEconomy().depositPlayer(p, (double) amount);
+                            System.out.println(Api.fixColor("[WITHDRAW] &aGracz &e" + p.getName() + " &awplacil banknot o wartosci: &e$" + amount));
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na konto &#FFF88F" + amount + " &#FFC42E$");
+                            p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+                        } else if (itemInHand.getItemMeta().getEnchantLevel(Enchantment.DURABILITY) == 10) {
+                            float amount = Float.parseFloat(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).replace('$', ' ').replace("Wartość:", " "));
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cUżywasz starą wersję gotówki, która jest nie ważna usuń ją pod komendą &e/kosz");
+                            System.out.println(Api.fixColor("[WITHDRAW-EXPIRE] &cGracz &e" + p.getName() + " &cuzywa stara wersje banknotu o wartosci: &e$" + amount));
+                        }
                     }
-                    float amount = Float.parseFloat(ChatColor.stripColor((String)note.getItemMeta().getLore().get(0)).replace('$', ' '));
-                    Main.getVaultEconomy().depositPlayer(p, (double)amount);
-                    System.out.println(Api.fixColor("&8>> &a" + p.getName() + " &7wyplacil banknot o wartosci&8: &e$" + amount));
-                    Api.sendMessage(p,  Main.pluginConfig.getMessages().getPrefix() + "&aWpłaciłeś na konto &6" + amount + "$");
-                    note.setAmount(note.getAmount() - 1);
                 }
+            }
+        } else if (e.getMaterial() == Material.EXPERIENCE_BOTTLE) {
+            if (e.getAction() == Action.RIGHT_CLICK_AIR) {
+                if (e.getHand().equals(EquipmentSlot.HAND)) {
+                    ItemStack itemInHand = p.getItemInHand();
+                    if (itemInHand.getItemMeta().getDisplayName().contains("Butelka doświadczenia")) {
+                        if (itemInHand.getItemMeta().getEnchantLevel(Enchantment.DURABILITY) == 10) {
+                            if (!itemInHand.getItemMeta().hasLore()) {
+                                return;
+                            }
 
+                            int amount = Integer.parseInt(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).replace("lvl", " ").replace("Doświadczenie:", " "). replace(" ", ""));
+                            p.giveExpLevels(amount);
+                            System.out.println(Api.fixColor("[XPBOTTLE] &aGracz &e" + p.getName() + " &awplacil butelke doswiadczenie wartosci levelu: &e" + amount));
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otrzymałeś &#aa42f5" + amount + " lvl &adoświadczenia");
+                            p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+                            e.setCancelled(true);
+                            e.setUseInteractedBlock(Event.Result.DENY);
+                            e.setUseItemInHand(Event.Result.DENY);
+                        }
+                    }
+                }
+            } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                if (e.getHand().equals(EquipmentSlot.HAND)) {
+                    ItemStack itemInHand = p.getItemInHand();
+                    if (itemInHand.getItemMeta().getDisplayName().contains("Butelka doświadczenia")) {
+                        if (itemInHand.getItemMeta().getEnchantLevel(Enchantment.DURABILITY) == 10) {
+                            if (!itemInHand.getItemMeta().hasLore()) {
+                                return;
+                            }
+
+                            int amount = Integer.parseInt(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).replace("lvl", " ").replace("Doświadczenie:", " "). replace(" ", ""));
+                            p.giveExpLevels(amount);
+                            System.out.println(Api.fixColor("[XPBOTTLE] &aGracz &e" + p.getName() + " &awplacil butelke doswiadczenie wartosci levelu: &e" + amount));
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otrzymałeś &#aa42f5" + amount + " lvl &adoświadczenia");
+                            p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+                            e.setCancelled(true);
+                            e.setUseInteractedBlock(Event.Result.DENY);
+                            e.setUseItemInHand(Event.Result.DENY);
+                        }
+                    }
+                }
             }
         }
     }
 
     public static ItemStack makePaper(List<String> lore) {
-        ItemStack is = new ItemStack(Material.PAPER, 1);
-        ItemMeta im = is.getItemMeta();
-        im.setDisplayName(Api.fixColor("&f&lBanknot &8(&7prawy przycisk&8)"));
-        im.setLore(lore);
-        is.setItemMeta(im);
-        return is;
+        ItemStack cash = new ItemApi(Material.PAPER)
+                .setName("&#3dfc49Banknot gotówki")
+                .addEnchant(Enchantment.DURABILITY, 11)
+                .addItemFlag(ItemFlag.HIDE_ENCHANTS)
+                .setLore(Api.fixColor(lore))
+                .getItemStack();
+        return cash;
+    }
+
+    public static ItemStack makeBottle(List<String> lore) {
+        ItemStack xpbottle = new ItemApi(Material.EXPERIENCE_BOTTLE)
+                .setName("&#da42f5Butelka doświadczenia")
+                .addEnchant(Enchantment.DURABILITY, 10)
+                .addItemFlag(ItemFlag.HIDE_ENCHANTS)
+                .setLore(Api.fixColor(lore))
+                .getItemStack();
+        return xpbottle;
     }
 
     @EventHandler
@@ -463,23 +540,23 @@ public class OthersListener implements Listener {
             if (!player.hasPermission("core.place.nether")) {
                 World nether = Bukkit.getWorld("world_nether");
                 if (nether.getName().equalsIgnoreCase(event.getBlock().getWorld().getName())) {
-                    Api.sendActionBar(player, "&8>> &aBlok zniknie za &e50 sekund &8<<");
+                    Api.sendActionBar(player, "&8>> &#f23518Postawiony blok zniknie za &#FDBD0160 sekund &8<<");
                     new BukkitRunnable() {
                         @Override
                         public void run() {
                             event.getBlock().setType(Material.AIR);
                         }
-                    }.runTaskLater(Main.getPlugin(), 20 * 50);
+                    }.runTaskLater(Main.getPlugin(), 20 * 60);
                 } else if (!player.hasPermission("core.place.end")) {
                     World end = Bukkit.getWorld("world_the_end");
                     if (end.getName().equalsIgnoreCase(event.getBlock().getWorld().getName())) {
-                        Api.sendActionBar(player, "&8>> &aBlok zniknie za &e50 sekund &8<<");
+                        Api.sendActionBar(player, "&8>> &#f23518Postawiony blok zniknie za &#FDBD0160 sekund &8<<");
                         new BukkitRunnable() {
                             @Override
                             public void run() {
                                 event.getBlock().setType(Material.AIR);
                             }
-                        }.runTaskLater(Main.getPlugin(), 20 * 50);
+                        }.runTaskLater(Main.getPlugin(), 20 * 60);
                     }
                 }
             }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class WebsiteCommand extends Command {
     public WebsiteCommand() {
-        super("website", "/strona", "", "strona");
+        super("website", "/strona", "", "strona", "itemshop");
     }
 
     @Override
@@ -20,7 +20,7 @@ public class WebsiteCommand extends Command {
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
         if (args.length >= 0) {
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aStrona WWW &e" + Main.pluginConfig.getMessages().getWebsite());
+            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aStrona WWW &#e6cf3c" + Main.pluginConfig.getMessages().getWebsite());
         }
     }
 }

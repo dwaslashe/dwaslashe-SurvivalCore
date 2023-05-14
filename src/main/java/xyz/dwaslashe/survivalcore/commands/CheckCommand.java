@@ -1,6 +1,7 @@
 package xyz.dwaslashe.survivalcore.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,21 +48,21 @@ public class CheckCommand extends Command implements Listener {
                 if (args.length == 1) {
                     if (!checks.contains(s.getName())) {
                         checks.add(s.getName());
-                        Api.sendBroadcast("&c&lSPRAWDZANY &8>> &aGracz &e" + s.getName() + " &ajest sprawdzany przez &e" + p.getName());
-                        Api.sendMessage(s, "&8&m                             ");
-                        Api.sendMessage(s, "&8|");
-                        Api.sendMessage(s, "&8| &c&lJESTEŚ SPRAWDZANY!");
-                        Api.sendMessage(s, "&8| &fLogout &8= &eban 5d");
-                        Api.sendMessage(s, "&8| &fPrzyznanie sie &8= &eban 2d");
-                        Api.sendMessage(s, "&8| &fWykrycie &8= &eban 5d");
-                        Api.sendMessage(s, "&8|");
-                        Api.sendMessage(s, "&8| &c&oPamietaj, aby się słuchać administratora, inaczej zostaniesz ukarany!");
-                        Api.sendMessage(s, "&8|");
-                        Api.sendMessage(s, "&8&m                             ");
+                        Api.sendBroadcast("\n        &#FF3131&lSPRAWDZANY\n \n&8>> &#8dfa52Gracz &#FFC42E" + s.getName() + " &#8dfa52jest sprawdzany przez &#f7482d" + p.getName() + " \n ");
+                        Api.sendMessage(s, "");
+                        Api.sendMessage(s, "        &#FF3131&lJESTEŚ SPRAWDZANY!");
+                        Api.sendMessage(s, "");
+                        Api.sendMessage(s, "&8>> &#E7E7E7Logout &8= &#FFC42Eban 5d");
+                        Api.sendMessage(s, "&8>> &#E7E7E7Przyznanie sie &8= &#FFC42Eban 2d");
+                        Api.sendMessage(s, "&8>> &#E7E7E7Wykrycie &8= &#FFC42Eban 5d");
+                        Api.sendMessage(s, "");
+                        Api.sendMessage(s, "&8>> &#FF3131Pamietaj, aby się słuchać administratora, inaczej zostaniesz ukarany!");
+                        Api.sendMessage(s, "");
 
                         Warp warp = WarpCache.getInstance().get("sprawdzarka");
                         if (warp != null) {
-                            s.teleport(warp.getLocation());
+                            Location loc = new Location(Bukkit.getWorld("spawn"), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
+                            s.teleport(loc);
                         } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma ustawionej lokalizacji &esprawdzarki");
 
                         (new BukkitRunnable() {

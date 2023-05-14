@@ -8,8 +8,8 @@ import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_19_R2.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R3.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import xyz.dwaslashe.survivalcore.Main;
@@ -115,6 +115,47 @@ public class Api {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public static void setTotalExperience(final Player player, final int exp) {
+        if (exp < 0) {
+            throw new IllegalArgumentException("Experience is negative!");
+        }
+        player.setExp(0);
+        player.setLevel(0);
+        player.setTotalExperience(0);
+
+        //This following code is technically redundant now, as bukkit now calulcates levels more or less correctly
+        //At larger numbers however... player.getExp(3000), only seems to give 2999, putting the below calculations off.
+        int amount = exp;
+        while (amount > 0) {
+            final int expToLevel = getExpAtLevel(player);
+            amount -= expToLevel;
+            if (amount >= 0) {
+                // give until next level
+                player.giveExp(expToLevel);
+            } else {
+                // give the rest
+                amount += expToLevel;
+                player.giveExp(amount);
+                amount = 0;
+            }
+        }
+    }
+
+    private static int getExpAtLevel(final Player player) {
+        return getExpAtLevel(player.getLevel());
+    }
+
+    public static int getExpAtLevel(final int level) {
+        if (level <= 15) {
+            return (2 * level) + 7;
+        }
+        if ((level >= 16) && (level <= 30)) {
+            return (5 * level) - 38;
+        }
+        return (9 * level) - 158;
+
     }
 
     public static List<String> startsWith(List<String> subcommands, String start) {

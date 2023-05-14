@@ -39,6 +39,9 @@ public class User {
     @Value(key = "chat", type = "INT(16)")
     private int chat;
 
+    @Value(key = "msgbossbar", type = "INT(16)")
+    private int msgbossbar;
+
     public User(UUID uuid) {
         this.uuid = uuid;
     }
@@ -54,6 +57,7 @@ public class User {
             this.deaths = resultSet.getInt("deaths");
             this.discordchat = resultSet.getInt("discordchat");
             this.chat = resultSet.getInt("chat");
+            this.msgbossbar = resultSet.getInt("msgbossbar");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -141,6 +145,16 @@ public class User {
 
     public void setChat(int chat) {
         this.chat = chat;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    //Msg BossBar
+    public int getMsgbossbar() {
+        return msgbossbar;
+    }
+
+    public void setMsgbossbar(int msgbossbar) {
+        this.msgbossbar = msgbossbar;
         UserCache.getInstance().getToUpdate().add(this);
     }
 }

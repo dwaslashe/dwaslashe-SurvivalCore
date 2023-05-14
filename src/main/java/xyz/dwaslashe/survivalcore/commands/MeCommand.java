@@ -30,7 +30,6 @@ public class MeCommand extends Command {
                 return;
             }
             CooldownManager.addColdown(p, "3s");
-            String msg = "";
             Api.sendBroadcast("&7* " + p.getName() + " &f" + StringUtils.join(args, " ", 0, args.length));
 
         } else if (args.length == 0) {

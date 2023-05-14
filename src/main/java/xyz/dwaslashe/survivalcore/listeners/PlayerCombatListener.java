@@ -1,5 +1,6 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
+import com.destroystokyo.paper.event.player.PlayerTeleportEndGatewayEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -97,7 +98,7 @@ public class PlayerCombatListener implements Listener {
     }
 
     @EventHandler
-    public void onCommand(PlayerPortalEvent e) {
+    public void onTeleport(PlayerTeleportEndGatewayEvent e) {
         Logout logout = Logout.get(e.getPlayer());
         if (logout.getTime() > System.currentTimeMillis()) {
             Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wejść do portalu podczas walki!");
@@ -170,7 +171,7 @@ public class PlayerCombatListener implements Listener {
         Logout logout = Logout.get(e.getPlayer());
         if (logout.getTime() > System.currentTimeMillis()) {
             e.getPlayer().setHealth(0.0D);
-            e.setQuitMessage(Api.fixColor("&#FF3131&lANTY-LOGOUT &8>> &7Gracz &f" + e.getPlayer().getDisplayName() + " &7wylogował się podczas walki! Ostatni atakujący to &f" + (logout.getAttacker() != null && logout.getAttacker().isOnline() ? logout.getAttacker().getName() : "Nie wiadomo kto")));
+            e.setQuitMessage(Api.fixColor("\n        &#FF3131&lANTY-LOGOUT \n \n&8» &#8dfa52Gracz &#FFC42E" + e.getPlayer().getDisplayName() + " &#8dfa52wylogował się podczas walki!\n&8» &#8dfa52Ostatni atakujący to &#f7482d" + (logout.getAttacker() != null && logout.getAttacker().isOnline() ? logout.getAttacker().getName() : "Nie wiadomo kto") + "\n"));
             logout.remove();
         }
 

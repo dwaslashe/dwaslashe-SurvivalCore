@@ -84,6 +84,7 @@ public class PluginConfig extends OkaeriConfig {
         private String ip = " <#39ff14>svCore</#32a852>";
         private String prefix = " &8>> &7";
         private String discord = "dc.wywrotkamc.pl";
+        private String tiktok = "www.tiktok.com/@dwaslashe";
         private String website = "www.wywrotkamc.pl";
         private String server = "wywrotkamc.pl";
         private String data = "18.02.2022";
@@ -94,6 +95,7 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Events extends OkaeriConfig {
 
+        private boolean dragonlevel = true;
         private boolean bossbarinfospawn = true;
         private boolean lavagrieffing = true;
         private boolean tabcomplete = true;
@@ -139,6 +141,10 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Commands extends OkaeriConfig {
 
+        private boolean world = true;
+        private boolean tiktok = true;
+        private boolean xpbottle = true;
+        private boolean withdraw = true;
         private boolean physics = true;
         private boolean broadcast = true;
         private boolean enchant = true;
@@ -199,11 +205,10 @@ public class PluginConfig extends OkaeriConfig {
         private boolean reward = true;
         private boolean ping = true;
         private boolean godmod = true;
-        private boolean marketaliases = false;
         private boolean magnet = false;
         private boolean check = true;
-        private boolean lifestealaliases = false;
         private boolean pracealiases = false;
+        private boolean playerwarp = false;
     }
 
     //Auto Tasks

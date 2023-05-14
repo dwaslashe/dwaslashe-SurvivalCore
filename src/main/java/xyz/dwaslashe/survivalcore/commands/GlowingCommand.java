@@ -90,7 +90,7 @@ public class GlowingCommand extends Command {
                 inventoryHelper.setColor(itemStack, Color.PURPLE);
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#FF10F0Jasno fioletowy"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FFC42EAktywne&8: &a", "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &a", "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
                 });
             });
             inventoryHelper.click(e -> {

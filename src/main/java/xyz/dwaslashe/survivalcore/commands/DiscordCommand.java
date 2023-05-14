@@ -19,6 +19,6 @@ public class DiscordCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aLink do naszego discorda &b" + Main.pluginConfig.getMessages().getDiscord());
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aLink do naszego discorda &#7289da" + Main.pluginConfig.getMessages().getDiscord());
     }
 }

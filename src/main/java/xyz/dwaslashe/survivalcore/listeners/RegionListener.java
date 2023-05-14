@@ -17,10 +17,10 @@ public class RegionListener implements Listener {
 
     @EventHandler
     public void onRegionEntered(RegionEnteredEvent e) {
-        if (e.getRegion().getId().contains("afk")) {
+        if (e.getRegion().getId().contains("afk") && !e.getPlayer().isInsideVehicle()) {
             afk.add(e.getPlayer().getUniqueId());
             Main.getPlugin().getServer().getScheduler().runTaskTimer(Main.getPlugin(), () -> {
-                if (afk.contains(e.getPlayer().getUniqueId())) {
+                if (afk.contains(e.getPlayer().getUniqueId()) && !e.getPlayer().isInsideVehicle()) {
                     Api.sendActionBar(e.getPlayer(), "&8>> &#39FF14Obecnie jesteś w strefie afk, co minute dostajesz &#FFF88F2 &#FFC42E$ &8<<");
                 }
             }, 20, 20);
@@ -28,7 +28,7 @@ public class RegionListener implements Listener {
             (new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (afk.contains(e.getPlayer().getUniqueId())) {
+                    if (afk.contains(e.getPlayer().getUniqueId()) && !e.getPlayer().isInsideVehicle()) {
                         PlayerQuitListener.LocYaw.remove(e.getPlayer().getUniqueId());
                         e.getPlayer().sendTitle(Api.fixColor("&#F23D07&lAFK"), Api.fixColor("&8>> &aZa spędzenie minuty w strefie afk dosałeś &#FFF88F2 &#FFC42E$&a! &8<<"));
                         e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_BOTTLE_THROW, 10, 10);

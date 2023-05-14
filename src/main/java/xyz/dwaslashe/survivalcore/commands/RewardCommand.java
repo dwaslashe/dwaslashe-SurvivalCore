@@ -35,7 +35,7 @@ public class RewardCommand extends Command implements Listener {
     private void openGui(int guiID, Player player) {
         //0
         if (guiID == 0) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Lista Rang", 4);
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "Nagrody", 4);
 
             ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
@@ -50,15 +50,15 @@ public class RewardCommand extends Command implements Listener {
                     itemMeta.setDisplayName(Api.fixColor("&#0eab5dNagroda za polubienie Serwery-Minecraft"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             " ",
-                            " &#39FF14Aby dostać nagrodę musisz polubić serwer",
-                            " &#39FF14na stronie &#FFF01Fhttps://serwery-minecraft.pl/serwer/1870-wywrotkamc-pl",
-                            " &#39FF14pomaga nam to w &#39FF14&nrozwoju serwera!",
+                            " &#E7E7E7Aby dostać nagrodę musisz polubić serwer",
+                            " &#E7E7E7na stronie &#FFF01Fhttps://serwery-minecraft.pl/serwer/1870-wywrotkamc-pl",
+                            " &#E7E7E7pomaga nam to w rozwoju serwera!",
                             "",
-                            " &6&l ⭐ &#FFF01FNagroda:",
+                            " &6&l⭐ &#FFF01FNagroda:",
                             "",
-                            " &6&lAntyczny Klucz!",
+                            " &#E7E7E7- 1x Antyczny klucz!",
                             "",
-                            " &#FBFD8C&nKliknij aby polubić"
+                            " &#FBFD8C&nKliknij aby polubić!"
                     )));
                 });
             });
@@ -70,15 +70,15 @@ public class RewardCommand extends Command implements Listener {
                     itemMeta.setDisplayName(Api.fixColor("&#008443Nagroda za polubienie McList"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             " ",
-                            " &#39FF14Aby dostać nagrodę musisz polubić serwer",
-                            " &#39FF14na stronie &#FFF01Fhttps://mclist.pl/serwer/" + Main.pluginConfig.getMessages().getServer(),
-                            " &#39FF14pomaga nam to w &#39FF14&nrozwoju serwera!",
+                            " &#E7E7E7Aby dostać nagrodę musisz polubić serwer",
+                            " &#E7E7E7na stronie &#FFF01Fhttps://mclist.pl/serwer/" + Main.pluginConfig.getMessages().getServer(),
+                            " &#E7E7E7pomaga nam to w rozwoju serwera!",
                             "",
-                            " &6&l ⭐ &#FFF01FNagroda:",
+                            " &6&l⭐ &#FFF01FNagroda:",
                             "",
-                            " &6&lAntyczny Klucz!",
+                            " &#E7E7E7- 1x Antyczny klucz!",
                             "",
-                            " &#FBFD8C&nKliknij aby polubić"
+                            " &#FBFD8C&nKliknij aby polubić!"
                     )));
                 });
             });
@@ -90,15 +90,15 @@ public class RewardCommand extends Command implements Listener {
                     itemMeta.setDisplayName(Api.fixColor("&#7289daNagroda za wejście na Discord"));
                     itemMeta.setLore(Api.fixColor(Arrays.asList(
                             " ",
-                            " &#39FF14Aby dostać nagrode musisz wejśc na serwerowy",
-                            " &#39FF14discord &#21F8F6" + Main.pluginConfig.getMessages().getDiscord(),
-                            " &#39FF14i napisać na kanale &#FFF01F#nagroda&#39FF14 swój nick!",
+                            " &#E7E7E7Aby dostać nagrode musisz wejśc na serwerowy",
+                            " &#E7E7E7discord &#21F8F6" + Main.pluginConfig.getMessages().getDiscord(),
+                            " &#E7E7E7i napisać na kanale &#FFF01F#nagroda&#E7E7E7 swój nick!",
                             "",
-                            " &6&l ⭐ &#FFF01FNagroda:",
+                            " &6&l⭐ &#FFF01FNagroda:",
                             "",
-                            " &#FFFF00&lStarożytny Klucz!",
+                            " &#E7E7E7- 1x Starożytny klucz!",
                             "",
-                            " &#FBFD8C&nKliknij aby wejśc na discord"
+                            " &#FBFD8C&nKliknij aby wejśc na discord!"
                     )));
                 });
             });
@@ -125,11 +125,11 @@ public class RewardCommand extends Command implements Listener {
                 }
             });
 
-                inventoryHelper.setItemRange(0, 36, glass_black);
-                inventoryHelper.setItem(31, back);
-                inventoryHelper.setItem(11, sm);
-                inventoryHelper.setItem(13, mclist);
-                inventoryHelper.setItem(15, discord);
+            inventoryHelper.setItemRange(0, 36, glass_black);
+            inventoryHelper.setItem(31, back);
+            inventoryHelper.setItem(11, sm);
+            inventoryHelper.setItem(13, mclist);
+            inventoryHelper.setItem(15, discord);
 
             inventoryHelper.open(player);
         }

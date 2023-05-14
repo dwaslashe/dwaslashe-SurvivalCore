@@ -1,5 +1,7 @@
 package xyz.dwaslashe.survivalcore.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.Main;
@@ -31,11 +33,12 @@ public class SpawnCommand extends Command {
                 Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie ma stworzonego spawna!");
                 return;
             }
+            Location loc = new Location(Bukkit.getWorld("spawn"), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
             if (player.hasPermission("core.command.admin")) {
-                player.teleport(warp.getLocation());
+                player.teleport(loc);
                 Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na &espawn");
             } else {
-                TeleportManager.teleport(player, 5, warp.getLocation());
+                TeleportManager.teleport(player, 5, loc);
             }
         }
     }

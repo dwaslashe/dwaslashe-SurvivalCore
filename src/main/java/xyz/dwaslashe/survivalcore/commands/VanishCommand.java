@@ -39,10 +39,10 @@ public class VanishCommand extends Command implements Listener {
         if (args.length == 0) {
             if (vanishObject.isEnable()) {
                 vanishObject.setEnable(false);
-                Api.sendActionBar(player, "&8>> &cVanish został wyłączony &8<<");
+                Api.sendActionBar(player, "&8>> &#f00c0cVanish został wyłączony &8<<");
             } else {
                 vanishObject.setEnable(true);
-                Api.sendActionBar(player, "&8>> &aVanish został włączony &8<<");
+                Api.sendActionBar(player, "&8>> &#39FF14Vanish został włączony &8<<");
             }
         } else if(args.length == 2){
             player = Bukkit.getPlayer(args[1]);
@@ -284,7 +284,7 @@ public class VanishCommand extends Command implements Listener {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 VanishObject vanishObject = VanishObject.get(player);
                 if(vanishObject.isEnable()){
-                    Api.sendActionBar(player, "&8>> &aVanish jest uruchomiony &8<<");
+                    Api.sendActionBar(player, "&8>> &#39FF14Vanish jest uruchomiony &8<<");
 
                 }
             });

@@ -1,6 +1,8 @@
 package xyz.dwaslashe.survivalcore.commands;
 
 import lombok.SneakyThrows;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -42,11 +44,12 @@ public class WarpCommand extends Command implements Listener {
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cTen warp jest zablokowany!");
                 return;
             }
+            Location loc = new Location(Bukkit.getWorld("spawn"), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
             if (p.hasPermission("core.command.admin")) {
-                p.teleport(warp.getLocation());
+                p.teleport(loc);
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na &e" + args[0]);
             } else {
-                TeleportManager.teleport(p, 5, warp.getLocation());
+                TeleportManager.teleport(p, 5, loc);
             }
 
         } else if (args.length == 2 && args[0].equalsIgnoreCase("set") && sender.hasPermission("core.command.admin")) {

@@ -6,33 +6,34 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import xyz.dwaslashe.survivalcore.Main;
-import xyz.dwaslashe.survivalcore.helpers.DiscordHelper;
 import xyz.dwaslashe.survivalcore.utils.Api;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.Date;
 
 public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         Player p = e.getEntity().getPlayer();
+        Player killer = e.getEntity().getKiller();
         e.setDeathMessage(null);
         if (Main.pluginConfig.getEvents().isDeathmessage()) {
-            for (Player all : Bukkit.getOnlinePlayers()) {
-                if (e.getEntity().getKiller() instanceof Player) {
-                    Player killer = e.getEntity().getKiller();
-                    Api.sendDeathNotify(all, Main.pluginConfig.getMessages().getPrefix() + "&#ff6e6eGracz &#FFF01F{PLAYER} &#ff6e6ezostał zabity przez &#39FF14{KILLER} ({HEALTH-K}❤)"
-                            .replace("{PLAYER}", p.getDisplayName())
-                            .replace("{KILLER}", killer.getDisplayName())
-                            .replace("{HEALTH-K}", Math.round(killer.getHealth()) + "")
-                            .replace("{HEALTH-P}", Math.round(p.getHealth()) + ""));
-                } else {
-                    Api.sendDeathNotify(all, Main.pluginConfig.getMessages().getPrefix() + "&#FFF01F{PLAYER} &#ff6e6eumarł".replace("{PLAYER}", p.getDisplayName()));
-
-                }
+            if (killer instanceof Player) {
+                p.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &cUmarłeś przez &e" + killer.getName() + " &8<<"));
+                killer.sendTitle(Api.fixColor("#85fc23&lZABIŁEŚ"), Api.fixColor("&8>> &aZabiłeś gracza &e" + p.getName() + " &8<<"));
+            } else {
+                p.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &cUmarłeś. &8<<"));
             }
+
+            //for (Player all : Bukkit.getOnlinePlayers()) {
+            //    if (e.getEntity().getKiller() instanceof Player) {
+            //        Api.sendDeathNotify(all, Main.pluginConfig.getMessages().getPrefix() + "&#ff6e6eGracz &#FFF01F{PLAYER} &#ff6e6ezostał zabity przez &#39FF14{KILLER} ({HEALTH-K}❤)"
+            //                .replace("{PLAYER}", p.getDisplayName())
+            //                .replace("{KILLER}", killer.getDisplayName())
+            //                .replace("{HEALTH-K}", Math.round(killer.getHealth()) + "")
+            //                .replace("{HEALTH-P}", Math.round(p.getHealth()) + ""));
+            //    } else {
+            //        Api.sendDeathNotify(all, Main.pluginConfig.getMessages().getPrefix() + "&#FFF01F{PLAYER} &#ff6e6eumarł".replace("{PLAYER}", p.getDisplayName()));
+            //    }
+            //}
         }
     }
 }

@@ -23,6 +23,6 @@ public class LocationParser implements ItemSerializer<Location> {
 
     @Override
     public String deserialize(Location location) {
-        return location.getWorld().getName() + "_" + location.getX() + "_" + location.getY() + "_" + location.getZ() + "_" + location.getPitch() + "_" + location.getYaw();
+        return location.getWorld().getName() + "_" + location.getX() + "_" + location.getY() + "_" + location.getZ() + "_" + location.getYaw() + "_" + location.getPitch();
     }
 }
