@@ -23,8 +23,7 @@ public class WorldCommand extends Command {
         if (args.length == 0) {
             List<World> worlds = Bukkit.getWorlds();
             World spawn = Bukkit.getWorlds().stream().filter(world -> world.getName().equals("spawn")).findAny().orElse(null);
-            System.out.println(spawn);
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aObecnie znajdujesz się na świecie &e" + p.getWorld().getName() + "&a, lista dostępnych światów &e" + worlds);
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aObecnie znajdujesz się na świecie &e" + p.getWorld().getName() + "&a, lista dostępnych światów &e" + worlds.iterator());
         } else if (args.length == 1) {
             World world = Bukkit.getWorld(args[0]);
             if (world != null) {

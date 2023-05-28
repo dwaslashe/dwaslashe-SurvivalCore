@@ -141,6 +141,7 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Commands extends OkaeriConfig {
 
+        private boolean elytragive = true;
         private boolean world = true;
         private boolean tiktok = true;
         private boolean xpbottle = true;

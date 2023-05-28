@@ -7,14 +7,11 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -88,38 +85,6 @@ public class DragonLevelListener implements Listener {
     }
 
     @EventHandler
-    public void onSwapItem(PlayerSwapHandItemsEvent event) {
-        Player player = (Player) event.getPlayer();
-        ItemStack item = event.getMainHandItem();
-        if (item == null || item.getItemMeta() == null) return;
-        String owner = (item.getItemMeta().getLore().get(1)).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", "");
-        if (item.getType() == Material.ELYTRA && item.hasItemMeta()) {
-            if (player.getGameMode() == GameMode.SURVIVAL) {
-                if (!player.getName().equalsIgnoreCase(owner)) {
-                    event.setCancelled(true);
-                    player.sendMessage(Api.fixColor(" &8>> &cNie możesz użyć tej elytry bo nie jest twoja!"));
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onSwapItem2(PlayerSwapHandItemsEvent event) {
-        Player player = (Player) event.getPlayer();
-        ItemStack item = event.getOffHandItem();
-        if (item == null || item.getItemMeta() == null) return;
-        String owner = (item.getItemMeta().getLore().get(1)).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", "");
-        if (item.getType() == Material.ELYTRA && item.hasItemMeta()) {
-            if (player.getGameMode() == GameMode.SURVIVAL) {
-                if (!player.getName().equalsIgnoreCase(owner)) {
-                    event.setCancelled(true);
-                    player.sendMessage(Api.fixColor(" &8>> &cNie możesz użyć tej elytry bo nie jest twoja!"));
-                }
-            }
-        }
-    }
-
-    @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         ItemStack item = event.getCurrentItem();
@@ -134,6 +99,7 @@ public class DragonLevelListener implements Listener {
             }
         }
     }
+
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -164,7 +130,14 @@ public class DragonLevelListener implements Listener {
         int level = dragonLevel.getLevel();
         ItemMeta itemMeta = item.getItemMeta();
         String ownerName = owner.getName();
-        itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Właściciel: &#9DF89F" + ownerName, " &#E7E7E7Poziom: &d" + level)));
+        itemMeta.setLore(Api.fixColor(Arrays.asList(
+                "",
+                " &#E7E7E7Właściciel: &#9DF89F" + ownerName,
+                " &#E7E7E7Poziom: &d" + level,
+                "",
+                " &#fa3d28Elytra może być używana przez gracza",
+                " &#fa3d28który po zabiciu smoka pierwszy raz",
+                " &#fa3d28ją podniesie!")));
         item.setItemMeta(itemMeta);
     }
 }

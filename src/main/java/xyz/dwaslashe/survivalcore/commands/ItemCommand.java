@@ -53,6 +53,12 @@ public class ItemCommand extends Command {
                             p.setItemInHand(new ItemApi(p.getItemInHand()).setLore(new ArrayList()).getItemStack());
                             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aOpis przedmiotu został usuniety");
                             return;
+                        } else if (args[1].contains(p.getName())) {
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego zrobić");
+                            return;
+                        } else if (args[2].contains(p.getName())) {
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego zrobić");
+                            return;
                         } else {
                             if (p.getItemInHand() != null) {
                                 String[] texts = StringUtils.join(args, " ", 1, args.length).replace("||", "4414").split("4414");

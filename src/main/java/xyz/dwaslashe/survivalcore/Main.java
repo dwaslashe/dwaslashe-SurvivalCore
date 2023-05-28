@@ -340,6 +340,7 @@ public class Main extends JavaPlugin {
         CommandManager.register(new XPBottleCommand(), pluginConfig.getCommands().isXpbottle());
         CommandManager.register(new TikTokCommand(), pluginConfig.getCommands().isTiktok());
         CommandManager.register(new WorldCommand(), pluginConfig.getCommands().isWorld());
+        CommandManager.register(new ElytraGiveCommand(), pluginConfig.getCommands().isElytragive());
     }
 
     public void loadTasks() {

@@ -27,9 +27,7 @@ public class RewardCommand extends Command implements Listener {
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        if (args.length >= 0) {
-            openGui(0, p);
-        }
+        openGui(0, p);
     }
 
     private void openGui(int guiID, Player player) {

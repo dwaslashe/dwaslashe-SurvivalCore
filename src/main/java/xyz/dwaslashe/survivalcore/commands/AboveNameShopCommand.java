@@ -311,8 +311,8 @@ public class AboveNameShopCommand extends Command {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setOwner(player.getName());
-                    itemMeta.setDisplayName(Api.fixColor("&#FFF01FInformacja"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#39FF14Tytuł to jest napis, który pojawia się", " &#39FF14nad twoim nickiem. ")));
+                    itemMeta.setDisplayName(Api.fixColor("&#92f734Informacja"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Tytuł to jest napis, który pojawia się", " &#E7E7E7nad twoim nickiem i widzą tylko inni gracze")));
                 });
             });
 

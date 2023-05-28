@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerTeleportEndGatewayEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
@@ -94,15 +95,6 @@ public class PlayerCombatListener implements Listener {
                 Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz latać podczas walki!");
                 e.setCancelled(true);
             }
-        }
-    }
-
-    @EventHandler
-    public void onTeleport(PlayerTeleportEndGatewayEvent e) {
-        Logout logout = Logout.get(e.getPlayer());
-        if (logout.getTime() > System.currentTimeMillis()) {
-            Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wejść do portalu podczas walki!");
-            e.setCancelled(true);
         }
     }
 

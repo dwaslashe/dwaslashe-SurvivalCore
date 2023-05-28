@@ -18,9 +18,7 @@ public class SidebarCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        if (args.length >= 0) {
-            Player player = (Player)sender;
-            player.chat("/sb");
-        }
+        Player player = (Player)sender;
+        player.chat("/sb");
     }
 }
