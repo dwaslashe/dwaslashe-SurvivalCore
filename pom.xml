@@ -9,7 +9,7 @@
 
     <groupId>xyz.dwaslashe</groupId>
     <artifactId>dwaslashe-SurvivalCore</artifactId>
-    <version>0.0.9-stable</version>
+    <version>0.1.0-stable</version>
 
     <repositories>
         <repository>
@@ -65,24 +65,15 @@
     </pluginRepositories>
 
     <dependencies>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.63.Final</version>
-        </dependency>
 
         <!--
         Net Kyori
         -->
+
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
-            <version>4.12.0</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.2.0</version>
+            <version>4.14.0</version>
         </dependency>
 
         <!--
@@ -94,7 +85,7 @@
             <artifactId>paper</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/purpur-1.19.4.jar</systemPath>
+            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/purpur-1.20.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.mojang</groupId>
@@ -124,6 +115,27 @@
             <scope>system</scope>
             <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/item-nbt-api-plugin-2.9.2.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>net.saidora</groupId>
+            <artifactId>Economy</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/original-EconomyManager-0.0.1-stable.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.saidora</groupId>
+            <artifactId>Ether-API</artifactId>
+            <version>0.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/API (2).jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.minecodes</groupId>
+            <artifactId>minePlots</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/minePlots-4.0.4-public.jar</systemPath>
+        </dependency>
 
         <!--
         <dependency>
@@ -141,13 +153,13 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

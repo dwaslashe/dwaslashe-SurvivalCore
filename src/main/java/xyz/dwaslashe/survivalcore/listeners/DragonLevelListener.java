@@ -22,6 +22,7 @@ import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.ItemApi;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class DragonLevelListener implements Listener {
 
@@ -89,7 +90,11 @@ public class DragonLevelListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack item = event.getCurrentItem();
         if (item == null || item.getItemMeta() == null || item.getItemMeta().getLore() == null) return;
-        String owner = item.getItemMeta().getLore().get(1).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", "");
+
+        List<String> lore = item.getItemMeta().getLore();
+        if (lore.size() < 2) return;
+
+        String owner = ChatColor.stripColor(lore.get(1).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", ""));
         if (item.getType() == Material.ELYTRA && item.hasItemMeta()) {
             if (player.getGameMode() == GameMode.SURVIVAL) {
                 if (!player.getName().equalsIgnoreCase(owner)) {
@@ -105,12 +110,15 @@ public class DragonLevelListener implements Listener {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
         if (item == null || item.getItemMeta() == null || item.getItemMeta().getLore() == null) return;
-        String owner = item.getItemMeta().getLore().get(1).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", "");
-        if (item.getType() == Material.ELYTRA) {
-            if (player.getGameMode() == GameMode.SURVIVAL) {
-                if (!player.getName().equalsIgnoreCase(owner)) {
-                    event.setCancelled(true);
-                    player.sendMessage(Api.fixColor(" &8>> &cNie możesz użyć tej elytry bo nie jest twoja!"));
+        List<String> lore = item.getItemMeta().getLore();
+        if (lore.size() > 1) {
+            String owner = lore.get(1).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", "");
+            if (item.getType() == Material.ELYTRA) {
+                if (player.getGameMode() == GameMode.SURVIVAL) {
+                    if (!player.getName().equalsIgnoreCase(owner)) {
+                        event.setCancelled(true);
+                        player.sendMessage(Api.fixColor(" &8>> &cNie możesz użyć tej elytry bo nie jest twoja!"));
+                    }
                 }
             }
         }

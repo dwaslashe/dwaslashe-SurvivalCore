@@ -1,10 +1,8 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
-import com.destroystokyo.paper.event.player.PlayerTeleportEndGatewayEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
@@ -16,6 +14,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import pl.minecodes.plots.api.event.entry.PrePlotEntryEvent;
+import pl.minecodes.plots.api.event.leave.PrePlotLeaveEvent;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.objects.Logout;
 import xyz.dwaslashe.survivalcore.utils.Api;
@@ -44,6 +44,10 @@ public class PlayerCombatListener implements Listener {
         if (e.getEntity() instanceof Player && !e.isCancelled() && (e.getDamager() instanceof Player)) {
             Logout logout = Logout.get(((Player) e.getDamager()).getPlayer());
             Logout logout_damager = Logout.get(((Player) e.getEntity()).getPlayer());
+
+            ((Player) e.getDamager()).getPlayer().setFlying(false);
+            ((Player) e.getEntity()).getPlayer().setFlying(false);
+
             logout.setTime("20s");
             logout_damager.setTime("20s");
             if (e.getDamager() instanceof Player) {
@@ -58,8 +62,13 @@ public class PlayerCombatListener implements Listener {
             if (e.getDamager() instanceof Player) {
                 Logout logout = Logout.get(((Player) e.getDamager()).getPlayer());
                 Logout logout_damager = Logout.get(((Player) e.getEntity()).getPlayer());
+
+                ((Player) e.getDamager()).getPlayer().setFlying(false);
+                ((Player) e.getEntity()).getPlayer().setFlying(false);
+
                 logout.setTime("20s");
                 logout_damager.setTime("20s");
+
                 if (e.getDamager() instanceof Player) {
                     logout.setAttacker(((Player) e.getDamager()).getPlayer());
                     logout_damager.setAttacker(((Player) e.getDamager()).getPlayer());
@@ -121,6 +130,28 @@ public class PlayerCombatListener implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onEnterPlot(PrePlotEntryEvent event) {
+        Logout logout = Logout.get(event.getPlayer());
+        Player player = event.getPlayer();
+        if (logout.getTime() > System.currentTimeMillis()) {
+            Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cTen region jest niedostępny podczas walki!");
+            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onLeavePlot(PrePlotLeaveEvent event) {
+        Logout logout = Logout.get(event.getPlayer());
+        Player player = event.getPlayer();
+        if (logout.getTime() > System.currentTimeMillis()) {
+            Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cTen region jest niedostępny podczas walki!");
+            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
+            event.setCancelled(true);
         }
     }
 

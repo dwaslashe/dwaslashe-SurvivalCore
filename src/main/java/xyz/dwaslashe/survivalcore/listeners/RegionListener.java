@@ -1,5 +1,6 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
+import net.saidora.economy.manager.UserManager;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +22,7 @@ public class RegionListener implements Listener {
             afk.add(e.getPlayer().getUniqueId());
             Main.getPlugin().getServer().getScheduler().runTaskTimer(Main.getPlugin(), () -> {
                 if (afk.contains(e.getPlayer().getUniqueId()) && !e.getPlayer().isInsideVehicle()) {
-                    Api.sendActionBar(e.getPlayer(), "&8>> &#39FF14Obecnie jesteś w strefie afk, co minute dostajesz &#FFF88F2 &#FFC42E$ &8<<");
+                    Api.sendActionBar(e.getPlayer(), "&8>> <#39FF14>Obecnie jesteś w strefie afk, co minute dostajesz <#FFF88F>2 <#FFC42E>$ &8<<");
                 }
             }, 20, 20);
 
@@ -32,7 +33,9 @@ public class RegionListener implements Listener {
                         PlayerQuitListener.LocYaw.remove(e.getPlayer().getUniqueId());
                         e.getPlayer().sendTitle(Api.fixColor("&#F23D07&lAFK"), Api.fixColor("&8>> &aZa spędzenie minuty w strefie afk dosałeś &#FFF88F2 &#FFC42E$&a! &8<<"));
                         e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_BOTTLE_THROW, 10, 10);
-                        Main.getVaultEconomy().depositPlayer(e.getPlayer(), 2);
+                        UserManager.getInstance().getUser(e.getPlayer()).ifPresent(user -> {
+                            user.deposit(2);
+                        });
                     } else {
                         this.cancel();
                     }

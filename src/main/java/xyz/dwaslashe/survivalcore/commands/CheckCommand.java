@@ -61,7 +61,7 @@ public class CheckCommand extends Command implements Listener {
 
                         Warp warp = WarpCache.getInstance().get("sprawdzarka");
                         if (warp != null) {
-                            Location loc = new Location(Bukkit.getWorld("spawn"), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
+                            Location loc = new Location(Bukkit.getServer().getWorld(warp.getLocation().getWorld().getKey()), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
                             s.teleport(loc);
                         } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma ustawionej lokalizacji &esprawdzarki");
 
@@ -69,7 +69,7 @@ public class CheckCommand extends Command implements Listener {
                             @Override
                             public void run() {
                                 if (checks.contains(s.getName())) {
-                                    Api.sendActionBar(s, "&8>> &cJestes sprawdzany przez &e" + p.getName() + " &8<<");
+                                    Api.sendActionBar(s, "&8>> <#f00c0c>Jestes sprawdzany przez <#FDBD01>" + p.getName() + " &8<<");
                                 } else {
                                     this.cancel();
                                 }

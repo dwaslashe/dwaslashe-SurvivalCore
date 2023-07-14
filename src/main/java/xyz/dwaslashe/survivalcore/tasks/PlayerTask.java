@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.listeners.OthersListener;
+import xyz.dwaslashe.survivalcore.objects.Logout;
 import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.RegionApi;
@@ -28,7 +29,7 @@ public class PlayerTask extends BukkitRunnable {
     }
 
     public PlayerTask(Main plugin) {
-        runTaskTimer(plugin, 0, 20);
+        runTaskTimer(plugin, 0, 1);
     }
 
     //protected static BossBar bar = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID, new BarFlag[0]);
@@ -56,6 +57,12 @@ public class PlayerTask extends BukkitRunnable {
                 bar.setTitle(PlaceholderAPI.setPlaceholders(player, Api.fixColor("&#FFC42E" + toUpperFirstCharacter(region.getId()).replace("_", " ") + " &8/ &#D3D3D3⌚ &#FBFFFF%world_time_world%")));
             } else bar.removePlayer(player);
 
+
+            Logout logout = Logout.get(player);
+            if (logout.getTime() > System.currentTimeMillis()) {
+                if (player.hasPermission("core.command.admin")) return;
+                player.setFlying(false);
+            }
         });
     }
 }

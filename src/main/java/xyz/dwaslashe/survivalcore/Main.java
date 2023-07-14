@@ -8,8 +8,6 @@ import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -17,7 +15,6 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -49,36 +46,8 @@ import java.util.*;
 @Getter @Setter
 public class Main extends JavaPlugin {
 
-    private static Economy vaultEconomy;
     public boolean placeholder = false;
 
-    private BukkitAudiences audience;
-
-    public BukkitAudiences getAudience() {
-        return audience;
-    }
-
-    public static Economy getVaultEconomy() {
-        return Main.vaultEconomy;
-    }
-
-    private boolean isVaultLoaded() {
-        return Bukkit.getPluginManager().isPluginEnabled("Vault");
-    }
-
-    private boolean setupVault() {
-        try {
-            RegisteredServiceProvider<Economy> economy = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-            if (economy == null)
-                throw new Throwable("Vault's Economy provider is not available");
-            vaultEconomy = economy.getProvider();
-            return true;
-        } catch (Throwable throwable) {
-            getServer().getPluginManager().disablePlugin(this);
-            getLogger().severe("Could not enable plugin, error message: " + throwable.getMessage());
-            return false;
-        }
-    }
     //Configs
     public static PluginConfig pluginConfig;
 
@@ -105,16 +74,8 @@ public class Main extends JavaPlugin {
     @SneakyThrows
     @Override
     public void onEnable() {
-        audience = BukkitAudiences.create(this);
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
-        if (!this.isVaultLoaded()) {
-            this.getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-        if (!this.setupVault()) {
-            return;
-        }
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             placeholder = true;
         }
@@ -151,7 +112,7 @@ public class Main extends JavaPlugin {
 
         new PlaceholderHooks().register();
         new ReflectionHelper().initialize();
-        new OthersListener().EnderpearlCooldown(this);
+        new PlayerInteractListener().EnderpearlCooldown(this);
         loadItems();
         loadTasks();
         loadCommands();
@@ -268,6 +229,11 @@ public class Main extends JavaPlugin {
     }
 
     public void loadCommands() {
+        CommandManager.register(new TestCommand(), true);
+        CommandManager.register(new DeleteHomeCommand(), pluginConfig.getCommands().isHomes());
+        CommandManager.register(new SetHomeCommand(), pluginConfig.getCommands().isHomes());
+        CommandManager.register(new HomesCommand(), pluginConfig.getCommands().isHomes());
+        CommandManager.register(new PokeBallCommand(), pluginConfig.getCommands().isPokeball());
         CommandManager.register(new BcCommand(), pluginConfig.getCommands().isBroadcast());
         CommandManager.register(new AboveNameShopCommand(), pluginConfig.getCommands().isAbovename());
         CommandManager.register(new TpCommand(), pluginConfig.getCommands().isTeleport());
@@ -327,7 +293,7 @@ public class Main extends JavaPlugin {
         CommandManager.register(new RewardCommand(), pluginConfig.getCommands().isReward());
         CommandManager.register(new PingCommand(), pluginConfig.getCommands().isPing());
         CommandManager.register(new GodModCommand(), pluginConfig.getCommands().isGodmod());
-        CommandManager.register(new PlayerWarpCommand(), pluginConfig.getCommands().isPlayerwarp());
+        //CommandManager.register(new PlayerWarpCommand(), pluginConfig.getCommands().isPlayerwarp());
         CommandManager.register(new MagnetCommand(), pluginConfig.getCommands().isMagnet());
         CommandManager.register(new CheckCommand(), pluginConfig.getCommands().isCheck());
         CommandManager.register(new AdmitsCommand(), pluginConfig.getCommands().isCheck());
@@ -389,6 +355,7 @@ public class Main extends JavaPlugin {
         registerEvent(new VanishCommand.VanishEvent(), true);
         registerEvent(new ChatBuffer(), true);
         registerEvent(new CheckCommand(), true);
+        registerEvent(new PlayerInteractListener(), true);
         InventoryHelper.implement(this);
     }
 
@@ -447,7 +414,7 @@ public class Main extends JavaPlugin {
         itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 
         item = new CustomItemImpl(3, itemHelper);
-        item.whenWear().add(new PotionEffect(PotionEffectType.NIGHT_VISION, 80, 3));
+        item.whenWear().add(new PotionEffect(PotionEffectType.NIGHT_VISION, 120, 3));
         itemCache.register(item);
 
         //Kilof Górnika

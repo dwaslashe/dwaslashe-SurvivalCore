@@ -17,7 +17,7 @@ import java.util.List;
 
 public class RankCommand extends Command implements Listener {
     public RankCommand() {
-        super("rangi", "/rangi", "", "vip", "svip", "mvp", "mvp+");
+        super("rangi", "/rangi", "", "vip", "svip", "mvp", "mvp+", "sponsor");
         setOnlyPlayer(true);
     }
 

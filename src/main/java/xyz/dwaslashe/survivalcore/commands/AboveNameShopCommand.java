@@ -1,5 +1,6 @@
 package xyz.dwaslashe.survivalcore.commands;
 
+import net.saidora.economy.manager.UserManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -16,6 +17,7 @@ import java.util.List;
 public class AboveNameShopCommand extends Command {
     public AboveNameShopCommand() {
         super("tytuly", "/tytuly", "");
+        setPermission("core.command.abovenameshop");
     }
 
     @Override
@@ -317,253 +319,255 @@ public class AboveNameShopCommand extends Command {
             });
 
             inventoryHelper.click(e -> {
-                double balance = Main.getVaultEconomy().getBalance(player);
-                e.setCancelled(true);
-                if (e.getSlot() == 19) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag1")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF3131B E D E O S I A R A%newline%&#FF3131wie co chce i będzie to miała");
-                    } else if (balance >= 20000.0) {
-                        if (balance - 20000.0 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag1");
+                UserManager.getInstance().getUser(player).ifPresent(user -> {
+                    double balance = user.balance();
+                    e.setCancelled(true);
+                    if (e.getSlot() == 19) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag1")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF3131B E D E O S I A R A%newline%&#FF3131wie co chce i będzie to miała");
+                        } else if (balance >= 20000.0) {
+                            if (balance - 20000.0 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag1");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF3131B E D E O S I A R A%newline%&#FF3131wie co chce i będzie to miała");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 20) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag2")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF10F0Hej randka?%newline%&#FF10F0Pięknie dziś wyglądasz <3");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag2");
+                    } else if (e.getSlot() == 20) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag2")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF10F0Hej randka?%newline%&#FF10F0Pięknie dziś wyglądasz <3");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag2");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF10F0Hej randka?%newline%&#FF10F0Pięknie dziś wyglądasz <3");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 21) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag3")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FFC42ES E X O H O L I K%newline%&#c930aegrzeczne dupy nie chcą ze mną chodzić");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag3");
+                    } else if (e.getSlot() == 21) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag3")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FFC42ES E X O H O L I K%newline%&#c930aegrzeczne dupy nie chcą ze mną chodzić");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag3");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FFC42ES E X O H O L I K%newline%&#c930aegrzeczne dupy nie chcą ze mną chodzić");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 22) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag4")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#21F8F6Na górze róże na dole fiołki%newline%&#21F8F6my się kochamy jak dwa aniołki");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag4");
+                    } else if (e.getSlot() == 22) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag4")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#21F8F6Na górze róże na dole fiołki%newline%&#21F8F6my się kochamy jak dwa aniołki");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag4");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#21F8F6Na górze róże na dole fiołki%newline%&#21F8F6my się kochamy jak dwa aniołki");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 23) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag5")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF10F0My girl ->");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag5");
+                    } else if (e.getSlot() == 23) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag5")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF10F0My girl ->");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag5");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF10F0My girl ->");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 24) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag6")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#0394fc<- My boy");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag6");
+                    } else if (e.getSlot() == 24) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag6")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#0394fc<- My boy");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag6");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#0394fc<- My boy");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 25) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag7")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#0394fcGOMBAO33 MATA%newline%&#0394fcpomiot liryczny..");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag7");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#0394fcGOMBAO33 MATA%newline%&#0394fcpomiot liryczny...");
+                    } else if (e.getSlot() == 25) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag7")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#0394fcGOMBAO33 MATA%newline%&#0394fcpomiot liryczny..");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag7");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#0394fcGOMBAO33 MATA%newline%&#0394fcpomiot liryczny...");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 28) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag8")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FDBD01Midas, Midas, Midas!%newline%&#FDBD01Wszystko, czego tylko dotknę%newline%&#FDBD01To staje się złotem");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag8");
+                    } else if (e.getSlot() == 28) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag8")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FDBD01Midas, Midas, Midas!%newline%&#FDBD01Wszystko, czego tylko dotknę%newline%&#FDBD01To staje się złotem");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag8");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FDBD01Midas, Midas, Midas!%newline%&#FDBD01Wszystko, czego tylko dotknę%newline%&#FDBD01To staje się złotem");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 29) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag9")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF3131Mordo wiertara jakbym był Skrillexem%newline%&#FF3131Muza napierdala przez głośnik USB");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag9");
+                    } else if (e.getSlot() == 29) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag9")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF3131Mordo wiertara jakbym był Skrillexem%newline%&#FF3131Muza napierdala przez głośnik USB");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag9");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF3131Mordo wiertara jakbym był Skrillexem%newline%&#FF3131Muza napierdala przez głośnik USB");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 30) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag10")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#0394fcMłody jeżyk bo chciałbym tylko przeżyć%newline%&#0394fcSuszyć jedynki po prostu zęby szczerzyć");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag10");
+                    } else if (e.getSlot() == 30) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag10")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#0394fcMłody jeżyk bo chciałbym tylko przeżyć%newline%&#0394fcSuszyć jedynki po prostu zęby szczerzyć");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag10");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#0394fcMłody jeżyk bo chciałbym tylko przeżyć%newline%&#0394fcSuszyć jedynki po prostu zęby szczerzyć");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 31) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag11")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF5F1FRuda tańczy jak szalona%newline%&#FF5F1FKrzyczy piszczy to jest ona");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag11");
+                    } else if (e.getSlot() == 31) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag11")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF5F1FRuda tańczy jak szalona%newline%&#FF5F1FKrzyczy piszczy to jest ona");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag11");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#FF5F1FRuda tańczy jak szalona%newline%&#FF5F1FKrzyczy piszczy to jest ona");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 32) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag12")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#008443Rzucam worki w tłum tłum%newline%&#008443Kto łapie ten jara");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag12");
+                    } else if (e.getSlot() == 32) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag12")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#008443Rzucam worki w tłum tłum%newline%&#008443Kto łapie ten jara");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag12");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#008443Rzucam worki w tłum tłum%newline%&#008443Kto łapie ten jara");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 33) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag13")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#feb1e0Jeśli będzie trzeba, zrobię to co będzie trzeba%newline%&#feb1e0Sprzedam delfinowi wodę, jeśli będzie trzeba");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag13");
+                    } else if (e.getSlot() == 33) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag13")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#feb1e0Jeśli będzie trzeba, zrobię to co będzie trzeba%newline%&#feb1e0Sprzedam delfinowi wodę, jeśli będzie trzeba");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag13");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#feb1e0Jeśli będzie trzeba, zrobię to co będzie trzeba%newline%&#feb1e0Sprzedam delfinowi wodę, jeśli będzie trzeba");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
-                    }
-                } else if (e.getSlot() == 34) {
-                    player.closeInventory();
-                    if (player.hasPermission("core.abovenameshop.tag14")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#1F51FFOd małego mówią mi, że jestem poj*bany%newline%&#1F51FFRobię poj*bany kwit, po dwie bańki od reklamy");
-                    } else if (balance >= 20000) {
-                        if (balance - 20000 >= 0) {
-                            Main.getVaultEconomy().withdrawPlayer(player, 20000.0);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag14");
+                    } else if (e.getSlot() == 34) {
+                        player.closeInventory();
+                        if (player.hasPermission("core.abovenameshop.tag14")) {
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#1F51FFOd małego mówią mi, że jestem poj*bany%newline%&#1F51FFRobię poj*bany kwit, po dwie bańki od reklamy");
+                        } else if (balance >= 20000) {
+                            if (balance - 20000 >= 0) {
+                                user.withdraw(20000.0);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.abovenameshop.tag14");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " &#1F51FFOd małego mówią mi, że jestem poj*bany%newline%&#1F51FFRobię poj*bany kwit, po dwie bańki od reklamy");
+                            } else {
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            }
                         } else {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
-                    } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                    } else if (e.getSlot() == 4) {
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyczyściłeś swój tytuł!");
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " clear");
+                        player.closeInventory();
+                    } else if (e.getSlot() == 49) {
+                        player.closeInventory();
                     }
-                } else if (e.getSlot() == 4) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyczyściłeś swój tytuł!");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "admintitletag " + player.getName() + " clear");
-                    player.closeInventory();
-                } else if (e.getSlot() == 49) {
-                    player.closeInventory();
-                }
+                });
 
             });
 

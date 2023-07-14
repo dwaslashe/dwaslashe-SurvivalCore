@@ -42,6 +42,12 @@ public class User {
     @Value(key = "msgbossbar", type = "INT(16)")
     private int msgbossbar;
 
+    @Value(key = "homes", type = "TEXT")
+    private String homes;
+
+    @Value(key = "rates", type = "TEXT")
+    private String rates;
+
     public User(UUID uuid) {
         this.uuid = uuid;
     }
@@ -58,6 +64,8 @@ public class User {
             this.discordchat = resultSet.getInt("discordchat");
             this.chat = resultSet.getInt("chat");
             this.msgbossbar = resultSet.getInt("msgbossbar");
+            this.homes = resultSet.getString("homes");
+            this.rates = resultSet.getString("rates");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -157,4 +165,49 @@ public class User {
         this.msgbossbar = msgbossbar;
         UserCache.getInstance().getToUpdate().add(this);
     }
+
+    //Homes
+    public String getHomes() {
+        return homes;
+    }
+
+    public void setHomes(String homes) {
+        this.homes = homes;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    public void addHomes(String homes) {
+        this.homes = this.homes + homes;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    public void removeHomes(String homes) {
+        String sectionToRemove = homes + "&";
+        int startIndex = this.homes.indexOf(sectionToRemove);
+        if (startIndex != -1) {
+            int endIndex = this.homes.indexOf("#", startIndex);
+            if (endIndex != -1) {
+                endIndex = endIndex + 1;
+                String substringToRemove = this.homes.substring(startIndex, endIndex);
+                this.homes = this.homes.replace(substringToRemove, "");
+            }
+        }
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    //Rates
+    public String getRates() {
+        return rates;
+    }
+
+    public void setRates(String rates) {
+        this.rates = rates;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    public void addRates(String rates) {
+        this.rates = this.rates + rates;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
 }

@@ -12,35 +12,27 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.command.Command;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.material.SpawnEgg;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.WarpCache;
 import xyz.dwaslashe.survivalcore.commands.managers.CommandManager;
 import xyz.dwaslashe.survivalcore.objects.Abyss;
 import xyz.dwaslashe.survivalcore.objects.Warp;
-import xyz.dwaslashe.survivalcore.utils.Api;
-import xyz.dwaslashe.survivalcore.utils.ItemApi;
-import xyz.dwaslashe.survivalcore.utils.TimerApi;
+import xyz.dwaslashe.survivalcore.utils.*;
 
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -51,16 +43,63 @@ public class OthersListener implements Listener {
         return i <= 9 ? "0" + i : i + "";
     }
 
-    public static final Map<UUID, Integer> playerCooldownMap = new HashMap<>();
     public static final List<Player> cancel = Lists.newArrayList();
     private int id = 0;
 
     private static ItemStack enchanted_golden_apple = new ItemApi(Material.ENCHANTED_GOLDEN_APPLE).getItemStack();
 
+
+    public static ItemStack weed = new ItemApi(Material.LARGE_FERN, 1).setName("<#39ff14>Zioło 1g</#008443>").getItemStack();
+
+    public static ItemStack kokaina = new ItemApi(Material.CLAY_BALL, 1).setName("<#FFFFFF>Kokaina 0.1g</#FFFF00>").getItemStack();
+
     public static ItemStack magnet = new ItemApi(Material.LIGHTNING_ROD)
             .setName("&#FF10F0Magnez")
             .setLore(Arrays.asList("", " &#E7E7E7Mając magnez w ekwipunku itemy", " &#E7E7E7które niszczysz idą do twojego ekwipunku!"))
             .getItemStack();
+
+
+    public static ItemStack pokeball = new ItemApi(Material.SNOWBALL)
+            .setName("&#ee1515Poke&#f0f0f0Ball")
+            .setLore(Arrays.asList("", " &#E7E7E7Masz &#9DF89F20% &#E7E7E7szans na złapanie zwierzęcia w jajko!"))
+            .getItemStack();
+
+    static Set<UUID> snowballs = new HashSet<>(), shooters = new HashSet<>();
+
+    @EventHandler
+    public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
+        if (event.getEntity().getShooter() instanceof Player) {
+            Player player = (Player) event.getEntity().getShooter();
+            if (shooters.contains(player.getUniqueId())) {
+                shooters.remove(player.getUniqueId());
+                snowballs.add(event.getEntity().getUniqueId());
+                Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> snowballs.remove(event.getEntity().getUniqueId()), 20 * 20);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent event) {
+        if (event.getEntity() instanceof Snowball) {
+            Snowball snowball = (Snowball) event.getEntity();
+            Player shooter = (Player) snowball.getShooter();
+            Entity hitEntity = event.getHitEntity();
+
+            if (hitEntity != null && hitEntity instanceof Animals) {
+                Animals animal = (Animals) hitEntity;
+                EntityType entityType = animal.getType();
+
+                if (snowballs.contains(snowball.getUniqueId())) {
+                    if (RandomApi.getChance(20)) {
+                        animal.remove();
+                        ItemStack egg = new SpawnEgg(entityType).toItemStack(1);
+                        hitEntity.getWorld().dropItem(hitEntity.getLocation(), egg);
+                        Api.sendMessage(shooter, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie udało Ci się schować zwierzęcie w jajku!");
+                    } else Api.sendMessage(shooter, Main.pluginConfig.getMessages().getPrefix() + "&cNiestety nie miałeś szcześćia, spróbuj następnym razem!");
+                }
+            }
+        }
+    }
 
 
     @EventHandler
@@ -97,85 +136,18 @@ public class OthersListener implements Listener {
         if (command == null) return;
         //if (!command.getPermission().isEmpty()) return;
         if (!command.testPermissionSilent(event.getPlayer())) {
+            if (command.getPermission() == null) return;
             event.getPlayer().sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#FF3131Nie posiadasz uprawnien &8(&#FFC42E{permission}&8) &8<<".replace("{permission}", command.getPermission())));
             event.setCancelled(true);
         } else return;
     }
 
-    @EventHandler
-    public void onPlayerInteractEnderPearl(PlayerInteractEvent event) {
-        int time = 5;
-        Player p = event.getPlayer();
-        if (!p.hasPermission("core.cooldown.enderpearl.use.bypass"))
-            if (Main.pluginConfig.getEvents().isEnderpearlcooldown() && event.getMaterial() == Material.ENDER_PEARL && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
-                if (isPlayerInCooldown(p) && getTimeRemaining(p).intValue() < time) {
-                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cPerły kolejny raz możesz użyć za &e" + getTimeRemaining(p) + "sek");
-                    event.setCancelled(true);
-                } else {
-                    addPlayerToMap(p, Integer.valueOf(time));
-                }
-    }
-
-    public void EnderpearlCooldown(Main plugin) {
-        (new BukkitRunnable() {
-            public void run() {
-                for (UUID uuid : playerCooldownMap.keySet()) {
-                    if (((Integer) playerCooldownMap.get(uuid)).intValue() == 1) {
-                        playerCooldownMap.remove(uuid);
-                        if (Bukkit.getPlayer(uuid) != null)
-                            Bukkit.getPlayer(uuid).sendMessage(Api.fixColor(Main.pluginConfig.getMessages().getPrefix() + "&aMożesz użyć perły!"));
-                        continue;
-                    }
-                    playerCooldownMap.put(uuid, Integer.valueOf(((Integer) playerCooldownMap.get(uuid)).intValue() - 1));
-                }
-            }
-        }).runTaskTimer((Plugin) plugin, 0L, 20L);
-    }
-
-    public Integer getTimeRemaining(Player p) {
-        if (!isPlayerInCooldown(p))
-            return Integer.valueOf(0);
-        return playerCooldownMap.get(p.getUniqueId());
-    }
-
-    public void addPlayerToMap(Player p, Integer time) {
-        this.playerCooldownMap.put(p.getUniqueId(), time);
-    }
-
-    public boolean isPlayerInCooldown(Player p) {
-        return this.playerCooldownMap.containsKey(p.getUniqueId());
-    }
-
-    private static ItemStack weed = new ItemApi(Material.LARGE_FERN, 1).setName("<#39ff14>Zioło 1g</#008443>").getItemStack();
-
-    private static ItemStack kokaina = new ItemApi(Material.CLAY_BALL, 1).setName("<#FFFFFF>Kokaina 0.1g</#FFFF00>").getItemStack();
-
-    @EventHandler
-    private void redeemWeed(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        if (e.getMaterial() != null) {
-            if (e.getMaterial().equals(Material.LARGE_FERN)) {
-                if (e.getAction() == Action.RIGHT_CLICK_AIR) {
-                    ItemStack item = e.getItem();
-                    if (item.isSimilar(weed)) {
-                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zapaliłeś &ezioło");
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 550, 50));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 500, -50));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 500, 2));
-                        item.setAmount(item.getAmount() - 1);
-                    }
-                }
-            } else if (e.getMaterial().equals(Material.CLAY_BALL)) {
-                if (e.getAction() == Action.RIGHT_CLICK_AIR) {
-                    ItemStack item = e.getItem();
-                    if (item.isSimilar(kokaina)) {
-                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wciągnąłeś &ekokaine");
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 1050, 50));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1000, -50));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1500, 2));
-                        item.setAmount(item.getAmount() - 1);
-                    }
-                }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void handlePlayerDamageEvent(EntityDamageByEntityEvent event){
+        if(event.getEntity() instanceof Player victim && event.getDamager() instanceof Player attacker) {
+            if (victim.getLocation().getWorld().getName().equals("spawn")) {
+                victim.sendTitle(Api.fixColor("&#95eb34&lHej"), Api.fixColor("&8>> &aGracz &e" + attacker.getDisplayName() + "&a zaczepił Cię!"));
+                victim.playSound(victim.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1.0F, 1.0F);
             }
         }
     }
@@ -255,30 +227,6 @@ public class OthersListener implements Listener {
                             bar.removePlayer(p.getPlayer());
                         }
                     }, 0, 2);
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        if (e.getItem() == null) return;
-        if (e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if (Main.pluginConfig.getEvents().isNobedexplose()) {
-                if (e.getClickedBlock().toString().toLowerCase().contains("BED")) {
-                    e.setUseInteractedBlock(Event.Result.DENY);
-                    e.setCancelled(true);
-                }
-            }
-        }
-        if (e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if (Main.pluginConfig.getEvents().isKelpsmoke()) {
-                if (e.getClickedBlock().getType().equals(Material.DRIED_KELP_BLOCK)) {
-                    if (e.getItem().getType() != Material.FLINT_AND_STEEL) return;
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 150, 50));
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, -50));
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 2));
                 }
             }
         }
@@ -394,20 +342,6 @@ public class OthersListener implements Listener {
     }
 
     @EventHandler
-    public void PlayerInteract(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        if (e.getItem() == null) return;
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if (e.getClickedBlock().getType().equals(Material.DRIED_KELP_BLOCK)) {
-                if (e.getItem().getType() != Material.FLINT_AND_STEEL) return;
-                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 150, 50));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, -50));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 2));
-            }
-        }
-    }
-
-    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         if (Main.pluginConfig.getEvents().isDeathplayerhead()) {
             ZonedDateTime timeZone = TimerApi.getZoneDate("GMT+1");
@@ -435,102 +369,11 @@ public class OthersListener implements Listener {
             if (p.getBedSpawnLocation() == null) {
                 Warp warp = WarpCache.getInstance().get("spawn");
                 if (warp != null) {
-                    Location loc = new Location(Bukkit.getWorld("spawn"), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
+                    Location loc = new Location(Bukkit.getServer().getWorld(warp.getLocation().getWorld().getKey()), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
                     e.setRespawnLocation(loc);
                 } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma warpa &espawn");
             }
         }
-    }
-
-
-    @EventHandler
-    private void noteRedeem(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        if (e.getMaterial() == Material.PAPER) {
-            if (e.getAction() == Action.RIGHT_CLICK_AIR) {
-                if (e.getHand().equals(EquipmentSlot.HAND)) {
-                    ItemStack itemInHand = p.getItemInHand();
-                    if (itemInHand.getItemMeta().getDisplayName().contains("Banknot gotówki")) {
-                        if (itemInHand.getItemMeta().getEnchantLevel(Enchantment.DURABILITY) == 11) {
-                            if (!itemInHand.getItemMeta().hasLore()) {
-                                return;
-                            }
-                            float amount = Float.parseFloat(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).replace('$', ' ').replace("Wartość:", " "));
-                            Main.getVaultEconomy().depositPlayer(p, (double) amount);
-                            System.out.println(Api.fixColor("[WITHDRAW] &aGracz &e" + p.getName() + " &awplacil banknot o wartosci: &e$" + amount));
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na konto &#FFF88F" + amount + " &#FFC42E$");
-                            p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
-                        } else if (itemInHand.getItemMeta().getEnchantLevel(Enchantment.DURABILITY) == 10) {
-                            float amount = Float.parseFloat(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).replace('$', ' ').replace("Wartość:", " "));
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cUżywasz starą wersję gotówki, która jest nie ważna usuń ją pod komendą &e/kosz");
-                            System.out.println(Api.fixColor("[WITHDRAW-EXPIRE] &cGracz &e" + p.getName() + " &cuzywa stara wersje banknotu o wartosci: &e$" + amount));
-                        }
-                    }
-                }
-            }
-        } else if (e.getMaterial() == Material.EXPERIENCE_BOTTLE) {
-            if (e.getAction() == Action.RIGHT_CLICK_AIR) {
-                if (e.getHand().equals(EquipmentSlot.HAND)) {
-                    ItemStack itemInHand = p.getItemInHand();
-                    if (itemInHand.getItemMeta().getDisplayName().contains("Butelka doświadczenia")) {
-                        if (itemInHand.getItemMeta().getEnchantLevel(Enchantment.DURABILITY) == 10) {
-                            if (!itemInHand.getItemMeta().hasLore()) {
-                                return;
-                            }
-
-                            int amount = Integer.parseInt(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).replace("lvl", " ").replace("Doświadczenie:", " "). replace(" ", ""));
-                            p.giveExpLevels(amount);
-                            System.out.println(Api.fixColor("[XPBOTTLE] &aGracz &e" + p.getName() + " &awplacil butelke doswiadczenie wartosci levelu: &e" + amount));
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otrzymałeś &#aa42f5" + amount + " lvl &adoświadczenia");
-                            p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
-                            e.setCancelled(true);
-                            e.setUseInteractedBlock(Event.Result.DENY);
-                            e.setUseItemInHand(Event.Result.DENY);
-                        }
-                    }
-                }
-            } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if (e.getHand().equals(EquipmentSlot.HAND)) {
-                    ItemStack itemInHand = p.getItemInHand();
-                    if (itemInHand.getItemMeta().getDisplayName().contains("Butelka doświadczenia")) {
-                        if (itemInHand.getItemMeta().getEnchantLevel(Enchantment.DURABILITY) == 10) {
-                            if (!itemInHand.getItemMeta().hasLore()) {
-                                return;
-                            }
-
-                            int amount = Integer.parseInt(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).replace("lvl", " ").replace("Doświadczenie:", " "). replace(" ", ""));
-                            p.giveExpLevels(amount);
-                            System.out.println(Api.fixColor("[XPBOTTLE] &aGracz &e" + p.getName() + " &awplacil butelke doswiadczenie wartosci levelu: &e" + amount));
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otrzymałeś &#aa42f5" + amount + " lvl &adoświadczenia");
-                            p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
-                            e.setCancelled(true);
-                            e.setUseInteractedBlock(Event.Result.DENY);
-                            e.setUseItemInHand(Event.Result.DENY);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public static ItemStack makePaper(List<String> lore) {
-        ItemStack cash = new ItemApi(Material.PAPER)
-                .setName("&#3dfc49Banknot gotówki")
-                .addEnchant(Enchantment.DURABILITY, 11)
-                .addItemFlag(ItemFlag.HIDE_ENCHANTS)
-                .setLore(Api.fixColor(lore))
-                .getItemStack();
-        return cash;
-    }
-
-    public static ItemStack makeBottle(List<String> lore) {
-        ItemStack xpbottle = new ItemApi(Material.EXPERIENCE_BOTTLE)
-                .setName("&#da42f5Butelka doświadczenia")
-                .addEnchant(Enchantment.DURABILITY, 10)
-                .addItemFlag(ItemFlag.HIDE_ENCHANTS)
-                .setLore(Api.fixColor(lore))
-                .getItemStack();
-        return xpbottle;
     }
 
     @EventHandler
@@ -540,7 +383,7 @@ public class OthersListener implements Listener {
             if (!player.hasPermission("core.place.nether")) {
                 World nether = Bukkit.getWorld("world_nether");
                 if (nether.getName().equalsIgnoreCase(event.getBlock().getWorld().getName())) {
-                    Api.sendActionBar(player, "&8>> &#f23518Postawiony blok zniknie za &#FDBD0160 sekund &8<<");
+                    Api.sendActionBar(player, "&8>> <#f23518>Postawiony blok zniknie za  <#FDBD01>60 sekund &8<<");
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -550,7 +393,7 @@ public class OthersListener implements Listener {
                 } else if (!player.hasPermission("core.place.end")) {
                     World end = Bukkit.getWorld("world_the_end");
                     if (end.getName().equalsIgnoreCase(event.getBlock().getWorld().getName())) {
-                        Api.sendActionBar(player, "&8>> &#f23518Postawiony blok zniknie za &#FDBD0160 sekund &8<<");
+                        Api.sendActionBar(player, "&8>> <#f23518>Postawiony blok zniknie za <#FDBD01>60 sekund &8<<");
                         new BukkitRunnable() {
                             @Override
                             public void run() {

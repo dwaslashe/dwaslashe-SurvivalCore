@@ -10,11 +10,15 @@ loadbefore:
   - WorldGuard
   - QuickShop
 depend:
+  - Multiverse-Core
   - Vault
   - LuckPerms
   - TAB
   - NBTAPI
+  - SA-Economy
+  - minePlots
 softdepend:
   - PlaceholderAPI
 commands:
   sb:
+  zaklecia:

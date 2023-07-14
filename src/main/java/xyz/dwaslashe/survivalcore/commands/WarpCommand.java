@@ -3,6 +3,7 @@ package xyz.dwaslashe.survivalcore.commands;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -44,7 +45,17 @@ public class WarpCommand extends Command implements Listener {
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cTen warp jest zablokowany!");
                 return;
             }
-            Location loc = new Location(Bukkit.getWorld("spawn"), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
+            Location warpLocation = warp.getLocation();
+            if (warpLocation == null) {
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNieprawidłowa lokalizacja warpa!");
+                return;
+            }
+            World warpWorld = warpLocation.getWorld();
+            if (warpWorld == null) {
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNieprawidłowy świat warpa!");
+                return;
+            }
+            Location loc = new Location(Bukkit.getServer().getWorld(warpWorld.getKey()), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
             if (p.hasPermission("core.command.admin")) {
                 p.teleport(loc);
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na &e" + args[0]);

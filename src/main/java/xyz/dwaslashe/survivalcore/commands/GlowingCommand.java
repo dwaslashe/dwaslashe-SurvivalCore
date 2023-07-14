@@ -1,9 +1,8 @@
 package xyz.dwaslashe.survivalcore.commands;
 
-import org.bukkit.Color;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
@@ -29,14 +28,15 @@ public class GlowingCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
+
         if (args.length == 0) {
-            Player p = (Player) sender;
-            if (p.isGlowing()) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cPomyślnie wyłączyłeś &eglowing!");
-                p.setGlowing(false);
+            if (player.isGlowing()) {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPomyślnie wyłączyłeś &eglowing!");
+                player.setGlowing(false);
             } else {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś &eglowing!");
-                p.setGlowing(true);
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś &eglowing!");
+                player.setGlowing(true);
             }
         } else wrongUsage();
     }

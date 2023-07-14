@@ -39,10 +39,10 @@ public class VanishCommand extends Command implements Listener {
         if (args.length == 0) {
             if (vanishObject.isEnable()) {
                 vanishObject.setEnable(false);
-                Api.sendActionBar(player, "&8>> &#f00c0cVanish został wyłączony &8<<");
+                Api.sendActionBar(player, "&8>> <#f00c0c>Vanish został wyłączony &8<<");
             } else {
                 vanishObject.setEnable(true);
-                Api.sendActionBar(player, "&8>> &#39FF14Vanish został włączony &8<<");
+                Api.sendActionBar(player, "&8>> <#39FF14>Vanish został włączony &8<<");
             }
         } else if(args.length == 2){
             player = Bukkit.getPlayer(args[1]);
@@ -54,18 +54,18 @@ public class VanishCommand extends Command implements Listener {
                 if(player != null){
                     if(args[0].equalsIgnoreCase("on")){
                         vanishObject.setEnable(true);
-                        Api.sendActionBar(player, "&8>> &#39FF14Vanish został włączony &8<<");
+                        Api.sendActionBar(player, "&8>> <#39FF14>Vanish został włączony &8<<");
                     } else if(args[0].equalsIgnoreCase("off")) {
                         vanishObject.setEnable(false);
-                        Api.sendActionBar(player, "&8>> &#f00c0cVanish został wyłączony &8<<");
+                        Api.sendActionBar(player, "&8>> <#f00c0c>Vanish został wyłączony &8<<");
                     } if (!player.hasPermission("core.command.vanish.more")) {
                         player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.vanish.more&8) &8<<"));
                         return;
                     } else if(args[0].equalsIgnoreCase("check")){
                         if(sender.getName().equalsIgnoreCase(player.getName())){
-                            Api.sendActionBar(player, " &8>> &7Twój vanish jest " + (vanishObject.isEnable() ? "&awłączony" : "&cwyłączony" + " &8<<"));
+                            Api.sendActionBar(player, " &8>> &aTwój vanish jest " + (vanishObject.isEnable() ? "&ewłączony" : "&ewyłączony" + " &8<<"));
                         } else {
-                            Api.sendActionBar(player, " &8>> &7Vanish gracza &a" + player.getName() + " &7jest " + (vanishObject.isInteract() ? "&awłączony" : "&cwyłączony" + " &8<<"));
+                            Api.sendActionBar(player, " &8>> &aVanish gracza &e" + player.getName() + " &ajest " + (vanishObject.isInteract() ? "&ewłączony" : "&ewyłączony" + " &8<<"));
                         }
                     } else if(args[0].equalsIgnoreCase("panel") && sender instanceof Player){
                         openGui(0, player);
@@ -284,7 +284,7 @@ public class VanishCommand extends Command implements Listener {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 VanishObject vanishObject = VanishObject.get(player);
                 if(vanishObject.isEnable()){
-                    Api.sendActionBar(player, "&8>> &#39FF14Vanish jest uruchomiony &8<<");
+                    Api.sendActionBar(player, "&8>> <#39FF14>Vanish jest uruchomiony &8<<");
 
                 }
             });

@@ -245,7 +245,7 @@ public class PlayerChatListener implements Listener {
         if (userManager.getUser(player.getName()) == null) {
             realName = player.getName();
         } else realName = userManager.getUser(player.getName()).getCustomName();
-        String finalRealName = PlaceholderAPI.setPlaceholders(player, "<hover:show_text:\" <#4287f5>Statystyki gracza <#9c9898>" + realName + "\n \n <#E7E7E7>Saldo: <#FFF88F>%survivalcore_money% <#FFC42E>$\n <#E7E7E7>Śmierci: <#ff6e6e>%statistic_deaths% <#ff4545>☠\n <#E7E7E7>Zabójstwa: <#4DFFFF>%statistic_player_kills% <#1AE6E6>⚔\n <#E7E7E7>Przegrane godziny: <#ffd56c>%statistic_hours_played%g <#ffc942>⌚\n <#E7E7E7>Wykopane bloki: <#10F70C>%statistic_mine_block% <#09b106>⛏\n <#E7E7E7>Punkty rankingu: <#4eed6e>%mineteams_profile_ranking%pkt\n\"><click:suggest_command:/msg " + player.getName() + " >" + realName + "</click></hover>");
+        String finalRealName = PlaceholderAPI.setPlaceholders(player, "<hover:show_text:\" <#4287f5>Statystyki gracza <#9c9898>" + realName + "\n \n <#E7E7E7>Saldo: <#FFF88F>%economy_money% <#FFC42E>$\n <#E7E7E7>Śmierci: <#ff6e6e>%statistic_deaths% <#ff4545>☠\n <#E7E7E7>Zabójstwa: <#4DFFFF>%statistic_player_kills% <#1AE6E6>⚔\n <#E7E7E7>Przegrane godziny: <#ffd56c>%statistic_hours_played%g <#ffc942>⌚\n <#E7E7E7>Wykopane bloki: <#10F70C>%statistic_mine_block% <#09b106>⛏\n <#E7E7E7>Punkty rankingu: <#4eed6e>%mineteams_profile_ranking%pkt\n <#E7E7E7>Ilość powitanych nowych graczy: <#8eeb6c>%Greeter_amount%\n <#E7E7E7>Średnia ocena profilu: %survivalcore_rate%&8/<#54f542>5\n\"><click:suggest_command:/msg " + player.getName() + " >" + realName + "</click></hover>");
 
         String message;
         if (player.hasPermission("core.chat.rainbow")) {

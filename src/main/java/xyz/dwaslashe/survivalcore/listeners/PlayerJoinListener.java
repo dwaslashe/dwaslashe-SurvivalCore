@@ -14,7 +14,11 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.cache.UserCache;
+import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.tasks.PlayerTask;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.ChatApi;
@@ -29,13 +33,16 @@ public class PlayerJoinListener implements Listener {
             .setName("&#FFF01FJedzenie na dobry początek!")
             .getItemStack();
 
-    public void firtJoinExecute(Player player){
+    public void firtJoinExecute(Player player) {
+        User user = UserCache.getInstance().compute(player.getUniqueId());
         World world = Bukkit.getWorld("world");
         Location loc = LocationApi.getRandomLocation(world);
-        player.teleport(loc);
+        user.setHomes("");
+        user.setRates("");
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 140, -50));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 140, 10));
         player.setItemInHand(eat);
+        player.teleportAsync(loc);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -113,7 +120,7 @@ public class PlayerJoinListener implements Listener {
             }
             if (Main.pluginConfig.getEvents().isJoinactionbar()) {
                 for (Player all : Bukkit.getOnlinePlayers()) {
-                    Api.sendActionBar(all, "&8>> &#39FF14Gracz &#FDBD01" + Api.fixColor(p.getDisplayName()) + " &#39FF14dołączył na serwer! &8<<");
+                    Api.sendActionBar(all, "&8>> <#39FF14>Gracz <#FDBD01>" + p.getName() + " <#39FF14>dołączył na serwer! &8<<");
                 }
             }
 

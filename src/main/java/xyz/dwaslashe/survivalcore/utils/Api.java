@@ -1,27 +1,23 @@
 package xyz.dwaslashe.survivalcore.utils;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.neznamy.tab.api.chat.rgb.RGBUtils;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.network.chat.IChatBaseComponent;
-import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_19_R3.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.configs.PluginConfig;
+import xyz.dwaslashe.survivalcore.enums.ColorEnums;
 import xyz.dwaslashe.survivalcore.helpers.IconHelper;
 import xyz.dwaslashe.survivalcore.objects.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,7 +52,7 @@ public class Api {
 
     public static void sendMessage(CommandSender sender, String message) {
         if(sender instanceof Player player){
-            player.sendMessage(PlaceholderAPI.setPlaceholders(player, fixColor(message)));
+            player.sendMessage(fixColor(message));
         } else sender.sendMessage(fixColor(message));
     }
 
@@ -64,7 +60,7 @@ public class Api {
         if(sender instanceof Player player) {
             User user = UserCache.getInstance().compute(player.getUniqueId());
             if (user.getChat() == 0) {
-                Main.getPlugin().getAudience().sender(player).sendMessage(component);
+                player.sendMessage(component);
             }
         }
     }
@@ -174,17 +170,7 @@ public class Api {
     }
 
     public static void sendActionBar(Player player, String message) {
-        IChatBaseComponent iChatBaseComponent = CraftChatMessage.fromString(fixColor(message))[0];
-        ClientboundSystemChatPacket clientboundSystemChatPacket;
-        try {
-            Class<?> clazz = Class.forName(ClientboundSystemChatPacket.class.getName());
-            Constructor<?> constructor = clazz.getConstructor(IChatBaseComponent.class, int.class);
-
-            clientboundSystemChatPacket = (ClientboundSystemChatPacket) constructor.newInstance(iChatBaseComponent, 2);
-        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            clientboundSystemChatPacket = new ClientboundSystemChatPacket(iChatBaseComponent, true);
-        }
-        ((CraftPlayer) player).getHandle().b.a(clientboundSystemChatPacket);
+        ((CraftPlayer) player).getHandle().sendActionBarMessage(MiniMessage.miniMessage().deserialize(ColorEnums.translateAlternateColorCodes(message).replace(">> ", "» ").replace("<<", "«")));
     }
 
     public static void giveOrDrop(Player player, ItemStack itemStack) {

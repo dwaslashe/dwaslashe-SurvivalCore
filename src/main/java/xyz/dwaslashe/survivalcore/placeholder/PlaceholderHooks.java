@@ -1,12 +1,11 @@
 package xyz.dwaslashe.survivalcore.placeholder;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import xyz.dwaslashe.survivalcore.Main;
-import xyz.dwaslashe.survivalcore.listeners.PlayerQuitListener;
+import xyz.dwaslashe.survivalcore.cache.UserCache;
+import xyz.dwaslashe.survivalcore.listeners.PlayerInteractListener;
 import xyz.dwaslashe.survivalcore.listeners.RegionListener;
+import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.text.DecimalFormat;
@@ -31,6 +30,10 @@ public class PlaceholderHooks extends PlaceholderExpansion {
     }
     
     public String onRequest(OfflinePlayer player, String params) {
+        User user = UserCache.getInstance().compute(player.getUniqueId());
+        if (params.equals("rate")) {
+            return PlayerInteractListener.colorAverage(user.getRates());
+        }
         if (params.equals("afk")) {
             if (RegionListener.afk.contains(player.getUniqueId()) && !player.getPlayer().isInsideVehicle()) {
                 return String.valueOf(Api.fixColor(" &#F23D07ᴀꜰᴋ"));
@@ -61,9 +64,6 @@ public class PlaceholderHooks extends PlaceholderExpansion {
         }
         if (params.equals("icon_07")) {
             return String.valueOf(Api.fixColor("icon%07"));
-        }
-        if (params.equals("money")) {
-            return String.valueOf(format.format(Main.getVaultEconomy().getBalance(player)));
         }
         return null;
     }

@@ -141,6 +141,8 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Commands extends OkaeriConfig {
 
+        private boolean homes = true;
+        private boolean pokeball = true;
         private boolean elytragive = true;
         private boolean world = true;
         private boolean tiktok = true;
