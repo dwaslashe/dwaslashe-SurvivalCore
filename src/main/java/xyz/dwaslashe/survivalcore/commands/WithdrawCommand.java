@@ -27,25 +27,29 @@ public class WithdrawCommand extends Command {
         Player p = (Player) sender;
         if (args.length > 0) {
             if (args.length == 1) {
-                if (Api.isFloat(args[0]) && !args[0].contains("NaN") && !args[0].contains("Infinity") && (Integer.parseInt(args[0]) > 0)) {
-                    float dollarAmount = Float.parseFloat(args[0]);
+                try {
                     UserManager.getInstance().getUser(p).ifPresent(user -> {
+                        double dollarAmount = 0;
+                        if(args[0].equalsIgnoreCase("all")) dollarAmount = user.balance();
+                        else dollarAmount = Double.parseDouble(args[0]);
                         double balance = user.balance();
-                        if (balance >= dollarAmount) {
-                            if (balance - dollarAmount >= 0) {
-                                user.withdraw(dollarAmount);
-                                ItemStack paper = PlayerInteractListener.makePaper(Arrays.asList(
-                                        "",
-                                        " &#E7E7E7Wartość: &#FFF88F" + dollarAmount + " &#FFC42E$",
-                                        " &#E7E7E7Właściciel: &#9DF89F" + p.getName()));
-                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wypłaciłeś z konta &#FFF88F" + dollarAmount + " &#FFC42E$");
-                                Api.giveOrDrop(p, paper);
-                            } else
-                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniedzy!");
+                        if(dollarAmount < 1){
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cPodana wartość musi zaczynać się od &e1&c!");
+                        } else if (balance >= dollarAmount && !Double.isInfinite(dollarAmount) && Double.isFinite(dollarAmount)) {
+                            user.withdraw(dollarAmount);
+                            ItemStack paper = PlayerInteractListener.makePaper(dollarAmount, Arrays.asList(
+                                    "",
+                                    " &#E7E7E7Wartość: &#FFF88F" + dollarAmount + " &#FFC42E$",
+                                    " &#E7E7E7Właściciel: &#9DF89F" + p.getName()));
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wypłaciłeś z konta &#FFF88F" + dollarAmount + " &#FFC42E$");
+                            Api.giveOrDrop(p, paper);
+
                         } else
                             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniedzy!");
                     });
-                } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cPodana wartość musi zaczynać się od &e1&c!");
+                } catch (NumberFormatException e) {
+                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cŹle określono kwote, którą chcesz wypłacić.\n&cDostępny format: &e&n1001.032");
+                }
             } else wrongUsage();
         } else wrongUsage();
     }

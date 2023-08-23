@@ -25,10 +25,10 @@ public class AdmitsCommand extends Command {
         Player p = (Player) sender;
         if (args.length >= 0) {
             if (CheckCommand.checks.contains(p.getName())) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + p.getName() + " 2d przyznanie sie do uzywania niedozwolonego oprogramowania");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + p.getName() + " 2d przyznanie się do używania niedozwolonego oprogramowania");
                 CheckCommand.checks.remove(p.getName());
             } else {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie jestes sprawdzany");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś sprawdzany");
             }
         }
     }

@@ -32,11 +32,11 @@ public class PlaceholderHooks extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, String params) {
         User user = UserCache.getInstance().compute(player.getUniqueId());
         if (params.equals("rate")) {
-            return PlayerInteractListener.colorAverage(user.getRates());
+            return format.format(PlayerInteractListener.colorAverage(user.getRates()));
         }
         if (params.equals("afk")) {
             if (RegionListener.afk.contains(player.getUniqueId()) && !player.getPlayer().isInsideVehicle()) {
-                return String.valueOf(Api.fixColor(" &#F23D07ᴀꜰᴋ"));
+                return Api.fixColor(" &#F23D07ᴀꜰᴋ");
             } else return "";
         }
         if (params.equals("afkchat")) {
@@ -45,25 +45,25 @@ public class PlaceholderHooks extends PlaceholderExpansion {
             } else return "";
         }
         if (params.equals("icon_01")) {
-            return String.valueOf(Api.fixColor("icon%01"));
+            return Api.fixColor("icon%01");
         }
         if (params.equals("icon_02")) {
-            return String.valueOf(Api.fixColor("icon%02"));
+            return Api.fixColor("icon%02");
         }
         if (params.equals("icon_03")) {
-            return String.valueOf(Api.fixColor("icon%03"));
+            return Api.fixColor("icon%03");
         }
         if (params.equals("icon_04")) {
-            return String.valueOf(Api.fixColor("icon%04"));
+            return Api.fixColor("icon%04");
         }
         if (params.equals("icon_05")) {
-            return String.valueOf(Api.fixColor("icon%05"));
+            return Api.fixColor("icon%05");
         }
         if (params.equals("icon_06")) {
-            return String.valueOf(Api.fixColor("icon%06"));
+            return Api.fixColor("icon%06");
         }
         if (params.equals("icon_07")) {
-            return String.valueOf(Api.fixColor("icon%07"));
+            return Api.fixColor("icon%07");
         }
         return null;
     }

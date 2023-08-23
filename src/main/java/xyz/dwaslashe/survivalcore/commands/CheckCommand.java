@@ -69,21 +69,21 @@ public class CheckCommand extends Command implements Listener {
                             @Override
                             public void run() {
                                 if (checks.contains(s.getName())) {
-                                    Api.sendActionBar(s, "&8>> <#f00c0c>Jestes sprawdzany przez <#FDBD01>" + p.getName() + " &8<<");
+                                    Api.sendActionBar(s, "&8>> <#f00c0c>Jesteś sprawdzany przez <#FDBD01>" + p.getName() + " &8<<");
                                 } else {
                                     this.cancel();
                                 }
                             }
                         }).runTaskTimer(Main.getPlugin(), 0, 20);
                     } else {
-                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cjest juz sprawdzany");
+                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cjest już sprawdzany");
                     }
                 } else if (args.length == 2) {
                     if (args[1].equalsIgnoreCase("info")) {
-                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + s.getName() + " &a" + (checks.contains(s.getName()) ? "jest sprawdzany(-a)" : "nie jest sprawdzany"));
+                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + s.getName() + " &a" + (checks.contains(s.getName()) ? "jest sprawdzany" : "nie jest sprawdzany"));
                     } else if (args[1].equalsIgnoreCase("przyznanie")) {
                         if (checks.contains(s.getName())) {
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + s.getName() + " 2d przyznanie sie do uzywania niedozwolonego oprogramowania");
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + s.getName() + " 2d przyznanie się do używania niedozwolonego oprogramowania");
                             checks.remove(s.getName());
                         } else {
                             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cnie jest sprawdzany");
@@ -98,7 +98,7 @@ public class CheckCommand extends Command implements Listener {
                     } else if (args[1].equalsIgnoreCase("czysty")) {
                         if (checks.contains(s.getName())) {
                             checks.remove(s.getName());
-                            Api.sendBroadcast(Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + s.getName() + " &aokazał sie nie winny, gdyz nie posiada niedozwolonego oprogramowania");
+                            Api.sendBroadcast(Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + s.getName() + " &aokazał sie nie winny, gdyż nie posiada niedozwolonego oprogramowania");
                         } else {
                             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cnie jest sprawdzany");
                         }
@@ -116,7 +116,7 @@ public class CheckCommand extends Command implements Listener {
         String name = e.getPlayer().getName();
         if(checks.contains(name)){
             e.setCancelled(true);
-            Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cPodczas sprawdzania dozwolone jest tylko uzywanie komend &e" + cmds.toString());
+            Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cPodczas sprawdzania dozwolone jest tylko używanie komend &e" + cmds.toString());
         }
     }
     @EventHandler

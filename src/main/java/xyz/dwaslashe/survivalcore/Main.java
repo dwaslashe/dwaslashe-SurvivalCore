@@ -1,7 +1,14 @@
 package xyz.dwaslashe.survivalcore;
 
+import net.saidora.api.events.EventBuilder;
+import net.saidora.api.events.list.TaskEvent;
+import net.saidora.economy.manager.UserManager;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import pl.minecodes.plots.api.plot.PlotServiceApi;
+import xyz.dwaslashe.survivalcore.configs.AbovenameShopSerdesPack;
 import xyz.dwaslashe.survivalcore.database.db.DatabaseConfiguration;
 import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
@@ -42,6 +49,9 @@ import xyz.dwaslashe.survivalcore.database.db.DatabaseConnector;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 
 @Getter @Setter
 public class Main extends JavaPlugin {
@@ -70,11 +80,14 @@ public class Main extends JavaPlugin {
 
     private DatabaseConnector connector;
 
+    private PlotServiceApi plotServiceApi;
+
     //Enable plugin
     @SneakyThrows
     @Override
     public void onEnable() {
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        this.setupPlotService();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             placeholder = true;
@@ -88,7 +101,7 @@ public class Main extends JavaPlugin {
         });
 
         pluginCommands = ConfigManager.create(PluginCommands.class, it -> {
-            it.withConfigurer(new YamlBukkitConfigurer());
+            it.withConfigurer(new YamlBukkitConfigurer(), new AbovenameShopSerdesPack());
             it.withBindFile(new File(this.getDataFolder(), "commands.yml"));
             it.saveDefaults();
             it.load(true);
@@ -107,8 +120,8 @@ public class Main extends JavaPlugin {
         pluginCommands.load();
         pluginRank.load();
 
-        if (!new LicenseApi(pluginConfig.getCore().getLicense(), "https://buybrain.pl/license/verify.php", this).register())
-            return;
+        //if (!new LicenseApi(pluginConfig.getCore().getLicense(), "https://buybrain.pl/license/verify.php", this).register())
+        //    return;
 
         new PlaceholderHooks().register();
         new ReflectionHelper().initialize();
@@ -160,6 +173,42 @@ public class Main extends JavaPlugin {
 
         connector.registerDataObjectToScan(DragonLevel.class);
         connector.getScanner(DragonLevel.class).ifPresent(DragonLevelDataObjectScanner -> DragonLevelDataObjectScanner.load(DragonLevelCache.getInstance()));
+
+        AtomicLong notify = new AtomicLong();
+        AtomicLong admit = new AtomicLong();
+
+        new EventBuilder<>(TaskEvent.class, taskEvent -> {
+            Consumer<Player> notifyConsumer = player -> {};
+            Consumer<Player> admitConsumer = player -> {};
+            if (notify.get() < System.currentTimeMillis()) {
+                notify.set(System.currentTimeMillis() + 1000);
+                notifyConsumer = player -> {
+                    if(RegionListener.afk.contains(player.getUniqueId()) && !player.isInsideVehicle()){
+                        Api.sendActionBar(player, "&8>> <#39FF14>Obecnie jesteś w strefie afk, co minute dostajesz <#FFF88F>2 <#FFC42E>$ &8<<");
+                    }
+                };
+            }
+
+            if(admit.get() < System.currentTimeMillis()){
+                admit.set(System.currentTimeMillis() + 60000);
+                admitConsumer = player -> {
+                    if(RegionListener.afk.contains(player.getUniqueId()) && !player.isInsideVehicle()){{
+                        PlayerQuitListener.LocYaw.remove(player.getUniqueId());
+                        player.sendTitle(Api.fixColor("&#F23D07&lAFK"), Api.fixColor("&8>> &aZa spędzenie minuty w strefie afk dosałeś &#FFF88F2 &#FFC42E$&a! &8<<"));
+                        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_BOTTLE_THROW, 10, 10);
+                        UserManager.getInstance().getUser(player).ifPresent(user -> user.deposit(2));
+                    }}
+                };
+            }
+
+            if(admit.get() < System.currentTimeMillis() && notify.get() < System.currentTimeMillis()) return;
+            Consumer<Player> finalNotifyConsumer = notifyConsumer;
+            Consumer<Player> finalAdmitConsumer = admitConsumer;
+            taskEvent.execute(player -> {
+                finalAdmitConsumer.accept(player);
+                finalNotifyConsumer.accept(player);
+            });
+        });
 
         getServer().getScheduler().runTaskTimer(this, () -> {
             Set<User> UserSet = new HashSet<>(UserCache.getInstance().getToUpdate());
@@ -222,6 +271,19 @@ public class Main extends JavaPlugin {
         try {
             connector.getConnection().close();
         } catch (SQLException ignore) {}
+    }
+
+    public void setupPlotService() {
+        if (!Bukkit.getServer().getPluginManager().isPluginEnabled("minePlots")) {
+            Bukkit.getLogger().severe("Disabled due to no minePlots dependency found!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        RegisteredServiceProvider<PlotServiceApi> serviceProvider = Bukkit.getServicesManager().getRegistration(PlotServiceApi.class);
+        Objects.requireNonNull(serviceProvider, "Service provider is null!");
+
+        plotServiceApi = serviceProvider.getProvider();
     }
 
     private void registerPlaceholder() {
@@ -356,6 +418,7 @@ public class Main extends JavaPlugin {
         registerEvent(new ChatBuffer(), true);
         registerEvent(new CheckCommand(), true);
         registerEvent(new PlayerInteractListener(), true);
+        registerEvent(new PlotSellWandListener(plotServiceApi), true);
         InventoryHelper.implement(this);
     }
 
@@ -414,7 +477,7 @@ public class Main extends JavaPlugin {
         itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 
         item = new CustomItemImpl(3, itemHelper);
-        item.whenWear().add(new PotionEffect(PotionEffectType.NIGHT_VISION, 120, 3));
+        item.whenWear().add(new PotionEffect(PotionEffectType.NIGHT_VISION, 300, 3));
         itemCache.register(item);
 
         //Kilof Górnika

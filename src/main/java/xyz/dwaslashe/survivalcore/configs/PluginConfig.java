@@ -107,6 +107,7 @@ public class PluginConfig extends OkaeriConfig {
         private boolean blockwords = true;
         private boolean blockregex = true;
         private boolean antyafk = true;
+        private boolean tooExpensiveBypass = true;
         private boolean antyxraymessage = true;
         private boolean joinbossbarflesh = true;
         private boolean joinactionbar = true;

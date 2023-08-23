@@ -16,10 +16,10 @@ public class User {
     private final UUID uuid;
 
     @Value(key = "nickName", type = "VARCHAR(32)")
-    private String nickName;
+    private String nickName = "";
 
     @Value(key = "discordIdAccount", type = "VARCHAR(32)")
-    private String discordIdAccount;
+    private String discordIdAccount = "";
 
     @Value(key = "abyss", type = "INT(16)")
     private int abyss;
@@ -43,10 +43,10 @@ public class User {
     private int msgbossbar;
 
     @Value(key = "homes", type = "TEXT")
-    private String homes;
+    private String homes = "";
 
     @Value(key = "rates", type = "TEXT")
-    private String rates;
+    private String rates = "";
 
     public User(UUID uuid) {
         this.uuid = uuid;

@@ -33,7 +33,7 @@ public class SetHomeCommand extends Command {
         if (args.length >= 1) {
             User user = UserCache.getInstance().compute(player.getUniqueId());
             String nameHome = StringUtils.join(args, " ", 0, args.length);
-            int countHomes = extractPhrases(user.getHomes()).size();
+            int countHomes = user.getHomes() == null || user.getHomes().isEmpty() ? 0 : extractPhrases(user.getHomes()).size();
 
             if (nameHome.contains("&") && nameHome.contains("#")) {
                 Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz stworzyć domu z znakiem &e& &ci &e#&c!");

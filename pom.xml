@@ -117,17 +117,24 @@
         </dependency>
         <dependency>
             <groupId>net.saidora</groupId>
-            <artifactId>Economy</artifactId>
+            <artifactId>EconomyManager</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/original-EconomyManager-0.0.1-stable.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.saidora</groupId>
+            <artifactId>Economy</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/DeluxeSellwands_Build_33.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.saidora</groupId>
             <artifactId>Ether-API</artifactId>
             <version>0.0</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/API (2).jar</systemPath>
+            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/API.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecodes</groupId>

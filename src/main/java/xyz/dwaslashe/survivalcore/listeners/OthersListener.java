@@ -1,6 +1,7 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.*;
@@ -11,7 +12,6 @@ import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.command.Command;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,17 +20,22 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.Repairable;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.SpawnEgg;
 import org.bukkit.scheduler.BukkitRunnable;
+import pl.minecodes.plots.api.event.entry.PrePlotEntryEvent;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.WarpCache;
 import xyz.dwaslashe.survivalcore.commands.managers.CommandManager;
 import xyz.dwaslashe.survivalcore.objects.Abyss;
+import xyz.dwaslashe.survivalcore.objects.Logout;
 import xyz.dwaslashe.survivalcore.objects.Warp;
 import xyz.dwaslashe.survivalcore.utils.*;
 
@@ -45,6 +50,8 @@ public class OthersListener implements Listener {
 
     public static final List<Player> cancel = Lists.newArrayList();
     private int id = 0;
+
+    protected static final Map<Player, Long> delayHook = Maps.newHashMap();
 
     private static ItemStack enchanted_golden_apple = new ItemApi(Material.ENCHANTED_GOLDEN_APPLE).getItemStack();
 
@@ -61,10 +68,18 @@ public class OthersListener implements Listener {
 
     public static ItemStack pokeball = new ItemApi(Material.SNOWBALL)
             .setName("&#ee1515Poke&#f0f0f0Ball")
-            .setLore(Arrays.asList("", " &#E7E7E7Masz &#9DF89F20% &#E7E7E7szans na złapanie zwierzęcia w jajko!"))
+            .setLore(Arrays.asList("", " &#E7E7E7Masz &#9DF89F20% &#E7E7E7szans na złapanie zwierzęcia w jajko", " &#E7E7E7wyrzucając &#ee1515Poke&#f0f0f0Balla &#E7E7E7prosto w zwierzecie!"))
             .getItemStack();
 
     static Set<UUID> snowballs = new HashSet<>(), shooters = new HashSet<>();
+
+    @EventHandler
+    public void onEnterPlot(PrePlotEntryEvent event) {
+        Player player = event.getPlayer();
+        if (event.getPlot().isClosed()) {
+            player.leaveVehicle();
+        }
+    }
 
     @EventHandler
     public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
@@ -100,7 +115,6 @@ public class OthersListener implements Listener {
             }
         }
     }
-
 
     @EventHandler
     public void onBreakBlock(BlockDropItemEvent event) {
@@ -144,10 +158,22 @@ public class OthersListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void handlePlayerDamageEvent(EntityDamageByEntityEvent event){
+        Player player = ((Player) event.getDamager()).getPlayer();
         if(event.getEntity() instanceof Player victim && event.getDamager() instanceof Player attacker) {
-            if (victim.getLocation().getWorld().getName().equals("spawn")) {
+            if (victim.getLocation().getWorld().getName().equals("spawn") && !RegionApi.isInRegion(victim.getLocation(), "pvp")) {
+                if (delayHook.containsKey(player) && delayHook.get(player) > System.currentTimeMillis()) {
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zaczepić gracza musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
+                    player.closeInventory();
+                    return;
+                }
+
+                delayHook.remove(player);
+
+                Api.sendMessage(player,  Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zaczepiłeś gracza");
                 victim.sendTitle(Api.fixColor("&#95eb34&lHej"), Api.fixColor("&8>> &aGracz &e" + attacker.getDisplayName() + "&a zaczepił Cię!"));
                 victim.playSound(victim.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1.0F, 1.0F);
+
+                delayHook.put(player, TimerApi.parseDateDiff("5s", true));
             }
         }
     }
@@ -251,9 +277,32 @@ public class OthersListener implements Listener {
             event.setCancelled(true);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void handlePrepareAnvilEvent(PrepareAnvilEvent event){
+        AnvilInventory inventory = event.getInventory();
+        if(inventory.getFirstItem() == null || inventory.getSecondItem() == null) return;
+
+        inventory.setMaximumRepairCost(99);
+
+        ItemStack first = inventory.getFirstItem(), second = inventory.getSecondItem();
+
+        int cost = 0;
+
+        if(first.getItemMeta() instanceof Repairable repairable){
+            cost = repairable.getRepairCost();
+        }
+        if(second.getItemMeta() instanceof Repairable repairable){
+            cost = repairable.getRepairCost();
+        }
+
+        if(cost <= 0) cost = 5;
+        if(cost > 39) cost = 39;
+        inventory.setRepairCost(cost);
+    }
+
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
-        if (cancel.contains(e.getPlayer())) cancel.remove(e.getPlayer());
+        cancel.remove(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGH)

@@ -22,10 +22,6 @@ public class EcCommand extends Command {
     public void commandExecute(CommandSender s, String[] args) {
         Player p = (Player) s;
         if (args.length == 0) {
-            if (CooldownManager.checkDelay(p) == true) {
-                return;
-            }
-            CooldownManager.addColdown(p, "30s");
             p.openInventory(p.getEnderChest());
             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aOtworzyłeś swój &eenderchest");
         } else if (args.length == 1) {

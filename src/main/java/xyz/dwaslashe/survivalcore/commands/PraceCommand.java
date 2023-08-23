@@ -20,7 +20,7 @@ public class PraceCommand extends Command {
     public void commandExecute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length >= 0) {
-            p.chat("/job");
+            p.chat("/jobs");
         }
     }
 }

@@ -41,6 +41,7 @@ public class CoreCommand extends Command {
                         Api.sendMessage(p,Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeładowano Plugin!");
                         Main.pluginConfig.load();
                         Main.pluginCommands.load();
+                        Main.pluginRank.load();
                     }
                 }
             }

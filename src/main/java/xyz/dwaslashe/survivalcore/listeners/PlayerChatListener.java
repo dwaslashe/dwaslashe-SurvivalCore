@@ -18,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
+import org.intellij.lang.annotations.Subst;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.commands.ChatCommand;
@@ -133,7 +134,7 @@ public class PlayerChatListener implements Listener {
 
         String f = "<#f47e07>@";
 
-        Component message$component = Component.empty();
+        Component message$component;
 
         List<TagResolver> resolvers = new ArrayList<>();
 
@@ -141,10 +142,11 @@ public class PlayerChatListener implements Listener {
             if (ref.message.contains(onlinePlayer.getName())) {
                 onlinePlayer.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 2, 2);
 
-                ref.message = ref.message.replace(onlinePlayer.getName(), "<mention-" + onlinePlayer.getName().toLowerCase() + ">");
+                String name = onlinePlayer.getName().toLowerCase();
+                ref.message = ref.message.replace(onlinePlayer.getName(), "<mention-" + name + ">");
                 String finalMessage = ref.message;
 
-                resolvers.add(TagResolver.builder().tag("mention-" + onlinePlayer.getName().toLowerCase(),
+                resolvers.add(TagResolver.builder().tag("mention-" + name,
 
                                 (argumentQueue, context) -> {
 
@@ -171,7 +173,7 @@ public class PlayerChatListener implements Listener {
 
 
         //Create message player and send
-        Component component = null;
+        Component component;
 
         ItemStack itemStack = player.getItemInHand();
 
@@ -225,7 +227,7 @@ public class PlayerChatListener implements Listener {
         if(ref.close) return;
 
 
-        //Send all message
+        //Send message to all players
         User user = UserCache.getInstance().compute(event.getPlayer().getUniqueId());
 
         for (Player all : Bukkit.getOnlinePlayers()) {

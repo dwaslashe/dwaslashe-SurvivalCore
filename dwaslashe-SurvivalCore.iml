@@ -79,7 +79,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Maven: net.saidora:Economy:1.0">
+      <library name="Maven: net.saidora:EconomyManager:1.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/original-EconomyManager-0.0.1-stable.jar!/" />
         </CLASSES>
@@ -88,9 +88,18 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
+      <library name="Maven: net.saidora:Economy:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/DeluxeSellwands_Build_33.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
       <library name="Maven: net.saidora:Ether-API:0.0">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/API (2).jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/API.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

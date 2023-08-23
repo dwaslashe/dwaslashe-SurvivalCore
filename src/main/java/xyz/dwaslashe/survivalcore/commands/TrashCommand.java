@@ -27,10 +27,6 @@ public class TrashCommand extends Command {
     public void commandExecute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length == 0) {
-            if (CooldownManager.checkDelay(p) == true) {
-                return;
-            }
-            CooldownManager.addColdown(p, "3s");
             Inventory inv = Bukkit.createInventory((InventoryHolder) null, 54, "Kosz");
             inv.clear();
             p.openInventory(inv);
