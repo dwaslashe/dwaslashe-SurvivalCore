@@ -13,7 +13,7 @@ import xyz.dwaslashe.survivalcore.utils.Api;
 import java.util.Arrays;
 import java.util.List;
 
-public class RewardCommand extends Command implements Listener {
+public class    RewardCommand extends Command implements Listener {
     public RewardCommand() {
         super("rewards", "/rewards", "", "nagroda");
         setOnlyPlayer(true);

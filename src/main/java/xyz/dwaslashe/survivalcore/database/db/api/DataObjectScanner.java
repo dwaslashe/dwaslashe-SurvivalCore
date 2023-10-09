@@ -1,6 +1,7 @@
 package xyz.dwaslashe.survivalcore.database.db.api;
 
 
+import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.database.db.DatabaseConnector;
 import xyz.dwaslashe.survivalcore.database.db.api.stereotype.DataObject;
 import xyz.dwaslashe.survivalcore.database.db.api.stereotype.PrimaryKey;
@@ -32,7 +33,7 @@ public class DataObjectScanner<T> {
         if(dataObject == null) return;
         constructor = ReflectionHelper.getConstructor(clazz, ResultSet.class);
         if(constructor == null){
-            System.out.println("Constructor: \"" + clazz.getName()+"(ResultSet.class)\" cannot be null");
+            Main.getPlugin().getLogger().info("Constructor: \"" + clazz.getName()+"(ResultSet.class)\" cannot be null");
             return;
         }
         createTable();

@@ -19,28 +19,28 @@ public class WorldCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender s, String[] args) {
-        Player p = (Player) s;
+        Player player = (Player) s;
         if (args.length == 0) {
             List<World> worlds = Bukkit.getWorlds();
             World spawn = Bukkit.getWorlds().stream().filter(world -> world.getName().equals("spawn")).findAny().orElse(null);
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aObecnie znajdujesz się na świecie &e" + p.getWorld().getName() + "&a, lista dostępnych światów &e" + worlds.iterator());
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aObecnie znajdujesz się na świecie &e" + player.getWorld().getName() + "&a, lista dostępnych światów &e" + worlds.iterator());
         } else if (args.length == 1) {
             World world = Bukkit.getWorld(args[0]);
             if (world != null) {
-                p.teleport(world.getSpawnLocation());
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na świat &e" + world.getName());
-            } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cŚwiat o nazwie &e" + world.getName() + " &cnie istnieje!");
+                player.teleport(world.getSpawnLocation());
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na świat &e" + world.getName());
+            } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cŚwiat o nazwie &e" + world.getName() + " &cnie istnieje!");
         } else if (args.length == 2) {
-            Player p2 = Bukkit.getPlayer(args[1]);
+            Player secondPlayer = Bukkit.getPlayer(args[1]);
             World world = Bukkit.getWorld(args[0]);
-            if (p2 == null) {
+            if (secondPlayer == null) {
                 offlinePlayer();
                 return;
             } else {
                 if (world != null) {
-                    Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowałeś gracza &e" + p2.getName() + "&a do świata &e" + world.getName());
-                    Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś przeteleportowany przez &e" + s.getName() + "&a do świata &e" + world.getName());
-                    p2.teleport(world.getSpawnLocation());
+                    Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowałeś gracza &e" + secondPlayer.getName() + "&a do świata &e" + world.getName());
+                    Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś przeteleportowany przez &e" + s.getName() + "&a do świata &e" + world.getName());
+                    secondPlayer.teleport(world.getSpawnLocation());
                 } else Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefix() + "&cŚwiat o nazwie &e" + world.getName() + " &cnie istnieje!");
             }
         } else wrongUsage();

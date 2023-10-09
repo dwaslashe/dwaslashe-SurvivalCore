@@ -1,6 +1,5 @@
 package xyz.dwaslashe.survivalcore.commands;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -658,7 +657,7 @@ public class PunishmentCommand extends Command implements Listener {
             inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> itemMeta.setDisplayName(" "));
         });
 
-        ItemStack arrow_up = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
+        ItemStack arrow_up = inventoryHelper.prepareItemStack(Material.LEGACY_SKULL_ITEM, itemStack -> {
             itemStack.setDurability((short) 3);
             inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWMyNjg3NmE0NTQ4ODQ0ZTI4YTZmN2JhMWYzNzdjODBlNTk0OTVmN2QzMjIxNGJjYzQ5MjgwNGIxNjYxOTMzOSJ9fX0=");
             inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {

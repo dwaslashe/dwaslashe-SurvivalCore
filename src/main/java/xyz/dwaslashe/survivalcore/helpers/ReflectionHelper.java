@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import xyz.dwaslashe.survivalcore.Main;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -71,7 +72,7 @@ public class ReflectionHelper {
     }
 
     public static Class<?> getOcbClass(String name) {
-        System.out.println(OCB_PREFIX + name);
+        Main.getPlugin().getLogger().info(OCB_PREFIX + name);
         try {
             return Class.forName(OCB_PREFIX + name);
         } catch (ClassNotFoundException e) {

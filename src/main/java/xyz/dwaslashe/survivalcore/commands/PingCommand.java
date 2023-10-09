@@ -53,7 +53,7 @@ public class PingCommand extends Command {
                         @Override
                         public void run() {
                             if (newpingobject.getTimer() <= 20){
-                                ((Player) s).getPlayer().sendTitle(Api.fixColor("&#FFC42E" + Api.getPing((Player) s) + "ms. &8(&#FFC42E" + newpingobject.getTimer() + "&8)") , Api.fixColor("&8>> &aTwoj aktualny ping &8<<"), 0, 20, 5);
+                                ((Player) s).getPlayer().sendTitle(Api.fixColor("&#FFC42E" + Api.getPing((Player) s) + "ms. &8(&#FFC42E" + newpingobject.getTimer() + "&8)") , Api.fixColor("&8>> &aTwój aktualny ping &8<<"), 0, 20, 5);
                                 newpingobject.setTimer(newpingobject.getTimer() + 1);
                             } else {
                                 this.cancel();
@@ -62,14 +62,14 @@ public class PingCommand extends Command {
                         }
                     }).runTaskTimer(Main.getPlugin(), 0, 5);
                 } else {
-                    Api.sendMessage(s, " &8>> &cJuz sprawdzasz swoj ping!");
+                    Api.sendMessage(s, " &8>> &cJuż sprawdzasz swój ping!");
                 }
             } else {
                 wrongUsage();
             }
         } else if(args.length == 1){
             if (!((Player) s).getPlayer().hasPermission("core.command.admin")) {
-                ((Player) s).getPlayer().sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.admin&8) &8<<"));
+                ((Player) s).getPlayer().sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnień &8(&ecore.command.admin&8) &8<<"));
                 return;
             }
             if(Bukkit.getPlayer(args[0]) != null){

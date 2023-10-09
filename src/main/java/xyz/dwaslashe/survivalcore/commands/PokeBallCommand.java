@@ -4,6 +4,7 @@ package xyz.dwaslashe.survivalcore.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.listeners.OthersListener;
 import xyz.dwaslashe.survivalcore.utils.Api;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class PokeBallCommand extends Command {
     public PokeBallCommand() {
-        super("pokeballgive", "/pokeballgive <gracz>", "");
+        super("pokeballgive", "/pokeballgive <gracz> <amount>", "");
         setPermission("core.command.pokeballgive");
     }
 
@@ -27,9 +28,22 @@ public class PokeBallCommand extends Command {
     public void commandExecute(CommandSender sender, String[] args) {
         if (args.length == 0) {
             wrongUsage();
+        } else if (args.length >= 2) {
+            Player secondPlayer = Bukkit.getPlayer(args[0]);
+            if (secondPlayer != null) {
+                if (Api.isInt(args[1])) {
+                    OthersListener.pokeball.setAmount(Integer.valueOf(args[1]));
+                    Api.giveOrDrop(secondPlayer, OthersListener.pokeball);
+                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś &e" + args[1] + "x &apokeball graczowi &e" + secondPlayer.getName());
+                } else wrongUsage();
+            } else offlinePlayer();
         } else if (args.length == 1) {
-            Player p2 = Bukkit.getPlayer(args[0]);
-            Api.giveOrDrop(p2, OthersListener.pokeball);
-        } else sender.sendMessage(getUsage());
+            Player secondPlayer = Bukkit.getPlayer(args[0]);
+            if (secondPlayer != null) {
+                OthersListener.pokeball.setAmount(Integer.valueOf(args[1]));
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś &e1x &apokeball graczowi &e" + secondPlayer.getName());
+                Api.giveOrDrop(secondPlayer, OthersListener.pokeball);
+            } else offlinePlayer();
+        } else wrongUsage();
     }
 }

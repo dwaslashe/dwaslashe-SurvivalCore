@@ -34,32 +34,34 @@ public class MsgCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Player p = (Player) sender;
+        Player player = (Player) sender;
         if (args.length < 2) {
             wrongUsage();
         } else if (args.length > 1) {
-            Player p2 = Bukkit.getPlayer(args[0]);
-            if (p2 == null) {
+            Player secondPlayer = Bukkit.getPlayer(args[0]);
+            if (secondPlayer == null) {
                 offlinePlayer();
                 return;
             }
             String msg = StringUtils.join(args, " ", 1, args.length);
+            User userPlayer = UserCache.getInstance().compute(player.getUniqueId());
+            User userSecondPlayer = UserCache.getInstance().compute(secondPlayer.getUniqueId());
 
             if(msg.isEmpty()) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cWiadomość nie może być pusta");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cWiadomość nie może być pusta");
                 return;
             }
 
-            lastMsg.put(p, p2);
-            lastMsg.put(p2, p);
+            lastMsg.put(player, secondPlayer);
+            lastMsg.put(secondPlayer, player);
 
-            if (IgnoreCommand.blockMsg.contains(p2)) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ dana osoba wyłączyła wysyłanie prywatnych wiadomości!");
+            if (userSecondPlayer.getIgnoreAllPlayers() == 1) {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ dana osoba wyłączyła wysyłanie prywatnych wiadomości!");
                 return;
             }
 
-            if (IgnoreCommand.ignoreMsg.containsValue(p) || IgnoreCommand.ignoreMsg.containsValue(p2)) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ dana osoba Cię wyciszyła!");
+            if (getInputPlayer(secondPlayer.getName(), userPlayer.getIgnorePlayers()) || getInputPlayer(player.getName(), userSecondPlayer.getIgnorePlayers())) {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ dana osoba Cię wyciszyła lub ją wyciszyłeś!");
                 return;
             }
 
@@ -68,24 +70,23 @@ public class MsgCommand extends Command {
                     .map(o -> o = Bukkit.getPlayer((String) o))
                     .filter(Objects::nonNull)
                     .forEach(po -> {
-                        ((Player) po).sendMessage(Api.fixColor("&c&lSocialSPY &8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003" + p2.getDisplayName() + " &8] &8» &#E7E7E7" + msg));
+                        ((Player) po).sendMessage(Api.fixColor("&c&lSocialSPY &8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003" + secondPlayer.getDisplayName() + " &8] &8» &#E7E7E7" + msg));
                     });
 
-            Api.sendMessage(p, "&8[ &#B3F003TY &8> &#B3F003" + p2.getDisplayName() + " &8] &8» &#E7E7E7" + msg);
-            Api.sendMessage(p2, "&8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg);
-            User userPlayer = UserCache.getInstance().compute(p.getUniqueId());
-            User userPlayer2 = UserCache.getInstance().compute(p2.getUniqueId());
-            if (userPlayer.getMsgbossbar() == 0) {
-                BossBar bar = Bukkit.createBossBar(Api.fixColor("&8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg), BarColor.GREEN, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
-                if (userPlayer2.getMsgbossbar() == 0) {
-                    bar.addPlayer(p2);
+            Api.sendMessage(player, "&8[ &#B3F003TY &8> &#B3F003" + secondPlayer.getDisplayName() + " &8] &8» &#E7E7E7" + msg);
+            Api.sendMessage(secondPlayer, "&8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg);
+
+            if (userPlayer.getMsgBossBar() == 0) {
+                BossBar bar = Bukkit.createBossBar(Api.fixColor("&8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg), BarColor.GREEN, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
+                if (userSecondPlayer.getMsgBossBar() == 0) {
+                    bar.addPlayer(secondPlayer);
                 }
                 bar.setProgress(1);
                 int[] bar_color = {0};
                 Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
                     @Override
                     public void run() {
-                        if (p.getPlayer() != null && p.getPlayer().isOnline()) {
+                        if (player.getPlayer() != null && player.getPlayer().isOnline()) {
                             if (bar.getProgress() > 0.02) {
                                 bar.setProgress(bar.getProgress() - 0.02);
                                 ++bar_color[0];
@@ -93,12 +94,12 @@ public class MsgCommand extends Command {
                                     bar.setColor(BarColor.GREEN);
                                 } else {
                                 }
-                            } else if (userPlayer2.getMsgbossbar() == 0) {
+                            } else if (userSecondPlayer.getMsgBossBar() == 0) {
                                 bar.setVisible(false);
-                                bar.removePlayer(p2.getPlayer());
+                                bar.removePlayer(secondPlayer.getPlayer());
                             }
-                        } else if (userPlayer2.getMsgbossbar() == 0) {
-                            bar.removePlayer(p2.getPlayer());
+                        } else if (userSecondPlayer.getMsgBossBar() == 0) {
+                            bar.removePlayer(secondPlayer.getPlayer());
                         }
                     }
                 }, 0, 2);
@@ -108,6 +109,18 @@ public class MsgCommand extends Command {
 
     public static HashMap<Player, Player> getLastMsg() {
         return lastMsg;
+    }
+
+    public static boolean getInputPlayer(String player, String input) {
+        String[] players = input.split("&");
+
+        for (String p : players) {
+            if (p.equals(player)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

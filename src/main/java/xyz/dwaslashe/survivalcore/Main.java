@@ -1,15 +1,19 @@
 package xyz.dwaslashe.survivalcore;
 
-import org.bukkit.Location;
+import net.saidora.api.events.EventBuilder;
+import net.saidora.api.events.list.TaskEvent;
+import net.saidora.economy.manager.UserManager;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import pl.minecodes.plots.api.plot.PlotServiceApi;
+import xyz.dwaslashe.survivalcore.configs.*;
 import xyz.dwaslashe.survivalcore.database.db.DatabaseConfiguration;
 import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
@@ -21,9 +25,6 @@ import org.bukkit.potion.PotionEffectType;
 import xyz.dwaslashe.survivalcore.cache.*;
 import xyz.dwaslashe.survivalcore.commands.*;
 import xyz.dwaslashe.survivalcore.commands.managers.CommandManager;
-import xyz.dwaslashe.survivalcore.configs.PluginCommands;
-import xyz.dwaslashe.survivalcore.configs.PluginConfig;
-import xyz.dwaslashe.survivalcore.configs.PluginRank;
 import xyz.dwaslashe.survivalcore.helpers.InventoryHelper;
 import xyz.dwaslashe.survivalcore.helpers.ItemHelper;
 import xyz.dwaslashe.survivalcore.helpers.ReflectionHelper;
@@ -36,12 +37,14 @@ import xyz.dwaslashe.survivalcore.placeholder.PlaceholderHooks;
 import xyz.dwaslashe.survivalcore.tasks.*;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.ChatBuffer;
-import xyz.dwaslashe.survivalcore.utils.LicenseApi;
 import xyz.dwaslashe.survivalcore.database.db.DatabaseConnector;
+import xyz.dwaslashe.survivalcore.utils.PictureApi;
 
 import java.io.File;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 
 @Getter @Setter
 public class Main extends JavaPlugin {
@@ -54,6 +57,8 @@ public class Main extends JavaPlugin {
     public static PluginCommands pluginCommands;
 
     public static PluginRank pluginRank;
+
+    public static PluginVouchers pluginVouchers;
 
     //Others
     private final ItemCache itemCache = new ItemCache();
@@ -70,11 +75,16 @@ public class Main extends JavaPlugin {
 
     private DatabaseConnector connector;
 
+    private PlotServiceApi plotServiceApi;
+
+    private PictureApi pictureApi;
+
     //Enable plugin
     @SneakyThrows
     @Override
     public void onEnable() {
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        this.setupPlotService();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             placeholder = true;
@@ -88,7 +98,7 @@ public class Main extends JavaPlugin {
         });
 
         pluginCommands = ConfigManager.create(PluginCommands.class, it -> {
-            it.withConfigurer(new YamlBukkitConfigurer());
+            it.withConfigurer(new YamlBukkitConfigurer(), new CustomSerdesPack());
             it.withBindFile(new File(this.getDataFolder(), "commands.yml"));
             it.saveDefaults();
             it.load(true);
@@ -101,14 +111,36 @@ public class Main extends JavaPlugin {
             it.load(true);
         });
 
+        pluginVouchers = ConfigManager.create(PluginVouchers.class, it -> {
+            it.withConfigurer(new YamlBukkitConfigurer(), new CustomSerdesPack());
+            it.withBindFile(new File(this.getDataFolder(), "vouchers.yml"));
+            it.saveDefaults();
+            it.load(true);
+        });
+
+        //Furnace Recipe
+
+        //FurnaceRecipe furnaceRecipe = new FurnaceRecipe(NamespacedKey.minecraft("wywrotkamc_driedcocaineleaf"), OthersListener.driedCocaineLeaf, new RecipeChoice.ExactChoice(OthersListener.cocaineLeaf), 5F, 60);
+        //Bukkit.addRecipe(furnaceRecipe);
+
+        if (pluginConfig.getRecipes().isMagnet()) {
+            Bukkit.addRecipe(OthersListener.getRecipeMagnet());
+        }
+        if (pluginConfig.getRecipes().isEnchantedApple()) {
+            Bukkit.addRecipe(OthersListener.getRecipeEnchantedApple());
+        }
+
         connector = new DatabaseConnector(new DatabaseConfiguration(pluginConfig.getDatabase().getHost(), pluginConfig.getDatabase().getUsername(), pluginConfig.getDatabase().getPassword(), pluginConfig.getDatabase().getTable(), pluginConfig.getDatabase().getPort(), pluginConfig.getDatabase().isSsl()));
 
         pluginConfig.load();
         pluginCommands.load();
         pluginRank.load();
+        pluginVouchers.load();
 
-        if (!new LicenseApi(pluginConfig.getCore().getLicense(), "https://buybrain.pl/license/verify.php", this).register())
-            return;
+        pictureApi = new PictureApi(this);
+
+        //if (!new LicenseApi(pluginConfig.getCore().getLicense(), "https://buybrain.pl/license/verify.php", this).register())
+        //    return;
 
         new PlaceholderHooks().register();
         new ReflectionHelper().initialize();
@@ -118,19 +150,6 @@ public class Main extends JavaPlugin {
         loadCommands();
         loadEvents();
         registerPlaceholder();
-
-        if (pluginConfig.getRecipes().isWeed()) {
-            Bukkit.getServer().addRecipe(OthersListener.getRecipeWeed());
-        }
-        if (pluginConfig.getRecipes().isKokaina()) {
-            Bukkit.getServer().addRecipe(OthersListener.getRecipeKokaina());
-        }
-        if (pluginConfig.getRecipes().isMagnet()) {
-            Bukkit.getServer().addRecipe(OthersListener.getRecipeMagnet());
-        }
-        if (pluginConfig.getRecipes().isEnchanted_apple()) {
-            Bukkit.getServer().addRecipe(OthersListener.getRecipeEnchantedApple());
-        }
 
         if (pluginConfig.getEvents().isAntyafk()) {
             Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
@@ -160,6 +179,50 @@ public class Main extends JavaPlugin {
 
         connector.registerDataObjectToScan(DragonLevel.class);
         connector.getScanner(DragonLevel.class).ifPresent(DragonLevelDataObjectScanner -> DragonLevelDataObjectScanner.load(DragonLevelCache.getInstance()));
+
+        connector.registerDataObjectToScan(MoneyTarget.class);
+        connector.getScanner(MoneyTarget.class).ifPresent(DragonLevelDataObjectScanner -> DragonLevelDataObjectScanner.load(MoneyTargetCache.getInstance()));
+
+        connector.registerDataObjectToScan(Marry.class);
+        connector.getScanner(Marry.class).ifPresent(MarryDataObjectScanner -> MarryDataObjectScanner.load(MarryCache.getInstance()));
+
+        AtomicLong notify = new AtomicLong();
+        AtomicLong admit = new AtomicLong();
+
+        new EventBuilder<>(TaskEvent.class, taskEvent -> {
+            Consumer<Player> notifyConsumer = player -> {};
+            Consumer<Player> admitConsumer = player -> {};
+            if (notify.get() < System.currentTimeMillis()) {
+                notify.set(System.currentTimeMillis() + 1000);
+                notifyConsumer = player -> {
+                    if(RegionListener.afk.contains(player.getUniqueId()) && !player.isInsideVehicle()){
+                        Api.sendActionBar(player, "&8>> <#39FF14>Obecnie jesteś w strefie afk, co minute dostajesz <#FFF88F>2 <#FFC42E>$ &8<<");
+                    }
+                };
+            }
+
+            if(admit.get() < System.currentTimeMillis()){
+                admit.set(System.currentTimeMillis() + 60000);
+                admitConsumer = player -> {
+                    if(RegionListener.afk.contains(player.getUniqueId()) && !player.isInsideVehicle()){{
+                        User userPlayer = UserCache.getInstance().compute(player.getUniqueId());
+                        userPlayer.addTimeAfk(60000);
+                        PlayerQuitListener.LocYaw.remove(player.getUniqueId());
+                        player.sendTitle(Api.fixColor("&#F23D07&lAFK"), Api.fixColor("&8>> &aZa spędzenie minuty w strefie afk dostałeś &#FFF88F2 &#FFC42E$&a! &8<<"));
+                        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_BOTTLE_THROW, 10, 10);
+                        UserManager.getInstance().getUser(player).ifPresent(user -> user.deposit(2));
+                    }}
+                };
+            }
+
+            if(admit.get() < System.currentTimeMillis() && notify.get() < System.currentTimeMillis()) return;
+            Consumer<Player> finalNotifyConsumer = notifyConsumer;
+            Consumer<Player> finalAdmitConsumer = admitConsumer;
+            taskEvent.execute(player -> {
+                finalAdmitConsumer.accept(player);
+                finalNotifyConsumer.accept(player);
+            });
+        });
 
         getServer().getScheduler().runTaskTimer(this, () -> {
             Set<User> UserSet = new HashSet<>(UserCache.getInstance().getToUpdate());
@@ -192,6 +255,18 @@ public class Main extends JavaPlugin {
                 DragonLevelCache.getInstance().getToUpdate().removeAll(DragonLevelSet);
             });
 
+            Set<MoneyTarget> MoneyTargetSet = new HashSet<>(MoneyTargetCache.getInstance().getToUpdate());
+            connector.getScanner(MoneyTarget.class).ifPresent(scanner -> {
+                MoneyTargetSet.forEach(scanner::update);
+                MoneyTargetCache.getInstance().getToUpdate().removeAll(MoneyTargetSet);
+            });
+
+            Set<Marry> MarrySet = new HashSet<>(MarryCache.getInstance().getToUpdate());
+            connector.getScanner(Marry.class).ifPresent(scanner -> {
+                MarrySet.forEach(scanner::update);
+                MarryCache.getInstance().getToUpdate().removeAll(MarrySet);
+            });
+
         }, 20, 20 * 10);
     }
 
@@ -219,9 +294,30 @@ public class Main extends JavaPlugin {
             DragonLevelCache.getInstance().getToUpdate().forEach(scanner::update);
         });
 
+        connector.getScanner(MoneyTarget.class).ifPresent(scanner -> {
+            MoneyTargetCache.getInstance().getToUpdate().forEach(scanner::update);
+        });
+
+        connector.getScanner(Marry.class).ifPresent(scanner -> {
+            MarryCache.getInstance().getToUpdate().forEach(scanner::update);
+        });
+
         try {
             connector.getConnection().close();
         } catch (SQLException ignore) {}
+    }
+
+    public void setupPlotService() {
+        if (!Bukkit.getServer().getPluginManager().isPluginEnabled("minePlots")) {
+            Bukkit.getLogger().severe("Disabled due to no minePlots dependency found!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        RegisteredServiceProvider<PlotServiceApi> serviceProvider = Bukkit.getServicesManager().getRegistration(PlotServiceApi.class);
+        Objects.requireNonNull(serviceProvider, "Service provider is null!");
+
+        plotServiceApi = serviceProvider.getProvider();
     }
 
     private void registerPlaceholder() {
@@ -230,22 +326,29 @@ public class Main extends JavaPlugin {
 
     public void loadCommands() {
         CommandManager.register(new TestCommand(), true);
+        CommandManager.register(new VoucherCommand(), pluginConfig.getCommands().isVoucher());
+        CommandManager.register(new AnvilCommand(), pluginConfig.getCommands().isAnvil());
+        CommandManager.register(new ProtectionCommand(), pluginConfig.getCommands().isProtection());
+        CommandManager.register(new AdminProtectionCommand(), pluginConfig.getCommands().isProtection());
+        CommandManager.register(new BoosterCommand(), pluginConfig.getCommands().isBooster());
+        CommandManager.register(new MarryCommand(), pluginConfig.getCommands().isMarry());
+        CommandManager.register(new MoneyTargetCommand(), pluginConfig.getCommands().isMoneyTarget());
         CommandManager.register(new DeleteHomeCommand(), pluginConfig.getCommands().isHomes());
         CommandManager.register(new SetHomeCommand(), pluginConfig.getCommands().isHomes());
         CommandManager.register(new HomesCommand(), pluginConfig.getCommands().isHomes());
-        CommandManager.register(new PokeBallCommand(), pluginConfig.getCommands().isPokeball());
+        CommandManager.register(new PokeBallCommand(), pluginConfig.getCommands().isPokeBall());
         CommandManager.register(new BcCommand(), pluginConfig.getCommands().isBroadcast());
-        CommandManager.register(new AboveNameShopCommand(), pluginConfig.getCommands().isAbovename());
+        CommandManager.register(new AboveNameShopCommand(), pluginConfig.getCommands().isAboveNameShop());
         CommandManager.register(new TpCommand(), pluginConfig.getCommands().isTeleport());
         CommandManager.register(new ChatCommand(), pluginConfig.getCommands().isChat());
         CommandManager.register(new ClearCommand(), pluginConfig.getCommands().isClear());
         CommandManager.register(new DayCommand(), pluginConfig.getCommands().isDay());
         CommandManager.register(new DiscordCommand(), pluginConfig.getCommands().isDiscord());
-        CommandManager.register(new EcCommand(), pluginConfig.getCommands().isEnderchest());
+        CommandManager.register(new EcCommand(), pluginConfig.getCommands().isEnderChest());
         CommandManager.register(new FeedCommand(), pluginConfig.getCommands().isFeed());
         CommandManager.register(new FlyCommand(), pluginConfig.getCommands().isFly());
         CommandManager.register(new GammaCommand(), pluginConfig.getCommands().isGamma());
-        CommandManager.register(new GmCommand(), pluginConfig.getCommands().isGamemode());
+        CommandManager.register(new GmCommand(), pluginConfig.getCommands().isGameMode());
         CommandManager.register(new HatCommand(), pluginConfig.getCommands().isHat());
         CommandManager.register(new HealCommand(), pluginConfig.getCommands().isHeal());
         CommandManager.register(new HelpCommand(), pluginConfig.getCommands().isHelp());
@@ -257,10 +360,10 @@ public class Main extends JavaPlugin {
         CommandManager.register(new ListCommand(), pluginConfig.getCommands().isList());
         CommandManager.register(new MeCommand(), pluginConfig.getCommands().isMe());
         CommandManager.register(new PunishmentCommand(), pluginConfig.getCommands().isPunishment());
-        CommandManager.register(new MediaCommand(), pluginConfig.getCommands().isSocialmedia());
+        CommandManager.register(new MediaCommand(), pluginConfig.getCommands().isSocialMedia());
         CommandManager.register(new AbyssCommand(), pluginConfig.getCommands().isAbyss());
         CommandManager.register(new MsgCommand(), pluginConfig.getCommands().isMsg());
-        CommandManager.register(new SocialSpyCommand(), pluginConfig.getCommands().isSocialspy());
+        CommandManager.register(new SocialSpyCommand(), pluginConfig.getCommands().isSocialSpy());
         CommandManager.register(new TexturpackCommand(), pluginConfig.getCommands().isTexturpack());
         CommandManager.register(new ReplyCommand(), pluginConfig.getCommands().isReply());
         CommandManager.register(new PurchaseCommand(), pluginConfig.getCommands().isPurchase());
@@ -270,10 +373,10 @@ public class Main extends JavaPlugin {
         CommandManager.register(new SpawnCommand(), pluginConfig.getCommands().isSpawn());
         CommandManager.register(new TntCommand(), pluginConfig.getCommands().isTnt());
         CommandManager.register(new CoreCommand(), true);
-        CommandManager.register(new TpaAcceptCommand(), pluginConfig.getCommands().isTeleportplayer());
-        CommandManager.register(new TpaCommand(), pluginConfig.getCommands().isTeleportplayer());
-        CommandManager.register(new TpaDenyCommand(), pluginConfig.getCommands().isTeleportplayer());
-        CommandManager.register(new TpHereCommand(), pluginConfig.getCommands().isTeleporthere());
+        CommandManager.register(new TpaAcceptCommand(), pluginConfig.getCommands().isTeleportPlayer());
+        CommandManager.register(new TpaCommand(), pluginConfig.getCommands().isTeleportPlayer());
+        CommandManager.register(new TpaDenyCommand(), pluginConfig.getCommands().isTeleportPlayer());
+        CommandManager.register(new TpHereCommand(), pluginConfig.getCommands().isTeleportHere());
         CommandManager.register(new UpTimeCommand(), pluginConfig.getCommands().isUptime());
         CommandManager.register(new WbCommand(), pluginConfig.getCommands().isWb());
         CommandManager.register(new WebsiteCommand(), pluginConfig.getCommands().isWebsite());
@@ -285,28 +388,27 @@ public class Main extends JavaPlugin {
         CommandManager.register(new StormCommand(), pluginConfig.getCommands().isStorm());
         CommandManager.register(new GlowingCommand(), pluginConfig.getCommands().isGlowing());
         CommandManager.register(new IncognitoCommand(), pluginConfig.getCommands().isIncognito());
-        CommandManager.register(new NickColorCommand(), pluginConfig.getCommands().isNickcolor());
+        CommandManager.register(new NickColorCommand(), pluginConfig.getCommands().isNickColor());
         CommandManager.register(new WarpCommand(), pluginConfig.getCommands().isWarp());
-        CommandManager.register(new ChatManagerCommand(), pluginConfig.getCommands().isChatmanager());
-        CommandManager.register(new ItemGiveCommand(), pluginConfig.getCommands().isItemgive());
+        CommandManager.register(new ChatManagerCommand(), pluginConfig.getCommands().isChatManager());
+        CommandManager.register(new ItemGiveCommand(), pluginConfig.getCommands().isItemGive());
         CommandManager.register(new TopCommand(), pluginConfig.getCommands().isTop());
         CommandManager.register(new RewardCommand(), pluginConfig.getCommands().isReward());
         CommandManager.register(new PingCommand(), pluginConfig.getCommands().isPing());
-        CommandManager.register(new GodModCommand(), pluginConfig.getCommands().isGodmod());
+        CommandManager.register(new GodModCommand(), pluginConfig.getCommands().isGodMod());
         //CommandManager.register(new PlayerWarpCommand(), pluginConfig.getCommands().isPlayerwarp());
         CommandManager.register(new MagnetCommand(), pluginConfig.getCommands().isMagnet());
         CommandManager.register(new CheckCommand(), pluginConfig.getCommands().isCheck());
         CommandManager.register(new AdmitsCommand(), pluginConfig.getCommands().isCheck());
         CommandManager.register(new PraceCommand(), pluginConfig.getCommands().isPracealiases());
         CommandManager.register(new IgnoreCommand(), pluginConfig.getCommands().isIgnore());
-        CommandManager.register(new UnIgnoreCommand(), pluginConfig.getCommands().isUnignore());
         CommandManager.register(new EnchantCommand(), pluginConfig.getCommands().isEnchant());
         CommandManager.register(new PhysicsCommand(), pluginConfig.getCommands().isPhysics());
         CommandManager.register(new WithdrawCommand(), pluginConfig.getCommands().isWithdraw());
-        CommandManager.register(new XPBottleCommand(), pluginConfig.getCommands().isXpbottle());
+        CommandManager.register(new XPBottleCommand(), pluginConfig.getCommands().isXpBottle());
         CommandManager.register(new TikTokCommand(), pluginConfig.getCommands().isTiktok());
         CommandManager.register(new WorldCommand(), pluginConfig.getCommands().isWorld());
-        CommandManager.register(new ElytraGiveCommand(), pluginConfig.getCommands().isElytragive());
+        CommandManager.register(new ElytraGiveCommand(), pluginConfig.getCommands().isElytraGive());
     }
 
     public void loadTasks() {
@@ -342,20 +444,25 @@ public class Main extends JavaPlugin {
     }
 
     public void loadEvents() {
+        registerEvent(new DrugListener(), true);
+
+        registerEvent(new VoucherListener(), pluginConfig.getCommands().isVoucher());
+        registerEvent(new BoosterCommand(), pluginConfig.getCommands().isBooster());
         registerEvent(new DragonLevelListener(), pluginConfig.getEvents().isDragonlevel());
         registerEvent(new RegionListener(), true);
-        registerEvent(new PlayerJoinListener(), true);
+        registerEvent(new PlayerJoinListener(this), true);
         registerEvent(new BlockBreakListener(), pluginConfig.getCommands().isPhysics());
         registerEvent(new PlayerChatListener(), true);
         registerEvent(new OthersListener(), true);
         registerEvent(new PlayerQuitListener(), true);
         registerEvent(new PlayerCombatListener(), true);
         registerEvent(new PlayerDeathListener(), true);
-        registerEvent(new ItemCraftListener(), pluginConfig.getRecipes().isDiamond_set());
+        registerEvent(new ItemCraftListener(), true);
         registerEvent(new VanishCommand.VanishEvent(), true);
         registerEvent(new ChatBuffer(), true);
         registerEvent(new CheckCommand(), true);
         registerEvent(new PlayerInteractListener(), true);
+        registerEvent(new PlotSellWandListener(plotServiceApi), true);
         InventoryHelper.implement(this);
     }
 
@@ -414,7 +521,7 @@ public class Main extends JavaPlugin {
         itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 
         item = new CustomItemImpl(3, itemHelper);
-        item.whenWear().add(new PotionEffect(PotionEffectType.NIGHT_VISION, 120, 3));
+        item.whenWear().add(new PotionEffect(PotionEffectType.NIGHT_VISION, 300, 3));
         itemCache.register(item);
 
         //Kilof Górnika

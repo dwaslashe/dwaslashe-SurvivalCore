@@ -18,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
+import org.intellij.lang.annotations.Subst;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.commands.ChatCommand;
@@ -116,6 +117,19 @@ public class PlayerChatListener implements Listener {
             }
             return true;
         });
+        events.add((s, event) -> {
+            Player player = event.getPlayer();
+            if (Main.pluginConfig.getEvents().getOpenChatBlockBreak().isOpenchatbreaksblock()) {
+                if (!player.hasPermission("core.chat.openchatbreak.bypass")) {
+                    User user = UserCache.getInstance().compute(player.getUniqueId());
+                    if (user.getBlockBreak() < (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakmax() - 1)) {
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ potrzebujesz wykopać #fc2617&n" + user.getBlockBreak() + "&7/#b52016&n" + Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakmax() + "&c bloków! ");
+                        return false;
+                    }
+                }
+            }
+            return true;
+        });
     }
 
     MiniMessage messageBuilder = MiniMessage.builder().tags(TagResolver.builder().build()).build();
@@ -133,7 +147,7 @@ public class PlayerChatListener implements Listener {
 
         String f = "<#f47e07>@";
 
-        Component message$component = Component.empty();
+        Component message$component;
 
         List<TagResolver> resolvers = new ArrayList<>();
 
@@ -141,10 +155,11 @@ public class PlayerChatListener implements Listener {
             if (ref.message.contains(onlinePlayer.getName())) {
                 onlinePlayer.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 2, 2);
 
-                ref.message = ref.message.replace(onlinePlayer.getName(), "<mention-" + onlinePlayer.getName().toLowerCase() + ">");
+                String name = onlinePlayer.getName().toLowerCase();
+                ref.message = ref.message.replace(onlinePlayer.getName(), "<mention-" + name + ">");
                 String finalMessage = ref.message;
 
-                resolvers.add(TagResolver.builder().tag("mention-" + onlinePlayer.getName().toLowerCase(),
+                resolvers.add(TagResolver.builder().tag("mention-" + name,
 
                                 (argumentQueue, context) -> {
 
@@ -171,7 +186,7 @@ public class PlayerChatListener implements Listener {
 
 
         //Create message player and send
-        Component component = null;
+        Component component;
 
         ItemStack itemStack = player.getItemInHand();
 
@@ -225,7 +240,7 @@ public class PlayerChatListener implements Listener {
         if(ref.close) return;
 
 
-        //Send all message
+        //Send message to all players
         User user = UserCache.getInstance().compute(event.getPlayer().getUniqueId());
 
         for (Player all : Bukkit.getOnlinePlayers()) {
@@ -245,7 +260,7 @@ public class PlayerChatListener implements Listener {
         if (userManager.getUser(player.getName()) == null) {
             realName = player.getName();
         } else realName = userManager.getUser(player.getName()).getCustomName();
-        String finalRealName = PlaceholderAPI.setPlaceholders(player, "<hover:show_text:\" <#4287f5>Statystyki gracza <#9c9898>" + realName + "\n \n <#E7E7E7>Saldo: <#FFF88F>%economy_money% <#FFC42E>$\n <#E7E7E7>Śmierci: <#ff6e6e>%statistic_deaths% <#ff4545>☠\n <#E7E7E7>Zabójstwa: <#4DFFFF>%statistic_player_kills% <#1AE6E6>⚔\n <#E7E7E7>Przegrane godziny: <#ffd56c>%statistic_hours_played%g <#ffc942>⌚\n <#E7E7E7>Wykopane bloki: <#10F70C>%statistic_mine_block% <#09b106>⛏\n <#E7E7E7>Punkty rankingu: <#4eed6e>%mineteams_profile_ranking%pkt\n <#E7E7E7>Ilość powitanych nowych graczy: <#8eeb6c>%Greeter_amount%\n <#E7E7E7>Średnia ocena profilu: %survivalcore_rate%&8/<#54f542>5\n\"><click:suggest_command:/msg " + player.getName() + " >" + realName + "</click></hover>");
+        String finalRealName = PlaceholderAPI.setPlaceholders(player, "<hover:show_text:\" <#4287f5>Statystyki gracza <#9c9898>" + realName + "\n \n <#E7E7E7>Saldo: <#FFF88F>%economy_money% <#FFC42E>$\n <#E7E7E7>Śmierci: <#ff6e6e>%statistic_deaths% <#ff4545>☠\n <#E7E7E7>Zabójstwa: <#4DFFFF>%statistic_player_kills% <#1AE6E6>⚔\n <#E7E7E7>Przegrane godziny: <#ffd56c>%statistic_hours_played%g <#ffc942>⌚\n <#E7E7E7>Wykopane bloki: <#10F70C>%statistic_mine_block% <#09b106>⛏\n <#E7E7E7>Punkty rankingu: <#4eed6e>%mineteams_profile_ranking%pkt\n <#E7E7E7>Ilość powitanych nowych graczy: <#8eeb6c>%Greeter_amount%\n <#E7E7E7>Średnia ocena profilu: %survivalcore_rate%&8/<#54f542>5\n <#E7E7E7>Spędzony czas w strefie afk: %survivalcore_afk_timespend%\n <#E7E7E7>Druga połówka: <#d834eb>%survivalcore_marry_husband%\n\"><click:suggest_command:/msg " + player.getName() + " >" + realName + "</click></hover>");
 
         String message;
         if (player.hasPermission("core.chat.rainbow")) {

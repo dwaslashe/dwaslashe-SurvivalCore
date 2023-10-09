@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -30,11 +31,24 @@ public class PlayerCombatListener implements Listener {
     public void onInteract(PlayerInteractEvent e) {
         Logout logout = Logout.get(e.getPlayer());
         if (logout.getTime() > System.currentTimeMillis() && e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            List<Material> types = Arrays.asList(Material.FURNACE, Material.CHEST, Material.SHULKER_BOX, Material.HOPPER, Material.DROPPER, Material.DISPENSER, Material.BARREL, Material.TRAPPED_CHEST, Material.ENDER_CHEST);
+            List<Material> types = Arrays.asList(Material.FURNACE, Material.CHEST, Material.SHULKER_BOX, Material.HOPPER, Material.DROPPER, Material.DISPENSER, Material.BARREL, Material.TRAPPED_CHEST, Material.ENDER_CHEST, Material.NOTE_BLOCK);
             if (types.contains(e.getClickedBlock().getType())) {
+                e.getPlayer().closeInventory();
                 e.setCancelled(true);
                 e.setUseInteractedBlock(Event.Result.DENY);
                 Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cInterakcja z tym blokiem podczas pvp jest zablokowana");
+                e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlaceBlock(BlockPlaceEvent e) {
+        Logout logout = Logout.get(e.getPlayer());
+        if (logout.getTime() > System.currentTimeMillis()) {
+            if (e.getBlock().getType() == Material.NOTE_BLOCK) {
+                Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cInterakcja z tym blokiem podczas pvp jest zablokowana");
+                e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
             }
         }
     }
@@ -137,6 +151,7 @@ public class PlayerCombatListener implements Listener {
     public void onEnterPlot(PrePlotEntryEvent event) {
         Logout logout = Logout.get(event.getPlayer());
         Player player = event.getPlayer();
+
         if (logout.getTime() > System.currentTimeMillis()) {
             Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cTen region jest niedostępny podczas walki!");
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);

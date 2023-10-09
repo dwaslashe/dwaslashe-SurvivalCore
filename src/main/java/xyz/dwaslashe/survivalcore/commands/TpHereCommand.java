@@ -37,7 +37,7 @@ public class TpHereCommand extends Command {
                 return;
             }
             p2.teleport(loc);
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + p2.getName() + " &aprzeteleportował się do ciebie!");
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + p2.getName() + " &aprzeteleportował się do Ciebie!");
             Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś przeteleportowany do &e" + p.getName());
         }
     }

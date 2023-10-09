@@ -21,6 +21,10 @@
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
@@ -48,6 +52,10 @@
         <repository> <!-- for development builds -->
             <id>sonatype-oss-snapshots1</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>minebench-repo</id>
+            <url>https://repo.minebench.de/</url>
         </repository>
     </repositories>
 
@@ -85,58 +93,92 @@
             <artifactId>paper</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/purpur-1.20.1.jar</systemPath>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/purpur-1.20.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>authlib</artifactId>
             <version>3.11.49</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/authlib-3.11.49.jar</systemPath>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/authlib-3.11.49.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>axer.nickanmer</groupId>
             <artifactId>NickNamer</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/AxerrNicknamer-v1.2.jar</systemPath>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/AxerrNicknamer-v1.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>wg.regions</groupId>
             <artifactId>WGRegionsEvent</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/WGRegionEvents.jar</systemPath>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/WGRegionEvents.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>nbt-api</groupId>
             <artifactId>nbt</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/item-nbt-api-plugin-2.9.2.jar</systemPath>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/item-nbt-api-plugin-2.9.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.saidora</groupId>
+            <artifactId>EconomyManager</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/original-EconomyManager-0.0.1-stable.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.saidora</groupId>
             <artifactId>Economy</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/original-EconomyManager-0.0.1-stable.jar</systemPath>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/DeluxeSellwands_Build_33.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.saidora</groupId>
             <artifactId>Ether-API</artifactId>
             <version>0.0</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/API (2).jar</systemPath>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/API.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecodes</groupId>
             <artifactId>minePlots</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/Desktop/dwaslashe-SurvivalCore/libs/minePlots-4.0.4-public.jar</systemPath>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/minePlots-4.2.0-public.jar</systemPath>
         </dependency>
-
+        <dependency>
+            <groupId>u.drugs</groupId>
+            <artifactId>UltimateDrugs</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/UltimateDrugs.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.willfp</groupId>
+            <artifactId>EcoPets</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/EcoPets_v2.18.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>qu.moon</groupId>
+            <artifactId>TabList</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/dwaslashe-Tablist-1.0-stable.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>g.sit</groupId>
+            <artifactId>GSit</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/GSit-1.4.12.jar</systemPath>
+        </dependency>
         <!--
         <dependency>
             <groupId>net.dv8tion</groupId>
@@ -202,12 +244,10 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.9.2</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--
+        Assist
+        -->
+
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>brigadier</artifactId>
@@ -235,34 +275,12 @@
             <version>8.0.30</version>
         </dependency>
         <dependency>
-            <groupId>me.neznamy</groupId>
-            <artifactId>tab-api</artifactId>
-            <version>3.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>net.luckperms</groupId>
-            <artifactId>api</artifactId>
-            <version>5.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sk89q.worldguard</groupId>
-            <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.6</version>
-            <scope>provided</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>
@@ -278,6 +296,46 @@
             <artifactId>reflections</artifactId>
             <version>0.10.2</version>
         </dependency>
+        <dependency>
+            <groupId>de.themoep</groupId>
+            <artifactId>minedown</artifactId>
+            <version>1.7.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--
+        Plugins
+        -->
+
+        <dependency>
+            <groupId>me.neznamy</groupId>
+            <artifactId>tab-api</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-bukkit</artifactId>
+            <version>7.0.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.3</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -285,7 +343,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.11.0</version>
                 <configuration>
                     <source>17</source>
                     <target>17</target>
@@ -294,7 +352,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -321,6 +379,10 @@
                                 <relocation>
                                     <pattern>de.tr7zw.changeme.nbtapi</pattern>
                                     <shadedPattern>xyz.dwaslashe.libs.changeme.nbtapi</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>de.themoep.minedown</pattern>
+                                    <shadedPattern>xyz.dwaslashe.libs.minedown</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

@@ -27,6 +27,7 @@ public class PlayerQuitListener implements Listener {
                 Bukkit.getScheduler().runTaskLater(Main.getPlugin(), new Runnable() {
                     @Override
                     public void run() {
+                        if (!(((double) p.getLocation().getYaw()) == LocYaw.get(uuid))) return;
                         if (((double) p.getLocation().getYaw()) == LocYaw.get(uuid)) {
                             Api.sendPlayerToServer(p, "LOBBYAFK");
                         }

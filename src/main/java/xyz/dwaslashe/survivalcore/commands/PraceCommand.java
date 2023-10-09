@@ -18,9 +18,7 @@ public class PraceCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Player p = (Player) sender;
-        if (args.length >= 0) {
-            p.chat("/job");
-        }
+        Player player = (Player) sender;
+        player.chat("/jobs");
     }
 }

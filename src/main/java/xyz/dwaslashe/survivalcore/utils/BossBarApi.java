@@ -15,7 +15,7 @@ public class BossBarApi {
         org.bukkit.boss.BossBar bar = Bukkit.createBossBar(message, color, style, new BarFlag[0]);
 
         User user = UserCache.getInstance().compute(player.getUniqueId());
-        if (user.getAutobossbar() == 0) {
+        if (user.getAutoBossBar() == 0) {
             bar.addPlayer(player);
         }
 
@@ -36,7 +36,7 @@ public class BossBarApi {
         bar.setProgress(0);
 
         User user = UserCache.getInstance().compute(player.getUniqueId());
-        if (user.getAutobossbar() == 0) {
+        if (user.getAutoBossBar() == 0) {
             bar.addPlayer(player);
         }
 
@@ -56,7 +56,7 @@ public class BossBarApi {
         bar.setProgress(0);
 
         User user = UserCache.getInstance().compute(player.getUniqueId());
-        if (user.getAutobossbar() == 0) {
+        if (user.getAutoBossBar() == 0) {
             bar.addPlayer(player);
         }
 

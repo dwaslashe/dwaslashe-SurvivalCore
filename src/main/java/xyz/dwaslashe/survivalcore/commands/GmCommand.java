@@ -30,16 +30,16 @@ public class GmCommand extends Command {
     public void commandExecute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("0")) {
+            if (args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("survival")) {
                 p.setGameMode(GameMode.SURVIVAL);
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &esurvival");
-            } else if (args[0].equalsIgnoreCase("1")) {
+            } else if (args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("creative")) {
                 p.setGameMode(GameMode.CREATIVE);
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &ecreative");
-            } else if (args[0].equalsIgnoreCase("2")) {
+            } else if (args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a") || args[0].equalsIgnoreCase("adventure")) {
                 p.setGameMode(GameMode.ADVENTURE);
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &eadventure");
-            } else if (args[0].equalsIgnoreCase("3")) {
+            } else if (args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("spec") || args[0].equalsIgnoreCase("spectator")) {
                 p.setGameMode(GameMode.SPECTATOR);
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &espectator");
             }
@@ -48,19 +48,19 @@ public class GmCommand extends Command {
             if (p2 == null) {
                 offlinePlayer();
                 return;
-            } else if (args[0].equalsIgnoreCase("0")) {
+            } else if (args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("survival")) {
                 p2.setGameMode(GameMode.SURVIVAL);
                 Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &esurvival &aprzez &e" + p.getName());
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &esurvival &adla &e" + p2.getName());
-            } else if (args[0].equalsIgnoreCase("1")) {
+            } else if (args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("creative")) {
                 p2.setGameMode(GameMode.CREATIVE);
                 Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &ecreative &aprzez &e" + p.getName());
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &ecreative &adla &e" + p2.getName());
-            } else if (args[0].equalsIgnoreCase("2")) {
+            } else if (args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a") || args[0].equalsIgnoreCase("adventure")) {
                 p2.setGameMode(GameMode.ADVENTURE);
                 Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &eadventure &aprzez &e" + p.getName());
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &eadventure &adla &e" + p2.getName());
-            } else if (args[0].equalsIgnoreCase("3")) {
+            } else if (args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("spec") || args[0].equalsIgnoreCase("spectator")) {
                 p2.setGameMode(GameMode.SPECTATOR);
                 Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwoj tryb gry zostal zmieniony na &espectator &aprzez &e" + p.getName());
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZmieniłeś tryb gry na &espectator &adla &e" + p2.getName());

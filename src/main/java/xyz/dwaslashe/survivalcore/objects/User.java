@@ -16,38 +16,49 @@ public class User {
     private final UUID uuid;
 
     @Value(key = "nickName", type = "VARCHAR(32)")
-    private String nickName;
+    private String nickName = "";
 
     @Value(key = "discordIdAccount", type = "VARCHAR(32)")
-    private String discordIdAccount;
+    private String discordIdAccount = "";
 
     @Value(key = "abyss", type = "INT(16)")
     private int abyss;
 
     @Value(key = "automsg", type = "INT(16)")
-    private int automsg;
+    private int autoMsg;
 
     @Value(key = "autobossbar", type = "INT(16)")
-    private int autobossbar;
+    private int autoBossBar;
 
     @Value(key = "deaths", type = "INT(16)")
     private int deaths;
 
     @Value(key = "discordchat", type = "INT(16)")
-    private int discordchat;
+    private int discordChat;
 
     @Value(key = "chat", type = "INT(16)")
     private int chat;
 
     @Value(key = "msgbossbar", type = "INT(16)")
-    private int msgbossbar;
+    private int msgBossBar;
 
     @Value(key = "homes", type = "TEXT")
-    private String homes;
+    private String homes = "";
 
     @Value(key = "rates", type = "TEXT")
-    private String rates;
+    private String rates = "";
 
+    @Value(key = "timeafk", type = "INT(32)")
+    private int timeAfk;
+
+    @Value(key = "blockbreak", type = "INT(32)")
+    private int blockBreak;
+
+    @Value(key = "ignorePlayers", type = "TEXT")
+    private String ignorePlayers;
+
+    @Value(key = "ignoreAllPlayers", type = "INT(16)")
+    private int ignoreAllPlayers;
     public User(UUID uuid) {
         this.uuid = uuid;
     }
@@ -58,14 +69,18 @@ public class User {
             this.nickName = resultSet.getString("nickName");
             this.discordIdAccount = resultSet.getString("discordIdAccount");
             this.abyss = resultSet.getInt("abyss");
-            this.automsg = resultSet.getInt("automsg");
-            this.autobossbar = resultSet.getInt("autobossbar");
+            this.autoMsg = resultSet.getInt("automsg");
+            this.autoBossBar = resultSet.getInt("autobossbar");
             this.deaths = resultSet.getInt("deaths");
-            this.discordchat = resultSet.getInt("discordchat");
+            this.discordChat = resultSet.getInt("discordchat");
             this.chat = resultSet.getInt("chat");
-            this.msgbossbar = resultSet.getInt("msgbossbar");
+            this.msgBossBar = resultSet.getInt("msgbossbar");
             this.homes = resultSet.getString("homes");
             this.rates = resultSet.getString("rates");
+            this.timeAfk = resultSet.getInt("timeafk");
+            this.blockBreak = resultSet.getInt("blockbreak");
+            this.ignorePlayers = resultSet.getString("ignorePlayers");
+            this.ignoreAllPlayers = resultSet.getInt("ignoreAllPlayers");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -107,22 +122,22 @@ public class User {
     }
 
     //AutoMsg
-    public int getAutomsg() {
-        return automsg;
+    public int getAutoMsg() {
+        return autoMsg;
     }
 
-    public void setAutomsg(int automsg) {
-        this.automsg = automsg;
+    public void setAutoMsg(int autoMsg) {
+        this.autoMsg = autoMsg;
         UserCache.getInstance().getToUpdate().add(this);
     }
 
     //AutoBossBar
-    public int getAutobossbar() {
-        return autobossbar;
+    public int getAutoBossBar() {
+        return autoBossBar;
     }
 
-    public void setAutobossbar(int autobossbar) {
-        this.autobossbar = autobossbar;
+    public void setAutoBossBar(int autoBossBar) {
+        this.autoBossBar = autoBossBar;
         UserCache.getInstance().getToUpdate().add(this);
     }
 
@@ -137,12 +152,12 @@ public class User {
     }
 
     //DiscordChat
-    public int getDiscordchat() {
-        return discordchat;
+    public int getDiscordChat() {
+        return discordChat;
     }
 
-    public void setDiscordchat(int discordchat) {
-        this.discordchat = discordchat;
+    public void setDiscordChat(int discordChat) {
+        this.discordChat = discordChat;
         UserCache.getInstance().getToUpdate().add(this);
     }
 
@@ -157,12 +172,12 @@ public class User {
     }
 
     //Msg BossBar
-    public int getMsgbossbar() {
-        return msgbossbar;
+    public int getMsgBossBar() {
+        return msgBossBar;
     }
 
-    public void setMsgbossbar(int msgbossbar) {
-        this.msgbossbar = msgbossbar;
+    public void setMsgBossBar(int msgBossBar) {
+        this.msgBossBar = msgBossBar;
         UserCache.getInstance().getToUpdate().add(this);
     }
 
@@ -207,6 +222,61 @@ public class User {
 
     public void addRates(String rates) {
         this.rates = this.rates + rates;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    //Time Afk
+    public int getTimeAfk() {
+        return timeAfk;
+    }
+
+    public void setTimeAfk(int timeAfk) {
+        this.timeAfk = timeAfk;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    public void addTimeAfk(int timeAfk) {
+        this.timeAfk = this.timeAfk + timeAfk;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    //Block Break
+    public int getBlockBreak() {
+        return blockBreak;
+    }
+
+    public void setBlockBreak(int blockBreak) {
+        this.blockBreak = blockBreak;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    public void addBlockBreak(int blockBreak) {
+        this.blockBreak = this.blockBreak + blockBreak;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    //Ignore Players
+    public String getIgnorePlayers() {
+        return ignorePlayers;
+    }
+
+    public void setIgnorePlayers(String ignorePlayers) {
+        this.ignorePlayers = ignorePlayers;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    public void addIgnorePlayers(String ignorePlayers) {
+        this.ignorePlayers = this.ignorePlayers + ignorePlayers;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    //Ignor All Players
+    public int getIgnoreAllPlayers() {
+        return ignoreAllPlayers;
+    }
+
+    public void setIgnoreAllPlayers(int ignoreAllPlayers) {
+        this.ignoreAllPlayers = ignoreAllPlayers;
         UserCache.getInstance().getToUpdate().add(this);
     }
 

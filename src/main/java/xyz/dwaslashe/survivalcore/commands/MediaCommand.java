@@ -12,7 +12,7 @@ import xyz.dwaslashe.survivalcore.utils.Api;
 import java.util.Arrays;
 import java.util.List;
 
-public class MediaCommand extends Command implements Listener {
+public class MediaCommand extends Command {
     public MediaCommand() {
         super("media", "/media", "", "socialmedia");
         setOnlyPlayer(true);

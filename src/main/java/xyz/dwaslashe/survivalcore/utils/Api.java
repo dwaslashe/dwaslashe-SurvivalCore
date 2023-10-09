@@ -65,6 +65,15 @@ public class Api {
         }
     }
 
+    public static void sendCommand(String command) {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+    }
+
+    public static void sendCommands(List<String> commands) {
+        for (String command : commands) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
+    }
 
     public static void sendLog(String message) {
         Bukkit.getConsoleSender().sendMessage(fixColor(message));
@@ -180,6 +189,38 @@ public class Api {
             });
             player.updateInventory();
         }
+    }
+
+    public static double mapLongToDouble(long value, long min, long max) {
+        if (value < min) {
+            value = min;
+        } else if (value > max) {
+            value = max;
+        }
+
+        double scaledValue = (double)(value - min) / (max - min);
+
+        return scaledValue;
+    }
+
+    public static boolean isNearby(Player player, Player nearbyPlayer, int maxDistance) {
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            if (all == player) {
+                continue;
+            }
+            if (all.getName().equalsIgnoreCase(nearbyPlayer.getName())) {
+                double distance = player.getLocation().distance(all.getLocation());
+                if (distance <= maxDistance) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isBoolean(String str) {
+        str = str.toLowerCase().trim();
+        return str.equals("true") || str.equals("false");
     }
 
 }

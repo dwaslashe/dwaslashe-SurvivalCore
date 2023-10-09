@@ -14,9 +14,11 @@ import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.listeners.OthersListener;
 import xyz.dwaslashe.survivalcore.objects.Logout;
+import xyz.dwaslashe.survivalcore.objects.Protection;
 import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.RegionApi;
+import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
 import java.util.*;
 
@@ -32,8 +34,6 @@ public class PlayerTask extends BukkitRunnable {
         runTaskTimer(plugin, 0, 1);
     }
 
-    //protected static BossBar bar = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID, new BarFlag[0]);
-
     private String toUpperFirstCharacter(String s){
         if(s.isEmpty()) return "&#FF3131-";
         char c = s.charAt(0);
@@ -42,6 +42,18 @@ public class PlayerTask extends BukkitRunnable {
 
     @Override
     public void run() {
+        Protection.getProtectionMap().forEach((uuid, protection) -> {
+            if (protection.getProtection() > System.currentTimeMillis()) {
+                protection.getBar().addPlayer(Bukkit.getPlayer(uuid));
+                protection.getBar().setTitle(Api.fixColor("&8>> &#d3f4f5Twoja &#0394fc\uD83D\uDEE1 &#037bfc&lOCHRONA &#0394fc\uD83D\uDEE1 &#d3f4f5trwać będzie jeszcze &#ffd56c{TIME} &#ffc942⌚ &8<<").replace("{TIME}", TimerApi.secondsToString(protection.getProtection())));
+                protection.getBar().setProgress(Api.mapLongToDouble((protection.getProtection() - System.currentTimeMillis()), 0L, protection.getMaxTimeProtection()));
+            } else {
+                protection.getBar().setVisible(false);
+                Protection.getProtectionMap().remove(uuid, protection);
+                Protection.getProtectionMap().remove(uuid);
+            }
+        });
+
         Bukkit.getOnlinePlayers().forEach(player -> {
             //if (player.hasPermission("core.join.freeze")) {
             //    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));

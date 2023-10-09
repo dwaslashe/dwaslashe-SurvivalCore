@@ -6,36 +6,39 @@ import java.util.HashMap;
 
 public class EnchantList {
 
-    private static HashMap<String, Enchantment> enchants = new HashMap();
+    private static final HashMap<String, Enchantment> enchants = new HashMap<>();
 
     static {
-        (enchants = new HashMap()).put("efficiency".toUpperCase(), Enchantment.DIG_SPEED);
-        enchants.put("protection".toUpperCase(), Enchantment.PROTECTION_ENVIRONMENTAL);
-        enchants.put("protection_environmental".toUpperCase(), Enchantment.PROTECTION_ENVIRONMENTAL);
-        enchants.put("durability".toUpperCase(), Enchantment.DURABILITY);
-        enchants.put("fortune".toUpperCase(), Enchantment.LOOT_BONUS_BLOCKS);
-        enchants.put("loot_bonus_blocks".toUpperCase(), Enchantment.LOOT_BONUS_BLOCKS);
-        enchants.put("infinity".toUpperCase(), Enchantment.ARROW_INFINITE);
-        enchants.put("sharpness".toUpperCase(), Enchantment.DAMAGE_ALL);
-        enchants.put("damage_all".toUpperCase(), Enchantment.DAMAGE_ALL);
-        enchants.put("fireaspect".toUpperCase(), Enchantment.FIRE_ASPECT);
-        enchants.put("fire_aspect".toUpperCase(), Enchantment.FIRE_ASPECT);
-        enchants.put("knockback".toUpperCase(), Enchantment.KNOCKBACK);
-        enchants.put("knock".toUpperCase(), Enchantment.KNOCKBACK);
-        enchants.put("flame".toUpperCase(), Enchantment.ARROW_FIRE);
-        enchants.put("punch".toUpperCase(), Enchantment.ARROW_KNOCKBACK);
-        enchants.put("power".toUpperCase(), Enchantment.ARROW_DAMAGE);
-        enchants.put("depthstrider".toUpperCase(), Enchantment.DEPTH_STRIDER);
-        enchants.put("silk_touch".toUpperCase(), Enchantment.SILK_TOUCH);
-        enchants.put("silk".toUpperCase(), Enchantment.SILK_TOUCH);
-        enchants.put("oxygen".toUpperCase(), Enchantment.OXYGEN);
-        enchants.put("lure".toUpperCase(), Enchantment.LURE);
-        enchants.put("water_worker".toUpperCase(), Enchantment.WATER_WORKER);
-        enchants.put("waterworker".toUpperCase(), Enchantment.WATER_WORKER);
-        enchants.put("water".toUpperCase(), Enchantment.WATER_WORKER);
-        enchants.put("thorns".toUpperCase(), Enchantment.THORNS);
-        enchants.put("protection_fall".toUpperCase(), Enchantment.PROTECTION_FALL);
-        enchants.put("water_fall".toUpperCase(), Enchantment.PROTECTION_FALL);
+        for (Enchantment value : Enchantment.values()) {
+            enchants.put(value.getKey().value(), value);
+        }
+        enchants.putIfAbsent("efficiency".toUpperCase(), Enchantment.DIG_SPEED);
+        enchants.putIfAbsent("protection".toUpperCase(), Enchantment.PROTECTION_ENVIRONMENTAL);
+        enchants.putIfAbsent("protection_environmental".toUpperCase(), Enchantment.PROTECTION_ENVIRONMENTAL);
+        enchants.putIfAbsent("durability".toUpperCase(), Enchantment.DURABILITY);
+        enchants.putIfAbsent("fortune".toUpperCase(), Enchantment.LOOT_BONUS_BLOCKS);
+        enchants.putIfAbsent("loot_bonus_blocks".toUpperCase(), Enchantment.LOOT_BONUS_BLOCKS);
+        enchants.putIfAbsent("infinity".toUpperCase(), Enchantment.ARROW_INFINITE);
+        enchants.putIfAbsent("sharpness".toUpperCase(), Enchantment.DAMAGE_ALL);
+        enchants.putIfAbsent("damage_all".toUpperCase(), Enchantment.DAMAGE_ALL);
+        enchants.putIfAbsent("fireaspect".toUpperCase(), Enchantment.FIRE_ASPECT);
+        enchants.putIfAbsent("fire_aspect".toUpperCase(), Enchantment.FIRE_ASPECT);
+        enchants.putIfAbsent("knockback".toUpperCase(), Enchantment.KNOCKBACK);
+        enchants.putIfAbsent("knock".toUpperCase(), Enchantment.KNOCKBACK);
+        enchants.putIfAbsent("flame".toUpperCase(), Enchantment.ARROW_FIRE);
+        enchants.putIfAbsent("punch".toUpperCase(), Enchantment.ARROW_KNOCKBACK);
+        enchants.putIfAbsent("power".toUpperCase(), Enchantment.ARROW_DAMAGE);
+        enchants.putIfAbsent("depthstrider".toUpperCase(), Enchantment.DEPTH_STRIDER);
+        enchants.putIfAbsent("silk_touch".toUpperCase(), Enchantment.SILK_TOUCH);
+        enchants.putIfAbsent("silk".toUpperCase(), Enchantment.SILK_TOUCH);
+        enchants.putIfAbsent("oxygen".toUpperCase(), Enchantment.OXYGEN);
+        enchants.putIfAbsent("lure".toUpperCase(), Enchantment.LURE);
+        enchants.putIfAbsent("water_worker".toUpperCase(), Enchantment.WATER_WORKER);
+        enchants.putIfAbsent("waterworker".toUpperCase(), Enchantment.WATER_WORKER);
+        enchants.putIfAbsent("water".toUpperCase(), Enchantment.WATER_WORKER);
+        enchants.putIfAbsent("thorns".toUpperCase(), Enchantment.THORNS);
+        enchants.putIfAbsent("protection_fall".toUpperCase(), Enchantment.PROTECTION_FALL);
+        enchants.putIfAbsent("water_fall".toUpperCase(), Enchantment.PROTECTION_FALL);
     }
     public static Enchantment get(String enchant){
         return enchants.get(enchant.toUpperCase());

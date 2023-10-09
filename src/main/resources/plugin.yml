@@ -1,7 +1,7 @@
 main: xyz.dwaslashe.survivalcore.Main
 name: dwaslashe-SurvivalCore
 version: 1.0.0
-author: [dwaslashe]
+authors: [dwaslashe, Mebrigji]
 website: dwaslashe.xyz
 description: Core for Servers Survival
 api-version: 1.19
@@ -17,8 +17,11 @@ depend:
   - NBTAPI
   - SA-Economy
   - minePlots
+  - DeluxeSellwands
+  - dwaslashe-TabList
 softdepend:
   - PlaceholderAPI
+  - WGRegionEvents
+  - WorldGuard
 commands:
   sb:
-  zaklecia:

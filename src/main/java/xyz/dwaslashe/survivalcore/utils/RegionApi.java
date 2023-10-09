@@ -10,15 +10,7 @@ import org.bukkit.Location;
 
 public class RegionApi {
     public static boolean isInRegion(Location location, String reg) {
-        com.sk89q.worldedit.util.Location loc = BukkitAdapter.adapt(location);
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionQuery query = container.createQuery();
-        ApplicableRegionSet set = query.getApplicableRegions(loc);
-        for (ProtectedRegion region : set) {
-            if (region.getId().equalsIgnoreCase(reg))
-                return true;
-        }
-        return false;
+        return getRegion(location, reg) != null;
     }
 
     public static ProtectedRegion getRegion(Location location, String reg){

@@ -1,6 +1,5 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,16 +10,17 @@ import xyz.dwaslashe.survivalcore.utils.Api;
 public class PlayerDeathListener implements Listener {
 
     @EventHandler
-    public void onDeath(PlayerDeathEvent e) {
-        Player p = e.getEntity().getPlayer();
-        Player killer = e.getEntity().getKiller();
-        e.setDeathMessage(null);
+    public void onDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity().getPlayer();
+        Player killer = event.getEntity().getKiller();
+        event.setDeathMessage(null);
         if (Main.pluginConfig.getEvents().isDeathmessage()) {
             if (killer instanceof Player) {
-                p.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &cUmarłeś przez &e" + killer.getName() + " &8<<"));
-                killer.sendTitle(Api.fixColor("#85fc23&lZABIŁEŚ"), Api.fixColor("&8>> &aZabiłeś gracza &e" + p.getName() + " &8<<"));
+                player.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &cUmarłeś przez &e" + killer.getName() + " &8<<"));
+                if (killer.getName().equals(player.getName())) return;
+                killer.sendTitle(Api.fixColor("#85fc23&lZABIŁEŚ"), Api.fixColor("&8>> &aZabiłeś gracza &e" + player.getName() + " &8<<"));
             } else {
-                p.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &cUmarłeś. &8<<"));
+                player.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &cUmarłeś. &8<<"));
             }
 
             //for (Player all : Bukkit.getOnlinePlayers()) {

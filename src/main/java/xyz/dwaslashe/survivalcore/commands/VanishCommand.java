@@ -16,6 +16,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import qu.moon.tablist.data.User;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.helpers.InventoryHelper;
@@ -36,13 +37,20 @@ public class VanishCommand extends Command implements Listener {
     public void commandExecute(CommandSender sender, String[] args) {
         Player player = (Player)sender;
         VanishObject vanishObject = VanishObject.get(player.getName());
+        User user = qu.moon.tablist.Main.getInstance().getUserService().get(player.getName(), true);
         if (args.length == 0) {
             if (vanishObject.isEnable()) {
                 vanishObject.setEnable(false);
                 Api.sendActionBar(player, "&8>> <#f00c0c>Vanish został wyłączony &8<<");
+                user.setOnline(true);
+                user.setPlayer(player);
+                user.setMoney(qu.moon.tablist.Main.getInstance().getEconomyHelper().getMoney(player));
             } else {
                 vanishObject.setEnable(true);
                 Api.sendActionBar(player, "&8>> <#39FF14>Vanish został włączony &8<<");
+                player.chat("/pets deactivate");
+                user.setPlayer(null);
+                user.setOnline(false);
             }
         } else if(args.length == 2){
             player = Bukkit.getPlayer(args[1]);
@@ -55,9 +63,15 @@ public class VanishCommand extends Command implements Listener {
                     if(args[0].equalsIgnoreCase("on")){
                         vanishObject.setEnable(true);
                         Api.sendActionBar(player, "&8>> <#39FF14>Vanish został włączony &8<<");
+                        player.chat("/pets deactivate");
+                        user.setPlayer(null);
+                        user.setOnline(false);
                     } else if(args[0].equalsIgnoreCase("off")) {
                         vanishObject.setEnable(false);
                         Api.sendActionBar(player, "&8>> <#f00c0c>Vanish został wyłączony &8<<");
+                        user.setOnline(true);
+                        user.setPlayer(player);
+                        user.setMoney(qu.moon.tablist.Main.getInstance().getEconomyHelper().getMoney(player));
                     } if (!player.hasPermission("core.command.vanish.more")) {
                         player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.vanish.more&8) &8<<"));
                         return;
@@ -508,9 +522,12 @@ public class VanishCommand extends Command implements Listener {
 
         @EventHandler
         public void onJoin(PlayerJoinEvent e) {
+            User user = qu.moon.tablist.Main.getInstance().getUserService().get(e.getPlayer().getName(), true);
             for (VanishObject vanishObject : VanishObject.getVanishObjects()) {
                 if (vanishObject.isEnable()) {
                     vanishObject.hidePlayer();
+                    user.setPlayer(null);
+                    user.setOnline(false);
                 }
             }
         }

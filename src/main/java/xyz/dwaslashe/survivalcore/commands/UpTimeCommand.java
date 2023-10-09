@@ -7,7 +7,6 @@ import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
 import java.lang.management.ManagementFactory;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 public class UpTimeCommand extends Command {
@@ -22,8 +21,6 @@ public class UpTimeCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        if (args.length >= 0) {
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aUpTime &e" + TimerApi.getDurationBreakdownShort(ManagementFactory.getRuntimeMXBean().getUptime()));
-        }
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aUpTime &#ffd56c" + TimerApi.getDurationBreakdownShort(ManagementFactory.getRuntimeMXBean().getUptime()) + " &#ffc942⌚");
     }
 }

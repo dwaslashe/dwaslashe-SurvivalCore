@@ -2,6 +2,7 @@ package xyz.dwaslashe.survivalcore.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import xyz.dwaslashe.survivalcore.Main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -72,8 +73,8 @@ public class LicenseApi {
 
 		int responseCode = con.getResponseCode();
 		if (debug) {
-			System.out.println("\nSending 'GET' request to URL : " + url);
-			System.out.println("Response Code : " + responseCode);
+			Main.getPlugin().getLogger().info("\nSending 'GET' request to URL : " + url);
+			Main.getPlugin().getLogger().info("Response Code : " + responseCode);
 		}
 
 		try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
@@ -169,6 +170,6 @@ public class LicenseApi {
 	private void log(int type, String message) {
 		if (logType == LogType.NONE || (logType == LogType.LOW && type == 0))
 			return;
-		System.out.println(message);
+		Main.getPlugin().getLogger().info(message);
 	}
 }

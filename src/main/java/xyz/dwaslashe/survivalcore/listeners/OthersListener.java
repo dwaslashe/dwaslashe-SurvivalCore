@@ -1,41 +1,49 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Furnace;
+import org.bukkit.block.Hopper;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.command.Command;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.Repairable;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.SpawnEgg;
+import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitRunnable;
+import pl.minecodes.plots.api.event.entry.PrePlotEntryEvent;
 import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.cache.MarryCache;
+import xyz.dwaslashe.survivalcore.cache.MoneyTargetCache;
+import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.cache.WarpCache;
+import xyz.dwaslashe.survivalcore.commands.MoneyTargetCommand;
 import xyz.dwaslashe.survivalcore.commands.managers.CommandManager;
-import xyz.dwaslashe.survivalcore.objects.Abyss;
-import xyz.dwaslashe.survivalcore.objects.Warp;
+import xyz.dwaslashe.survivalcore.objects.*;
 import xyz.dwaslashe.survivalcore.utils.*;
 
 import java.time.ZonedDateTime;
 import java.util.*;
+
+import static org.bukkit.Bukkit.getServer;
 
 @Getter @Setter
 public class OthersListener implements Listener {
@@ -46,12 +54,9 @@ public class OthersListener implements Listener {
     public static final List<Player> cancel = Lists.newArrayList();
     private int id = 0;
 
+    protected static final Map<Player, Long> delayHook = Maps.newHashMap();
+
     private static ItemStack enchanted_golden_apple = new ItemApi(Material.ENCHANTED_GOLDEN_APPLE).getItemStack();
-
-
-    public static ItemStack weed = new ItemApi(Material.LARGE_FERN, 1).setName("<#39ff14>Zioło 1g</#008443>").getItemStack();
-
-    public static ItemStack kokaina = new ItemApi(Material.CLAY_BALL, 1).setName("<#FFFFFF>Kokaina 0.1g</#FFFF00>").getItemStack();
 
     public static ItemStack magnet = new ItemApi(Material.LIGHTNING_ROD)
             .setName("&#FF10F0Magnez")
@@ -61,10 +66,52 @@ public class OthersListener implements Listener {
 
     public static ItemStack pokeball = new ItemApi(Material.SNOWBALL)
             .setName("&#ee1515Poke&#f0f0f0Ball")
-            .setLore(Arrays.asList("", " &#E7E7E7Masz &#9DF89F20% &#E7E7E7szans na złapanie zwierzęcia w jajko!"))
+            .setLore(Arrays.asList("", " &#E7E7E7Masz &#9DF89F20% &#E7E7E7szans na złapanie zwierzęcia w jajko", " &#E7E7E7wyrzucając &#ee1515Poke&#f0f0f0Balla &#E7E7E7prosto w zwierzecie!"))
             .getItemStack();
 
     static Set<UUID> snowballs = new HashSet<>(), shooters = new HashSet<>();
+
+    @EventHandler
+    public void onDamageHusband(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
+            Player player = ((Player) event.getDamager()).getPlayer();
+            Player husband = ((Player) event.getEntity()).getPlayer();
+            Marry marry = MarryCache.getInstance().compute(player.getUniqueId());
+
+            if (marry.getRightuuid() == null) return;
+
+            if (marry.getRightuuid().equals(husband.getUniqueId()) && marry.getPvp().equals("NO")) {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz uderzyć swojego małżonka bo masz wyłączoną walke między wami. Aby ja włączyć wpisz &e/slub pvp");
+                event.setCancelled(true);
+                event.setDamage(0);
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        if (!(event.getRightClicked() instanceof Player))
+            return;
+        MoneyTarget moneyTarget = MoneyTargetCache.getInstance().compute(1);
+        Player clickedEntity = (Player) event.getRightClicked();
+        Player player = event.getPlayer();
+        if (!clickedEntity.getName().equals("moneytarget"))
+            return;
+        if (moneyTarget.getMoney() >= moneyTarget.getLimitMoney()) {
+            player.sendTitle(Api.fixColor("&#eb9f34&lCEL PIENIĘDZY"), Api.fixColor("&8>> &aCel został już osiągniety! &8<<"));
+            return;
+        }
+        MoneyTargetCommand.openGui(0, player);
+    }
+
+    @EventHandler
+    public void onEnterPlot(PrePlotEntryEvent event) {
+        Player player = event.getPlayer();
+        if (event.getPlot().isClosed()) {
+            player.leaveVehicle();
+        }
+    }
 
     @EventHandler
     public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
@@ -101,7 +148,6 @@ public class OthersListener implements Listener {
         }
     }
 
-
     @EventHandler
     public void onBreakBlock(BlockDropItemEvent event) {
         List<Item> items = event.getItems();
@@ -118,7 +164,7 @@ public class OthersListener implements Listener {
     }
 
     @EventHandler
-    public void onCommandTabSend(PlayerCommandSendEvent event) {
+    public void handleCommandTabSent(PlayerCommandSendEvent event) {
         Player p = event.getPlayer();
         if (Main.pluginConfig.getEvents().isTabcomplete()) {
             if (!p.hasPermission("core.command.tabcomplete.bypass")) {
@@ -137,34 +183,33 @@ public class OthersListener implements Listener {
         //if (!command.getPermission().isEmpty()) return;
         if (!command.testPermissionSilent(event.getPlayer())) {
             if (command.getPermission() == null) return;
-            event.getPlayer().sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#FF3131Nie posiadasz uprawnien &8(&#FFC42E{permission}&8) &8<<".replace("{permission}", command.getPermission())));
+            event.getPlayer().sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#FF3131Nie posiadasz uprawnień &8(&#FFC42E{permission}&8) &8<<".replace("{permission}", command.getPermission())));
             event.setCancelled(true);
         } else return;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void handlePlayerDamageEvent(EntityDamageByEntityEvent event){
-        if(event.getEntity() instanceof Player victim && event.getDamager() instanceof Player attacker) {
-            if (victim.getLocation().getWorld().getName().equals("spawn")) {
+        if(event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
+            Player victim = (Player) event.getEntity();
+            Player attacker = (Player) event.getDamager();
+            if (victim.getLocation().getWorld().getName().equals("spawn") && !RegionApi.isInRegion(victim.getLocation(), "pvp")) {
+                Player player = ((Player) event.getDamager()).getPlayer();
+                if (delayHook.containsKey(player) && delayHook.get(player) > System.currentTimeMillis()) {
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zaczepić gracza musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
+                    player.closeInventory();
+                    return;
+                }
+
+                delayHook.remove(player);
+
+                Api.sendMessage(player,  Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zaczepiłeś gracza");
                 victim.sendTitle(Api.fixColor("&#95eb34&lHej"), Api.fixColor("&8>> &aGracz &e" + attacker.getDisplayName() + "&a zaczepił Cię!"));
                 victim.playSound(victim.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1.0F, 1.0F);
+
+                delayHook.put(player, TimerApi.parseDateDiff("5s", true));
             }
         }
-    }
-
-    public static ShapedRecipe getRecipeKokaina() {
-        ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_kokaina"), kokaina);
-        rec.shape(new String[]{"AAA", "BBB", "AAA"});
-        rec.setIngredient('A', Material.SUGAR);
-        rec.setIngredient('B', Material.LEGACY_SNOW_BALL);
-        return rec;
-    }
-
-    public static ShapedRecipe getRecipeWeed() {
-        ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_weed"), weed);
-        rec.shape(new String[]{"DDD", "DDD", "DDD"});
-        rec.setIngredient('D', Material.DRIED_KELP_BLOCK);
-        return rec;
     }
 
     public static ShapedRecipe getRecipeMagnet() {
@@ -251,9 +296,32 @@ public class OthersListener implements Listener {
             event.setCancelled(true);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void handlePrepareAnvilEvent(PrepareAnvilEvent event){
+        AnvilInventory inventory = event.getInventory();
+        if(inventory.getFirstItem() == null || inventory.getSecondItem() == null) return;
+
+        inventory.setMaximumRepairCost(99);
+
+        ItemStack first = inventory.getFirstItem(), second = inventory.getSecondItem();
+
+        int cost = 0;
+
+        if(first.getItemMeta() instanceof Repairable repairable){
+            cost = repairable.getRepairCost();
+        }
+        if(second.getItemMeta() instanceof Repairable repairable){
+            cost = repairable.getRepairCost();
+        }
+
+        if(cost <= 0) cost = 5;
+        if(cost > 39) cost = 39;
+        inventory.setRepairCost(cost);
+    }
+
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
-        if (cancel.contains(e.getPlayer())) cancel.remove(e.getPlayer());
+        cancel.remove(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -268,19 +336,23 @@ public class OthersListener implements Listener {
     }
 
     @EventHandler
-    public void OnBlockBreak(BlockBreakEvent e) {
-        Player p = e.getPlayer();
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+
+        if (Main.pluginConfig.getEvents().getOpenChatBlockBreak().isOpenchatbreaksblock()) {
+            if (event.isCancelled()) return;
+            User user = UserCache.getInstance().compute(player.getUniqueId());
+            if (user.getBlockBreak() != (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakmax() + 2)) {
+                user.addBlockBreak(1);
+            }
+
+        }
+
         if (Main.pluginConfig.getEvents().isAntyxraymessage()) {
-            if (e.getBlock().getType() == Material.DIAMOND_ORE) {
-                for (Player op : Bukkit.getOnlinePlayers()) {
-                    if (op.hasPermission("core.xray.read")) {
-                        Api.sendActionBar(op, "&4&lANTY-XRAY: &7Gracz &a" + p.getName() + "&7 zniszczyl rude &eDiamentu");
-                    }
-                }
-            } else if (e.getBlock().getType() == Material.ANCIENT_DEBRIS) {
-                for (Player op : Bukkit.getOnlinePlayers()) {
-                    if (op.hasPermission("core.xray.read")) {
-                        Api.sendActionBar(op, "&4&lANTY-XRAY: &7Gracz &a" + p.getName() + "&7 zniszczyl rude &eDiamentu");
+            if (event.getBlock().getType() == Material.DIAMOND_ORE || event.getBlock().getType() == Material.GOLD_ORE || event.getBlock().getType() == Material.IRON_ORE || event.getBlock().getType() == Material.DEEPSLATE_DIAMOND_ORE || event.getBlock().getType() == Material.DEEPSLATE_GOLD_ORE || event.getBlock().getType() == Material.DEEPSLATE_IRON_ORE || event.getBlock().getType() == Material.ANCIENT_DEBRIS) {
+                for (Player permissionPlayers : Bukkit.getOnlinePlayers()) {
+                    if (permissionPlayers.hasPermission("core.xray.read")) {
+                        Api.sendActionBar(permissionPlayers, "&8>> <#ba2e22>&lANTY-XRAY: <#39FF14>Gracz <#FDBD01>" + player.getName() + " <#39FF14>zniszczył rude <#3ec7ed>" + event.getBlock().getType() + " &8<<");
                     }
                 }
             }
@@ -362,6 +434,8 @@ public class OthersListener implements Listener {
         }
     }
 
+    //Teleport player to spawn when don't have bed spawn location
+
     @EventHandler
     public void onReSpawnPlayer(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
@@ -369,12 +443,14 @@ public class OthersListener implements Listener {
             if (p.getBedSpawnLocation() == null) {
                 Warp warp = WarpCache.getInstance().get("spawn");
                 if (warp != null) {
-                    Location loc = new Location(Bukkit.getServer().getWorld(warp.getLocation().getWorld().getKey()), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
+                    Location loc = new Location(getServer().getWorld(warp.getLocation().getWorld().getKey()), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
                     e.setRespawnLocation(loc);
                 } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma warpa &espawn");
             }
         }
     }
+
+    //Place block in Nether & End
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -403,6 +479,56 @@ public class OthersListener implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    //Protection player
+
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent event) {
+        Protection protection;
+        if(event.getDamager() instanceof Player damager){
+            protection = Protection.get(damager.getUniqueId());
+            if(protection != null && protection.getProtection() > System.currentTimeMillis()){
+                Api.sendMessage(damager, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz uderzać mając ochrone!");
+                event.setCancelled(true);
+            } else if(event.getEntity() instanceof Player victim){
+                protection = Protection.get(victim.getUniqueId());
+                if(protection != null && protection.getProtection() > System.currentTimeMillis()){
+                    Api.sendMessage(damager, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz uderzyć graczy, który ma ochrone!");
+                    event.setCancelled(true);
+                }
+            }
+        }
+        if(event.getDamager() instanceof Projectile projectile && projectile.getShooter() instanceof Player damager){
+            protection = Protection.get(damager.getUniqueId());
+            if(protection != null && protection.getProtection() > System.currentTimeMillis()){
+                Api.sendMessage(damager, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz uderzać mając ochrone!");
+                event.setDamage(0);
+            } else if(event.getEntity() instanceof Player victim){
+                protection = Protection.get(victim.getUniqueId());
+                if(protection != null && protection.getProtection() > System.currentTimeMillis()){
+                    Api.sendMessage(damager, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz uderzyć graczy, który ma ochrone!");
+                    event.setDamage(0);
+                }
+            }
+        }
+        if(event.getDamager() instanceof Monster monster && event.getEntity() instanceof Player victim){
+            protection = Protection.get(victim.getUniqueId());
+            if(protection != null && protection.getProtection() > System.currentTimeMillis()) {
+                monster.setTarget(null);
+                event.setCancelled(true);
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void handleTargetEvent(EntityTargetLivingEntityEvent event){
+        Entity target = event.getTarget(), entity = event.getEntity();
+        if(entity instanceof Mob && target instanceof Player player){
+            Protection protection = Protection.get(player.getUniqueId());
+            if(protection != null && protection.getProtection() > System.currentTimeMillis()) event.setCancelled(true);
         }
     }
 }

@@ -85,14 +85,14 @@ public class ChatManagerCommand extends Command {
             ItemStack automsg = inventoryHelper.prepareItemStack(Material.BOOK, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#008443Informacje o auto wiadomości"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &a" + ((user.getAutomsg() == 0) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &a" + ((user.getAutoMsg() == 0) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
                 });
             });
 
             ItemStack autobossbar = inventoryHelper.prepareItemStack(Material.BEACON, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#00FFFFInformacje o auto wiadomości bossbar"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &a" + ((user.getAutobossbar() == 0) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &a" + ((user.getAutoBossBar() == 0) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
                 });
             });
 
@@ -120,24 +120,24 @@ public class ChatManagerCommand extends Command {
                     });
                 } else if(e.getSlot() == 12) {
                     UserCache.getInstance().compute(player.getUniqueId(), User -> {
-                        if (User.getAutomsg() == 0) {
-                            User.setAutomsg(1);
+                        if (User.getAutoMsg() == 0) {
+                            User.setAutoMsg(1);
                             openGui(0, (Player) sender);
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono aktywność informacji!");
                         } else {
-                            User.setAutomsg(0);
+                            User.setAutoMsg(0);
                             openGui(0, (Player) sender);
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono aktywność informacji!");
                         }
                     });
                 } else if(e.getSlot() == 14) {
                     UserCache.getInstance().compute(player.getUniqueId(), User -> {
-                        if (User.getAutobossbar() == 0) {
-                            User.setAutobossbar(1);
+                        if (User.getAutoBossBar() == 0) {
+                            User.setAutoBossBar(1);
                             openGui(0, (Player) sender);
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono aktywność informacji!");
                         } else {
-                            User.setAutobossbar(0);
+                            User.setAutoBossBar(0);
                             openGui(0, (Player) sender);
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono aktywność informacji!");
                         }
@@ -166,9 +166,9 @@ public class ChatManagerCommand extends Command {
             inventoryHelper.setItem(10, abyss);
             inventoryHelper.setItem(19, (user.getAbyss() == 0) ? glass_lime : glass_red);
             inventoryHelper.setItem(12, automsg);
-            inventoryHelper.setItem(21, (user.getAutomsg() == 0) ? glass_lime : glass_red);
+            inventoryHelper.setItem(21, (user.getAutoMsg() == 0) ? glass_lime : glass_red);
             inventoryHelper.setItem(14, autobossbar);
-            inventoryHelper.setItem(23, (user.getAutobossbar() == 0) ? glass_lime : glass_red);
+            inventoryHelper.setItem(23, (user.getAutoBossBar() == 0) ? glass_lime : glass_red);
             inventoryHelper.setItem(16, deaths);
             inventoryHelper.setItem(25, (user.getDeaths() == 0) ? glass_lime : glass_red);
             inventoryHelper.setItem(40, back);
@@ -227,7 +227,7 @@ public class ChatManagerCommand extends Command {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzg3M2MxMmJmZmI1MjUxYTBiODhkNWFlNzVjNzI0N2NiMzlhNzVmZjFhODFjYmU0YzhhMzliMzExZGRlZGEifX19");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#7289daInformacje o wiadomościach przez discord"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &a" + ((user.getDiscordchat() == 0) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &a" + ((user.getDiscordChat() == 0) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
                 });
             });
 
@@ -245,7 +245,7 @@ public class ChatManagerCommand extends Command {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGYwNjY2NTNlMTc1ZTEzYTRkZTFiNDQyOWE2N2QwNmZmZWY5Mjk1NTFhMGE4ZTI3NjFmNzFkMjcyMDVhOTc4In19fQ==");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#41d167Informacje msg na bossbar"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &a" + ((user.getMsgbossbar() == 0) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &a" + ((user.getMsgBossBar() == 0) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
                 });
             });
 
@@ -253,13 +253,13 @@ public class ChatManagerCommand extends Command {
                 e.setCancelled(true);
                 if(e.getSlot() == 10) {
                     UserCache.getInstance().compute(player.getUniqueId(), User -> {
-                        if (User.getDiscordchat() == 0) {
-                            User.setDiscordchat(1);
+                        if (User.getDiscordChat() == 0) {
+                            User.setDiscordChat(1);
                             openGui(1, (Player) sender);
                             inventoryHelper.getPlayer().updateInventory();
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono aktywność informacji!");
                         } else {
-                            User.setDiscordchat(0);
+                            User.setDiscordChat(0);
                             openGui(1, (Player) sender);
                             inventoryHelper.getPlayer().updateInventory();
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono aktywność informacji!");
@@ -281,13 +281,13 @@ public class ChatManagerCommand extends Command {
                     });
                 } else if(e.getSlot() == 14) {
                     UserCache.getInstance().compute(player.getUniqueId(), User -> {
-                        if (User.getMsgbossbar() == 0) {
-                            User.setMsgbossbar(1);
+                        if (User.getMsgBossBar() == 0) {
+                            User.setMsgBossBar(1);
                             openGui(1, (Player) sender);
                             inventoryHelper.getPlayer().updateInventory();
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono aktywność informacji!");
                         } else {
-                            User.setMsgbossbar(0);
+                            User.setMsgBossBar(0);
                             openGui(1, (Player) sender);
                             inventoryHelper.getPlayer().updateInventory();
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono aktywność informacji!");
@@ -303,11 +303,11 @@ public class ChatManagerCommand extends Command {
             inventoryHelper.setItemRange(0, 45, glass_black);
 
             inventoryHelper.setItem(10, discord);
-            inventoryHelper.setItem(19, (user.getDiscordchat() == 0) ? glass_lime : glass_red);
+            inventoryHelper.setItem(19, (user.getDiscordChat() == 0) ? glass_lime : glass_red);
             inventoryHelper.setItem(12, chat);
             inventoryHelper.setItem(21, (user.getChat() == 0) ? glass_lime : glass_red);
             inventoryHelper.setItem(14, msgbossbar);
-            inventoryHelper.setItem(23, (user.getMsgbossbar() == 0) ? glass_lime : glass_red);
+            inventoryHelper.setItem(23, (user.getMsgBossBar() == 0) ? glass_lime : glass_red);
             inventoryHelper.setItem(39, previous);
             inventoryHelper.setItem(40, back);
 

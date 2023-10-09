@@ -21,7 +21,7 @@ public class AutoMessageTask extends BukkitRunnable {
         } else if(id >= Main.pluginConfig.getAuto().getMessages().getMessages().size()) id = 0;{
             for (Player all : Bukkit.getOnlinePlayers()) {
                 User user = UserCache.getInstance().compute(all.getUniqueId());
-                if (user.getAutomsg() == 0) {
+                if (user.getAutoMsg() == 0) {
                     Api.sendMessage(all, Main.pluginConfig.getAuto().getMessages().getMessages().get(id));
                 }
             }

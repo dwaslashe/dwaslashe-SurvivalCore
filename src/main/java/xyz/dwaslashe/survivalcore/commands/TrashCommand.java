@@ -25,16 +25,10 @@ public class TrashCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Player p = (Player) sender;
-        if (args.length == 0) {
-            if (CooldownManager.checkDelay(p) == true) {
-                return;
-            }
-            CooldownManager.addColdown(p, "3s");
-            Inventory inv = Bukkit.createInventory((InventoryHolder) null, 54, "Kosz");
-            inv.clear();
-            p.openInventory(inv);
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otworzyłeś &ekosz");
-        }
+        Player player = (Player) sender;
+        Inventory inventory = Bukkit.createInventory(null, 54, "Kosz");
+        inventory.clear();
+        player.openInventory(inventory);
+        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otworzyłeś &ekosz");
     }
 }

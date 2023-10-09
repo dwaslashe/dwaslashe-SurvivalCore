@@ -14,60 +14,75 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.cache.MarryCache;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
+import xyz.dwaslashe.survivalcore.enums.ImageChar;
+import xyz.dwaslashe.survivalcore.objects.Marry;
+import xyz.dwaslashe.survivalcore.objects.Protection;
 import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.tasks.PlayerTask;
-import xyz.dwaslashe.survivalcore.utils.Api;
-import xyz.dwaslashe.survivalcore.utils.ChatApi;
-import xyz.dwaslashe.survivalcore.utils.ItemApi;
-import xyz.dwaslashe.survivalcore.utils.LocationApi;
+import xyz.dwaslashe.survivalcore.utils.*;
 import xyz.upperlevel.spigot.book.BookUtil;
 
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.List;
+
 public class PlayerJoinListener implements Listener {
+    private PictureApi pictureApi;
+    private Main plugin;
+    public PlayerJoinListener(Main plugin) {
+        this.plugin = plugin;
+        this.pictureApi = plugin.getPictureApi();
+    }
 
-    public ItemStack eat = new ItemApi(Material.COOKED_BEEF, (short)0)
-            .setAmount(16)
-            .setName("&#FFF01FJedzenie na dobry początek!")
-            .getItemStack();
+    public void firstJoinExecute(Player player) {
+        ItemStack food = new ItemApi(Material.COOKED_BEEF, (short)0)
+                .setAmount(16)
+                .setName("&#E7E7E7Cześć &#f5be1b%player% &#76f51bB)".replace("%player%", player.getName()))
+                .setLore(Arrays.asList("", " &#E7E7E7Strona: &#e6cf3cwww.wywrotkamc.pl", " &#E7E7E7Discord: &#7289dadc.wywrotkamc.pl"))
+                .getItemStack();
 
-    public void firtJoinExecute(Player player) {
+        Protection protection = Protection.compute(player.getUniqueId());
+        protection.setProtection(System.currentTimeMillis() + TimerApi.getTime("10m"));
+        protection.setMaxTimeProtection(TimerApi.getTime("10m"));
         User user = UserCache.getInstance().compute(player.getUniqueId());
+        Marry marry = MarryCache.getInstance().compute(player.getUniqueId());
+        marry.setRightuuid(player.getUniqueId());
         World world = Bukkit.getWorld("world");
         Location loc = LocationApi.getRandomLocation(world);
         user.setHomes("");
         user.setRates("");
+        user.setBlockBreak(0);
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 140, -50));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 140, 10));
-        player.setItemInHand(eat);
+        player.setItemInHand(food);
         player.teleportAsync(loc);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-    public void onJoin(PlayerJoinEvent e) {
-        e.setJoinMessage(null);
+    public void onJoin(PlayerJoinEvent event) {
+        event.setJoinMessage(null);
 
-        final Player p = e.getPlayer();
+        final Player player = event.getPlayer();
 
-        BossBar bar = PlayerTask.getBarMap().get(p.getUniqueId());
+        BossBar bar = PlayerTask.getBarMap().get(player.getUniqueId());
 
         if(bar == null){
             bar = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID);
-            PlayerTask.getBarMap().put(p.getUniqueId(), bar);
+            PlayerTask.getBarMap().put(player.getUniqueId(), bar);
             bar.setVisible(true);
         } else {
             bar.removeAll();
-            bar.addPlayer(p);
+            bar.addPlayer(player);
         }
 
-        if (p.hasPlayedBefore()) {
-        } else firtJoinExecute(p);
+        if (player.hasPlayedBefore()) {
+        } else firstJoinExecute(player);
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(), () -> {
-
-            Api.sendMessage(p, Main.pluginConfig.getJoin().getMessage());
+            sendImage(player);
 
             //Create book in join
             ItemStack book = BookUtil.writtenBook()
@@ -115,24 +130,25 @@ public class PlayerJoinListener implements Listener {
             //    }
             //}, 35L);
             //Messages in join
-            if (p.hasPermission("core.join.vip")) {
-                Api.sendBroadcast(Main.pluginConfig.getJoin().getVipbroadcast().replace("{PLAYER}", p.getDisplayName()).replace("{PREFIX}", ChatApi.getPrefix(p)));
+
+            if (player.hasPermission("core.join.vip")) {
+                Api.sendBroadcast(Main.pluginConfig.getJoin().getVipbroadcast().replace("{PLAYER}", player.getDisplayName()).replace("{PREFIX}", ChatApi.getPrefix(player)));
             }
             if (Main.pluginConfig.getEvents().isJoinactionbar()) {
                 for (Player all : Bukkit.getOnlinePlayers()) {
-                    Api.sendActionBar(all, "&8>> <#39FF14>Gracz <#FDBD01>" + p.getName() + " <#39FF14>dołączył na serwer! &8<<");
+                    Api.sendActionBar(all, "&8>> <#39FF14>Gracz <#FDBD01>" + player.getName() + " <#39FF14>dołączył na serwer! &8<<");
                 }
             }
 
             if (Main.pluginConfig.getEvents().isJoinbossbarflesh()) {
                 BossBar barflesh = Bukkit.createBossBar(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshmessage()), BarColor.WHITE, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
-                barflesh.addPlayer(p.getPlayer());
+                barflesh.addPlayer(player.getPlayer());
                 barflesh.setProgress(0);
                 int[] bar_title = {0};
                 Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
                     @Override
                     public void run() {
-                        if (p.getPlayer() != null && p.getPlayer().isOnline()) {
+                        if (player.getPlayer() != null && player.getPlayer().isOnline()) {
                             ++bar_title[0];
                             if (bar_title[0] == 1) {
                                 barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
@@ -167,7 +183,7 @@ public class PlayerJoinListener implements Listener {
                             } else {
                                 bar_title[0] = 0;
                                 barflesh.setVisible(false);
-                                barflesh.removePlayer(p.getPlayer());
+                                barflesh.removePlayer(player.getPlayer());
                             }
                         }
                     }
@@ -186,4 +202,34 @@ public class PlayerJoinListener implements Listener {
             }
         }
     }
+
+    private ImageMessage getMessage(Player player) {
+        return pictureApi.createPictureMessage(player, Api.fixColor(Main.pluginConfig.getJoin().getMessage()));
+    }
+
+    private void sendImage(Player player) {
+        ImageMessage pictureMessage = getMessage(player);
+
+        if (pictureMessage == null) return;
+        pictureApi.clearChat(player);
+        pictureMessage.sendToPlayer(player);
+    }
+
+    public static ImageMessage getMessage(List<String> messages, BufferedImage image) {
+        int imageDimensions = 8, count = 0;
+        ImageMessage imageMessage = new ImageMessage(image, imageDimensions, ImageChar.BLOCK.getChar());
+        String[] msg = new String[imageDimensions];
+
+        for (String message : messages) {
+            if (count > msg.length) break;
+            msg[count++] = message;
+        }
+
+        while (count < imageDimensions) {
+            msg[count++] = "";
+        }
+
+        return imageMessage.appendText(msg);
+    }
+
 }

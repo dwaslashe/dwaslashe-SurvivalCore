@@ -1,6 +1,5 @@
 package xyz.dwaslashe.survivalcore.commands;
 
-import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
-import xyz.dwaslashe.survivalcore.managers.CooldownManager;
 import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
@@ -32,41 +30,52 @@ public class ReplyCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Player p = (Player) sender;
+        Player player = (Player) sender;
         if (args.length < 1) {
             wrongUsage();
         } else {
             if (args.length > 0) {
-                Player p2 = MsgCommand.getLastMsg().get(p);
-                if (p2 == null) {
-                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz komu odpisać");
+                Player secondPlayer = MsgCommand.getLastMsg().get(player);
+                if (secondPlayer == null) {
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz komu odpisać");
                     return;
                 }
 
                 String msg = StringUtils.join(args, " ", 0, args.length);
+                User userPlayer = UserCache.getInstance().compute(player.getUniqueId());
+                User userSecondPlayer = UserCache.getInstance().compute(secondPlayer.getUniqueId());
 
-                MsgCommand.getLastMsg().put(p, p2);
-                MsgCommand.getLastMsg().put(p2, p);
+                if (userSecondPlayer.getIgnoreAllPlayers() == 1) {
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ dana osoba wyłączyła wysyłanie prywatnych wiadomości!");
+                    return;
+                }
+
+                if (MsgCommand.getInputPlayer(secondPlayer.getName(), userPlayer.getIgnorePlayers()) || MsgCommand.getInputPlayer(player.getName(), userSecondPlayer.getIgnorePlayers())) {
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ dana osoba Cię wyciszyła lub ją wyciszyłeś!");
+                    return;
+                }
+
+                MsgCommand.getLastMsg().put(player, secondPlayer);
+                MsgCommand.getLastMsg().put(secondPlayer, player);
                 SocialSpyCommand.getList()
                        .stream()
                         .map(o -> o = Bukkit.getPlayer((String) o))
                         .filter(Objects::nonNull)
                         .forEach(po -> {
-                            ((Player) po).sendMessage(Api.fixColor("&c&lSocialSPY &8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003" + p2.getDisplayName() + " &8] &8» &#E7E7E7" + msg));
+                            ((Player) po).sendMessage(Api.fixColor("&c&lSocialSPY &8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003" + secondPlayer.getDisplayName() + " &8] &8» &#E7E7E7" + msg));
                         });
-                Api.sendMessage(p, "&8[ &#B3F003TY &8> &#B3F003" + p2.getDisplayName() + " &8] &8» &#E7E7E7" + msg);
-                Api.sendMessage(p2, "&8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg);
-                User userPlayer = UserCache.getInstance().compute(p.getUniqueId());
-                User userPlayer2 = UserCache.getInstance().compute(p2.getUniqueId());
-                if (userPlayer.getMsgbossbar() == 0) {
-                    BossBar bar = Bukkit.createBossBar(Api.fixColor("&8[ &#B3F003" + p.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg), BarColor.GREEN, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
-                    bar.addPlayer(p2);
+
+                Api.sendMessage(player, "&8[ &#B3F003TY &8> &#B3F003" + secondPlayer.getDisplayName() + " &8] &8» &#E7E7E7" + msg);
+                Api.sendMessage(secondPlayer, "&8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg);
+                if (userPlayer.getMsgBossBar() == 0) {
+                    BossBar bar = Bukkit.createBossBar(Api.fixColor("&8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg), BarColor.GREEN, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
+                    bar.addPlayer(secondPlayer);
                     bar.setProgress(1);
                     int[] bar_color = {0};
                     Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
                         @Override
                         public void run() {
-                            if (p.getPlayer() != null && p.getPlayer().isOnline()) {
+                            if (player.getPlayer() != null && player.getPlayer().isOnline()) {
                                 if (bar.getProgress() > 0.02) {
                                     bar.setProgress(bar.getProgress() - 0.02);
                                     ++bar_color[0];
@@ -74,12 +83,12 @@ public class ReplyCommand extends Command {
                                         bar.setColor(BarColor.GREEN);
                                     } else {
                                     }
-                                } else if (userPlayer2.getMsgbossbar() == 0) {
+                                } else if (userSecondPlayer.getMsgBossBar() == 0) {
                                     bar.setVisible(false);
-                                    bar.removePlayer(p2.getPlayer());
+                                    bar.removePlayer(secondPlayer.getPlayer());
                                 }
-                            } else if (userPlayer2.getMsgbossbar() == 0) {
-                                bar.removePlayer(p2.getPlayer());
+                            } else if (userSecondPlayer.getMsgBossBar() == 0) {
+                                bar.removePlayer(secondPlayer.getPlayer());
                             }
                         }
                     }, 0, 2);

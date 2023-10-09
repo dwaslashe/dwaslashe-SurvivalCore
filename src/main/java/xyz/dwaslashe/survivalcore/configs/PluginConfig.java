@@ -4,10 +4,8 @@ import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
-import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 @Getter @Setter
 @Header("#")
@@ -95,6 +93,16 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Events extends OkaeriConfig {
 
+        private OpenChatBlockBreak openChatBlockBreak = new OpenChatBlockBreak();
+
+        @Getter @Setter
+        public static class OpenChatBlockBreak extends OkaeriConfig {
+
+            private int breakmax = 50;
+            private boolean openchatbreaksblock = true;
+
+        }
+
         private boolean dragonlevel = true;
         private boolean bossbarinfospawn = true;
         private boolean lavagrieffing = true;
@@ -107,6 +115,7 @@ public class PluginConfig extends OkaeriConfig {
         private boolean blockwords = true;
         private boolean blockregex = true;
         private boolean antyafk = true;
+        private boolean tooExpensiveBypass = true;
         private boolean antyxraymessage = true;
         private boolean joinbossbarflesh = true;
         private boolean joinactionbar = true;
@@ -126,13 +135,14 @@ public class PluginConfig extends OkaeriConfig {
     @Getter @Setter
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Recipes extends OkaeriConfig {
-
-        private boolean weed = true;
-        private boolean kokaina = true;
+        @Comment("#Magnet")
         private boolean magnet = true;
-        private boolean enchanted_apple = false;
+        @Comment("#Enchanted Apple")
+        private boolean enchantedApple = false;
 
-        private boolean diamond_set = false;
+        @Comment("#Block list materials")
+        private boolean blockMaterials = false;
+        private List<String> blockedMaterials = Arrays.asList("DIAMOND_HELMET", "DIAMOND_CHESTPLATE", "DIAMOND_LEGGINGS", "DIAMOND_BOOTS", "DIAMOND_AXE", "DIAMOND_SWORD");
     }
 
 
@@ -141,28 +151,34 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Commands extends OkaeriConfig {
 
+        private boolean voucher = true;
+        private boolean anvil = true;
+        private boolean protection = true;
+        private boolean booster = true;
+        private boolean marry = true;
+        private boolean moneyTarget = true;
         private boolean homes = true;
-        private boolean pokeball = true;
-        private boolean elytragive = true;
+        private boolean pokeBall = true;
+        private boolean elytraGive = true;
         private boolean world = true;
         private boolean tiktok = true;
-        private boolean xpbottle = true;
+        private boolean xpBottle = true;
         private boolean withdraw = true;
         private boolean physics = true;
         private boolean broadcast = true;
         private boolean enchant = true;
         private boolean texturpack = false;
-        private boolean abovename = true;
+        private boolean aboveNameShop = true;
         private boolean teleport = true;
         private boolean chat = true;
         private boolean clear = true;
         private boolean day = true;
         private boolean discord = true;
-        private boolean enderchest = true;
+        private boolean enderChest = true;
         private boolean feed = true;
         private boolean fly = true;
         private boolean gamma = true;
-        private boolean gamemode = true;
+        private boolean gameMode = true;
         private boolean hat = true;
         private boolean heal = true;
         private boolean help = true;
@@ -174,10 +190,10 @@ public class PluginConfig extends OkaeriConfig {
         private boolean list = true;
         private boolean me = true;
         private boolean punishment = true;
-        private boolean socialmedia = true;
+        private boolean socialMedia = true;
         private boolean abyss = true;
         private boolean msg = true;
-        private boolean socialspy = true;
+        private boolean socialSpy = true;
         private boolean reply = true;
         private boolean purchase = true;
         private boolean repair = true;
@@ -185,10 +201,9 @@ public class PluginConfig extends OkaeriConfig {
         private boolean sidebar = true;
         private boolean spawn = true;
         private boolean ignore = true;
-        private boolean unignore = true;
         private boolean tnt = true;
-        private boolean teleportplayer = true;
-        private boolean teleporthere = true;
+        private boolean teleportPlayer = true;
+        private boolean teleportHere = true;
         private boolean uptime = true;
         private boolean wb = true;
         private boolean website = true;
@@ -200,18 +215,17 @@ public class PluginConfig extends OkaeriConfig {
         private boolean storm = true;
         private boolean glowing = true;
         private boolean incognito = true;
-        private boolean nickcolor = true;
+        private boolean nickColor = true;
         private boolean warp = true;
-        private boolean chatmanager = true;
-        private boolean itemgive = true;
+        private boolean chatManager = true;
+        private boolean itemGive = true;
         private boolean top = true;
         private boolean reward = true;
         private boolean ping = true;
-        private boolean godmod = true;
+        private boolean godMod = true;
         private boolean magnet = false;
         private boolean check = true;
         private boolean pracealiases = false;
-        private boolean playerwarp = false;
     }
 
     //Auto Tasks
@@ -247,7 +261,7 @@ public class PluginConfig extends OkaeriConfig {
 
         @Comment("#Join message, permission core.join.vip")
         private String vipbroadcast = "{PREFIX}&8>> &aGracz &e{PLAYER} &adołączył na serwer! &bDziękujemy za wsparcie!";
-        private String message = " \n  &#39ff14&lWywrotkaMC.PL &8- &#39ff14&lSURVIVAL + EKONOMIA \n ";
+        private List<String> message = Arrays.asList(" &#39ff14&lWywrotkaMC.PL &8- &#39ff14&lSURVIVAL + EKONOMIA ", "&#39ff14&lSURVIVAL + EKONOMIA ");
         @Comment("#Join BossBar Flesh message")
         private String bossbarfleshmessage = "WIELKA ŚWIĄTECZNA AKTULIZACJA SERWERA!";
         private String bossbarfleshcolor1 = "&b&l";
