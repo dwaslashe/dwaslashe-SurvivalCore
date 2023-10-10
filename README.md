@@ -1,31 +1,24 @@
-# dwaslashe-SurvivalCore
-
 - ogarnac administracje aby ostrzegala osoby zamiast od razu mute
+- set pirata w statku
+- set michala aniola w kosciele, bedzie mozna kupic alkohol
 - event codzienne zrzut/meteoryt/boss 
 - strefa afk
-/- naprawic /ignore i przebudowac to
-- paczkomaty
-- kamien papier nozyce
 - zwiekszyc border i od razu dostep od rang do rtp kratek
 - zrobic mechanizm, ktory bedzie tworzyl narkotyki, zioło to fern
 i tworzenie mefedronu/krysztal/lsd/benzo/kokaina z brewingstand i drugim jakims gui
 zrobic npc na spawnie ukryty gdzie mozna sprzedawac narkotyki, ktory co dwa dni zmienia miejsce i zeby /sklep drugs, bylby wylaczony w innych swiatach
-/- dodac boomboxy za 100k
 - customowe itemy zrobic zeby ladne byly
-/- dokonczyc caly end z strukturami i przedmiotami, i zaktualizowac to z moim pluginem, zeby smok sie zrespil musi byc 10 osob wlaczyc w endzie dzialki i zrobic z znikaniem przedmiotow, majac totem i spadajac do voida zyjesz nadal (plik stellarity/functions/mechanics/main)
 - za zaproszenie na discord mozna dostac jakies nagrody
 - event o kubek wywrotki, czas dwa tygodnie, temat budowli wywrotki
-- eventowe kupowanie pojazdow
-- event wyscig pojazdami
-- event wojny magazynowe
 - usunac dane z swiata na wszelki wypadek
-/- dodac zeby pisac na czacie musisz wykopac 100 blokow
-- event ox
-- event skrzynki
-- ogarnac /kara
+- event ox, skrzynki, wyscig pojazdami, wojny magazynowe, kupowanie pojazdow
 - na spawn zamiast hologramow bannery zdjeciowe
 - zrobic /podarujelytre, i jest animacja jak coinflip i jest 35% szans na to ze sie zmieni elytra
-- dodac napis wlasciceila spawnera
+/- naprawic /ignore i przebudowac to
+/- dokonczyc caly end z strukturami i przedmiotami, i zaktualizowac to z moim pluginem, zeby smok sie zrespil musi byc 10 osob wlaczyc w endzie dzialki i zrobic z znikaniem przedmiotow, majac totem i spadajac do voida zyjesz nadal (plik stellarity/functions/mechanics/main)
+/- dodac zeby pisac na czacie musisz wykopac 100 blokow
+/- kamien papier nozyce
+/- dodac boomboxy za 100k
 /- system voucherow
 /- chestsort zrobic
 /- turniej postawiajacy na szali pieniadze 1v1
