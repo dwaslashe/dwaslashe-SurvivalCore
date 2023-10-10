@@ -7,7 +7,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import xyz.dwaslashe.survivalcore.Main;
-import xyz.dwaslashe.survivalcore.tasks.PlayerTask;
+import xyz.dwaslashe.survivalcore.objects.PlayerTime;
+import xyz.dwaslashe.survivalcore.tasks.SecondPlayerTask;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.HashMap;
@@ -15,39 +16,44 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PlayerQuitListener implements Listener {
-    public static Map<UUID, Double> LocYaw = new HashMap<UUID, Double>();
+    public static Map<UUID, Double> locYaw = new HashMap<UUID, Double>();
 
-    public static void checkPlayer(Player p) {
-        UUID uuid = p.getUniqueId();
+    public static void checkPlayer(Player player) {
+        UUID uuid = player.getUniqueId();
 
-        if (LocYaw.get(uuid) != null) {
-            if ((double) p.getLocation().getYaw() == LocYaw.get(uuid)) {
-                p.sendTitle(Api.fixColor("&#F23D07&lANTY-AFK"), Api.fixColor("&8>> &fe, śpisz? &8<<"));
-                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_SNARE, 10, 10);
+        if (locYaw.get(uuid) != null) {
+            if ((double) player.getLocation().getYaw() == locYaw.get(uuid)) {
+                player.sendTitle(Api.fixColor("&#F23D07&lANTY-AFK"), Api.fixColor("&8>> &fe, śpisz? &8<<"));
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_SNARE, 10, 10);
                 Bukkit.getScheduler().runTaskLater(Main.getPlugin(), new Runnable() {
                     @Override
                     public void run() {
-                        if (!(((double) p.getLocation().getYaw()) == LocYaw.get(uuid))) return;
-                        if (((double) p.getLocation().getYaw()) == LocYaw.get(uuid)) {
-                            Api.sendPlayerToServer(p, "LOBBYAFK");
+                        if (!(((double) player.getLocation().getYaw()) == locYaw.get(uuid))) return;
+                        if (((double) player.getLocation().getYaw()) == locYaw.get(uuid)) {
+                            Api.sendPlayerToServer(player, "LOBBYAFK");
                         }
                     }
                 }, 20 * 60);
             } else {
-                LocYaw.put(uuid, (double) p.getLocation().getYaw());
+                locYaw.put(uuid, (double) player.getLocation().getYaw());
             }
         } else {
-            LocYaw.put(uuid, (double) p.getLocation().getYaw());
+            locYaw.put(uuid, (double) player.getLocation().getYaw());
         }
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
-        e.setQuitMessage(null);
-        Player p = e.getPlayer();
+    public void onQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(null);
+        Player player = event.getPlayer();
+
+        PlayerTime playerTime = PlayerTime.getPlayer(player);
+        playerTime.setTime("0s");
+        PlayerTime.getUsers().remove(PlayerTime.getPlayer(player));
+
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(), () -> {
-            LocYaw.remove(p.getUniqueId());
+            locYaw.remove(player.getUniqueId());
         }, 5);
-        PlayerTask.getBarMap().remove(p.getUniqueId());
+        SecondPlayerTask.getBarMap().remove(player.getUniqueId());
     }
 }

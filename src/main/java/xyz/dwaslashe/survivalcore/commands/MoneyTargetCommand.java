@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
 public class MoneyTargetCommand extends Command {
     public MoneyTargetCommand() {
         super("moneytarget", "/moneytarget <reset, set, setlimit, title> <number>", "");
-        setPermission("core.command.moneytarget");
         setOnlyPlayer(true);
     }
 
@@ -36,39 +35,47 @@ public class MoneyTargetCommand extends Command {
         Player player = (Player) sender;
         MoneyTarget moneyTarget = MoneyTargetCache.getInstance().compute(1);
         if (args.length == 0) {
+            if (moneyTarget.getMoney() >= moneyTarget.getLimitMoney()) {
+                player.sendTitle(Api.fixColor("&#eb9f34&lCEL PIENIĘDZY"), Api.fixColor("&8>> &aCel został już osiągniety! &8<<"));
+                return;
+            }
             openGui(0, player);
         } else if (args.length >= 1) {
-            if (args[0].equalsIgnoreCase("reset")) {
-                moneyTarget.setTransactions("");
-                moneyTarget.setMoney(0);
-                moneyTarget.setLimitMoney(0);
-                moneyTarget.setTitle("");
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zrestartowano statystyki celu pieniędzy!");
-            } else if (args[0].equalsIgnoreCase("set")) {
-                if (args.length == 1) {
-                    wrongUsage();
-                } else if (Api.isInt(args[1])) {
-                    int value = Integer.parseInt(args[1]);
-                    moneyTarget.setMoney(value);
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono zdobyte pieniądze!");
-                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cArgument musi być liczbą!");
-            } else if (args[0].equalsIgnoreCase("setlimit")) {
-                if (args.length == 1) {
-                    wrongUsage();
-                } else if (Api.isInt(args[1])) {
-                    int value = Integer.parseInt(args[1]);
-                    moneyTarget.setLimitMoney(value);
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono limit celu pieniędzy!");
-                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cArgument musi być liczbą!");
-            } else if (args.length >= 1) {
-                if (args.length == 1) {
-                    wrongUsage();
-                } else if (args[0].equalsIgnoreCase("title")) {
-                    String title = StringUtils.join(args, " ", 1, args.length);
-                    moneyTarget.setTitle(title);
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono tytuł celu pieniędzy!");
+            if (player.hasPermission("core.command.moneytarget")) {
+                if (args[0].equalsIgnoreCase("reset")) {
+                    moneyTarget.setTransactions("");
+                    moneyTarget.setMoney(0);
+                    moneyTarget.setLimitMoney(0);
+                    moneyTarget.setTitle("");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zrestartowano statystyki celu pieniędzy!");
+                } else if (args[0].equalsIgnoreCase("set")) {
+                    if (args.length == 1) {
+                        wrongUsage();
+                    } else if (Api.isInt(args[1])) {
+                        int value = Integer.parseInt(args[1]);
+                        moneyTarget.setMoney(value);
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono zdobyte pieniądze!");
+                    } else
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cArgument musi być liczbą!");
+                } else if (args[0].equalsIgnoreCase("setlimit")) {
+                    if (args.length == 1) {
+                        wrongUsage();
+                    } else if (Api.isInt(args[1])) {
+                        int value = Integer.parseInt(args[1]);
+                        moneyTarget.setLimitMoney(value);
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono limit celu pieniędzy!");
+                    } else
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cArgument musi być liczbą!");
+                } else if (args.length >= 1) {
+                    if (args.length == 1) {
+                        wrongUsage();
+                    } else if (args[0].equalsIgnoreCase("title")) {
+                        String title = StringUtils.join(args, " ", 1, args.length);
+                        moneyTarget.setTitle(title);
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono tytuł celu pieniędzy!");
+                    }
                 }
-            }
+            } else player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.moneytarget&8) &8<<"));
         }
     }
 

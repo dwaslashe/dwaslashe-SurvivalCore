@@ -151,7 +151,7 @@ public class Main extends JavaPlugin {
         loadEvents();
         registerPlaceholder();
 
-        if (pluginConfig.getEvents().isAntyafk()) {
+        if (pluginConfig.getEvents().isAntyAfk()) {
             Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
                 for (Player all : Bukkit.getOnlinePlayers()) {
                     if (all.hasPermission("core.antyafk.bypass")) {
@@ -207,7 +207,7 @@ public class Main extends JavaPlugin {
                     if(RegionListener.afk.contains(player.getUniqueId()) && !player.isInsideVehicle()){{
                         User userPlayer = UserCache.getInstance().compute(player.getUniqueId());
                         userPlayer.addTimeAfk(60000);
-                        PlayerQuitListener.LocYaw.remove(player.getUniqueId());
+                        PlayerQuitListener.locYaw.remove(player.getUniqueId());
                         player.sendTitle(Api.fixColor("&#F23D07&lAFK"), Api.fixColor("&8>> &aZa spędzenie minuty w strefie afk dostałeś &#FFF88F2 &#FFC42E$&a! &8<<"));
                         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_BOTTLE_THROW, 10, 10);
                         UserManager.getInstance().getUser(player).ifPresent(user -> user.deposit(2));
@@ -326,6 +326,7 @@ public class Main extends JavaPlugin {
 
     public void loadCommands() {
         CommandManager.register(new TestCommand(), true);
+        CommandManager.register(new RockPaperScissorsCommand(), pluginConfig.getCommands().isRockPaperScissors());
         CommandManager.register(new VoucherCommand(), pluginConfig.getCommands().isVoucher());
         CommandManager.register(new AnvilCommand(), pluginConfig.getCommands().isAnvil());
         CommandManager.register(new ProtectionCommand(), pluginConfig.getCommands().isProtection());
@@ -417,6 +418,7 @@ public class Main extends JavaPlugin {
         new AutoBossBarTask(this);
         new AbyssTask(this);
         new PlayerTask(this);
+        new SecondPlayerTask(this);
         new VanishCommand.VanishRunnable();
 
         getServer().getScheduler().runTaskTimer(this, () -> {
@@ -448,7 +450,7 @@ public class Main extends JavaPlugin {
 
         registerEvent(new VoucherListener(), pluginConfig.getCommands().isVoucher());
         registerEvent(new BoosterCommand(), pluginConfig.getCommands().isBooster());
-        registerEvent(new DragonLevelListener(), pluginConfig.getEvents().isDragonlevel());
+        registerEvent(new DragonLevelListener(), pluginConfig.getEvents().isDragonLevel());
         registerEvent(new RegionListener(), true);
         registerEvent(new PlayerJoinListener(this), true);
         registerEvent(new BlockBreakListener(), pluginConfig.getCommands().isPhysics());

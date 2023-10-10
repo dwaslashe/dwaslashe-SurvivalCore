@@ -1,5 +1,7 @@
 package xyz.dwaslashe.survivalcore.commands;
 
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.saidora.api.notifications.NotificationBuilder;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -154,7 +156,15 @@ public class MarryCommand extends Command {
 
     public static void sendMarriageRequest(Player player, Player target) {
         marriageRequests.put(target, player);
-        Api.sendMessage(target, Main.pluginConfig.getMessages().getPrefix() + "&aOtrzymałeś zaproszenie do małżeństwa od gracza &e" + player.getName() + "&a, masz &e60 sekund &#ffc942⌚&a na potwierdzenie zaproszenia. Aby zaakceptować, wpisz &e/marry akceptuj");
+        Api.sendMessage(target, "");
+        Api.sendMessage(target, "        &#a503fc&lZAPROSZENIE DO MAŁŻEŃSTWA");
+        Api.sendMessage(target, "");
+        Api.sendMessage(target, "&8>> &#8dfa52Otrzymałeś zaproszenie od &#46b9f2" + player.getName());
+        Api.sendMessage(target, "&8>> &#8dfa52Masz &#ffd56c60 sekund &#ffc942⌚ &#8dfa52na potwierdzenie zaproszenia do gry!");
+        Api.sendMessage(target, "");
+        NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT,
+                "            <hover:show_text:\"<white>Kliknij aby zaakceptować!\"><click:suggest_command:/marry akceptuj><#4BF72D>&l[AKCEPTUJ]</click></hover> <hover:show_text:\"<white>Kliknij aby odmówić!\"><click:suggest_command:/marry odmow><#F7442D>&l[ODMÓW]</click></hover>").send(target);
+        Api.sendMessage(target, "");
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (marriageRequests.containsKey(target) && marriageRequests.get(target) == player) {

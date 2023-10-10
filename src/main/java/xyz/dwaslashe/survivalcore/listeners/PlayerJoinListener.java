@@ -19,9 +19,10 @@ import xyz.dwaslashe.survivalcore.cache.MarryCache;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.enums.ImageChar;
 import xyz.dwaslashe.survivalcore.objects.Marry;
+import xyz.dwaslashe.survivalcore.objects.PlayerTime;
 import xyz.dwaslashe.survivalcore.objects.Protection;
 import xyz.dwaslashe.survivalcore.objects.User;
-import xyz.dwaslashe.survivalcore.tasks.PlayerTask;
+import xyz.dwaslashe.survivalcore.tasks.SecondPlayerTask;
 import xyz.dwaslashe.survivalcore.utils.*;
 import xyz.upperlevel.spigot.book.BookUtil;
 
@@ -67,11 +68,15 @@ public class PlayerJoinListener implements Listener {
 
         final Player player = event.getPlayer();
 
-        BossBar bar = PlayerTask.getBarMap().get(player.getUniqueId());
+        PlayerTime playerTime = PlayerTime.getPlayer(player);
+        playerTime.setTime("0s");
+        PlayerTime.getUsers().add(PlayerTime.getPlayer(player));
+
+        BossBar bar = SecondPlayerTask.getBarMap().get(player.getUniqueId());
 
         if(bar == null){
             bar = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID);
-            PlayerTask.getBarMap().put(player.getUniqueId(), bar);
+            SecondPlayerTask.getBarMap().put(player.getUniqueId(), bar);
             bar.setVisible(true);
         } else {
             bar.removeAll();
@@ -134,13 +139,13 @@ public class PlayerJoinListener implements Listener {
             if (player.hasPermission("core.join.vip")) {
                 Api.sendBroadcast(Main.pluginConfig.getJoin().getVipbroadcast().replace("{PLAYER}", player.getDisplayName()).replace("{PREFIX}", ChatApi.getPrefix(player)));
             }
-            if (Main.pluginConfig.getEvents().isJoinactionbar()) {
+            if (Main.pluginConfig.getEvents().isJoinActionBar()) {
                 for (Player all : Bukkit.getOnlinePlayers()) {
                     Api.sendActionBar(all, "&8>> <#39FF14>Gracz <#FDBD01>" + player.getName() + " <#39FF14>dołączył na serwer! &8<<");
                 }
             }
 
-            if (Main.pluginConfig.getEvents().isJoinbossbarflesh()) {
+            if (Main.pluginConfig.getEvents().isJoinBossBarFlesh()) {
                 BossBar barflesh = Bukkit.createBossBar(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshmessage()), BarColor.WHITE, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
                 barflesh.addPlayer(player.getPlayer());
                 barflesh.setProgress(0);

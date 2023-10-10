@@ -14,7 +14,7 @@ public class PlayerDeathListener implements Listener {
         Player player = event.getEntity().getPlayer();
         Player killer = event.getEntity().getKiller();
         event.setDeathMessage(null);
-        if (Main.pluginConfig.getEvents().isDeathmessage()) {
+        if (Main.pluginConfig.getEvents().isDeathMessage()) {
             if (killer instanceof Player) {
                 player.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &cUmarłeś przez &e" + killer.getName() + " &8<<"));
                 if (killer.getName().equals(player.getName())) return;

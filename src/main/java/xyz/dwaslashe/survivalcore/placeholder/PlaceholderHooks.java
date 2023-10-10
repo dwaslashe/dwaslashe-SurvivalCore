@@ -3,15 +3,13 @@ package xyz.dwaslashe.survivalcore.placeholder;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.cache.MarryCache;
 import xyz.dwaslashe.survivalcore.cache.MoneyTargetCache;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.listeners.PlayerInteractListener;
 import xyz.dwaslashe.survivalcore.listeners.RegionListener;
-import xyz.dwaslashe.survivalcore.objects.Marry;
-import xyz.dwaslashe.survivalcore.objects.MoneyTarget;
-import xyz.dwaslashe.survivalcore.objects.Protection;
-import xyz.dwaslashe.survivalcore.objects.User;
+import xyz.dwaslashe.survivalcore.objects.*;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
@@ -88,7 +86,7 @@ public class PlaceholderHooks extends PlaceholderExpansion {
         if (params.equals("moneytarget_limitmoney")) {
             return format.format(moneyTarget.getLimitMoney());
         }
-        if (params.equals("moneytarget_limitmoney")) {
+        if (params.equals("moneytarget_title")) {
             return moneyTarget.getTitle();
         }
         if (params.equals("belowname")) {
@@ -96,6 +94,12 @@ public class PlaceholderHooks extends PlaceholderExpansion {
                 Protection protection = Protection.getProtectionMap().get(player.getUniqueId());
                 return "&#037bfc&lOCHRONA: &#ffd56c" + TimerApi.secondsToString(protection.getProtection()) + " &#ffc942⌚ ";
             } else return "%health% #FF3131❤";
+        }
+        if (params.equals("sessiontime")) {
+            PlayerTime playerTime = PlayerTime.getPlayer((Player) player);
+            long time = System.currentTimeMillis();
+            long playTime = time - playerTime.getTime();
+            return TimerApi.getDurationBreakdownShort(playTime);
         }
         return null;
     }

@@ -98,37 +98,46 @@ public class PluginConfig extends OkaeriConfig {
         @Getter @Setter
         public static class OpenChatBlockBreak extends OkaeriConfig {
 
-            private int breakmax = 50;
-            private boolean openchatbreaksblock = true;
+            private int breakMaxBlocks = 50;
+            private boolean enable = true;
 
         }
 
-        private boolean dragonlevel = true;
-        private boolean bossbarinfospawn = true;
-        private boolean lavagrieffing = true;
-        private boolean tabcomplete = true;
-        private boolean unknowncommand = true;
-        private boolean enderpearlcooldown = true;
-        private boolean kelpsmoke = true;
-        private boolean nobedexplose = true;
-        private boolean signcolor = true;
-        private boolean blockwords = true;
-        private boolean blockregex = true;
-        private boolean antyafk = true;
+        private BossBarSpawn bossBarSpawn = new BossBarSpawn();
+
+        @Getter @Setter
+        public static class BossBarSpawn extends OkaeriConfig {
+
+            private String title = "&#FFC42E{region} &8/ &#FBFFFFCzas sesji: &#ffd56c{playTime} &#ffc942⌚";
+            private boolean enable = true;
+
+        }
+
+        private boolean dragonLevel = true;
+        private boolean lavaGrieffing = true;
+        private boolean tabComplete = true;
+        private boolean unknownCommand = true;
+        private boolean enderPearlCooldown = true;
+        private boolean kelpSmoke = true;
+        private boolean noBedExplose = true;
+        private boolean signColor = true;
+        private boolean blockWords = true;
+        private boolean blockRegex = true;
+        private boolean antyAfk = true;
         private boolean tooExpensiveBypass = true;
-        private boolean antyxraymessage = true;
-        private boolean joinbossbarflesh = true;
-        private boolean joinactionbar = true;
-        private boolean deathplayerhead = true;
-        private boolean deathmessage = true;
+        private boolean antyXrayMessage = true;
+        private boolean joinBossBarFlesh = true;
+        private boolean joinActionBar = true;
+        private boolean deathPlayerHead = true;
+        private boolean deathMessage = true;
         @Comment("#Teleport player to spawn if no set respawn")
-        private boolean norespawnteleporttospawn = true;
+        private boolean respawnTeleportSpawn = true;
         @Comment("#Placed blocks turn to air after 50 seconds in the world of Nether and End")
-        private boolean blockplacesetair = true;
-        private boolean bossbarmsg = false;
-        private boolean bossbarunknowncommand = false;
-        private boolean samemessagesend = true;
-        private boolean cooldownchat = true;
+        private boolean blockPlaceSetAir = true;
+        private boolean bossBarMessage = false;
+        private boolean bossBarUnknownCommand = false;
+        private boolean sameMessageSend = true;
+        private boolean cooldownChat = true;
     }
 
     //Events
@@ -151,6 +160,7 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Commands extends OkaeriConfig {
 
+        private boolean rockPaperScissors = true;
         private boolean voucher = true;
         private boolean anvil = true;
         private boolean protection = true;

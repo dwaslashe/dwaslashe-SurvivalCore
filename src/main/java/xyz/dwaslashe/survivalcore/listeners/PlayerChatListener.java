@@ -16,21 +16,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
-import org.intellij.lang.annotations.Subst;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.commands.ChatCommand;
 import xyz.dwaslashe.survivalcore.configs.PluginConfig;
 import xyz.dwaslashe.survivalcore.enums.ColorEnums;
-import xyz.dwaslashe.survivalcore.helpers.DiscordHelper;
 import xyz.dwaslashe.survivalcore.helpers.IconHelper;
 import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.ChatApi;
 import xyz.dwaslashe.survivalcore.utils.TimerApi;
-import java.io.IOException;
+
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.function.BiFunction;
@@ -54,7 +51,7 @@ public class PlayerChatListener implements Listener {
     static {
         events.add((s, event) -> {
             List<String> wordsInMessage = Arrays.asList(s.split(" "));
-            if (Main.pluginConfig.getEvents().isBlockwords()) {
+            if (Main.pluginConfig.getEvents().isBlockWords()) {
                 for (String word : Main.pluginConfig.getChat().getBlockwords().getWords()) {
                     if (wordsInMessage.contains(word.toLowerCase())) {
                         if (event.getPlayer().hasPermission("core.chat.block.bypass")) {
@@ -80,7 +77,7 @@ public class PlayerChatListener implements Listener {
         });
         events.add((s, event) -> {
             Player player = event.getPlayer();
-            if (Main.pluginConfig.getEvents().isCooldownchat()) {
+            if (Main.pluginConfig.getEvents().isCooldownChat()) {
                 if (delay.containsKey(player) && delay.get(player) > System.currentTimeMillis()) {
                     Api.sendMessage(player, Main.pluginConfig.getCooldown().getMessage().replace("{TIME}", TimerApi.secondsToString(delay.get(player))));
                     return false;
@@ -104,7 +101,7 @@ public class PlayerChatListener implements Listener {
         events.add((s, event) -> {
             Player player = event.getPlayer();
             //Check if player send twice same message
-            if (Main.pluginConfig.getEvents().isSamemessagesend()) {
+            if (Main.pluginConfig.getEvents().isSameMessageSend()) {
                 if (!player.hasPermission("core.chat.samemessage.bypass")) {
                     if (previousMessages.containsKey(player)) {
                         if (event.message().equals(previousMessages.get(player))) {
@@ -119,11 +116,11 @@ public class PlayerChatListener implements Listener {
         });
         events.add((s, event) -> {
             Player player = event.getPlayer();
-            if (Main.pluginConfig.getEvents().getOpenChatBlockBreak().isOpenchatbreaksblock()) {
+            if (Main.pluginConfig.getEvents().getOpenChatBlockBreak().isEnable()) {
                 if (!player.hasPermission("core.chat.openchatbreak.bypass")) {
                     User user = UserCache.getInstance().compute(player.getUniqueId());
-                    if (user.getBlockBreak() < (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakmax() - 1)) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ potrzebujesz wykopać #fc2617&n" + user.getBlockBreak() + "&7/#b52016&n" + Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakmax() + "&c bloków! ");
+                    if (user.getBlockBreak() < (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() - 1)) {
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ potrzebujesz wykopać #fc2617&n" + user.getBlockBreak() + "&7/#b52016&n" + Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() + "&c bloków! ");
                         return false;
                     }
                 }

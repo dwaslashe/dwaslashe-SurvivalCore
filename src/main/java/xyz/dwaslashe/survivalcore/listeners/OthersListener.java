@@ -7,8 +7,6 @@ import lombok.Setter;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Furnace;
-import org.bukkit.block.Hopper;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
@@ -27,15 +25,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.Repairable;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.SpawnEgg;
-import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.minecodes.plots.api.event.entry.PrePlotEntryEvent;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.MarryCache;
-import xyz.dwaslashe.survivalcore.cache.MoneyTargetCache;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.cache.WarpCache;
-import xyz.dwaslashe.survivalcore.commands.MoneyTargetCommand;
 import xyz.dwaslashe.survivalcore.commands.managers.CommandManager;
 import xyz.dwaslashe.survivalcore.objects.*;
 import xyz.dwaslashe.survivalcore.utils.*;
@@ -87,22 +82,6 @@ public class OthersListener implements Listener {
             }
         }
 
-    }
-
-    @EventHandler
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        if (!(event.getRightClicked() instanceof Player))
-            return;
-        MoneyTarget moneyTarget = MoneyTargetCache.getInstance().compute(1);
-        Player clickedEntity = (Player) event.getRightClicked();
-        Player player = event.getPlayer();
-        if (!clickedEntity.getName().equals("moneytarget"))
-            return;
-        if (moneyTarget.getMoney() >= moneyTarget.getLimitMoney()) {
-            player.sendTitle(Api.fixColor("&#eb9f34&lCEL PIENIĘDZY"), Api.fixColor("&8>> &aCel został już osiągniety! &8<<"));
-            return;
-        }
-        MoneyTargetCommand.openGui(0, player);
     }
 
     @EventHandler
@@ -166,7 +145,7 @@ public class OthersListener implements Listener {
     @EventHandler
     public void handleCommandTabSent(PlayerCommandSendEvent event) {
         Player p = event.getPlayer();
-        if (Main.pluginConfig.getEvents().isTabcomplete()) {
+        if (Main.pluginConfig.getEvents().isTabComplete()) {
             if (!p.hasPermission("core.command.tabcomplete.bypass")) {
                 for (String string : Main.pluginConfig.getChat().getBlocktabcommands()) {
                     event.getCommands().remove(string);
@@ -234,12 +213,12 @@ public class OthersListener implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
-        if (Main.pluginConfig.getEvents().isUnknowncommand()) {
+        if (Main.pluginConfig.getEvents().isUnknownCommand()) {
             if (Bukkit.getHelpMap().getHelpTopic(e.getMessage().split(" ")[0]) == null) {
                 Player p = e.getPlayer();
                 e.setCancelled(true);
                 p.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#FF3131Komenda &#FFC42E" + e.getMessage().split(" ")[0] + " &#FF3131nie istnieje &8<<"));
-                if (Main.pluginConfig.getEvents().isBossbarunknowncommand()) {
+                if (Main.pluginConfig.getEvents().isBossBarUnknownCommand()) {
                     BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &#FF3131Komenda &#FFC42E" + e.getMessage().split(" ")[0] + " &#FF3131nie istnieje &8<<"), BarColor.RED, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
                     bar.addPlayer(p.getPlayer());
                     bar.setProgress(1);
@@ -281,7 +260,7 @@ public class OthersListener implements Listener {
     public void onSignColor(SignChangeEvent e) {
         Player p = e.getPlayer();
         String[] lines = e.getLines();
-        if (Main.pluginConfig.getEvents().isSigncolor()) {
+        if (Main.pluginConfig.getEvents().isSignColor()) {
             for (int n = 0; n <= 3; n++)
                 if (p.hasPermission("core.sign.color") == true) {
                     e.setLine(n, Api.fixColor(lines[n]));
@@ -339,16 +318,16 @@ public class OthersListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
 
-        if (Main.pluginConfig.getEvents().getOpenChatBlockBreak().isOpenchatbreaksblock()) {
+        if (Main.pluginConfig.getEvents().getOpenChatBlockBreak().isEnable()) {
             if (event.isCancelled()) return;
             User user = UserCache.getInstance().compute(player.getUniqueId());
-            if (user.getBlockBreak() != (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakmax() + 2)) {
+            if (user.getBlockBreak() != (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() + 2)) {
                 user.addBlockBreak(1);
             }
 
         }
 
-        if (Main.pluginConfig.getEvents().isAntyxraymessage()) {
+        if (Main.pluginConfig.getEvents().isAntyXrayMessage()) {
             if (event.getBlock().getType() == Material.DIAMOND_ORE || event.getBlock().getType() == Material.GOLD_ORE || event.getBlock().getType() == Material.IRON_ORE || event.getBlock().getType() == Material.DEEPSLATE_DIAMOND_ORE || event.getBlock().getType() == Material.DEEPSLATE_GOLD_ORE || event.getBlock().getType() == Material.DEEPSLATE_IRON_ORE || event.getBlock().getType() == Material.ANCIENT_DEBRIS) {
                 for (Player permissionPlayers : Bukkit.getOnlinePlayers()) {
                     if (permissionPlayers.hasPermission("core.xray.read")) {
@@ -362,7 +341,7 @@ public class OthersListener implements Listener {
     @EventHandler
     public void onFromTo(BlockFromToEvent e) {
         Material type = e.getBlock().getType();
-        if (Main.pluginConfig.getEvents().isLavagrieffing()) {
+        if (Main.pluginConfig.getEvents().isLavaGrieffing()) {
             if (e.getBlock().getY() >= 50) {
                 if (type == Material.WATER || type == Material.LEGACY_STATIONARY_WATER || type == Material.LAVA || type == Material.LEGACY_STATIONARY_LAVA) {
                     Block b = e.getToBlock();
@@ -415,7 +394,7 @@ public class OthersListener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        if (Main.pluginConfig.getEvents().isDeathplayerhead()) {
+        if (Main.pluginConfig.getEvents().isDeathPlayerHead()) {
             ZonedDateTime timeZone = TimerApi.getZoneDate("GMT+1");
             if (e.getEntity() instanceof Player) {
                 ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
@@ -439,7 +418,7 @@ public class OthersListener implements Listener {
     @EventHandler
     public void onReSpawnPlayer(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
-        if (Main.pluginConfig.getEvents().isNorespawnteleporttospawn()) {
+        if (Main.pluginConfig.getEvents().isRespawnTeleportSpawn()) {
             if (p.getBedSpawnLocation() == null) {
                 Warp warp = WarpCache.getInstance().get("spawn");
                 if (warp != null) {
@@ -455,7 +434,7 @@ public class OthersListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if (Main.pluginConfig.getEvents().isBlockplacesetair()) {
+        if (Main.pluginConfig.getEvents().isBlockPlaceSetAir()) {
             if (!player.hasPermission("core.place.nether")) {
                 World nether = Bukkit.getWorld("world_nether");
                 if (nether.getName().equalsIgnoreCase(event.getBlock().getWorld().getName())) {

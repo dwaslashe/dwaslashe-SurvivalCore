@@ -31,8 +31,8 @@ public class AbyssCommand extends Command {
             Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cOtchłań jest pusta");
             return;
         }
-        Player p = (Player) sender;
-        Abyss.get(0).open(p);
+        Player player = (Player) sender;
+        Abyss.get(0).open(player);
     }
 
 }

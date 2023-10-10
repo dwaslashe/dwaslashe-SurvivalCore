@@ -2,6 +2,7 @@ package xyz.dwaslashe.survivalcore.utils;
 
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.Random;
 
 public class RandomApi {
@@ -10,6 +11,16 @@ public class RandomApi {
     public static int getRandomInt(int min, int max) {
         return (int)(Math.random() * (max - min + 1) + min);
     }
+    public static String randomElementList(List<String> lista) {
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        }
+
+        Random random = new Random();
+        int randomElement = random.nextInt(lista.size());
+        return lista.get(randomElement);
+    }
+
 
     public static double randomDouble(double min, double max) {
         return random.nextDouble() * (max - min) + min;

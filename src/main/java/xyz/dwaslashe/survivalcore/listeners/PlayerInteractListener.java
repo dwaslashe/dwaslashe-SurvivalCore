@@ -644,7 +644,7 @@ public class PlayerInteractListener implements Listener {
         }
 
         if (!player.hasPermission("core.cooldown.enderpearl.use.bypass")) {
-            if (Main.pluginConfig.getEvents().isEnderpearlcooldown() && event.getMaterial() == Material.ENDER_PEARL && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+            if (Main.pluginConfig.getEvents().isEnderPearlCooldown() && event.getMaterial() == Material.ENDER_PEARL && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
                 if (isPlayerInCooldown(player) && getTimeRemaining(player).intValue() < timeCooldownPearl) {
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPerły kolejny raz możesz użyć za &e" + getTimeRemaining(player) + "sek");
                     event.setCancelled(true);
@@ -713,13 +713,13 @@ public class PlayerInteractListener implements Listener {
                 }
             });
         } else if (event.getAction() == Action.RIGHT_CLICK_AIR && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (Main.pluginConfig.getEvents().isNobedexplose()) {
+            if (Main.pluginConfig.getEvents().isNoBedExplose()) {
                 if (event.getClickedBlock().toString().toLowerCase().contains("BED")) {
                     event.setUseInteractedBlock(Event.Result.DENY);
                     event.setCancelled(true);
                 }
             }
-            if (Main.pluginConfig.getEvents().isKelpsmoke()) {
+            if (Main.pluginConfig.getEvents().isKelpSmoke()) {
                 if (event.getClickedBlock().getType().equals(Material.DRIED_KELP_BLOCK)) {
                     if (event.getItem().getType() != Material.FLINT_AND_STEEL) return;
                     player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 150, 50));
