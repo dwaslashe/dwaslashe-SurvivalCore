@@ -119,16 +119,19 @@ public class RockPaperScissorsCommand extends Command {
                     choseTypeGame.put(player, "ROCK");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &ekamień!");
                     sendChoseTypeGame(player, secondPlayer);
+                    choseTypeRequests.remove(player, secondPlayer);
                 } else if (e.getSlot() == 13) {
                     player.closeInventory();
                     choseTypeGame.put(player, "PAPER");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &epapier!");
                     sendChoseTypeGame(player, secondPlayer);
+                    choseTypeRequests.remove(player, secondPlayer);
                 } else if (e.getSlot() == 15) {
                     player.closeInventory();
                     choseTypeGame.put(player, "SCISSORS");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &enożyczki!");
                     sendChoseTypeGame(player, secondPlayer);
+                    choseTypeRequests.remove(player, secondPlayer);
                 }
             });
 
@@ -369,6 +372,8 @@ public class RockPaperScissorsCommand extends Command {
     private static Map<Player, Boolean> inGameCheck = new HashMap<>();
     private static Map<Player, Integer> betAmountGame = new HashMap<>();
     private static Map<Player, Player> gameRequests = new HashMap<>();
+
+    private static Map<Player, Player> choseTypeRequests = new HashMap<>();
     private static Map<Player, String> choseTypeGame = new HashMap<>();
 
     public static void sendGameRequest(Player player, Player target, int betAmount) {
@@ -389,7 +394,14 @@ public class RockPaperScissorsCommand extends Command {
         Api.sendMessage(target, "");
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            if (gameRequests.containsKey(target) && gameRequests.get(target) == player && betAmountGame.containsKey(target) && betAmountGame.get(target) == betAmount && gameRequests.containsKey(player) && gameRequests.get(player) == target && betAmountGame.containsKey(player) && betAmountGame.get(player) == betAmount) {
+            if (gameRequests.containsKey(target) &&
+                            gameRequests.get(target) == player &&
+                            betAmountGame.containsKey(target) &&
+                    betAmountGame.get(target) == betAmount &&
+                    gameRequests.containsKey(player) &&
+                    gameRequests.get(player) == target &&
+                    betAmountGame.containsKey(player) &&
+                    betAmountGame.get(player) == betAmount) {
                 gameRequests.remove(target);
                 gameRequests.remove(player);
                 betAmountGame.remove(target);
@@ -440,8 +452,8 @@ public class RockPaperScissorsCommand extends Command {
                         }
                     } else {
                         this.cancel();
-                        secondPlayer.sendTitle(Api.fixColor("&#26E810&lSTART!"), Api.fixColor(""), 0, 20, 5);
-                        player.sendTitle(Api.fixColor("&#26E810&lSTART!"), Api.fixColor(""), 0, 20, 5);
+                        secondPlayer.sendTitle(Api.fixColor("&#26E810&lSTART!"), Api.fixColor("&8>> &aMasz &#ffd56c60 sekund &#ffc942⌚ &ana wybór! &8<<"), 0, 20, 5);
+                        player.sendTitle(Api.fixColor("&#26E810&lSTART!"), Api.fixColor("&8>> &aMasz &#ffd56c60 sekund &#ffc942⌚ &ana wybór! &8<<"), 0, 20, 5);
                         UserManager.getInstance().getUser(player).ifPresent(user -> {
                             UserManager.getInstance().getUser(secondPlayer).ifPresent(targetUser -> {
                                 user.withdraw(betAmountGame.get(player));
@@ -449,8 +461,33 @@ public class RockPaperScissorsCommand extends Command {
                             });
                         });
 
+                        choseTypeRequests.put(secondPlayer, player);
+                        choseTypeRequests.put(player, secondPlayer);
                         openGui(0, secondPlayer, player, betAmountGame.get(player));
                         openGui(0, player, secondPlayer, betAmountGame.get(player));
+
+                        List<String> stringList = Arrays.asList("ROCK", "PAPER", "SCISSORS");
+
+                        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                            if (choseTypeRequests.containsKey(secondPlayer) && choseTypeRequests.get(secondPlayer) == player) {
+                                String randomList = RandomApi.randomElementList(stringList);
+                                choseTypeRequests.remove(secondPlayer);
+                                Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() +
+                                        "&cZa długo myślisz nad wyborem dlatego system wybrał za Ciebie! Wybrano: &e" + randomList);
+
+                                choseTypeGame.put(secondPlayer, randomList);
+                                sendChoseTypeGame(secondPlayer, player);
+                            }
+                            if (choseTypeRequests.containsKey(player) && choseTypeRequests.get(player) == secondPlayer) {
+                                String randomList = RandomApi.randomElementList(stringList);
+                                choseTypeRequests.remove(player);
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() +
+                                        "&cZa długo myślisz nad wyborem dlatego system wybrał za Ciebie! Wybrano: &e" + randomList);
+
+                                choseTypeGame.put(player, randomList);
+                                sendChoseTypeGame(player, secondPlayer);
+                            }
+                        }, 60 * 20L);
                     }
                 }
             }).runTaskTimer(Main.getPlugin(), 0, 20);
