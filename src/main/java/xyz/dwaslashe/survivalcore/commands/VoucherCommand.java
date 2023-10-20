@@ -30,7 +30,7 @@ public class VoucherCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        if (args.length >= 2) {
+            if (args.length >= 2) {
             Player secondPlayer = Bukkit.getServer().getPlayer(args[0]);
             if (secondPlayer != null) {
                 if (Api.isInt(args[1])) {

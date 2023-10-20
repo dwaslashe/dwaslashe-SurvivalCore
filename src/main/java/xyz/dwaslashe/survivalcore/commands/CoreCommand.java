@@ -39,6 +39,8 @@ public class CoreCommand extends Command {
             Main.pluginCommands.load();
             Main.pluginRank.load();
             Main.pluginVouchers.load();
+            Main.pluginVapes.load();
+            Main.pluginEvents.load();
         } else if (args[0].equalsIgnoreCase("blockrecipes")) {
             if (args.length >= 2 && Api.isBoolean(args[1])) {
                 Main.pluginConfig.getRecipes().setBlockMaterials(Boolean.parseBoolean(args[1]));

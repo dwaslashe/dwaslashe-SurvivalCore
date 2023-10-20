@@ -51,33 +51,34 @@ public class RockPaperScissorsCommand extends Command {
                         Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz żadnych oczekujących zaproszeń do gry!");
                     return;
                 }
+                if (args.length >= 2) {
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if (target != null && target != player) {
+                        if (Api.isInt(args[1])) {
+                            if (Integer.valueOf(args[1]) <= 50000) {
+                                if (1000 <= Integer.valueOf(args[1])) {
+                                    UserManager.getInstance().getUser(player).ifPresent(user -> {
+                                        UserManager.getInstance().getUser(target).ifPresent(targetUser -> {
+                                            double balanceUser = user.balance();
+                                            double balanceTargetUser = targetUser.balance();
 
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target != null && target != player) {
-                    if (Api.isInt(args[1])) {
-                        if (Integer.valueOf(args[1]) <= 50000) {
-                            if (1000 <= Integer.valueOf(args[1])) {
-                                UserManager.getInstance().getUser(player).ifPresent(user -> {
-                                    UserManager.getInstance().getUser(target).ifPresent(targetUser -> {
-                                        double balanceUser = user.balance();
-                                        double balanceTargetUser = targetUser.balance();
-
-                                        if (balanceUser >= Integer.valueOf(args[1])) {
-                                            if (balanceTargetUser >= Integer.valueOf(args[1])) {
-                                                if (!hasSentGameRequest(player, target)) {
-                                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wysłano zaproszenie do gry dla &e" + target.getName() + "&a, ma &#ffd56c60 sekund &#ffc942⌚ &aaby potwierdzić zaproszenie!");
-                                                    sendGameRequest(player, target, Integer.valueOf(args[1]));
-                                                }
+                                            if (balanceUser >= Integer.valueOf(args[1])) {
+                                                if (balanceTargetUser >= Integer.valueOf(args[1])) {
+                                                    if (!hasSentGameRequest(player, target)) {
+                                                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wysłano zaproszenie do gry dla &e" + target.getName() + "&a, ma &#ffd56c60 sekund &#ffc942⌚ &aaby potwierdzić zaproszenie!");
+                                                        sendGameRequest(player, target, Integer.valueOf(args[1]));
+                                                    }
+                                                } else
+                                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cGracz zapraszany do pojedynku nie ma tyle pieniędzy na taki zakład!");
                                             } else
-                                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cGracz zapraszany do pojedynku nie ma tyle pieniędzy na taki zakład!");
-                                        } else
-                                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniędzy aby zrobić taki zakład!");
+                                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniędzy aby zrobić taki zakład!");
+                                        });
                                     });
-                                });
+                                } else wrongUsage();
                             } else wrongUsage();
                         } else wrongUsage();
-                    } else wrongUsage();
-                } else offlinePlayer();
+                    } else offlinePlayer();
+                } else wrongUsage();
             } else wrongUsage();
 
         } else Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cKomenda została wyłączona!");
@@ -86,7 +87,7 @@ public class RockPaperScissorsCommand extends Command {
     public static void openGui(int guiID, Player player, Player secondPlayer, int betAmount) {
         //0
         if (guiID == 0) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Zostało czasu: ", 3);
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "Masz na to 60 sekund! ", 3);
 
             ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
@@ -119,18 +120,21 @@ public class RockPaperScissorsCommand extends Command {
                     choseTypeGame.put(player, "ROCK");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &ekamień!");
                     sendChoseTypeGame(player, secondPlayer);
+                    choseTypeRequests.remove(secondPlayer, player);
                     choseTypeRequests.remove(player, secondPlayer);
                 } else if (e.getSlot() == 13) {
                     player.closeInventory();
                     choseTypeGame.put(player, "PAPER");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &epapier!");
                     sendChoseTypeGame(player, secondPlayer);
+                    choseTypeRequests.remove(secondPlayer, player);
                     choseTypeRequests.remove(player, secondPlayer);
                 } else if (e.getSlot() == 15) {
                     player.closeInventory();
                     choseTypeGame.put(player, "SCISSORS");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &enożyczki!");
                     sendChoseTypeGame(player, secondPlayer);
+                    choseTypeRequests.remove(secondPlayer, player);
                     choseTypeRequests.remove(player, secondPlayer);
                 }
             });
@@ -159,13 +163,13 @@ public class RockPaperScissorsCommand extends Command {
 
             ItemStack glass_lime = inventoryHelper.prepareItemStack(Material.LIME_STAINED_GLASS_PANE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName("&#53f51dWYGRANY");
+                    itemMeta.setDisplayName(Api.fixColor("&#53f51dWYGRANY"));
                 });
             });
 
             ItemStack glass_red = inventoryHelper.prepareItemStack(Material.RED_STAINED_GLASS_PANE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName("&#f51d11PRZEGRANY");
+                    itemMeta.setDisplayName(Api.fixColor("&#f51d11PRZEGRANY"));
                 });
             });
 
@@ -219,7 +223,7 @@ public class RockPaperScissorsCommand extends Command {
 
             inventoryHelper.click(e -> {
                 e.setCancelled(true);
-                if (e.getSlot() == 15) {
+                if (e.getSlot() == 40) {
                     player.closeInventory();
                 }
             });
@@ -269,13 +273,13 @@ public class RockPaperScissorsCommand extends Command {
 
             ItemStack glass_lime = inventoryHelper.prepareItemStack(Material.LIME_STAINED_GLASS_PANE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName("&#53f51dWYGRANY");
+                    itemMeta.setDisplayName(Api.fixColor("&#53f51dWYGRANY"));
                 });
             });
 
             ItemStack glass_red = inventoryHelper.prepareItemStack(Material.RED_STAINED_GLASS_PANE, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName("&#f51d11PRZEGRANY");
+                    itemMeta.setDisplayName(Api.fixColor("&#f51d11PRZEGRANY"));
                 });
             });
 
@@ -329,7 +333,7 @@ public class RockPaperScissorsCommand extends Command {
 
             inventoryHelper.click(e -> {
                 e.setCancelled(true);
-                if (e.getSlot() == 15) {
+                if (e.getSlot() == 40) {
                     player.closeInventory();
                 }
             });
@@ -471,7 +475,8 @@ public class RockPaperScissorsCommand extends Command {
                         Bukkit.getScheduler().runTaskLater(plugin, () -> {
                             if (choseTypeRequests.containsKey(secondPlayer) && choseTypeRequests.get(secondPlayer) == player) {
                                 String randomList = RandomApi.randomElementList(stringList);
-                                choseTypeRequests.remove(secondPlayer);
+                                choseTypeRequests.remove(secondPlayer); 
+                                secondPlayer.closeInventory();
                                 Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() +
                                         "&cZa długo myślisz nad wyborem dlatego system wybrał za Ciebie! Wybrano: &e" + randomList);
 
@@ -481,6 +486,7 @@ public class RockPaperScissorsCommand extends Command {
                             if (choseTypeRequests.containsKey(player) && choseTypeRequests.get(player) == secondPlayer) {
                                 String randomList = RandomApi.randomElementList(stringList);
                                 choseTypeRequests.remove(player);
+                                player.closeInventory();
                                 Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() +
                                         "&cZa długo myślisz nad wyborem dlatego system wybrał za Ciebie! Wybrano: &e" + randomList);
 

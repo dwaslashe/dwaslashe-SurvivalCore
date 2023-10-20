@@ -1,0 +1,177 @@
+package xyz.dwaslashe.survivalcore.commands;
+
+import net.brcdev.shopgui.ShopGuiPlusApi;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import xyz.dwaslashe.survivalcore.Main;
+import xyz.dwaslashe.survivalcore.commands.managers.Command;
+import xyz.dwaslashe.survivalcore.utils.Api;
+import xyz.dwaslashe.survivalcore.utils.RandomApi;
+
+import java.util.*;
+
+public class ZielarzCommand extends Command {
+    public ZielarzCommand() {
+        super("zielarz", "/zielarz", "");
+        setPermission("core.command.zielarz");
+        setOnlyPlayer(true);
+    }
+
+    private Map<UUID, CombinationTask> tasks = new HashMap<>();
+
+    @Override
+    public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
+        return null;
+    }
+
+    @Override
+    public void commandExecute(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
+        UUID playerUUID = player.getUniqueId();
+        List<String> randomCombinationNames = Arrays.asList("pierwsza", "druga", "trzecia", "czwarta", "piata");
+        String combinationName = RandomApi.randomElementList(randomCombinationNames);
+        Location locationNpc = new Location(Bukkit.getWorld("spawn"), -1874, 97, 962);
+
+        if (Api.isNearby(player.getLocation(), locationNpc, 5)) {
+            if (!tasks.containsKey(playerUUID)) {
+                tasks.put(playerUUID, new CombinationTask(combinationName, playerUUID));
+                CombinationTask task = tasks.get(playerUUID);
+                player.sendTitle(Api.fixColor("#6df03a&lNOWE ZADANIE"), Api.fixColor("&8>> &aRozpoczęto nowe zadanie! &8<<"));
+                Api.sendMessage(player, "&7&oWidze, że potrzebujesz kupić różne ciekawe sadzonki ale potrzebuje pewnych przedmiotów abyś mógł je zakupić ponieważ chce mieć ubezpieczenie ze względu na ryzyko.");
+                Api.sendMessage(player, "&#f74c39Wymagane przedmioty:");
+                for (Map.Entry<Material, Integer> entry : task.getRequiredItems().entrySet()) {
+                    Api.sendMessage(player, "#f0c86c- " + entry.getValue() + "x " + entry.getKey().name());
+                }
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aRozpocząłeś nową kombinację, masz &#ffd56c30 minut &#ffc942⌚ &ana zebranie itemów inaczej zmieni Ci się kombinacja!");
+            } else {
+                CombinationTask task = tasks.get(playerUUID);
+
+                if (task.getCombinationName().equals(combinationName)) {
+                    if (task.checkCombination(player.getInventory())) {
+                        task.removeItems(player.getInventory());
+                        tasks.remove(playerUUID);
+                        player.playSound(player.getLocation(), Sound.ENTITY_SNIFFER_HAPPY, 1, 1);
+                        Api.sendMessage(player, "&7&oO właśnie takich przedmiotów potrzebowałem bardzo Ci dziękuje, teraz możesz kupić jakie chcesz sadzonki. Pamiętaj, że nie zawsze tutaj jestem i zmieniam często miejsca ze względu na ryzyko.");
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "shop " + player.getName() + " apteka");
+                    } else {
+                        player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_ANGRY, 1, 1);
+                        Api.sendMessage(player, "&7&oPogrywasz ze mną? To nie są przedmioty jakie chciałem, następnym razem nie przychodź bez tych przedmiotów. Przypominam tylko, że pozostało Ci &#ffd56c" + task.getTimeLeft() + " minut &#ffc942⌚");
+                        Api.sendMessage(player, "&#f74c39Wymagane przedmioty:");
+                        for (Map.Entry<Material, Integer> entry : task.getRequiredItems().entrySet()) {
+                            Api.sendMessage(player, "#f0c86c- " + entry.getValue() + "x " + entry.getKey().name());
+                        }
+                    }
+                } else {
+                    player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_ANGRY, 1, 1);
+                    Api.sendMessage(player, "&7&oPogrywasz ze mną? To nie są przedmioty jakie chciałem, następnym razem nie przychodź bez tych przedmiotów. Przypominam tylko, że pozostało Ci &#ffd56c" + task.getTimeLeft() + " minut &#ffc942⌚");
+                    Api.sendMessage(player, "&#f74c39Wymagane przedmioty:");
+                    for (Map.Entry<Material, Integer> entry : task.getRequiredItems().entrySet()) {
+                        Api.sendMessage(player, "#f0c86c- " + entry.getValue() + "x " + entry.getKey().name());
+                    }
+                }
+            }
+        }
+    }
+
+    private class CombinationTask {
+        private final String combinationName;
+        private final Map<Material, Integer> requiredItems = new HashMap<>();
+        private final UUID playerUUID;
+        private final long startTime;
+
+        public CombinationTask(String combinationName, UUID playerUUID) {
+            this.combinationName = combinationName;
+            this.playerUUID = playerUUID;
+            if (combinationName.equals("pierwsza")) {
+                requiredItems.put(Material.OAK_PLANKS, 32);
+                requiredItems.put(Material.COBBLESTONE, 128);
+                requiredItems.put(Material.BREAD, 4);
+                requiredItems.put(Material.IRON_INGOT, 16);
+                requiredItems.put(Material.COPPER_INGOT, 12);
+                requiredItems.put(Material.COAL, 64);
+                requiredItems.put(Material.CHARCOAL, 64);
+            } else if (combinationName.equals("druga")) {
+                requiredItems.put(Material.DIAMOND, 1);
+                requiredItems.put(Material.EMERALD, 2);
+                requiredItems.put(Material.GOLD_INGOT, 6);
+                requiredItems.put(Material.IRON_INGOT, 12);
+                requiredItems.put(Material.COAL, 64);
+                requiredItems.put(Material.CARROT, 24);
+            } else if (combinationName.equals("trzecia")) {
+                requiredItems.put(Material.PAPER, 16);
+                requiredItems.put(Material.FLINT_AND_STEEL, 1);
+                requiredItems.put(Material.AXOLOTL_BUCKET, 1);
+                requiredItems.put(Material.CAKE, 1);
+                requiredItems.put(Material.COOKIE, 16);
+            } else if (combinationName.equals("czwarta")) {
+                requiredItems.put(Material.ENCHANTING_TABLE, 1);
+                requiredItems.put(Material.ENDER_EYE, 16);
+                requiredItems.put(Material.TNT, 8);
+                requiredItems.put(Material.SPYGLASS, 1);
+                requiredItems.put(Material.BRUSH, 1);
+                requiredItems.put(Material.PUFFERFISH_BUCKET, 1);
+            } else if (combinationName.equals("piata")) {
+                requiredItems.put(Material.SLIME_BALL, 16);
+                requiredItems.put(Material.SADDLE, 1);
+                requiredItems.put(Material.POWDER_SNOW_BUCKET, 1);
+                requiredItems.put(Material.TROPICAL_FISH_BUCKET, 1);
+                requiredItems.put(Material.TOTEM_OF_UNDYING, 1);
+                requiredItems.put(Material.BRUSH, 1);
+            }
+
+            startTime = System.currentTimeMillis();
+
+            startTimer();
+        }
+
+        public String getCombinationName() {
+            return combinationName;
+        }
+
+        public Map<Material, Integer> getRequiredItems() {
+            return requiredItems;
+        }
+
+        public boolean checkCombination(org.bukkit.inventory.PlayerInventory inventory) {
+            for (Map.Entry<Material, Integer> entry : requiredItems.entrySet()) {
+                if (inventory.containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) {
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public void removeItems(org.bukkit.inventory.PlayerInventory inventory) {
+            for (Map.Entry<Material, Integer> entry : requiredItems.entrySet()) {
+                ItemStack item = new ItemStack(entry.getKey(), entry.getValue());
+                inventory.removeItem(item);
+            }
+        }
+
+        public int getTimeLeft() {
+            long currentTime = System.currentTimeMillis();
+            long elapsedMinutes = (currentTime - startTime) / 60000;
+            return Math.max(30 - (int) elapsedMinutes, 0);
+        }
+
+        private void startTimer() {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!tasks.containsKey(playerUUID)) {
+                        return;
+                    }
+                    tasks.remove(playerUUID);
+                }
+            }.runTaskLater(Main.getPlugin(), 30 * 60 * 20);
+        }
+    }
+}

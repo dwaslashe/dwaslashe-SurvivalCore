@@ -20,6 +20,7 @@ import java.util.List;
 public class MagnetCommand extends Command implements Listener {
     public MagnetCommand() {
         super("magnet", "/magnet <crafting, give> <gracz>", "", "magnez");
+        setPermission("core.command.magnet");
     }
 
     @Override
@@ -31,29 +32,27 @@ public class MagnetCommand extends Command implements Listener {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-
+        Player player = (Player) sender;
         if (args.length == 0) {
             Api.sendMessage(sender, " &8[ &d&lMAGNEZ - OPIS &8]");
             Api.sendMessage(sender, "&5* &d/magnez crafting &8- &fpokazuje crafting magnezu");
             Api.sendMessage(sender, "");
             Api.sendMessage(sender, "&5* &fMając magnez w ekwipunku możesz rzeczy podnosić od razu do ekwipunku!");
         } else if (args[0].equalsIgnoreCase("crafting")) {
-            Player p = (Player) sender;
-            openGui(0, p);
+            openGui(0, player);
         } else if (args[0].equalsIgnoreCase("give")) {
-            Player p = (Player) sender;
-            if (!p.hasPermission("core.command.magnet.give")) {
-                p.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.magnet.give&8) &8<<"));
+            if (!player.hasPermission("core.command.magnet.give")) {
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.magnet.give&8) &8<<"));
                 return;
             }
             if (args.length == 2) {
-                Player p2 = Bukkit.getPlayer(args[1]);
-                if (p2 == null) {
+                Player secondPlayer = Bukkit.getPlayer(args[1]);
+                if (secondPlayer == null) {
                     offlinePlayer();
                     return;
                 }
-                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś graczu &e" + p2.getName() + " &dMagnez");
-                Api.giveOrDrop(p2, OthersListener.magnet);
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś graczu &e" + secondPlayer.getName() + " &dMagnez");
+                Api.giveOrDrop(secondPlayer, OthersListener.magnet);
             }
         }
     }

@@ -1,10 +1,18 @@
 package xyz.dwaslashe.survivalcore;
 
+import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
 import net.saidora.api.events.EventBuilder;
+import net.saidora.api.events.list.PlayerInjectExtensionEvent;
 import net.saidora.api.events.list.TaskEvent;
+import net.saidora.api.extension.PlayerExtension;
 import net.saidora.economy.manager.UserManager;
 import org.bukkit.*;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.FurnaceRecipe;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import pl.minecodes.plots.api.plot.PlotServiceApi;
 import xyz.dwaslashe.survivalcore.configs.*;
@@ -60,6 +68,10 @@ public class Main extends JavaPlugin {
 
     public static PluginVouchers pluginVouchers;
 
+    public static PluginVapes pluginVapes;
+
+    public static PluginEvents pluginEvents;
+
     //Others
     private final ItemCache itemCache = new ItemCache();
 
@@ -79,12 +91,25 @@ public class Main extends JavaPlugin {
 
     private PictureApi pictureApi;
 
+    public Optional<Case> getCase(String name){
+        return pluginEvents.getListCases().caseList.stream().filter(aCase -> aCase.getId().equals(name)).findFirst();
+    }
     //Enable plugin
     @SneakyThrows
     @Override
     public void onEnable() {
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         this.setupPlotService();
+
+        new EventBuilder<>(PlayerInjectExtensionEvent.class, event -> {
+            PlayerExtension extension = event.getExtension();
+
+            BossBar bossBar =  Bukkit.createBossBar("", BarColor.WHITE, BarStyle.SOLID);
+            extension.addPersistentDataObject("layer1", bossBar);
+
+            bossBar = Bukkit.createBossBar("", BarColor.WHITE, BarStyle.SOLID);
+            extension.addPersistentDataObject("layer2", bossBar);
+        });
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             placeholder = true;
@@ -118,11 +143,28 @@ public class Main extends JavaPlugin {
             it.load(true);
         });
 
+        pluginVapes = ConfigManager.create(PluginVapes.class, it -> {
+            it.withConfigurer(new YamlBukkitConfigurer(), new CustomSerdesPack());
+            it.withBindFile(new File(this.getDataFolder(), "vapes.yml"));
+            it.saveDefaults();
+            it.load(true);
+        });
+
+        pluginEvents = ConfigManager.create(PluginEvents.class, it -> {
+            it.withConfigurer(new YamlBukkitConfigurer(), new CustomSerdesPack(), new SerdesBukkit());
+            it.withBindFile(new File(this.getDataFolder(), "events.yml"));
+            it.saveDefaults();
+            it.load(true);
+        });
         //Furnace Recipe
 
-        //FurnaceRecipe furnaceRecipe = new FurnaceRecipe(NamespacedKey.minecraft("wywrotkamc_driedcocaineleaf"), OthersListener.driedCocaineLeaf, new RecipeChoice.ExactChoice(OthersListener.cocaineLeaf), 5F, 60);
-        //Bukkit.addRecipe(furnaceRecipe);
+        //new RecipeChoice.ExactChoice(OthersListener.driedChestnut)
+        FurnaceRecipe furnaceRecipe = new FurnaceRecipe(NamespacedKey.minecraft("wywrotkamc_chestnut"), OthersListener.chestnut, Material.DARK_OAK_BOAT, 5F, 60);
+        Bukkit.addRecipe(furnaceRecipe);
 
+        if (pluginConfig.getRecipes().isChestnutSoup()) {
+            Bukkit.addRecipe(OthersListener.getRecipeChestnutSoup());
+        }
         if (pluginConfig.getRecipes().isMagnet()) {
             Bukkit.addRecipe(OthersListener.getRecipeMagnet());
         }
@@ -136,6 +178,8 @@ public class Main extends JavaPlugin {
         pluginCommands.load();
         pluginRank.load();
         pluginVouchers.load();
+        pluginVapes.load();
+        pluginEvents.load();
 
         pictureApi = new PictureApi(this);
 
@@ -326,6 +370,10 @@ public class Main extends JavaPlugin {
 
     public void loadCommands() {
         CommandManager.register(new TestCommand(), true);
+        CommandManager.register(new EmergencyNumberCommand(), pluginConfig.getCommands().isEmergencyNumber());
+        CommandManager.register(new ZielarzCommand(), pluginConfig.getCommands().isZielarz());
+        CommandManager.register(new EventCommand(), pluginConfig.getCommands().isEvent());
+        CommandManager.register(new VapeCommand(), pluginConfig.getCommands().isVape());
         CommandManager.register(new RockPaperScissorsCommand(), pluginConfig.getCommands().isRockPaperScissors());
         CommandManager.register(new VoucherCommand(), pluginConfig.getCommands().isVoucher());
         CommandManager.register(new AnvilCommand(), pluginConfig.getCommands().isAnvil());
@@ -448,6 +496,7 @@ public class Main extends JavaPlugin {
     public void loadEvents() {
         registerEvent(new DrugListener(), true);
 
+        registerEvent(new VapeCommand(), pluginConfig.getCommands().isVape());
         registerEvent(new VoucherListener(), pluginConfig.getCommands().isVoucher());
         registerEvent(new BoosterCommand(), pluginConfig.getCommands().isBooster());
         registerEvent(new DragonLevelListener(), pluginConfig.getEvents().isDragonLevel());
@@ -570,6 +619,64 @@ public class Main extends JavaPlugin {
         item = new CustomItemImpl(7, itemHelper);
         item.whenInSecondHand().add(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 3));
         item.whenInSecondHand().add(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 1));
+        itemCache.register(item);
+
+        //NEW ITEMS
+
+        //Pirates
+        itemHelper = new ItemHelper(Material.PLAYER_HEAD);
+        itemHelper.setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTYzNDNmYmQ4YWZlNzcxN2Y0MmM4MTgzYTNlNGJmYjA1ZjkzMzYyZWE3ODkyYjUwYWY0NDQ2NTQwZjQ0MiJ9fX0=");
+        itemHelper.setDisplayName(Api.fixColor("&#fa540cPirat"));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Gdy masz ją na sobie dostajesz &#fa7b14oddychanie pod wodą&#E7E7E7 i", " &#E7E7E7dostajesz &#fa1c145❤ &#E7E7E7serc!")));
+        itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
+
+        item = new CustomItemImpl(8, itemHelper);
+        item.whenWear().add(new PotionEffect(PotionEffectType.WATER_BREATHING, 60, 2));
+        itemHelper.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH,10, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS,2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemCache.register(item);
+
+        //Angel
+        itemHelper = new ItemHelper(Material.PLAYER_HEAD);
+        itemHelper.setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWVjY2RhNzBiZWFkOWY2N2IzOWRjZThiMDQwYWQwZjA4ZWZjMjMwNWMxZjY4NDYxMTY0N2EwMThhNjY0NTJjMiJ9fX0=");
+        itemHelper.setDisplayName(Api.fixColor("&#fad014Anioł"));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Gdy masz ją na sobie jesteś w stanie", " &#E7E7E7latać &#14a9fa2x szybciej&#E7E7E7 i dostajesz", " &#E7E7E7efekt &#fa7b14szybkiego kopania III")));
+        itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
+
+        item = new CustomItemImpl(9, itemHelper);
+        item.whenWear().add(new PotionEffect(PotionEffectType.FAST_DIGGING, 60, 2));
+        itemHelper.addAttributeModifier(Attribute.GENERIC_FLYING_SPEED,2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS,2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemCache.register(item);
+
+        //Chainsaw man
+        itemHelper = new ItemHelper(Material.PLAYER_HEAD);
+        itemHelper.setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDZkODJhM2NiM2M1YmZhODVhY2M3MzA3OGE2ZmIwY2Q4M2UxY2ViN2NmYTU4NGI5ZDFlMjllMzQ0ZTU5NDY1MyJ9fX0=");
+        itemHelper.setDisplayName(Api.fixColor("&#fa2f14Głowa Piły Łancuchowej"));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Gdy masz ją na sobie jesteś w stanie", " &#E7E7E7zadawać &#14a9fa1.5x szybciej&#E7E7E7 obrażenia i", " &#E7E7E7dostajesz &#fa1c142❤ &#E7E7E7serca!")));
+        itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
+
+        item = new CustomItemImpl(10, itemHelper);
+        itemHelper.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH,4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED,0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS,2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemCache.register(item);
+
+        //Szabla
+        itemHelper = new ItemHelper(Material.GOLDEN_SWORD);
+        itemHelper.setDisplayName(Api.fixColor("&#f5a742Szabla"));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Jesteś w stanie zadawać &#14a9fa1.5x szybciej", " &#E7E7E7i &#14a9fa1.5x więcej&#E7E7E7 obrażenia!")));
+        itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
+
+        item = new CustomItemImpl(11, itemHelper);
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE,0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED,0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
         itemCache.register(item);
     }
 }

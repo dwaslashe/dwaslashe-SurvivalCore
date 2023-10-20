@@ -26,14 +26,14 @@ public class VoucherItemSerializer implements ObjectSerializer<VoucherItem> {
 
     @Override
     public VoucherItem deserialize(DeserializationData data, GenericsDeclaration generics) {
-        VoucherItem itemShop = new VoucherItem();
-        itemShop.setItem_name(data.get("icon.name", String.class));
-        itemShop.setItem_material(data.get("icon.material", Material.class));
-        itemShop.setItem_lore(data.getAsList("icon.lore", String.class));
-        itemShop.setItem_head_texture(data.get("icon.head.texture", String.class));
-        itemShop.setItem_head_name(data.get("icon.head.name", String.class));
-        itemShop.setCommandLine(data.getAsList("command", String.class));
-        itemShop.setOwner(data.get("owner", Boolean.class));
-        return itemShop;
+        VoucherItem voucherItem = new VoucherItem();
+        voucherItem.setItem_name(data.get("icon.name", String.class));
+        voucherItem.setItem_material(data.get("icon.material", Material.class));
+        voucherItem.setItem_lore(data.getAsList("icon.lore", String.class));
+        voucherItem.setItem_head_texture(data.get("icon.head.texture", String.class));
+        voucherItem.setItem_head_name(data.get("icon.head.name", String.class));
+        voucherItem.setCommandLine(data.getAsList("command", String.class));
+        voucherItem.setOwner(data.get("owner", Boolean.class));
+        return voucherItem;
     }
 }

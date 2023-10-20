@@ -94,7 +94,7 @@ public class BoosterCommand extends Command implements Listener {
         booleanHashMap.put(type, multiplication);
         long[] taskTime = {0};
         long[] barTime = {time};
-
+        Api.sendBroadcast("\n        &#3a92f0&lGLOBALNE ULEPSZENIE\n \n&8>> &#bcd8ebGracz &#FFC42E" + player.getName() + " &#bcd8ebaktywował ulepszenie &#75e810&l" + type + " &#a6fc5b" + multiplication + "x\n&8>> &#bcd8ebNa czas &#ffd56c" + TimerApi.getDurationBreakdownShort(barTime[0]) + " &#ffc942⌚ \n ");
         BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &#bcd8ebUlepszenie &#75e810&l" + type + " &#a6fc5b" + multiplication + "x &#bcd8ebod &#e8af10" + player.getName() + " &#bcd8ebbędzie trwać jeszcze &#ffd56c" + TimerApi.getDurationBreakdownShort(barTime[0]) + " &#ffc942⌚ &8<<"), BarColor.BLUE, BarStyle.SEGMENTED_10, new BarFlag[0]);
 
         new BukkitRunnable() {
@@ -111,10 +111,11 @@ public class BoosterCommand extends Command implements Listener {
                     for (Player all : Bukkit.getOnlinePlayers()) {
                         bar.addPlayer(all);
                         if (type.equals("SPEED")) {
-                            float speed = (float) (0.20000000298023224D * multiplication);
-                            if (multiplication > 5) {
-                                all.setWalkSpeed((float) (0.20000000298023224D * 5));
-                            } else all.setWalkSpeed(speed);
+                            //float speed = (float) (0.20000000298023224D * multiplication);
+                            //if (multiplication > 5) {
+                            //    all.setWalkSpeed((float) (0.20000000298023224D * 5));
+                            //} else all.setWalkSpeed(speed);
+                            all.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, (multiplication - 1)));
                         } else if (type.equals("HASTE")) {
                             all.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 60, (multiplication - 1)));
                         }

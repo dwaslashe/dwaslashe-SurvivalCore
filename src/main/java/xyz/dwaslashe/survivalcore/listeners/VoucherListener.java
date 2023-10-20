@@ -2,6 +2,7 @@ package xyz.dwaslashe.survivalcore.listeners;
 
 import net.saidora.api.helpers.ItemHelper;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -23,52 +24,65 @@ public class VoucherListener implements Listener {
         ItemStack itemInHand = event.getPlayer().getItemInHand();
         Player player = event.getPlayer();
 
-        List<VoucherItem> voucherItemsList = Main.pluginVouchers.getItems().getVoucherItems().getItems();
+        if (event.getAction().isRightClick()) {
 
-        if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-            for (VoucherItem voucherItem : voucherItemsList) {
+            if (itemInHand != null && itemInHand.getType() != Material.AIR && itemInHand.getAmount() > 0) {
 
-                String itemInHandDisplayName = itemInHand.getItemMeta().getDisplayName();
-                String voucherItemName = voucherItem.getItem_name().replace("%owner%", player.getName());
+                List<VoucherItem> voucherItemsList = Main.pluginVouchers.getItems().getVoucherItems().getItems();
 
-                itemInHandDisplayName = itemInHandDisplayName.replace("§x", "&#");
-                itemInHandDisplayName = itemInHandDisplayName.replaceAll("§", "");
+                for (VoucherItem voucherItem : voucherItemsList) {
 
-                if (itemInHand.getItemMeta().getLore() == null) return;
+                    if (itemInHand.getItemMeta().getLore() != null && itemInHand.getItemMeta().getDisplayName() != null) {
+                        String itemInHandDisplayName = itemInHand.getItemMeta().getDisplayName();
+                        String voucherItemName = voucherItem.getItem_name().replace("%owner%", player.getName());
 
-                List<String> itemInHandLore = itemInHand.getItemMeta().getLore();
-                List<String> voucherLore = voucherItem.getItem_lore();
+                        itemInHandDisplayName = itemInHandDisplayName.replace("§x", "&#");
+                        itemInHandDisplayName = itemInHandDisplayName.replaceAll("§", "");
 
-                itemInHandLore = itemInHandLore.stream()
-                        .map(element -> element.replace("§x", "&#").replaceAll("§", ""))
-                        .collect(Collectors.toList());
+                        List<String> itemInHandLore = itemInHand.getItemMeta().getLore();
+                        List<String> voucherLore = voucherItem.getItem_lore();
 
-                if (itemInHand.getType().equals(voucherItem.getItem_material()) && itemInHandDisplayName.equals(voucherItemName) && itemInHandLore.equals(voucherLore)) {
+                        itemInHandLore = itemInHandLore.stream()
+                                .map(element -> element.replace("§x", "&#").replaceAll("§", ""))
+                                .collect(Collectors.toList());
 
-                        ItemHelper itemHelper = ItemHelper.edit(itemInHand);
-                        itemHelper.editNbtTagCompound(nbtItem -> {
-                            if (voucherItem.getOwner()) {
-                                if (nbtItem.hasKey("voucher-owner")) {
-                                    if (nbtItem.getString("voucher-owner").equals(player.getName())) {
-                                        player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
-                                        event.setUseInteractedBlock(Event.Result.DENY);
-                                        event.setCancelled(true);
-                                        for (String command : voucherItem.getCommandLine()) {
-                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%owner%", player.getName()));
+                        if (itemInHand.getType().equals(voucherItem.getItem_material()) && itemInHandDisplayName.equals(voucherItemName) && itemInHandLore.equals(voucherLore)) {
+
+                            ItemHelper itemHelper = ItemHelper.edit(itemInHand);
+                            itemHelper.editNbtTagCompound(nbtItem -> {
+                                if (nbtItem.hasNBTData()) {
+                                    if (voucherItem.getOwner()) {
+                                        if (nbtItem.hasKey("voucher-owner")) {
+                                            if (nbtItem.getString("voucher-owner").equals(player.getName())) {
+                                                event.setCancelled(true);
+                                                event.setUseInteractedBlock(Event.Result.DENY);
+                                                event.setUseItemInHand(Event.Result.DENY);
+                                                player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+                                                event.setUseInteractedBlock(Event.Result.DENY);
+                                                event.setCancelled(true);
+                                                for (String command : voucherItem.getCommandLine()) {
+                                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%owner%", player.getName()));
+                                                }
+                                            }
+                                        } else
+                                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś właścicielem tego vouchery aby go odebrać!");
+                                    } else {
+                                        if (nbtItem.hasKey("voucher")) {
+                                            event.setCancelled(true);
+                                            event.setUseInteractedBlock(Event.Result.DENY);
+                                            event.setUseItemInHand(Event.Result.DENY);
+                                            player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+                                            event.setUseInteractedBlock(Event.Result.DENY);
+                                            event.setCancelled(true);
+                                            for (String command : voucherItem.getCommandLine()) {
+                                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%owner%", player.getName()));
+                                            }
                                         }
                                     }
-                                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś właścicielem tego vouchery aby go odebrać!");
-                            } else {
-                                if (nbtItem.hasKey("voucher")) {
-                                    player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
-                                    event.setUseInteractedBlock(Event.Result.DENY);
-                                    event.setCancelled(true);
-                                    for (String command : voucherItem.getCommandLine()) {
-                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%owner%", player.getName()));
-                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+                    }
                 }
             }
         }

@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -51,9 +52,12 @@ public class Api {
     }
 
     public static void sendMessage(CommandSender sender, String message) {
-        if(sender instanceof Player player){
-            player.sendMessage(fixColor(message));
-        } else sender.sendMessage(fixColor(message));
+        String[] lines = message.split("%newline%");
+        for (String line : lines) {
+            if (sender instanceof Player player) {
+                player.sendMessage(fixColor(line));
+            } else sender.sendMessage(fixColor(line));
+        }
     }
 
     public static void sendMessage(CommandSender sender, Component component) {
@@ -218,9 +222,21 @@ public class Api {
         return false;
     }
 
+    public static boolean isNearby(Location location1, Location secondLocation, double maxDistance) {
+        double distance = location1.distance(secondLocation);
+        return distance <= maxDistance;
+    }
+
     public static boolean isBoolean(String str) {
         str = str.toLowerCase().trim();
         return str.equals("true") || str.equals("false");
     }
 
+    public static List<String> replaceInList(List<String> inputList, String target, String replacement) {
+        for (int i = 0; i < inputList.size(); i++) {
+            String current = inputList.get(i);
+            inputList.set(i, current.replace(target, replacement));
+        }
+        return inputList;
+    }
 }

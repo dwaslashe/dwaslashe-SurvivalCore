@@ -30,32 +30,33 @@ public class InvseeCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Player p = (Player) sender;
+        Player player = (Player) sender;
         if (args.length == 0) {
             wrongUsage();
-        } else if (args.length == 1) {
-            Player p2 = Bukkit.getPlayer(args[0]);
-            if (p2 == null) {
+        } else if (args.length >= 1) {
+            Player secondPlayer = Bukkit.getPlayer(args[0]);
+            if (secondPlayer == null) {
                 offlinePlayer();
                 return;
             }
-            p.openInventory(p2.getInventory());
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aOtworzyłeś ekwipunek gracza &e" + p2.getName());
-            if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("armor")) {
-                    Inventory inv = Bukkit.createInventory(p, 9, "Armor gracza " + p2.getName());
-                    if (p2.getInventory().getHelmet() != null && p2.getInventory().getHelmet().getType() != Material.AIR)
-                        inv.setItem(0, p2.getInventory().getHelmet().clone());
-                    if (p2.getInventory().getChestplate() != null && p2.getInventory().getChestplate().getType() != Material.AIR)
-                        inv.setItem(1, p2.getInventory().getChestplate().clone());
-                    if (p2.getInventory().getLeggings() != null && p2.getInventory().getLeggings().getType() != Material.AIR)
-                        inv.setItem(2, p2.getInventory().getLeggings().clone());
-                    if (p2.getInventory().getBoots() != null && p2.getInventory().getBoots().getType() != Material.AIR)
-                        inv.setItem(3, p2.getInventory().getBoots().clone());
-                    p.openInventory(inv);
-                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aOtworzyłeś armor gracza &e" + p2.getName());
+            player.openInventory(secondPlayer.getInventory());
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aOtworzyłeś ekwipunek gracza &e" + secondPlayer.getName());
+
+            if (args.length >= 2) {
+                if (args[1].equalsIgnoreCase("armor")) {
+                    Inventory inv = Bukkit.createInventory(player, 9, "Armor gracza " + secondPlayer.getName());
+                    if (secondPlayer.getInventory().getHelmet() != null && secondPlayer.getInventory().getHelmet().getType() != Material.AIR)
+                        inv.setItem(0, secondPlayer.getInventory().getHelmet().clone());
+                    if (secondPlayer.getInventory().getChestplate() != null && secondPlayer.getInventory().getChestplate().getType() != Material.AIR)
+                        inv.setItem(1, secondPlayer.getInventory().getChestplate().clone());
+                    if (secondPlayer.getInventory().getLeggings() != null && secondPlayer.getInventory().getLeggings().getType() != Material.AIR)
+                        inv.setItem(2, secondPlayer.getInventory().getLeggings().clone());
+                    if (secondPlayer.getInventory().getBoots() != null && secondPlayer.getInventory().getBoots().getType() != Material.AIR)
+                        inv.setItem(3, secondPlayer.getInventory().getBoots().clone());
+                    player.openInventory(inv);
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aOtworzyłeś armor gracza &e" + secondPlayer.getName());
                 } else wrongUsage();
             }
-        }
+        } else wrongUsage();
     }
 }

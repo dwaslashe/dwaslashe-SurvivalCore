@@ -340,7 +340,7 @@ public class VanishCommand extends Command implements Listener {
         protected void hidePlayer() {
             if (isOnline()){
                 Bukkit.getOnlinePlayers().forEach(player -> {
-                    if(!player.hasPermission("vanish.admin.tools")){
+                    if(!player.hasPermission("core.command.vanish.see")){
                         player.hidePlayer(getPlayer());
                     }
                 });
@@ -350,7 +350,7 @@ public class VanishCommand extends Command implements Listener {
         protected void showPlayer(){
             if (isOnline()){
                 Bukkit.getOnlinePlayers().forEach(player -> {
-                    if(!player.hasPermission("vanish.admin.tools")){
+                    if(!player.hasPermission("core.command.vanish.see")){
                         player.showPlayer(getPlayer());
                     }
                 });

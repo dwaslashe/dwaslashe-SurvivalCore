@@ -2,11 +2,17 @@ package xyz.dwaslashe.survivalcore.listeners;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import eu.decentsoftware.holograms.api.DHAPI;
+import eu.decentsoftware.holograms.api.holograms.Hologram;
 import lombok.Getter;
 import lombok.Setter;
+import me.badbones69.blockparticles.api.ParticleManager;
+import net.saidora.api.helpers.MathHelper;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
@@ -25,12 +31,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.Repairable;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.SpawnEgg;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import pl.minecodes.plots.api.event.entry.PrePlotEntryEvent;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.MarryCache;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.cache.WarpCache;
+import xyz.dwaslashe.survivalcore.commands.EventCommand;
 import xyz.dwaslashe.survivalcore.commands.managers.CommandManager;
 import xyz.dwaslashe.survivalcore.objects.*;
 import xyz.dwaslashe.survivalcore.utils.*;
@@ -52,6 +61,21 @@ public class OthersListener implements Listener {
     protected static final Map<Player, Long> delayHook = Maps.newHashMap();
 
     private static ItemStack enchanted_golden_apple = new ItemApi(Material.ENCHANTED_GOLDEN_APPLE).getItemStack();
+
+    public static ItemStack chestnut = new ItemApi(Material.DARK_OAK_BUTTON)
+            .setName("&#c77818Kasztan")
+            .setLore(Arrays.asList("", " &#E7E7E7Przepal kasztan aby zdobyć ugotowany kasztan!"))
+            .getItemStack();
+
+    public static ItemStack driedChestnut = new ItemApi(Material.BAMBOO_BUTTON)
+            .setName("&#c77818Ugotowany kasztan")
+            .setLore(Arrays.asList("", " &#E7E7E7Połącz ugotowany kasztan z miską aby zrobić zupe kasztanową!"))
+            .getItemStack();
+
+    public static ItemStack chestnutSoup = new ItemApi(Material.MUSHROOM_STEW)
+            .setName("&#d4610fZupa kasztanowa")
+            .setLore(Arrays.asList("", " &#E7E7E7Sprzedaj zupe kasztanową jesieniarze, która ją potrzebuje!", "", " &#FBFD8C&nKliknij prawym, aby zjeść zupe!"))
+            .getItemStack();
 
     public static ItemStack magnet = new ItemApi(Material.LIGHTNING_ROD)
             .setName("&#FF10F0Magnez")
@@ -191,6 +215,16 @@ public class OthersListener implements Listener {
         }
     }
 
+    public static ShapedRecipe getRecipeChestnutSoup() {
+        ItemStack item = chestnutSoup;
+        ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_chestnutsoup"), item);
+        rec.shape(new String[]{"ABC", "CCC", "CCC"});
+        rec.setIngredient('A', driedChestnut);
+        rec.setIngredient('B', Material.BOWL);
+        rec.setIngredient('C', Material.AIR);
+        return rec;
+    }
+
     public static ShapedRecipe getRecipeMagnet() {
         ItemStack item = magnet;
         ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_magnet"), item);
@@ -318,8 +352,17 @@ public class OthersListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
 
+        if (event.isCancelled()) return;
+
+        if (Main.pluginConfig.getRecipes().isChestnutSoup()) {
+            if (event.getBlock().getType() == Material.OAK_LEAVES || event.getBlock().getType() == Material.SPRUCE_LEAVES || event.getBlock().getType() == Material.BIRCH_LEAVES || event.getBlock().getType() == Material.JUNGLE_LEAVES || event.getBlock().getType() == Material.ACACIA_LEAVES || event.getBlock().getType() == Material.DARK_OAK_LEAVES || event.getBlock().getType() == Material.MANGROVE_LEAVES || event.getBlock().getType() == Material.CHERRY_LEAVES || event.getBlock().getType() == Material.AZALEA_LEAVES || event.getBlock().getType() == Material.FLOWERING_AZALEA_LEAVES) {
+                if (RandomApi.getChance(5.0)) {
+                    event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), chestnut);
+                }
+            }
+        }
+
         if (Main.pluginConfig.getEvents().getOpenChatBlockBreak().isEnable()) {
-            if (event.isCancelled()) return;
             User user = UserCache.getInstance().compute(player.getUniqueId());
             if (user.getBlockBreak() != (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() + 2)) {
                 user.addBlockBreak(1);
@@ -331,7 +374,7 @@ public class OthersListener implements Listener {
             if (event.getBlock().getType() == Material.DIAMOND_ORE || event.getBlock().getType() == Material.GOLD_ORE || event.getBlock().getType() == Material.IRON_ORE || event.getBlock().getType() == Material.DEEPSLATE_DIAMOND_ORE || event.getBlock().getType() == Material.DEEPSLATE_GOLD_ORE || event.getBlock().getType() == Material.DEEPSLATE_IRON_ORE || event.getBlock().getType() == Material.ANCIENT_DEBRIS) {
                 for (Player permissionPlayers : Bukkit.getOnlinePlayers()) {
                     if (permissionPlayers.hasPermission("core.xray.read")) {
-                        Api.sendActionBar(permissionPlayers, "&8>> <#ba2e22>&lANTY-XRAY: <#39FF14>Gracz <#FDBD01>" + player.getName() + " <#39FF14>zniszczył rude <#3ec7ed>" + event.getBlock().getType() + " &8<<");
+                        Api.sendActionBar(permissionPlayers, "&8>> <#ba2e22>&lANTY-XRAY: <reset><#39FF14>Gracz <reset><#FDBD01>" + player.getName() + " <reset><#39FF14>zniszczył rude <reset><#3ec7ed>" + event.getBlock().getType() + " <reset>&8<<");
                     }
                 }
             }
@@ -508,6 +551,71 @@ public class OthersListener implements Listener {
         if(entity instanceof Mob && target instanceof Player player){
             Protection protection = Protection.get(player.getUniqueId());
             if(protection != null && protection.getProtection() > System.currentTimeMillis()) event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onOpenSpecifyChest(InventoryOpenEvent event) {
+        if (event.getInventory().getType().equals(InventoryType.CHEST)) {
+            Location location = event.getInventory().getLocation();
+
+            if (location != null) {
+
+                Block block = event.getInventory().getLocation().getBlock();
+                BlockState state = block.getState();
+                if (state instanceof Chest) {
+                    Chest chest = (Chest) state;
+                    if (chest.getBlock().hasMetadata("CaseBlockEvent")) {
+                        block.removeMetadata("CaseBlockEvent", Main.plugin);
+                        Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&aJesteś pierwszy, który otwiera tą skrzynie! Gratuluje =)");
+                        ParticleManager.getInstance().removeParticle("caseBlock");
+                        EventCommand.eventMap.remove("SKRZYNIA");
+                        DHAPI.removeHologram("case");
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBreakMeteor(BlockBreakEvent event) {
+        if (event.getBlock().getType() == Material.MAGMA_BLOCK && event.getBlock().hasMetadata("MeteorBlock")) {
+            Player player = event.getPlayer();
+            event.setCancelled(true);
+
+            int health = event.getBlock().getMetadata("MeteorBlock").get(0).asInt();
+            health--;
+
+
+            if (DHAPI.getHologram("meteor").isEnabled()) {
+                List<String> lines = Arrays.asList("&#8334eb&lEVENT METEORYT", "", "&#a06ee0Pozostałe życie &#f02f22{health}❤".replace("{health}", String.valueOf(health)));
+                int finalHealth = health;
+                lines.stream().map(element -> element.replace("{health}", String.valueOf(finalHealth)));
+
+                Hologram hologram = DHAPI.getHologram("meteor");
+                DHAPI.setHologramLines(hologram, lines);
+                hologram.save();
+            }
+
+            if (health <= 0) {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie znisczyłeś meteoryt!");
+                event.getBlock().setType(Material.AIR);
+                EventCommand.eventMap.remove("METEORYT");
+                ParticleManager.getInstance().removeParticle("meteorBlock");
+                DHAPI.removeHologram("meteor");
+                Location dropLocation = event.getBlock().getLocation().clone().add(0, 1, 0);
+                dropLocation.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
+                for (ItemStack itemStack : Main.pluginEvents.getListItemMeteor().itemStackList) {
+                    dropLocation.getWorld().dropItemNaturally(dropLocation, itemStack).setVelocity(new Vector(
+                            MathHelper.getRandomDouble(-0.2, 0.2),
+                            MathHelper.getRandomDouble(0.1, 0.4),
+                            MathHelper.getRandomDouble(-0.2, 0.2)));
+                }
+            } else {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zadałeś obrażenia metorytowi, pozostałe życie &#f02f22" + health + "❤");
+                event.getBlock().removeMetadata("MeteorBlock", Main.getPlugin());
+                event.getBlock().setMetadata("MeteorBlock", new FixedMetadataValue(Main.getPlugin(), health));
+            }
         }
     }
 }

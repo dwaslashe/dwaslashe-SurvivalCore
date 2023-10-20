@@ -24,13 +24,13 @@ public class AbovenameShopSerializer implements ObjectSerializer<AbovenameShop> 
 
     @Override
     public AbovenameShop deserialize(DeserializationData data, GenericsDeclaration generics) {
-        AbovenameShop itemShop = new AbovenameShop();
-        itemShop.setGui_item_name(data.get("icon.name", String.class));
-        itemShop.setGui_item_lore(data.getAsList("icon.lore", String.class));
-        itemShop.setGui_item_head_texture(data.get("icon.head", String.class));
-        itemShop.setCommandLine(data.getAsList("command", String.class));
-        itemShop.setCost(data.get("cost", double.class));
-        itemShop.setPermission(data.get("permission", String.class));
-        return itemShop;
+        AbovenameShop abovenameShop = new AbovenameShop();
+        abovenameShop.setGui_item_name(data.get("icon.name", String.class));
+        abovenameShop.setGui_item_lore(data.getAsList("icon.lore", String.class));
+        abovenameShop.setGui_item_head_texture(data.get("icon.head", String.class));
+        abovenameShop.setCommandLine(data.getAsList("command", String.class));
+        abovenameShop.setCost(data.get("cost", double.class));
+        abovenameShop.setPermission(data.get("permission", String.class));
+        return abovenameShop;
     }
 }

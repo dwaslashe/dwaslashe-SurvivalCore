@@ -144,6 +144,8 @@ public class PluginConfig extends OkaeriConfig {
     @Getter @Setter
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Recipes extends OkaeriConfig {
+        @Comment("#Chestnut Soup")
+        private boolean chestnutSoup = true;
         @Comment("#Magnet")
         private boolean magnet = true;
         @Comment("#Enchanted Apple")
@@ -160,6 +162,10 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Commands extends OkaeriConfig {
 
+        private boolean emergencyNumber = true;
+        private boolean zielarz = true;
+        private boolean event = true;
+        private boolean vape = true;
         private boolean rockPaperScissors = true;
         private boolean voucher = true;
         private boolean anvil = true;

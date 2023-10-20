@@ -13,7 +13,7 @@ import java.util.*;
 
 public class IgnoreCommand extends Command {
     public IgnoreCommand() {
-        super("ignore", "/ignore <all, nick>", "", "ignoruj", "zablokuj", "przestanignorowac", "odblokuj");
+        super("ignore", "/ignore <all, nick>", "", "ignoruj", "zablokuj", "unignore", "odblokuj");
         setOnlyPlayer(true);
     }
 
@@ -44,6 +44,7 @@ public class IgnoreCommand extends Command {
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie odciszono wszystkich graczy w prywatnych wiadomściach!");
                     userPlayer.setIgnoreAllPlayers(0);
                 }
+                return;
             }
 
             if (secondPlayer == null) {

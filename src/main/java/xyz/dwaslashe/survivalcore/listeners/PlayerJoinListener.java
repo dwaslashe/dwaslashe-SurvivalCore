@@ -54,6 +54,7 @@ public class PlayerJoinListener implements Listener {
         World world = Bukkit.getWorld("world");
         Location loc = LocationApi.getRandomLocation(world);
         user.setHomes("");
+        user.setIgnorePlayers("");
         user.setRates("");
         user.setBlockBreak(0);
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 140, -50));

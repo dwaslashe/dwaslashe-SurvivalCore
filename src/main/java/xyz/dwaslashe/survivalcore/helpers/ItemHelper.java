@@ -1,5 +1,7 @@
 package xyz.dwaslashe.survivalcore.helpers;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -7,8 +9,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import xyz.dwaslashe.survivalcore.utils.Api;
+import xyz.dwaslashe.survivalcore.utils.ItemApi;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -53,6 +58,32 @@ public class ItemHelper extends ItemStack {
         return this;
     }
 
+    public ItemHelper setOwnerURL(String texture) {
+
+        SkullMeta meta = (SkullMeta) getItemMeta();
+
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "");
+        gameProfile.getProperties().put("textures", new Property("textures", texture));
+        try {
+            Field field = meta.getClass().getDeclaredField("profile");
+            field.setAccessible(true);
+            field.set(meta, gameProfile);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        setItemMeta(meta);
+
+        return this;
+    }
+
+    public ItemHelper setOwner(String owner) {
+        SkullMeta meta = (SkullMeta) getItemMeta();
+        meta.setOwner(owner);
+        setItemMeta(meta);
+        return this;
+    }
+
     public void setDisplayName(String title) {
         withMeta(itemMeta -> itemMeta.setDisplayName(Api.fixColor(title)));
     }
@@ -73,5 +104,4 @@ public class ItemHelper extends ItemStack {
             itemMeta.addAttributeModifier(attribute, attributeModifier);
         });
     }
-
 }
