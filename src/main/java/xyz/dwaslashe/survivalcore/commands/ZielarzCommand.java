@@ -58,6 +58,7 @@ public class ZielarzCommand extends Command {
                         tasks.remove(playerUUID);
                         player.playSound(player.getLocation(), Sound.ENTITY_SNIFFER_HAPPY, 1, 1);
                         Api.sendMessage(player, "&7&oO właśnie takich przedmiotów potrzebowałem bardzo Ci dziękuje, teraz możesz kupić jakie chcesz sadzonki. Pamiętaj, że nie zawsze tutaj jestem i zmieniam często miejsca ze względu na ryzyko.");
+                        Api.sendMessage(player, "&7&oPodziele się z tobą ważna informacją bo wydajesz się ogarnięty, między innymi uważaj na grupę FBI w każdej chwili mogą Ci zajrzeć na działke w celu sprawdzeniu czy hodujesz nielegalne rośliny również mam kontakt z osobą, która chętnie od Ciebie kupi narkotyki ale trudno do niego dotrzeć bo często zmienia miejsca i lubi się kryć gdzieś tutaj na wyspie ale dam Ci wskazówke szukaj na obrzeżach wyspy.");
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "shop " + player.getName() + " apteka");
                     } else {
                         player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_ANGRY, 1, 1);
