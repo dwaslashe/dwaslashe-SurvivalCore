@@ -632,7 +632,7 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     private void onPlayerInteract(PlayerInteractEvent event) {
-        int timeCooldownPearl = 5;
+        int timeCooldownPearl = 30;
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getItemInHand();
 
@@ -646,7 +646,7 @@ public class PlayerInteractListener implements Listener {
         if (!player.hasPermission("core.cooldown.enderpearl.use.bypass")) {
             if (Main.pluginConfig.getEvents().isEnderPearlCooldown() && event.getMaterial() == Material.ENDER_PEARL && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
                 if (isPlayerInCooldown(player) && getTimeRemaining(player).intValue() < timeCooldownPearl) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPerły kolejny raz możesz użyć za &e" + getTimeRemaining(player) + "sek");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPerły kolejny raz możesz użyć za &#ffd56c" + getTimeRemaining(player) + "sek &#ffc942⌚");
                     event.setCancelled(true);
                 } else {
                     addPlayerToMap(player, Integer.valueOf(timeCooldownPearl));
