@@ -12,9 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
-import xyz.dwaslashe.survivalcore.configs.PluginConfig;
 import xyz.dwaslashe.survivalcore.enums.ColorEnums;
-import xyz.dwaslashe.survivalcore.helpers.IconHelper;
 import xyz.dwaslashe.survivalcore.objects.User;
 
 import java.io.ByteArrayOutputStream;
@@ -27,7 +25,7 @@ public class Api {
 
     public static String fixColor(String message) {
         RGBUtils rgbUtils = RGBUtils.getInstance();
-        return message == null ? "" : ChatColor.translateAlternateColorCodes('&', rgbUtils.convertToBukkitFormat(IconHelper.transformIcons(message, PluginConfig.IMAGES_CHAT), true))
+        return message == null ? "" : ChatColor.translateAlternateColorCodes('&', rgbUtils.convertToBukkitFormat(message, true))
                 .replace(">>", "»")
                 .replace("<<", "«");
     }
@@ -101,7 +99,7 @@ public class Api {
 
     public static void sendBroadcast(String message) {
         String fixedMessage = fixColor(message);
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(fixedMessage));
+        Bukkit.getOnlinePlayers().forEach(player -> sendMessage(player, fixedMessage));
     }
 
     public static int getPing(Player p) {

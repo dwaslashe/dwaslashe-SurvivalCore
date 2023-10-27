@@ -658,8 +658,8 @@ public class PlayerInteractListener implements Listener {
             ItemHelper itemHelper = ItemHelper.edit(itemInHand);
             DecimalFormat decimalFormat = new DecimalFormat("##.####");
             itemHelper.editNbtTagCompound(nbtItem -> {
-                if (nbtItem.hasKey("bill-value")) {
-                    double value = nbtItem.getDouble("bill-value");
+                if (nbtItem.hasKey("money-value")) {
+                    double value = nbtItem.getDouble("money-value");
                     UserManager.getInstance().getUser(player).ifPresent(user -> user.deposit(value));
                     Main.getPlugin().getLogger().info(Api.fixColor("[WITHDRAW] &aGracz &e" + player.getName() + " &awplacil banknot o wartosci: &e$" + decimalFormat.format(value)));
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na konto &#FFF88F" + decimalFormat.format(value) + " &#FFC42E$");
@@ -762,7 +762,7 @@ public class PlayerInteractListener implements Listener {
 
     public static ItemStack makePaper(double value, List<String> lore) {
         return ItemHelper.edit(new ItemStack(Material.PAPER)).editNbtTagCompound(nbtItem -> {
-            nbtItem.setDouble("bill-value",  value);
+            nbtItem.setDouble("money-value",  value);
         }).editItemMeta(ItemMeta.class, itemMeta -> {
             itemMeta.setDisplayName(Api.fixColor("&#3dfc49Banknot gotówki"));
             itemMeta.setLore(Api.fixColor(lore));

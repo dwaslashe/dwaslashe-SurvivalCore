@@ -16,7 +16,7 @@ import java.util.List;
 
 public class PhysicsCommand extends Command {
     public PhysicsCommand() {
-        super("physics", "/physics", "", "animacja");
+        super("physics", "/animacja", "", "animacja");
         setOnlyPlayer(true);
     }
 
@@ -130,14 +130,14 @@ public class PhysicsCommand extends Command {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono rodzaj animacji na &eszybką!");
                         }
                     });
-                } else if (e.getSlot() == 16) {
-                    UserTreeCache.getInstance().compute(player.getUniqueId(), User -> {
-                        if (!User.getAnimation().contains("animation")) {
-                            User.setAnimation("animation");
-                            openGui(0, (Player) sender);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono rodzaj animacji na &erealną!");
-                        }
-                    });
+                //} else if (e.getSlot() == 16) {
+                //    UserTreeCache.getInstance().compute(player.getUniqueId(), User -> {
+                //        if (!User.getAnimation().contains("animation")) {
+                //            User.setAnimation("animation");
+                //            openGui(0, (Player) sender);
+                //            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono rodzaj animacji na &erealną!");
+                //        }
+                //    });
                 } else if (e.getSlot() == 40) {
                     player.closeInventory();
                 }
@@ -152,7 +152,7 @@ public class PhysicsCommand extends Command {
             inventoryHelper.setItem(14, quick);
             inventoryHelper.setItem(23, (userTree.getAnimation().equals("quick")) ? glass_lime : glass_red);
             inventoryHelper.setItem(16, animation);
-            inventoryHelper.setItem(25, (userTree.getAnimation().equals("animation")) ? glass_lime : glass_red);
+            //inventoryHelper.setItem(25, (userTree.getAnimation().equals("animation")) ? glass_lime : glass_red);
             inventoryHelper.setItem(40, back);
 
 

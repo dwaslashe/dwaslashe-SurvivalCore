@@ -1,5 +1,6 @@
 package xyz.dwaslashe.survivalcore.commands;
 
+import com.google.common.collect.Maps;
 import net.saidora.api.helpers.ItemHelper;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -17,11 +18,9 @@ import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.objects.VapeItem;
 import xyz.dwaslashe.survivalcore.utils.Api;
+import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class VapeCommand extends Command implements Listener {
@@ -29,6 +28,8 @@ public class VapeCommand extends Command implements Listener {
         super("vape", "/vape <gracz> <id>", "");
         setPermission("core.command.vape");
     }
+
+    protected static final Map<Player, Long> delayHook = Maps.newHashMap();
 
     @Override
     public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
@@ -112,6 +113,14 @@ public class VapeCommand extends Command implements Listener {
                                 if (itemInHand.getType().equals(vapeItem.getItem_material())) {
 
                                     if (nbtItem.getInteger("vape") > 1) {
+                                        if (delayHook.containsKey(player) && delayHook.get(player) > System.currentTimeMillis() && !player.hasPermission("core.vape.bypass")) {
+                                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby ponownie użyć vape musisz poczekać za &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
+                                            event.setCancelled(true);
+                                            event.setUseInteractedBlock(Event.Result.DENY);
+                                            event.setUseItemInHand(Event.Result.DENY);
+                                            return;
+                                        }
+                                        delayHook.remove(player);
                                         event.setCancelled(true);
                                         event.setUseInteractedBlock(Event.Result.DENY);
                                         event.setUseItemInHand(Event.Result.DENY);
@@ -141,6 +150,7 @@ public class VapeCommand extends Command implements Listener {
                                         new VapeTask(player, vapeItem.getDuration(), vapeItem.getPower()).runTaskTimer(Main.getPlugin(), 0, 1);
 
                                         Api.sendMessage(player, "&7&oAle chmura, chyba jestem prawdziwym vaperem..");
+                                        delayHook.put(player, TimerApi.parseDateDiff("1m", true));
                                     } else {
                                         new VapeTask(player, vapeItem.getDuration(), vapeItem.getPower()).runTaskTimer(Main.getPlugin(), 0, 1);
 

@@ -22,7 +22,7 @@ import java.util.Objects;
 public class MsgCommand extends Command {
     static HashMap<Player, Player> lastMsg = new HashMap();
     public MsgCommand() {
-        super("msg", "/msg <nick> <tresc>", "", "tell", "whisper");
+        super("msg", "/msg <nick> <tresc>", "", "tell", "whisper", "w");
         setOnlyPlayer(true);
     }
 
@@ -76,34 +76,34 @@ public class MsgCommand extends Command {
             Api.sendMessage(player, "&8[ &#B3F003TY &8> &#B3F003" + secondPlayer.getDisplayName() + " &8] &8» &#E7E7E7" + msg);
             Api.sendMessage(secondPlayer, "&8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg);
 
-            if (userPlayer.getMsgBossBar() == 0) {
-                BossBar bar = Bukkit.createBossBar(Api.fixColor("&8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg), BarColor.GREEN, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
-                if (userSecondPlayer.getMsgBossBar() == 0) {
-                    bar.addPlayer(secondPlayer);
-                }
-                bar.setProgress(1);
-                int[] bar_color = {0};
-                Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        if (player.getPlayer() != null && player.getPlayer().isOnline()) {
-                            if (bar.getProgress() > 0.02) {
-                                bar.setProgress(bar.getProgress() - 0.02);
-                                ++bar_color[0];
-                                if (bar_color[0] == 1) {
-                                    bar.setColor(BarColor.GREEN);
-                                } else {
-                                }
-                            } else if (userSecondPlayer.getMsgBossBar() == 0) {
-                                bar.setVisible(false);
-                                bar.removePlayer(secondPlayer.getPlayer());
-                            }
-                        } else if (userSecondPlayer.getMsgBossBar() == 0) {
-                            bar.removePlayer(secondPlayer.getPlayer());
-                        }
-                    }
-                }, 0, 2);
-            }
+            //if (userPlayer.getMsgBossBar() == 0) {
+            //    BossBar bar = Bukkit.createBossBar(Api.fixColor("&8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003TY &8] &8» &#E7E7E7" + msg), BarColor.GREEN, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
+            //    if (userSecondPlayer.getMsgBossBar() == 0) {
+            //        bar.addPlayer(secondPlayer);
+            //    }
+            //    bar.setProgress(1);
+            //    int[] bar_color = {0};
+            //    Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
+            //        @Override
+            //        public void run() {
+            //            if (player.getPlayer() != null && player.getPlayer().isOnline()) {
+            //                if (bar.getProgress() > 0.02) {
+            //                    bar.setProgress(bar.getProgress() - 0.02);
+            //                    ++bar_color[0];
+            //                    if (bar_color[0] == 1) {
+            //                        bar.setColor(BarColor.GREEN);
+            //                    } else {
+            //                    }
+            //                } else if (userSecondPlayer.getMsgBossBar() == 0) {
+            //                    bar.setVisible(false);
+            //                    bar.removePlayer(secondPlayer.getPlayer());
+            //                }
+            //            } else if (userSecondPlayer.getMsgBossBar() == 0) {
+            //                bar.removePlayer(secondPlayer.getPlayer());
+            //            }
+            //        }
+            //    }, 0, 2);
+            //}
         }
     }
 

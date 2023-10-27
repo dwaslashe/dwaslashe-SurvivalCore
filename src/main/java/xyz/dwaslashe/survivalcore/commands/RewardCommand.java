@@ -26,8 +26,11 @@ public class    RewardCommand extends Command implements Listener {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Player p = (Player) sender;
-        openGui(0, p);
+        Player player = (Player) sender;
+        openGui(0, player);
+        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aSerwer-Minecraft: &#FFF01Fhttps://serwery-minecraft.pl/serwer/1870-wywrotkamc-pl");
+        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aMcList: &#FFF01Fhttps://mclist.pl/serwer/" + Main.pluginConfig.getMessages().getServer());
+        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aDiscord: &#21F8F6" + Main.pluginConfig.getMessages().getDiscord());
     }
 
     private void openGui(int guiID, Player player) {

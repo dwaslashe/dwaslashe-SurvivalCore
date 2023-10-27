@@ -11,8 +11,6 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.FurnaceRecipe;
-import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import pl.minecodes.plots.api.plot.PlotServiceApi;
 import xyz.dwaslashe.survivalcore.configs.*;
@@ -159,12 +157,8 @@ public class Main extends JavaPlugin {
         //Furnace Recipe
 
         //new RecipeChoice.ExactChoice(OthersListener.driedChestnut)
-        FurnaceRecipe furnaceRecipe = new FurnaceRecipe(NamespacedKey.minecraft("wywrotkamc_chestnut"), OthersListener.chestnut, Material.DARK_OAK_BOAT, 5F, 60);
-        Bukkit.addRecipe(furnaceRecipe);
-
-        if (pluginConfig.getRecipes().isChestnutSoup()) {
-            Bukkit.addRecipe(OthersListener.getRecipeChestnutSoup());
-        }
+        //FurnaceRecipe furnaceRecipe = new FurnaceRecipe(NamespacedKey.minecraft("wywrotkamc_chestnut"), OthersListener.chestnut, Material.DARK_OAK_BOAT, 5F, 60);
+        //Bukkit.addRecipe(furnaceRecipe);
         if (pluginConfig.getRecipes().isMagnet()) {
             Bukkit.addRecipe(OthersListener.getRecipeMagnet());
         }
@@ -198,7 +192,7 @@ public class Main extends JavaPlugin {
         if (pluginConfig.getEvents().isAntyAfk()) {
             Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
                 for (Player all : Bukkit.getOnlinePlayers()) {
-                    if (all.hasPermission("core.antyafk.bypass")) {
+                    if (all.hasPermission("core.antyafk.bypass") || CheckCommand.checks.contains(all.getName())) {
                         return;
                     } else PlayerQuitListener.checkPlayer(all);
                 }
@@ -370,6 +364,8 @@ public class Main extends JavaPlugin {
 
     public void loadCommands() {
         CommandManager.register(new TestCommand(), true);
+        CommandManager.register(new OnaMiala10LatCommand(), pluginConfig.getCommands().isOnamiala10lat());
+        CommandManager.register(new FaQCommand(), pluginConfig.getCommands().isFaq());
         CommandManager.register(new EmergencyNumberCommand(), pluginConfig.getCommands().isEmergencyNumber());
         CommandManager.register(new ZielarzCommand(), pluginConfig.getCommands().isZielarz());
         CommandManager.register(new EventCommand(), pluginConfig.getCommands().isEvent());

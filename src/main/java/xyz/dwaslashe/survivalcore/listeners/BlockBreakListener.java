@@ -20,9 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class BlockBreakListener implements Listener {
-    private final List<Material> logs = Arrays.asList(Material.OAK_LOG, Material.SPRUCE_LOG, Material.DARK_OAK_LOG, Material.ACACIA_LOG, Material.BIRCH_LOG, Material.JUNGLE_LOG);
+    private final List<Material> logs = Arrays.asList(Material.OAK_LOG, Material.SPRUCE_LOG, Material.DARK_OAK_LOG, Material.ACACIA_LOG, Material.BIRCH_LOG, Material.JUNGLE_LOG, Material.CHERRY_LOG);
 
-    private final List<Material> leaves = Arrays.asList(Material.OAK_LEAVES, Material.SPRUCE_LEAVES, Material.DARK_OAK_LEAVES, Material.ACACIA_LEAVES, Material.BIRCH_LEAVES, Material.JUNGLE_LEAVES);
+    private final List<Material> leaves = Arrays.asList(Material.OAK_LEAVES, Material.SPRUCE_LEAVES, Material.DARK_OAK_LEAVES, Material.ACACIA_LEAVES, Material.BIRCH_LEAVES, Material.JUNGLE_LEAVES, Material.CHERRY_LEAVES);
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
@@ -37,64 +37,64 @@ public class BlockBreakListener implements Listener {
         if (userTree.getAnimation().equals("simple")) {
             return;
         }
-        if (userTree.getAnimation().equals("animation")) {
-            HashSet<Block> treeBlocks = new HashSet();
-            HashSet<Block> blocksToSearch = new HashSet();
-            HashSet<Block> searched = new HashSet();
-            Block startingPoint = event.getBlock().getRelative(BlockFace.UP);
-            blocksToSearch.add(startingPoint);
-            searched.add(event.getBlock());
-            int i = 0;
-            for (i = 0; i < 1000 && !blocksToSearch.isEmpty(); ++i) {
-                Block block = (Block) blocksToSearch.iterator().next();
-                blocksToSearch.remove(block);
-                searched.add(block);
-                if (!logs.contains(block.getType()) && !leaves.contains(block.getType())) {
-                    if (!block.getType().isTransparent()) {
-                        return;
-                    }
-                } else {
-                    treeBlocks.add(block);
-                    if (!searched.contains(block.getRelative(BlockFace.UP))) {
-                        blocksToSearch.add(block.getRelative(BlockFace.UP));
-                    }
-
-                    if (!searched.contains(block.getRelative(BlockFace.DOWN))) {
-                        blocksToSearch.add(block.getRelative(BlockFace.DOWN));
-                    }
-
-                    if (!searched.contains(block.getRelative(BlockFace.WEST))) {
-                        blocksToSearch.add(block.getRelative(BlockFace.WEST));
-                    }
-
-                    if (!searched.contains(block.getRelative(BlockFace.EAST))) {
-                        blocksToSearch.add(block.getRelative(BlockFace.EAST));
-                    }
-
-                    if (!searched.contains(block.getRelative(BlockFace.NORTH))) {
-                        blocksToSearch.add(block.getRelative(BlockFace.NORTH));
-                    }
-
-                    if (!searched.contains(block.getRelative(BlockFace.SOUTH))) {
-                        blocksToSearch.add(block.getRelative(BlockFace.SOUTH));
-                    }
-                }
-            }
-            if (i < 1000) {
-                Iterator var = treeBlocks.iterator();
-
-                while (var.hasNext()) {
-                    Block block = (Block) var.next();
-                    FallingBlock sand = block.getWorld().spawnFallingBlock(block.getLocation(), block.getType(), block.getData());
-                    sand.setVelocity(new Vector(0.15D + (double) (block.getY() - startingPoint.getY()) * 0.03D, (double) (block.getX() - startingPoint.getX()) * 0.1D, 0.0D));
-                    block.setType(Material.AIR);
-                }
-
-                if (treeBlocks.size() > 7) {
-                    startingPoint.getWorld().playSound(startingPoint.getLocation(), Sound.BLOCK_CHEST_CLOSE, 2.0F, 0.5F);
-                }
-            }
-        }
+        //if (userTree.getAnimation().equals("animation")) {
+        //    HashSet<Block> treeBlocks = new HashSet();
+        //    HashSet<Block> blocksToSearch = new HashSet();
+        //    HashSet<Block> searched = new HashSet();
+        //    Block startingPoint = event.getBlock().getRelative(BlockFace.UP);
+        //    blocksToSearch.add(startingPoint);
+        //    searched.add(event.getBlock());
+        //    int i = 0;
+        //    for (i = 0; i < 1000 && !blocksToSearch.isEmpty(); ++i) {
+        //        Block block = (Block) blocksToSearch.iterator().next();
+        //        blocksToSearch.remove(block);
+        //        searched.add(block);
+        //        if (!logs.contains(block.getType()) && !leaves.contains(block.getType())) {
+        //            if (!block.getType().isTransparent()) {
+        //                return;
+        //            }
+        //        } else {
+        //            treeBlocks.add(block);
+        //            if (!searched.contains(block.getRelative(BlockFace.UP))) {
+        //                blocksToSearch.add(block.getRelative(BlockFace.UP));
+        //            }
+//
+        //            if (!searched.contains(block.getRelative(BlockFace.DOWN))) {
+        //                blocksToSearch.add(block.getRelative(BlockFace.DOWN));
+        //            }
+//
+        //            if (!searched.contains(block.getRelative(BlockFace.WEST))) {
+        //                blocksToSearch.add(block.getRelative(BlockFace.WEST));
+        //            }
+//
+        //            if (!searched.contains(block.getRelative(BlockFace.EAST))) {
+        //                blocksToSearch.add(block.getRelative(BlockFace.EAST));
+        //            }
+//
+        //            if (!searched.contains(block.getRelative(BlockFace.NORTH))) {
+        //                blocksToSearch.add(block.getRelative(BlockFace.NORTH));
+        //            }
+//
+        //            if (!searched.contains(block.getRelative(BlockFace.SOUTH))) {
+        //                blocksToSearch.add(block.getRelative(BlockFace.SOUTH));
+        //            }
+        //        }
+        //    }
+        //    if (i < 1000) {
+        //        Iterator var = treeBlocks.iterator();
+//
+        //        while (var.hasNext()) {
+        //            Block block = (Block) var.next();
+        //            FallingBlock sand = block.getWorld().spawnFallingBlock(block.getLocation(), block.getType(), block.getData());
+        //            sand.setVelocity(new Vector(0.15D + (double) (block.getY() - startingPoint.getY()) * 0.03D, (double) (block.getX() - startingPoint.getX()) * 0.1D, 0.0D));
+        //            block.setType(Material.AIR);
+        //        }
+//
+        //        if (treeBlocks.size() > 7) {
+        //            startingPoint.getWorld().playSound(startingPoint.getLocation(), Sound.BLOCK_CHEST_CLOSE, 2.0F, 0.5F);
+        //        }
+        //    }
+        //}
 
         Block relative = null;
         do {

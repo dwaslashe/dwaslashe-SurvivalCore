@@ -22,13 +22,13 @@ public class AdmitsCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Player p = (Player) sender;
+        Player player = (Player) sender;
         if (args.length >= 0) {
-            if (CheckCommand.checks.contains(p.getName())) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + p.getName() + " 2d przyznanie się do używania niedozwolonego oprogramowania");
-                CheckCommand.checks.remove(p.getName());
+            if (CheckCommand.checks.contains(player.getName())) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + player.getName() + " 2d przyznanie się do używania niedozwolonego oprogramowania");
+                CheckCommand.checks.remove(player.getName());
             } else {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś sprawdzany");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś sprawdzany");
             }
         }
     }

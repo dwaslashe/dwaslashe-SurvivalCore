@@ -20,9 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
 import xyz.dwaslashe.survivalcore.commands.ChatCommand;
-import xyz.dwaslashe.survivalcore.configs.PluginConfig;
 import xyz.dwaslashe.survivalcore.enums.ColorEnums;
-import xyz.dwaslashe.survivalcore.helpers.IconHelper;
 import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.ChatApi;
@@ -275,6 +273,6 @@ public class PlayerChatListener implements Listener {
                     .replace("&", "")+ ">");
         });
 
-        return IconHelper.transformIcons(PlaceholderAPI.setPlaceholders(player, ref.replacedFormat), PluginConfig.IMAGES_CHAT);
+        return PlaceholderAPI.setPlaceholders(player, ref.replacedFormat);
     }
 }

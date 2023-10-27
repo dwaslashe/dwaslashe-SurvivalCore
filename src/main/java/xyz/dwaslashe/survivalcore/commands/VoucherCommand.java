@@ -42,6 +42,7 @@ public class VoucherCommand extends Command {
                         ItemStack voucher = ItemHelper.edit(new ItemStack(voucherItemsList.get(argument).getItem_material())).editNbtTagCompound(nbtItem -> {
                             if (voucherItemsList.get(argument).getOwner()) {
                                 nbtItem.setString("voucher-owner", secondPlayer.getName());
+                                nbtItem.setString("voucher-type", voucherItemsList.get(argument).getTypeBooster());
                             } else {
                                 nbtItem.setBoolean("voucher", true);
                             }

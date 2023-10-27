@@ -13,6 +13,7 @@ public class VoucherItem {
     private String item_head_name;
     private List<String> item_lore;
     private List<String> commandLine;
+    private String typeBooster;
 
     private boolean owner;
     public VoucherItem() {
@@ -71,6 +72,13 @@ public class VoucherItem {
         this.item_lore = item_lore;
     }
 
+    public String getTypeBooster() {
+        return typeBooster;
+    }
+
+    public void setTypeBooster(String typeBooster) {
+        this.typeBooster = typeBooster;
+    }
     public boolean getOwner() {
         return owner;
     }

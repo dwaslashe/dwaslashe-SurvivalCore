@@ -1,5 +1,6 @@
 package xyz.dwaslashe.survivalcore.commands;
 
+import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -7,9 +8,11 @@ import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.managers.CooldownManager;
 import xyz.dwaslashe.survivalcore.utils.Api;
+import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class HealCommand extends Command {
     public HealCommand() {
@@ -17,6 +20,8 @@ public class HealCommand extends Command {
         setPermission("core.command.heal");
         setOnlyPlayer(true);
     }
+
+    protected static final Map<Player, Long> delayHook = Maps.newHashMap();
 
     @Override
     public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
@@ -26,31 +31,35 @@ public class HealCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Player p = (Player)sender;
+        Player player = (Player)sender;
         if (args.length == 0) {
-            if (CooldownManager.checkDelay(p) == true) {
+            if (delayHook.containsKey(player) && delayHook.get(player) > System.currentTimeMillis()) {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby ponownie użyj tej komendy musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
+                player.closeInventory();
                 return;
             }
-            CooldownManager.addColdown(p, "10m");
-            double health = p.getMaxHealth();
-            p.setHealth(health);
-            p.setFoodLevel(20);
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie się &euleczyłeś");
+            delayHook.remove(player);
+
+            double health = player.getMaxHealth();
+            player.setHealth(health);
+            player.setFoodLevel(20);
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie się &euleczyłeś");
+            delayHook.put(player, TimerApi.parseDateDiff("5m", true));
         } else if (args.length == 1) {
-            if (!p.hasPermission("core.command.admin")) {
-                p.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.admin&8) &8<<"));
+            if (!player.hasPermission("core.command.admin")) {
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.admin&8) &8<<"));
                 return;
             }
-            Player p2 = Bukkit.getPlayer(args[0]);
-            if (p2 == null) {
+            Player secondPlayer = Bukkit.getPlayer(args[0]);
+            if (secondPlayer == null) {
                 offlinePlayer();
                 return;
             } else {
-                double health = p2.getMaxHealth();
-                p2.setHealth(health);
-                p2.setFoodLevel(20);
-                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś &euleczony &aprzez " + p.getName());
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie &euleczyłeś &agracza " + p2.getName());
+                double health = secondPlayer.getMaxHealth();
+                secondPlayer.setHealth(health);
+                secondPlayer.setFoodLevel(20);
+                Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś &euleczony &aprzez " + player.getName());
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie &euleczyłeś &agracza " + secondPlayer.getName());
             }
         }
     }

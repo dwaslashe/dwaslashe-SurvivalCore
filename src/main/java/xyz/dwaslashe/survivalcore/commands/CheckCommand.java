@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.WarpCache;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
+import xyz.dwaslashe.survivalcore.listeners.RegionListener;
 import xyz.dwaslashe.survivalcore.objects.Warp;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
@@ -31,76 +32,78 @@ public class CheckCommand extends Command implements Listener {
 
     @Override
     public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
-        if (args.length == 1) return Api.startsWith(Arrays.asList("info", "czysty", "wykryto", "przyznanie"), args[0]);
-        else if (args.length == 2) return Collections.singletonList("[players]");
+        if (args.length == 2) return Api.startsWith(Arrays.asList("info", "czysty", "wykryto", "przyznanie"), args[1]);
+        else if (args.length == 1) return Collections.singletonList("[players]");
         return null;
     }
 
     @Override
-    public void commandExecute(CommandSender p, String[] args) {
+    public void commandExecute(CommandSender sender, String[] args) {
         if (args.length == 0) {
             wrongUsage();
         } else if(args.length >= 1) {
             if (Bukkit.getPlayer(args[0]) == null) {
                 offlinePlayer();
             } else {
-                Player s = Bukkit.getPlayer(args[0]);
+                Player player = Bukkit.getPlayer(args[0]);
                 if (args.length == 1) {
-                    if (!checks.contains(s.getName())) {
-                        checks.add(s.getName());
-                        Api.sendBroadcast("\n        &#FF3131&lSPRAWDZANY\n \n&8>> &#8dfa52Gracz &#FFC42E" + s.getName() + " &#8dfa52jest sprawdzany przez &#f7482d" + p.getName() + " \n ");
-                        Api.sendMessage(s, "");
-                        Api.sendMessage(s, "        &#FF3131&lJESTEŚ SPRAWDZANY!");
-                        Api.sendMessage(s, "");
-                        Api.sendMessage(s, "&8>> &#E7E7E7Logout &8= &#FFC42Eban 5d");
-                        Api.sendMessage(s, "&8>> &#E7E7E7Przyznanie sie &8= &#FFC42Eban 2d");
-                        Api.sendMessage(s, "&8>> &#E7E7E7Wykrycie &8= &#FFC42Eban 5d");
-                        Api.sendMessage(s, "");
-                        Api.sendMessage(s, "&8>> &#FF3131Pamietaj, aby się słuchać administratora, inaczej zostaniesz ukarany!");
-                        Api.sendMessage(s, "");
+                    if (!checks.contains(player.getName())) {
+                        checks.add(player.getName());
+                        Api.sendBroadcast("\n        &#FF3131&lSPRAWDZANY\n \n&8>> &#8dfa52Gracz &#FFC42E" + player.getName() + " &#8dfa52jest sprawdzany przez &#f7482d" + sender.getName() + " \n ");
+                        Api.sendMessage(player, "");
+                        Api.sendMessage(player, "        &#FF3131&lJESTEŚ SPRAWDZANY!");
+                        Api.sendMessage(player, "");
+                        Api.sendMessage(player, "&8>> &#E7E7E7Logout &8= &#FFC42Eban 5d");
+                        Api.sendMessage(player, "&8>> &#E7E7E7Przyznanie sie &8= &#FFC42Eban 2d");
+                        Api.sendMessage(player, "&8>> &#E7E7E7Wykrycie &8= &#FFC42Eban 5d");
+                        Api.sendMessage(player, "");
+                        Api.sendMessage(player, "&8>> &#FF3131Pamietaj, aby się słuchać administratora, inaczej zostaniesz ukarany!");
+                        Api.sendMessage(player, "");
 
                         Warp warp = WarpCache.getInstance().get("sprawdzarka");
                         if (warp != null) {
                             Location loc = new Location(Bukkit.getServer().getWorld(warp.getLocation().getWorld().getKey()), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
-                            s.teleport(loc);
-                        } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma ustawionej lokalizacji &esprawdzarki");
+                            player.teleport(loc);
+                        } else Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aNie ma ustawionej lokalizacji &esprawdzarki");
 
                         (new BukkitRunnable() {
                             @Override
                             public void run() {
-                                if (checks.contains(s.getName())) {
-                                    Api.sendActionBar(s, "&8>> <#f00c0c>Jesteś sprawdzany przez <#FDBD01>" + p.getName() + " &8<<");
+                                if (checks.contains(player.getName())) {
+                                    Api.sendActionBar(player, "&8>> <#f00c0c>Jesteś sprawdzany przez <#FDBD01>" + sender.getName() + " &8<<");
                                 } else {
                                     this.cancel();
                                 }
                             }
                         }).runTaskTimer(Main.getPlugin(), 0, 20);
                     } else {
-                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cjest już sprawdzany");
+                        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + player.getName() + " &cjest już sprawdzany");
                     }
                 } else if (args.length == 2) {
                     if (args[1].equalsIgnoreCase("info")) {
-                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + s.getName() + " &a" + (checks.contains(s.getName()) ? "jest sprawdzany" : "nie jest sprawdzany"));
+                        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &a" + (checks.contains(player.getName()) ? "jest sprawdzany" : "nie jest sprawdzany"));
                     } else if (args[1].equalsIgnoreCase("przyznanie")) {
-                        if (checks.contains(s.getName())) {
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + s.getName() + " 2d przyznanie się do używania niedozwolonego oprogramowania");
-                            checks.remove(s.getName());
+                        if (checks.contains(player.getName())) {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + player.getName() + " 2d przyznanie się do używania niedozwolonego oprogramowania");
+                            checks.remove(player.getName());
                         } else {
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cnie jest sprawdzany");
+                            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + player.getName() + " &cnie jest sprawdzany");
                         }
                     } else if (args[1].equalsIgnoreCase("wykryto")) {
-                        if (checks.contains(s.getName())) {
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + s.getName() + " 5d wykryto niedozwolone oprogramowanie");
-                            checks.remove(s.getName());
+                        if (checks.contains(player.getName())) {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + player.getName() + " 5d wykryto niedozwolone oprogramowanie");
+                            checks.remove(player.getName());
                         } else {
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cnie jest sprawdzany");
+                            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + player.getName() + " &cnie jest sprawdzany");
                         }
                     } else if (args[1].equalsIgnoreCase("czysty")) {
-                        if (checks.contains(s.getName())) {
-                            checks.remove(s.getName());
-                            Api.sendBroadcast(Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + s.getName() + " &aokazał sie nie winny, gdyż nie posiada niedozwolonego oprogramowania");
+                        if (checks.contains(player.getName())) {
+                            Warp warp = WarpCache.getInstance().get("spawn");
+                            player.teleport(warp.getLocation());
+                            checks.remove(player.getName());
+                            Api.sendBroadcast(Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &aokazał sie nie winny, gdyż nie posiada niedozwolonego oprogramowania");
                         } else {
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + s.getName() + " &cnie jest sprawdzany");
+                            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + player.getName() + " &cnie jest sprawdzany");
                         }
                     } else {
                         wrongUsage();

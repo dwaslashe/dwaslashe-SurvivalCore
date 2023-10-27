@@ -1,16 +1,20 @@
 package xyz.dwaslashe.survivalcore.commands;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.helpers.DiscordHelper;
 import xyz.dwaslashe.survivalcore.utils.Api;
+import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class EmergencyNumberCommand extends Command {
     public EmergencyNumberCommand() {
@@ -18,6 +22,7 @@ public class EmergencyNumberCommand extends Command {
         setOnlyPlayer(true);
     }
 
+    protected static final Map<Player, Long> delayHook = Maps.newHashMap();
     @Override
     public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
         return null;
@@ -25,16 +30,30 @@ public class EmergencyNumberCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
         if (args.length == 0) {
             wrongUsage();
             Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPrzykład: &e/112 gracz Marcin123 ma postawioną widoczną farme marihuany na kordach, których jestem");
-        } else if (args.length > 1) {
-            Player player = (Player)sender;
+        } else if (args.length >= 1) {
+            if (delayHook.containsKey(player) && delayHook.get(player) > System.currentTimeMillis()) {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby wywołać powiadomienie do służb specjalnych musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
+                player.closeInventory();
+                return;
+            }
+            delayHook.remove(player);
+
             String message = StringUtils.join(args, " ", 0, args.length);
 
+            if(message.isEmpty()) {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cWiadomość nie może być pusta");
+                return;
+            }
+
             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wysłano zgłoszenie do służb specjalnych. W swoim wolnym czasie służby to sprawdzą!");
+            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
             for (Player allPlayer : Bukkit.getOnlinePlayers()) {
                 if (allPlayer.hasPermission("core.command.emergencynumber.bypass")) {
+                    allPlayer.playSound(player.getLocation(), Sound.BLOCK_BELL_USE, 1, 1);
                     Api.sendMessage(allPlayer, "");
                     Api.sendMessage(allPlayer, "        &#004791&lNUMBER ALARMOWY - FBI");
                     Api.sendMessage(allPlayer, "");
@@ -54,6 +73,8 @@ public class EmergencyNumberCommand extends Command {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            delayHook.put(player, TimerApi.parseDateDiff("5m", true));
         }
     }
 }

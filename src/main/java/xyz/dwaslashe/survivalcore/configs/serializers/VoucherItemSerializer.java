@@ -22,6 +22,7 @@ public class VoucherItemSerializer implements ObjectSerializer<VoucherItem> {
         data.add("icon.head.name", object.getItem_head_name());
         data.add("command", object.getCommandLine());
         data.add("owner", object.getOwner());
+        data.add("type", object.getTypeBooster());
     }
 
     @Override
@@ -34,6 +35,7 @@ public class VoucherItemSerializer implements ObjectSerializer<VoucherItem> {
         voucherItem.setItem_head_name(data.get("icon.head.name", String.class));
         voucherItem.setCommandLine(data.getAsList("command", String.class));
         voucherItem.setOwner(data.get("owner", Boolean.class));
+        voucherItem.setTypeBooster(data.get("type", String.class));
         return voucherItem;
     }
 }

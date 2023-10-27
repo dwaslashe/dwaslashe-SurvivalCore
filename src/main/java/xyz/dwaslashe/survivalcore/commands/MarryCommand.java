@@ -178,7 +178,7 @@ public class MarryCommand extends Command {
             marry.setRightuuid(partner.getUniqueId());
             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zaakceptowałeś zaproszenie do małżeństwa od gracza &e" + partner.getName());
             Api.sendMessage(partner, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &azaakceptował twoje zaproszenie do małżeństwa!");
-            Api.sendBroadcast("\n        &#a503fc&lŚLUB\n \n&8>> &#8dfa52Gracz &#FFC42E" + player.getName() + " &#8dfa52poślubił się z &#f7482d" + partner.getName() + " &#8dfa52życzmy im udanej miłości! &#fc2c03&l❤ \n&8>> &#8dfa52Napisz nowemu małżeństwu coś miłego! :=)  \n ");
+            Api.sendBroadcast("\n        &#a503fc&lŚLUB\n \n&8>> &#8dfa52Gracz &#FFC42E" + player.getName() + " &#8dfa52poślubił się z &#f7482d" + partner.getName() + " &#8dfa52życzmy im udanej miłości! &#fc2c03&l❤ \n&8>> &#8dfa52Napisz nowemu małżeństwu coś miłego! =)  \n ");
             for (Player all : Bukkit.getOnlinePlayers()) {
                 World world = all.getWorld();
                 world.spawnParticle(Particle.HEART, all.getLocation().add(0.0D, 2.0D, 0.0D), 10);

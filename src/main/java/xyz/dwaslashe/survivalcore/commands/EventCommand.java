@@ -62,7 +62,7 @@ public class EventCommand extends Command {
 
                     eventMap.put("SKRZYNIA", true);
                     Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie stworzono skrzynie!");
-                    Api.sendBroadcast("\n        &#FDBD01&lEVENT SKRZYNIA\n \n&8>> &#e3c97dSkrzynia pojawiła się na &#7d5af2X: " + caseLocation.getBlockX() + " Y: " + caseLocation.getBlockY() + " Z: " + caseLocation.getBlockZ() + "\n&8>> &#e3c97dKto pierwszy ten lepszy! \n ");
+                    Api.sendBroadcast("\n        &#FDBD01&lEVENT SKRZYNIA\n \n&8>> &#e3c97dSkrzynia pojawiła się na &#f5c025X: " + caseLocation.getBlockX() + " Y: " + caseLocation.getBlockY() + " Z: " + caseLocation.getBlockZ() + "\n&8>> &#e3c97dKto pierwszy ten lepszy! \n ");
 
                     AtomicInteger counter = new AtomicInteger(0);
                     new BukkitRunnable() {

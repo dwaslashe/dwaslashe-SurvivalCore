@@ -12,9 +12,7 @@ import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.RegionApi;
 import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class SecondPlayerTask extends BukkitRunnable {
     private static final Map<UUID, BossBar> barMap = new HashMap<>();
@@ -33,17 +31,23 @@ public class SecondPlayerTask extends BukkitRunnable {
     }
     @Override
     public void run() {
+        List<UUID> keysToRemove = new ArrayList<>();
         Protection.getProtectionMap().forEach((uuid, protection) -> {
             if (protection.getProtection() > System.currentTimeMillis()) {
                 if (Bukkit.getPlayer(uuid) != null) protection.getBar().addPlayer(Bukkit.getPlayer(uuid));
                 protection.getBar().setTitle(Api.fixColor("&8>> &#d3f4f5Twoja &#0394fc\uD83D\uDEE1 &#037bfc&lOCHRONA &#0394fc\uD83D\uDEE1 &#d3f4f5trwać będzie jeszcze &#ffd56c{TIME} &#ffc942⌚ &8<<").replace("{TIME}", TimerApi.secondsToString(protection.getProtection())));
                 protection.getBar().setProgress(Api.mapLongToDouble((protection.getProtection() - System.currentTimeMillis()), 0L, protection.getMaxTimeProtection()));
             } else {
+                keysToRemove.add(uuid);
                 protection.getBar().setVisible(false);
                 Protection.getProtectionMap().remove(uuid, protection);
                 Protection.getProtectionMap().remove(uuid);
             }
         });
+
+        for (UUID key : keysToRemove) {
+            Protection.getProtectionMap().remove(key);
+        }
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             PlayerTime user = PlayerTime.getPlayer(player);

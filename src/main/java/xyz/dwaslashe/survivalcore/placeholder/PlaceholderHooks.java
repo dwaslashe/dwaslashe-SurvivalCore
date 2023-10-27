@@ -101,6 +101,11 @@ public class PlaceholderHooks extends PlaceholderExpansion {
             long playTime = time - playerTime.getTime();
             return TimerApi.getDurationBreakdownShort(playTime);
         }
+        if (params.equals("fbi")) {
+            if (player.getPlayer().hasPermission("core.group.fbi")) {
+                return " <#004791>FBI";
+            } else return "";
+        }
         return null;
     }
 }

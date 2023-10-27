@@ -4,7 +4,6 @@ import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import xyz.dwaslashe.survivalcore.objects.AbovenameShop;
 
 import java.util.Arrays;
@@ -32,6 +31,25 @@ public class PluginCommands extends OkaeriConfig {
         public static class HelpCommand extends OkaeriConfig {
 
             private List<String> help = List.of(" &8[ &a&LSURVIVAL - LISTA KOMEND &8]", "&2* &a/kosz &8- &fotwiera kosz", "&2* &a/list &8- &fwysyła liste graczy", "&2* &a/money &8- &fwysyła twoje saldo", "&2* &a/ah &8- &fotwiera aukcje");
+
+        }
+
+        private FaQCommand faQCommand = new FaQCommand();
+
+        @Getter @Setter
+        public static class FaQCommand extends OkaeriConfig {
+
+            private List<String> faq = List.of(" ");
+            private List<String> tab = Arrays.asList("Jak zdobyć nasiona narkotyków?", "Gdzie można sprzedać narkotyki?", "Czemu woda nie działa?", "Co to jest FBI?");
+
+        }
+
+        private OnaMiala10LatCommand onaMiala10LatCommand = new OnaMiala10LatCommand();
+
+        @Getter @Setter
+        public static class OnaMiala10LatCommand extends OkaeriConfig {
+
+            private List<String> onamiala10lat = List.of(" ");
 
         }
 

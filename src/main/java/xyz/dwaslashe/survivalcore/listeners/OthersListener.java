@@ -7,6 +7,7 @@ import eu.decentsoftware.holograms.api.holograms.Hologram;
 import lombok.Getter;
 import lombok.Setter;
 import me.badbones69.blockparticles.api.ParticleManager;
+import me.dexuby.UltimateDrugs.api.DrugPlantPlantEvent;
 import net.saidora.api.helpers.MathHelper;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -59,22 +60,13 @@ public class OthersListener implements Listener {
     private int id = 0;
 
     protected static final Map<Player, Long> delayHook = Maps.newHashMap();
+    protected static final Map<String, Long> delayPlantDrugHook = Maps.newHashMap();
 
     private static ItemStack enchanted_golden_apple = new ItemApi(Material.ENCHANTED_GOLDEN_APPLE).getItemStack();
 
     public static ItemStack chestnut = new ItemApi(Material.DARK_OAK_BUTTON)
             .setName("&#c77818Kasztan")
-            .setLore(Arrays.asList("", " &#E7E7E7Przepal kasztan aby zdobyć ugotowany kasztan!"))
-            .getItemStack();
-
-    public static ItemStack driedChestnut = new ItemApi(Material.BAMBOO_BUTTON)
-            .setName("&#c77818Ugotowany kasztan")
-            .setLore(Arrays.asList("", " &#E7E7E7Połącz ugotowany kasztan z miską aby zrobić zupe kasztanową!"))
-            .getItemStack();
-
-    public static ItemStack chestnutSoup = new ItemApi(Material.MUSHROOM_STEW)
-            .setName("&#d4610fZupa kasztanowa")
-            .setLore(Arrays.asList("", " &#E7E7E7Sprzedaj zupe kasztanową jesieniarze, która ją potrzebuje!", "", " &#FBFD8C&nKliknij prawym, aby zjeść zupe!"))
+            .setLore(Arrays.asList("", " &#E7E7E7Przepal kasztan aby zdobyć pieczonego kasztana!"))
             .getItemStack();
 
     public static ItemStack magnet = new ItemApi(Material.LIGHTNING_ROD)
@@ -91,6 +83,25 @@ public class OthersListener implements Listener {
     static Set<UUID> snowballs = new HashSet<>(), shooters = new HashSet<>();
 
     @EventHandler
+    public void onDrugPlantEvent(DrugPlantPlantEvent event) {
+        Player player = event.getPlayer();
+        if (event.isCancelled()) return;
+
+        if (delayPlantDrugHook.containsKey(player.getName()) && delayPlantDrugHook.get(player.getName()) > System.currentTimeMillis()) {
+            if (player.hasPermission("core.plant.drugs.bypass")) return;
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zasadzić sadzonke narkotyku musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayPlantDrugHook.get(player.getName()))));
+            event.setCancelled(true);
+            player.closeInventory();
+            return;
+        }
+        delayPlantDrugHook.remove(player.getName());
+
+        event.setCancelled(false);
+
+        delayPlantDrugHook.put(player.getName(), TimerApi.parseDateDiff("3m", true));
+    }
+
+    @EventHandler
     public void onDamageHusband(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
             Player player = ((Player) event.getDamager()).getPlayer();
@@ -98,6 +109,7 @@ public class OthersListener implements Listener {
             Marry marry = MarryCache.getInstance().compute(player.getUniqueId());
 
             if (marry.getRightuuid() == null) return;
+            if (marry.getPvp() == null) return;
 
             if (marry.getRightuuid().equals(husband.getUniqueId()) && marry.getPvp().equals("NO")) {
                 Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz uderzyć swojego małżonka bo masz wyłączoną walke między wami. Aby ja włączyć wpisz &e/slub pvp");
@@ -213,16 +225,6 @@ public class OthersListener implements Listener {
                 delayHook.put(player, TimerApi.parseDateDiff("5s", true));
             }
         }
-    }
-
-    public static ShapedRecipe getRecipeChestnutSoup() {
-        ItemStack item = chestnutSoup;
-        ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_chestnutsoup"), item);
-        rec.shape(new String[]{"ABC", "CCC", "CCC"});
-        rec.setIngredient('A', driedChestnut);
-        rec.setIngredient('B', Material.BOWL);
-        rec.setIngredient('C', Material.AIR);
-        return rec;
     }
 
     public static ShapedRecipe getRecipeMagnet() {
@@ -348,33 +350,31 @@ public class OthersListener implements Listener {
         Optional.ofNullable(Abyss.getOpenAbyssMap().get(e.getPlayer().getName())).ifPresent(abyss -> Abyss.getOpenAbyssMap().remove(e.getPlayer().getName()));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
 
-        if (event.isCancelled()) return;
-
-        if (Main.pluginConfig.getRecipes().isChestnutSoup()) {
+        if (!event.isCancelled()) {
             if (event.getBlock().getType() == Material.OAK_LEAVES || event.getBlock().getType() == Material.SPRUCE_LEAVES || event.getBlock().getType() == Material.BIRCH_LEAVES || event.getBlock().getType() == Material.JUNGLE_LEAVES || event.getBlock().getType() == Material.ACACIA_LEAVES || event.getBlock().getType() == Material.DARK_OAK_LEAVES || event.getBlock().getType() == Material.MANGROVE_LEAVES || event.getBlock().getType() == Material.CHERRY_LEAVES || event.getBlock().getType() == Material.AZALEA_LEAVES || event.getBlock().getType() == Material.FLOWERING_AZALEA_LEAVES) {
-                if (RandomApi.getChance(5.0)) {
+                if (RandomApi.getChance(10.0)) {
                     event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), chestnut);
                 }
             }
-        }
 
-        if (Main.pluginConfig.getEvents().getOpenChatBlockBreak().isEnable()) {
-            User user = UserCache.getInstance().compute(player.getUniqueId());
-            if (user.getBlockBreak() != (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() + 2)) {
-                user.addBlockBreak(1);
+            if (Main.pluginConfig.getEvents().getOpenChatBlockBreak().isEnable()) {
+                User user = UserCache.getInstance().compute(player.getUniqueId());
+                if (user.getBlockBreak() != (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() + 2)) {
+                    user.addBlockBreak(1);
+                }
+
             }
 
-        }
-
-        if (Main.pluginConfig.getEvents().isAntyXrayMessage()) {
-            if (event.getBlock().getType() == Material.DIAMOND_ORE || event.getBlock().getType() == Material.GOLD_ORE || event.getBlock().getType() == Material.IRON_ORE || event.getBlock().getType() == Material.DEEPSLATE_DIAMOND_ORE || event.getBlock().getType() == Material.DEEPSLATE_GOLD_ORE || event.getBlock().getType() == Material.DEEPSLATE_IRON_ORE || event.getBlock().getType() == Material.ANCIENT_DEBRIS) {
-                for (Player permissionPlayers : Bukkit.getOnlinePlayers()) {
-                    if (permissionPlayers.hasPermission("core.xray.read")) {
-                        Api.sendActionBar(permissionPlayers, "&8>> <#ba2e22>&lANTY-XRAY: <reset><#39FF14>Gracz <reset><#FDBD01>" + player.getName() + " <reset><#39FF14>zniszczył rude <reset><#3ec7ed>" + event.getBlock().getType() + " <reset>&8<<");
+            if (Main.pluginConfig.getEvents().isAntyXrayMessage()) {
+                if (event.getBlock().getType() == Material.DIAMOND_ORE || event.getBlock().getType() == Material.GOLD_ORE || event.getBlock().getType() == Material.IRON_ORE || event.getBlock().getType() == Material.DEEPSLATE_DIAMOND_ORE || event.getBlock().getType() == Material.DEEPSLATE_GOLD_ORE || event.getBlock().getType() == Material.DEEPSLATE_IRON_ORE || event.getBlock().getType() == Material.ANCIENT_DEBRIS) {
+                    for (Player permissionPlayers : Bukkit.getOnlinePlayers()) {
+                        if (permissionPlayers.hasPermission("core.xray.read")) {
+                            Api.sendActionBar(permissionPlayers, "&8>> <#ba2e22>&lANTY-XRAY: <reset><#39FF14>Gracz <reset><#FDBD01>" + player.getName() + " <reset><#39FF14>zniszczył rude <reset><#3ec7ed>" + event.getBlock().getType() + " <reset>&8<<");
+                        }
                     }
                 }
             }
@@ -558,7 +558,7 @@ public class OthersListener implements Listener {
     public void onOpenSpecifyChest(InventoryOpenEvent event) {
         if (event.getInventory().getType().equals(InventoryType.CHEST)) {
             Location location = event.getInventory().getLocation();
-
+            Player player = (Player) event.getPlayer();
             if (location != null) {
 
                 Block block = event.getInventory().getLocation().getBlock();
@@ -567,10 +567,29 @@ public class OthersListener implements Listener {
                     Chest chest = (Chest) state;
                     if (chest.getBlock().hasMetadata("CaseBlockEvent")) {
                         block.removeMetadata("CaseBlockEvent", Main.plugin);
-                        Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&aJesteś pierwszy, który otwiera tą skrzynie! Gratuluje =)");
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aJesteś pierwszy, który otwiera tą skrzynie! Gratuluje =)");
                         ParticleManager.getInstance().removeParticle("caseBlock");
                         EventCommand.eventMap.remove("SKRZYNIA");
                         DHAPI.removeHologram("case");
+                    } else if (chest.getBlock().hasMetadata("PirateBlockEvent")) {
+                        if (!player.hasPermission("core.open.piratechest")) {
+                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.open.piratechest");
+                            Api.sendMessage(player, "&7&oLiczyłem na prawdziwy skarb..");
+                            Api.giveOrDrop(player, new ItemStack(Material.GUNPOWDER, 21));
+                            Api.giveOrDrop(player, new ItemStack(Material.TURTLE_SPAWN_EGG, 1));
+                            Api.giveOrDrop(player, new ItemStack(Material.GOLD_INGOT, 19));
+                            Api.giveOrDrop(player, new ItemStack(Material.POISONOUS_POTATO, 8));
+                            Api.giveOrDrop(player, new ItemStack(Material.MILK_BUCKET, 1));
+                            Api.giveOrDrop(player, new ItemStack(Material.PUFFERFISH, 1));
+                            Api.giveOrDrop(player, new ItemStack(Material.SUSPICIOUS_STEW, 1));
+                            event.setCancelled(true);
+                        } else {
+                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                            Api.sendMessage(player, "&7&oSkarb jest już pusty.. nie ma co tu szukać.");
+                            event.setCancelled(true);
+                        }
                     }
                 }
             }

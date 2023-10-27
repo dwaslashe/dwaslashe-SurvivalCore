@@ -31,24 +31,24 @@ public class ChatCommand extends Command {
     }
 
     @Override
-    public void commandExecute(CommandSender s, String[] args) {
+    public void commandExecute(CommandSender sender, String[] args) {
         if (args.length == 0) {
             wrongUsage();
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("on")) {
                 Api.sendBroadcast(Main.pluginConfig.getChat().getOn());
-                Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś czat");
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś czat");
                 disablechat.remove(TYPE.WRITABLE);
                 disablechat.put(TYPE.WRITABLE, false);
             } else if (args[0].equalsIgnoreCase("off")) {
                 Api.sendBroadcast(Main.pluginConfig.getChat().getOff());
-                Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyłączyłeś czat");
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyłączyłeś czat");
                 disablechat.remove(TYPE.WRITABLE);
                 disablechat.put(TYPE.WRITABLE, true);
             } else if (args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("cc") || args[0].equalsIgnoreCase("c")) {
                 Bukkit.getOnlinePlayers().forEach(ChatCommand::clear);
-                Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyczyściłeś czat");
-                Api.sendBroadcast(Main.pluginConfig.getChat().getClear());
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyczyściłeś czat");
+                Api.sendBroadcast(Main.pluginConfig.getChat().getClear().replace("{PLAYER}", sender.getName()));
             }
         }
     }

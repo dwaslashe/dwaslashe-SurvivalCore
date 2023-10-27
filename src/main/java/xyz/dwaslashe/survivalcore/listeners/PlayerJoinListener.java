@@ -17,11 +17,9 @@ import org.bukkit.potion.PotionEffectType;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.MarryCache;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
+import xyz.dwaslashe.survivalcore.cache.WarpCache;
 import xyz.dwaslashe.survivalcore.enums.ImageChar;
-import xyz.dwaslashe.survivalcore.objects.Marry;
-import xyz.dwaslashe.survivalcore.objects.PlayerTime;
-import xyz.dwaslashe.survivalcore.objects.Protection;
-import xyz.dwaslashe.survivalcore.objects.User;
+import xyz.dwaslashe.survivalcore.objects.*;
 import xyz.dwaslashe.survivalcore.tasks.SecondPlayerTask;
 import xyz.dwaslashe.survivalcore.utils.*;
 import xyz.upperlevel.spigot.book.BookUtil;
@@ -48,19 +46,35 @@ public class PlayerJoinListener implements Listener {
         Protection protection = Protection.compute(player.getUniqueId());
         protection.setProtection(System.currentTimeMillis() + TimerApi.getTime("10m"));
         protection.setMaxTimeProtection(TimerApi.getTime("10m"));
+
         User user = UserCache.getInstance().compute(player.getUniqueId());
+
         Marry marry = MarryCache.getInstance().compute(player.getUniqueId());
         marry.setRightuuid(player.getUniqueId());
-        World world = Bukkit.getWorld("world");
-        Location loc = LocationApi.getRandomLocation(world);
+
         user.setHomes("");
         user.setIgnorePlayers("");
         user.setRates("");
         user.setBlockBreak(0);
+
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 140, -50));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 140, 10));
         player.setItemInHand(food);
-        player.teleportAsync(loc);
+
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(), () -> {
+            Warp warp = WarpCache.getInstance().get("spawn");
+
+            if (warp == null) {
+                Location randomLocation = LocationApi.getRandomLocation(Bukkit.getWorld("world"));
+                player.teleport(randomLocation);
+                player.teleportAsync(randomLocation);
+                return;
+            }
+
+            Location spawnLocation = new Location(Bukkit.getServer().getWorld(warp.getLocation().getWorld().getKey()), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
+            player.teleport(spawnLocation);
+            player.teleportAsync(spawnLocation);
+        }, 45L);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -73,15 +87,17 @@ public class PlayerJoinListener implements Listener {
         playerTime.setTime("0s");
         PlayerTime.getUsers().add(PlayerTime.getPlayer(player));
 
-        BossBar bar = SecondPlayerTask.getBarMap().get(player.getUniqueId());
+        if (Main.pluginConfig.getEvents().getBossBarSpawn().isEnable()) {
+            BossBar bar = SecondPlayerTask.getBarMap().get(player.getUniqueId());
 
-        if(bar == null){
-            bar = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID);
-            SecondPlayerTask.getBarMap().put(player.getUniqueId(), bar);
-            bar.setVisible(true);
-        } else {
-            bar.removeAll();
-            bar.addPlayer(player);
+            if (bar == null) {
+                bar = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID);
+                SecondPlayerTask.getBarMap().put(player.getUniqueId(), bar);
+                bar.setVisible(true);
+            } else {
+                bar.removeAll();
+                bar.addPlayer(player);
+            }
         }
 
         if (player.hasPlayedBefore()) {
@@ -91,43 +107,43 @@ public class PlayerJoinListener implements Listener {
             sendImage(player);
 
             //Create book in join
-            ItemStack book = BookUtil.writtenBook()
-                    .author("WywrotkaMC")       
-                    .title("Nowosci")
-                    .pages(
-                            new BookUtil.PageBuilder()
-                                    .add(Api.fixColor("&d&lCo dodaliśmy? 03.01.2022"))
-                                    .newLine().newLine()
-                                    .add(Api.fixColor("&5* &8dodaliśmy komende /incognito, dla rang administracyjnych i yt"))
-                                    .newLine().newLine()
-                                    .add(Api.fixColor("&5* &8dodaliśmy komende /kolornick, do wyboru koloru/gradientu nicku dla rang MVP tylko kolor a dla MVP+ tylko kolor i gradient"))
-                                    .build(),
-                            new BookUtil.PageBuilder()
-                                    .add(Api.fixColor("&5* &8dodaliśmy w komendzie /invsee, wygląd armoru gracza"))
-                                    .newLine().newLine()
-                                    .add(Api.fixColor("&a&lCo zmieniliśmy? 03.01.2022"))
-                                    .newLine().newLine()
-                                    .add(Api.fixColor("&2* &8zmieniliśmy wygląd nicku na tabie, sidebarze i w większości wiadomościach na czacie"))
-                                    .build(),
-                            new BookUtil.PageBuilder()
-                                    .add(Api.fixColor("&2* &8zmieniliśmy komendę /list"))
-                                    .newLine().newLine()
-                                    .add(Api.fixColor("&2* &8zmieniliśmy wiadomości gdy ktoś coś kupi w itemshopie"))
-                                    .newLine()
-                                    .add(Api.fixColor("&b&lCo naprawiliśmy? 30.01.2022"))
-                                    .newLine()
-                                    .add(Api.fixColor("&3* &8naprawiliśmy wiadomości w /socialspy"))
-                                    .build(),
-                            new BookUtil.PageBuilder()
-                                    .add(Api.fixColor("&3* &8naprawiono literówki w wiadomościach"))
-                                    .newLine().newLine()
-                                    .add(Api.fixColor("&3* &8naprawiono komende /night"))
-                                    .build(),
-                            new BookUtil.PageBuilder()
-                                    .newLine().newLine()
-                                    .build()
-                    )
-                    .build();
+            //ItemStack book = BookUtil.writtenBook()
+            //        .author("WywrotkaMC")
+            //        .title("Nowosci")
+            //        .pages(
+            //                new BookUtil.PageBuilder()
+            //                        .add(Api.fixColor("&d&lCo dodaliśmy? 03.01.2022"))
+            //                        .newLine().newLine()
+            //                        .add(Api.fixColor("&5* &8dodaliśmy komende /incognito, dla rang administracyjnych i yt"))
+            //                        .newLine().newLine()
+            //                        .add(Api.fixColor("&5* &8dodaliśmy komende /kolornick, do wyboru koloru/gradientu nicku dla rang MVP tylko kolor a dla MVP+ tylko kolor i gradient"))
+            //                        .build(),
+            //                new BookUtil.PageBuilder()
+            //                        .add(Api.fixColor("&5* &8dodaliśmy w komendzie /invsee, wygląd armoru gracza"))
+            //                        .newLine().newLine()
+            //                        .add(Api.fixColor("&a&lCo zmieniliśmy? 03.01.2022"))
+            //                        .newLine().newLine()
+            //                        .add(Api.fixColor("&2* &8zmieniliśmy wygląd nicku na tabie, sidebarze i w większości wiadomościach na czacie"))
+            //                        .build(),
+            //                new BookUtil.PageBuilder()
+            //                        .add(Api.fixColor("&2* &8zmieniliśmy komendę /list"))
+            //                        .newLine().newLine()
+            //                        .add(Api.fixColor("&2* &8zmieniliśmy wiadomości gdy ktoś coś kupi w itemshopie"))
+            //                        .newLine()
+            //                        .add(Api.fixColor("&b&lCo naprawiliśmy? 30.01.2022"))
+            //                        .newLine()
+            //                        .add(Api.fixColor("&3* &8naprawiliśmy wiadomości w /socialspy"))
+            //                        .build(),
+            //                new BookUtil.PageBuilder()
+            //                        .add(Api.fixColor("&3* &8naprawiono literówki w wiadomościach"))
+            //                        .newLine().newLine()
+            //                        .add(Api.fixColor("&3* &8naprawiono komende /night"))
+            //                        .build(),
+            //                new BookUtil.PageBuilder()
+            //                        .newLine().newLine()
+            //                        .build()
+            //        )
+            //        .build();
             //Open book
             //Bukkit.getScheduler().runTaskLater(Main.getPlugin(), new Runnable() {
             //    @Override
@@ -147,53 +163,53 @@ public class PlayerJoinListener implements Listener {
             }
 
             if (Main.pluginConfig.getEvents().isJoinBossBarFlesh()) {
-                BossBar barflesh = Bukkit.createBossBar(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshmessage()), BarColor.WHITE, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
-                barflesh.addPlayer(player.getPlayer());
-                barflesh.setProgress(0);
-                int[] bar_title = {0};
-                Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        if (player.getPlayer() != null && player.getPlayer().isOnline()) {
-                            ++bar_title[0];
-                            if (bar_title[0] == 1) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 2) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 3) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 4) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 5) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 6) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 7) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 8) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 9) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 10) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 11) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 12) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 13) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 14) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else if (bar_title[0] == 15) {
-                                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
-                            } else {
-                                bar_title[0] = 0;
-                                barflesh.setVisible(false);
-                                barflesh.removePlayer(player.getPlayer());
-                            }
-                        }
-                    }
-                }, 0, 6);
+                //BossBar barflesh = Bukkit.createBossBar(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshmessage()), BarColor.WHITE, BarStyle.SOLID, BarFlag.PLAY_BOSS_MUSIC);
+                //barflesh.addPlayer(player.getPlayer());
+                //barflesh.setProgress(0);
+                //int[] bar_title = {0};
+                //Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
+                //    @Override
+                //    public void run() {
+                //        if (player.getPlayer() != null && player.getPlayer().isOnline()) {
+                //            ++bar_title[0];
+                //            if (bar_title[0] == 1) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 2) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 3) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 4) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 5) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 6) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 7) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 8) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 9) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 10) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 11) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 12) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 13) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 14) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor2() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else if (bar_title[0] == 15) {
+                //                barflesh.setTitle(Api.fixColor(Main.pluginConfig.getJoin().getBossbarfleshcolor1() + Main.pluginConfig.getJoin().getBossbarfleshmessage()));
+                //            } else {
+                //                bar_title[0] = 0;
+                //                barflesh.setVisible(false);
+                //                barflesh.removePlayer(player.getPlayer());
+                //            }
+                //        }
+                //    }
+                //}, 0, 6);
             }
 
         }, 5);

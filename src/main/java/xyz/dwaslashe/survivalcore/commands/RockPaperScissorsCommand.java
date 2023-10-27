@@ -23,7 +23,8 @@ import static xyz.dwaslashe.survivalcore.Main.plugin;
 
 public class RockPaperScissorsCommand extends Command {
     public RockPaperScissorsCommand() {
-        super("rockpaperscissors", "/rockpaperscissors <gracz> <zakład(max 50000, min 1000), akceptuj, odmow>", "", "kamienpapiernozyczki");
+        super("rockpaperscissors", "/kamienpapiernozyczki <gracz> <zakład(max 50000, min 1000), akceptuj, odmow>", "", "kamienpapiernozyczki");
+        setPermission("core.command.rockpaperscissors");
         setOnlyPlayer(true);
     }
 
@@ -120,22 +121,19 @@ public class RockPaperScissorsCommand extends Command {
                     choseTypeGame.put(player, "ROCK");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &ekamień!");
                     sendChoseTypeGame(player, secondPlayer);
-                    choseTypeRequests.remove(secondPlayer, player);
-                    choseTypeRequests.remove(player, secondPlayer);
+                    choseTypeRequests.remove(player);
                 } else if (e.getSlot() == 13) {
                     player.closeInventory();
                     choseTypeGame.put(player, "PAPER");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &epapier!");
                     sendChoseTypeGame(player, secondPlayer);
-                    choseTypeRequests.remove(secondPlayer, player);
-                    choseTypeRequests.remove(player, secondPlayer);
+                    choseTypeRequests.remove(player);
                 } else if (e.getSlot() == 15) {
                     player.closeInventory();
                     choseTypeGame.put(player, "SCISSORS");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &enożyczki!");
                     sendChoseTypeGame(player, secondPlayer);
-                    choseTypeRequests.remove(secondPlayer, player);
-                    choseTypeRequests.remove(player, secondPlayer);
+                    choseTypeRequests.remove(player);
                 }
             });
 
@@ -521,62 +519,62 @@ public class RockPaperScissorsCommand extends Command {
                         openResultGui(0, player, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
                         openResultGui(0, secondPlayer, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
 
-                        targetUser.deposit(0.95 * betAmountGame.get(secondPlayer));
+                        targetUser.deposit(1.95 * betAmountGame.get(secondPlayer));
                     } else if (choseTypeGame.get(secondPlayer).equals("PAPER") && choseTypeGame.get(player).equals("SCISSORS")) {
                         openResultGui(0, player, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
                         openResultGui(0, secondPlayer, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
 
-                        user.deposit(0.95 * betAmountGame.get(player));
+                        user.deposit(1.95 * betAmountGame.get(player));
                     } else if (choseTypeGame.get(player).equals("PAPER") && choseTypeGame.get(secondPlayer).equals("ROCK")) {
                         openResultGui(0, player, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
                         openResultGui(0, secondPlayer, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
 
-                        user.deposit(0.95 * betAmountGame.get(player));
+                        user.deposit(1.95 * betAmountGame.get(player));
                     } else if (choseTypeGame.get(secondPlayer).equals("PAPER") && choseTypeGame.get(player).equals("ROCK")) {
                         openResultGui(0, player, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
                         openResultGui(0, secondPlayer, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
 
-                        targetUser.deposit(0.95 * betAmountGame.get(secondPlayer));
+                        targetUser.deposit(1.95 * betAmountGame.get(secondPlayer));
                     } else if (choseTypeGame.get(player).equals("ROCK") && choseTypeGame.get(secondPlayer).equals("PAPER")) {
                         openResultGui(0, player, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
                         openResultGui(0, secondPlayer, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
 
-                        targetUser.deposit(0.95 * betAmountGame.get(secondPlayer));
+                        targetUser.deposit(1.95 * betAmountGame.get(secondPlayer));
                     } else if (choseTypeGame.get(secondPlayer).equals("ROCK") && choseTypeGame.get(player).equals("PAPER")) {
                         openResultGui(0, player, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
                         openResultGui(0, secondPlayer, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
 
-                        user.deposit(0.95 * betAmountGame.get(player));
+                        user.deposit(1.95 * betAmountGame.get(player));
                     } else if (choseTypeGame.get(player).equals("ROCK") && choseTypeGame.get(secondPlayer).equals("SCISSORS")) {
                         openResultGui(0, player, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
                         openResultGui(0, secondPlayer, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
 
-                        user.deposit(0.95 * betAmountGame.get(player));
+                        user.deposit(1.95 * betAmountGame.get(player));
                     } else if (choseTypeGame.get(secondPlayer).equals("ROCK") && choseTypeGame.get(player).equals("SCISSORS")) {
                         openResultGui(0, player, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
                         openResultGui(0, secondPlayer, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
 
-                        targetUser.deposit(0.95 * betAmountGame.get(secondPlayer));
+                        targetUser.deposit(1.95 * betAmountGame.get(secondPlayer));
                     } else if (choseTypeGame.get(player).equals("SCISSORS") && choseTypeGame.get(secondPlayer).equals("ROCK")) {
                         openResultGui(0, player, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
                         openResultGui(0, secondPlayer, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
 
-                        targetUser.deposit(0.95 * betAmountGame.get(secondPlayer));
+                        targetUser.deposit(1.95 * betAmountGame.get(secondPlayer));
                     } else if (choseTypeGame.get(secondPlayer).equals("SCISSORS") && choseTypeGame.get(player).equals("ROCK")) {
                         openResultGui(0, player, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
                         openResultGui(0, secondPlayer, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
 
-                        user.deposit(0.95 * betAmountGame.get(player));
+                        user.deposit(1.95 * betAmountGame.get(player));
                     } else if (choseTypeGame.get(player).equals("SCISSORS") && choseTypeGame.get(secondPlayer).equals("PAPER")) {
                         openResultGui(0, player, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
                         openResultGui(0, secondPlayer, player, secondPlayer, choseTypeGame.get(player), choseTypeGame.get(secondPlayer));
 
-                        user.deposit(0.95 * betAmountGame.get(player));
+                        user.deposit(1.95 * betAmountGame.get(player));
                     } else if (choseTypeGame.get(secondPlayer).equals("SCISSORS") && choseTypeGame.get(player).equals("PAPER")) {
                         openResultGui(0, player, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
                         openResultGui(0, secondPlayer, secondPlayer, player, choseTypeGame.get(secondPlayer), choseTypeGame.get(player));
 
-                        targetUser.deposit(0.95 * betAmountGame.get(secondPlayer));
+                        targetUser.deposit(1.95 * betAmountGame.get(secondPlayer));
                     }
                 });
             });
@@ -592,6 +590,7 @@ public class RockPaperScissorsCommand extends Command {
             List<String> stringList = Arrays.asList("ROCK", "PAPER", "SCISSORS");
             String randomList = RandomApi.randomElementList(stringList);
             Player secondPlayer = gameRequests.get(player);
+            choseTypeRequests.remove(player);
             choseTypeGame.put(player, randomList);
             sendChoseTypeGame(player, secondPlayer);
             System.out.println("InventoryClose in Game, random: " + randomList);
@@ -607,6 +606,7 @@ public class RockPaperScissorsCommand extends Command {
             List<String> stringList = Arrays.asList("ROCK", "PAPER", "SCISSORS");
             String randomList = RandomApi.randomElementList(stringList);
             Player secondPlayer = gameRequests.get(player);
+            choseTypeRequests.remove(player);
             choseTypeGame.put(player, randomList);
             sendChoseTypeGame(player, secondPlayer);
             System.out.println("Player Quit in Game, random: " + randomList);
