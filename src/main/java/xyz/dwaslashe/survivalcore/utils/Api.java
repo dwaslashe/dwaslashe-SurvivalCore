@@ -6,6 +6,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -205,6 +206,21 @@ public class Api {
         return scaledValue;
     }
 
+    public static List<Player> getNearbyPlayers(Player player, int distance) {
+        List<Player> nearbyPlayers = new ArrayList<>();
+        World world = player.getWorld();
+
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            if (onlinePlayer != player && onlinePlayer.getWorld() == world) {
+                double playerDistance = player.getLocation().distance(onlinePlayer.getLocation());
+                if (playerDistance <= distance) {
+                    nearbyPlayers.add(onlinePlayer);
+                }
+            }
+        }
+
+        return nearbyPlayers;
+    }
     public static boolean isNearby(Player player, Player nearbyPlayer, int maxDistance) {
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (all == player) {

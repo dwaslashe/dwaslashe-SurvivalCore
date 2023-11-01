@@ -7,10 +7,12 @@ import net.saidora.api.events.list.TaskEvent;
 import net.saidora.api.extension.PlayerExtension;
 import net.saidora.economy.manager.UserManager;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import pl.minecodes.plots.api.plot.PlotServiceApi;
 import xyz.dwaslashe.survivalcore.configs.*;
@@ -198,6 +200,14 @@ public class Main extends JavaPlugin {
                 }
             }, 0, 20 * 60 * 4);
         }
+
+        //Pirate Chest
+
+        Location location = new Location(Bukkit.getWorld("spawn"), -2086, 91, 923);
+        location.getChunk().load(true);
+        Block block = location.getBlock();
+        block.setType(Material.CHEST);
+        block.setMetadata("PirateBlockEvent", new FixedMetadataValue(Main.getPlugin(), ""));
 
         //Database
 
@@ -638,12 +648,11 @@ public class Main extends JavaPlugin {
         itemHelper = new ItemHelper(Material.PLAYER_HEAD);
         itemHelper.setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWVjY2RhNzBiZWFkOWY2N2IzOWRjZThiMDQwYWQwZjA4ZWZjMjMwNWMxZjY4NDYxMTY0N2EwMThhNjY0NTJjMiJ9fX0=");
         itemHelper.setDisplayName(Api.fixColor("&#fad014Anioł"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Gdy masz ją na sobie jesteś w stanie", " &#E7E7E7latać &#14a9fa2x szybciej&#E7E7E7 i dostajesz", " &#E7E7E7efekt &#fa7b14szybkiego kopania III")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Gdy masz ją na sobie jesteś w stanie", " &#E7E7E7dostajesz &#E7E7E7efekt &#fa7b14szybkiego kopania III")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         item = new CustomItemImpl(9, itemHelper);
         item.whenWear().add(new PotionEffect(PotionEffectType.FAST_DIGGING, 60, 2));
-        itemHelper.addAttributeModifier(Attribute.GENERIC_FLYING_SPEED,2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 
         itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR,3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
         itemHelper.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS,2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);

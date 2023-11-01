@@ -29,6 +29,7 @@ import xyz.dwaslashe.survivalcore.helpers.InventoryHelper;
 import xyz.dwaslashe.survivalcore.objects.Logout;
 import xyz.dwaslashe.survivalcore.objects.User;
 import xyz.dwaslashe.survivalcore.utils.Api;
+import xyz.dwaslashe.survivalcore.utils.RegionApi;
 import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
 import java.text.DecimalFormat;
@@ -654,80 +655,82 @@ public class PlayerInteractListener implements Listener {
             }
         }
 
-        if (event.getMaterial() == Material.PAPER && event.getAction().equals(Action.RIGHT_CLICK_AIR) && Objects.equals(event.getHand(), EquipmentSlot.HAND)) {
-            ItemHelper itemHelper = ItemHelper.edit(itemInHand);
-            DecimalFormat decimalFormat = new DecimalFormat("##.####");
-            itemHelper.editNbtTagCompound(nbtItem -> {
-                if (nbtItem.hasKey("money-value")) {
-                    double value = nbtItem.getDouble("money-value");
-                    UserManager.getInstance().getUser(player).ifPresent(user -> user.deposit(value));
-                    Main.getPlugin().getLogger().info(Api.fixColor("[WITHDRAW] &aGracz &e" + player.getName() + " &awplacil banknot o wartosci: &e$" + decimalFormat.format(value)));
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na konto &#FFF88F" + decimalFormat.format(value) + " &#FFC42E$");
-                    player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
-                } else {
-                    itemHelper.editItemMeta(ItemMeta.class, itemMeta -> {
-                        if (itemMeta.getDisplayName().contains("Banknot gotówki")) {
-                            if (!itemInHand.getItemMeta().hasLore()) {
-                                return;
+        if (!RegionApi.isInRegion(player.getLocation(), "pvp")) {
+            if (event.getMaterial() == Material.PAPER && event.getAction().equals(Action.RIGHT_CLICK_AIR) && Objects.equals(event.getHand(), EquipmentSlot.HAND)) {
+                ItemHelper itemHelper = ItemHelper.edit(itemInHand);
+                DecimalFormat decimalFormat = new DecimalFormat("##.####");
+                itemHelper.editNbtTagCompound(nbtItem -> {
+                    if (nbtItem.hasKey("money-value")) {
+                        double value = nbtItem.getDouble("money-value");
+                        UserManager.getInstance().getUser(player).ifPresent(user -> user.deposit(value));
+                        Main.getPlugin().getLogger().info(Api.fixColor("[WITHDRAW] &aGracz &e" + player.getName() + " &awplacil banknot o wartosci: &e$" + decimalFormat.format(value)));
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na konto &#FFF88F" + decimalFormat.format(value) + " &#FFC42E$");
+                        player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+                    } else {
+                        itemHelper.editItemMeta(ItemMeta.class, itemMeta -> {
+                            if (itemMeta.getDisplayName().contains("Banknot gotówki")) {
+                                if (!itemInHand.getItemMeta().hasLore()) {
+                                    return;
+                                }
+                                float amount = Float.parseFloat(ChatColor.stripColor(player.getItemInHand().getItemMeta().getLore().get(1)).replace('$', ' ').replace("Wartość:", " "));
+                                UserManager.getInstance().getUser(event.getPlayer()).ifPresent(user -> user.deposit(amount));
+                                Main.getPlugin().getLogger().info(Api.fixColor("[WITHDRAW] &aGracz &e" + player.getName() + " &awplacil banknot o wartosci: &e$" + amount));
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na konto &#FFF88F" + amount + " &#FFC42E$");
+                                player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
                             }
-                            float amount = Float.parseFloat(ChatColor.stripColor(player.getItemInHand().getItemMeta().getLore().get(1)).replace('$', ' ').replace("Wartość:", " "));
-                            UserManager.getInstance().getUser(event.getPlayer()).ifPresent(user -> user.deposit(amount));
-                            Main.getPlugin().getLogger().info(Api.fixColor("[WITHDRAW] &aGracz &e" + player.getName() + " &awplacil banknot o wartosci: &e$" + amount));
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na konto &#FFF88F" + amount + " &#FFC42E$");
-                            player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
-                        }
-                    });
-                }
-            });
-        } else if (event.getMaterial() == Material.EXPERIENCE_BOTTLE && event.getAction().isRightClick() && Objects.equals(event.getHand(), EquipmentSlot.HAND)) {
-            ItemHelper itemHelper = ItemHelper.edit(itemInHand);
-            itemHelper.editNbtTagCompound(nbtItem -> {
-                if (nbtItem.hasKey("exp-value")) {
-                    int value = nbtItem.getInteger("exp-value");
-                    PlayerExtension.getPlayerExtend(player, extension -> extension.addExperience(value));
-                    Main.getPlugin().getLogger().info(Api.fixColor("[XPBOTTLE] &aGracz &e" + player.getName() + " &awplacil butelke doswiadczenie wartosci EXP: &e" + value));
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otrzymałeś &2" + value + " EXP");
-                    player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
-                    event.setCancelled(true);
-                    event.setUseInteractedBlock(Event.Result.DENY);
-                    event.setUseItemInHand(Event.Result.DENY);
-                } else {
-                    itemHelper.editItemMeta(ItemMeta.class, itemMeta -> {
-                        if (itemMeta.getDisplayName().contains("Butelka doświadczenia")) {
-                            if (!itemInHand.getItemMeta().hasLore()) {
-                                return;
-                            }
+                        });
+                    }
+                });
+            } else if (event.getMaterial() == Material.EXPERIENCE_BOTTLE && event.getAction().isRightClick() && Objects.equals(event.getHand(), EquipmentSlot.HAND)) {
+                ItemHelper itemHelper = ItemHelper.edit(itemInHand);
+                itemHelper.editNbtTagCompound(nbtItem -> {
+                    if (nbtItem.hasKey("exp-value")) {
+                        int value = nbtItem.getInteger("exp-value");
+                        PlayerExtension.getPlayerExtend(player, extension -> extension.addExperience(value));
+                        Main.getPlugin().getLogger().info(Api.fixColor("[XPBOTTLE] &aGracz &e" + player.getName() + " &awplacil butelke doswiadczenie wartosci EXP: &e" + value));
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otrzymałeś &2" + value + " EXP");
+                        player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+                        event.setCancelled(true);
+                        event.setUseInteractedBlock(Event.Result.DENY);
+                        event.setUseItemInHand(Event.Result.DENY);
+                    } else {
+                        itemHelper.editItemMeta(ItemMeta.class, itemMeta -> {
+                            if (itemMeta.getDisplayName().contains("Butelka doświadczenia")) {
+                                if (!itemInHand.getItemMeta().hasLore()) {
+                                    return;
+                                }
 
-                            int amount = Integer.parseInt(ChatColor.stripColor(player.getItemInHand().getItemMeta().getLore().get(1)).replace("EXP", " ").replace("Doświadczenie:", " ").replace(" ", ""));
-                            PlayerExtension.getPlayerExtend(player, extension -> {
-                                extension.addExperience(amount);
-                            });
-                            Main.getPlugin().getLogger().info(Api.fixColor("[XPBOTTLE] &aGracz &e" + player.getName() + " &awplacil butelke doswiadczenie wartosci EXP: &e" + amount));
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otrzymałeś &2" + amount + " EXP");
-                            player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
-                            event.setCancelled(true);
-                            event.setUseInteractedBlock(Event.Result.DENY);
-                            event.setUseItemInHand(Event.Result.DENY);
-                        }
-                    });
+                                int amount = Integer.parseInt(ChatColor.stripColor(player.getItemInHand().getItemMeta().getLore().get(1)).replace("EXP", " ").replace("Doświadczenie:", " ").replace(" ", ""));
+                                PlayerExtension.getPlayerExtend(player, extension -> {
+                                    extension.addExperience(amount);
+                                });
+                                Main.getPlugin().getLogger().info(Api.fixColor("[XPBOTTLE] &aGracz &e" + player.getName() + " &awplacil butelke doswiadczenie wartosci EXP: &e" + amount));
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otrzymałeś &2" + amount + " EXP");
+                                player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+                                event.setCancelled(true);
+                                event.setUseInteractedBlock(Event.Result.DENY);
+                                event.setUseItemInHand(Event.Result.DENY);
+                            }
+                        });
+                    }
+                });
+            } else if (event.getAction() == Action.RIGHT_CLICK_AIR && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                if (Main.pluginConfig.getEvents().isNoBedExplose()) {
+                    if (event.getClickedBlock().toString().toLowerCase().contains("BED")) {
+                        event.setUseInteractedBlock(Event.Result.DENY);
+                        event.setCancelled(true);
+                    }
                 }
-            });
-        } else if (event.getAction() == Action.RIGHT_CLICK_AIR && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (Main.pluginConfig.getEvents().isNoBedExplose()) {
-                if (event.getClickedBlock().toString().toLowerCase().contains("BED")) {
-                    event.setUseInteractedBlock(Event.Result.DENY);
-                    event.setCancelled(true);
+                if (Main.pluginConfig.getEvents().isKelpSmoke()) {
+                    if (event.getClickedBlock().getType().equals(Material.DRIED_KELP_BLOCK)) {
+                        if (event.getItem().getType() != Material.FLINT_AND_STEEL) return;
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 150, 50));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, -50));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 2));
+                    }
                 }
             }
-            if (Main.pluginConfig.getEvents().isKelpSmoke()) {
-                if (event.getClickedBlock().getType().equals(Material.DRIED_KELP_BLOCK)) {
-                    if (event.getItem().getType() != Material.FLINT_AND_STEEL) return;
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 150, 50));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, -50));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 2));
-                }
-            }
-        }
+        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego używać podczas duela!");
     }
 
     public void EnderpearlCooldown(Main plugin) {

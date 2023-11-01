@@ -65,9 +65,11 @@ public class PlayerChatListener implements Listener {
            return true;
         });
         events.add((s, event) -> {
-            if (ChatCommand.disablechat.get(ChatCommand.TYPE.AVAILABLE)) {
+            if (ChatCommand.switchChat.get("switchChat") == null) return true;
+            if (ChatCommand.switchChat.get("switchChat") == true) return true;
+            if (!ChatCommand.switchChat.get("switchChat")) {
                 if (!event.getPlayer().hasPermission("core.chat.bypass")) {
-                    Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cCzat jest wyłączony!");
+                    Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz pisać ponieważ czat jest jest wyłączony!");
                     return false;
                 }
             }

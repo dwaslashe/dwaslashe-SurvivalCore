@@ -66,15 +66,13 @@ public class PlayerJoinListener implements Listener {
 
             if (warp == null) {
                 Location randomLocation = LocationApi.getRandomLocation(Bukkit.getWorld("world"));
-                player.teleport(randomLocation);
                 player.teleportAsync(randomLocation);
                 return;
             }
 
             Location spawnLocation = new Location(Bukkit.getServer().getWorld(warp.getLocation().getWorld().getKey()), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
-            player.teleport(spawnLocation);
             player.teleportAsync(spawnLocation);
-        }, 45L);
+        }, 5L);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)

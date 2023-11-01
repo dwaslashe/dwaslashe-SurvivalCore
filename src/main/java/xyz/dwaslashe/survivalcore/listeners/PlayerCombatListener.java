@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.vehicle.VehicleEnterEvent;
 import pl.minecodes.plots.api.event.entry.PrePlotEntryEvent;
 import pl.minecodes.plots.api.event.leave.PrePlotLeaveEvent;
 import xyz.dwaslashe.survivalcore.Main;
@@ -56,6 +57,9 @@ public class PlayerCombatListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onDamage(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof Player && !e.isCancelled() && (e.getDamager() instanceof Player)) {
+            if (((Player) e.getDamager()).getPlayer().getWorld().equals("spawn")) return;
+            if (((Player) e.getEntity()).getPlayer().getWorld().equals("spawn")) return;
+
             Logout logout = Logout.get(((Player) e.getDamager()).getPlayer());
             Logout logout_damager = Logout.get(((Player) e.getEntity()).getPlayer());
 
@@ -74,6 +78,8 @@ public class PlayerCombatListener implements Listener {
 
         if (e.getDamager() instanceof Projectile projectile && projectile.getShooter() instanceof Player) {
             if (e.getDamager() instanceof Player) {
+                if (((Player) e.getDamager()).getPlayer().getWorld().equals("spawn")) return;
+                if (((Player) e.getEntity()).getPlayer().getWorld().equals("spawn")) return;
                 Logout logout = Logout.get(((Player) e.getDamager()).getPlayer());
                 Logout logout_damager = Logout.get(((Player) e.getEntity()).getPlayer());
 
@@ -105,6 +111,17 @@ public class PlayerCombatListener implements Listener {
                     break;
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onEnterVehicle(VehicleEnterEvent event) {
+        Player player = (Player) event.getEntered();
+        Logout logout = Logout.get(player);
+
+        if (logout.getTime() > System.currentTimeMillis()) {
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wsiąść do pojazdu podczas walki!");
+            event.setCancelled(true);
         }
     }
 

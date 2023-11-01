@@ -40,13 +40,13 @@ import java.util.*;
 
 public class BoosterCommand extends Command implements Listener {
     public BoosterCommand() {
-        super("booster", "/booster <global> <mobcoin, speed, exp, haste> <multiplication> <time(max 1d)>", "");
+        super("booster", "/booster <global, remove> <mobcoin, speed, exp, haste> <multiplication> <time(max 1d)>", "");
         setPermission("core.command.booster");
     }
 
     @Override
     public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
-        if (args.length == 1) return Api.startsWith(Arrays.asList("global"), args[0]);
+        if (args.length == 1) return Api.startsWith(Arrays.asList("global", "remove"), args[0]);
         else if (args.length == 2) return Api.startsWith(Arrays.asList("mobcoin", "speed", "exp", "haste"), args[1]);
         else if (args.length == 3) return Api.startsWith(Arrays.asList("2", "3"), args[2]);
         else if (args.length == 4) return Api.startsWith(Arrays.asList("1h"), args[3]);
@@ -56,8 +56,8 @@ public class BoosterCommand extends Command implements Listener {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        if (args.length >= 5) {
-            if (args[0].equalsIgnoreCase("global")) {
+        if (args[0].equalsIgnoreCase("global")) {
+            if (args.length >= 5) {
                 if (args[1].equalsIgnoreCase("mobcoin") || args[1].equalsIgnoreCase("speed") || args[1].equalsIgnoreCase("exp") || args[1].equalsIgnoreCase("haste")) {
                     if (Api.isInt(args[2])) {
                         if (!args[3].isEmpty() || (TimerApi.getTime("1d") < TimerApi.getTime(args[3]))) {
@@ -81,7 +81,16 @@ public class BoosterCommand extends Command implements Listener {
                     } else wrongUsage();
                 } else wrongUsage();
             } else wrongUsage();
-        } else wrongUsage();
+        } else if (args[0].equalsIgnoreCase("remove")) {
+            if (args.length >= 3) {
+                if (booleanHashMap.containsKey(args[1])) {
+                    if (booleanHashMap.get(args[1]) == Integer.valueOf(args[2])) {
+                        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cPomyślnie usunąłeś ulepszenie!");
+                        booleanHashMap.remove(args[1]);
+                    } else wrongUsage();
+                } else wrongUsage();
+            } else wrongUsage();
+        }
     }
 
     public static HashMap<String, Integer> booleanHashMap = new HashMap<>();
@@ -101,6 +110,8 @@ public class BoosterCommand extends Command implements Listener {
             @Override
             public void run() {
                 if (taskTime[0] < time) {
+                    if (!booleanHashMap.containsKey(type)) return;
+
                     taskTime[0] = taskTime[0] + 1000L;
 
                     barTime[0] -= 1000L;
@@ -163,7 +174,7 @@ public class BoosterCommand extends Command implements Listener {
                     itemMeta.setLore(Api.fixColor(Arrays.asList("", " &fJest to waluta, która dropi od zabicia moba przez", " &fgracza. Waluta możesz ulepszać spawner czy zmieniać mob!", "")));
                 }).getItemStack();
 
-                if (RandomApi.getChance(2.5 * booleanHashMap.get("MOBCOIN") - 2.5)) {
+                if (RandomApi.getChance(2.0 * booleanHashMap.get("MOBCOIN") - 2.0)) {
                     event.getDrops().add(mobCoin);
                 }
             }

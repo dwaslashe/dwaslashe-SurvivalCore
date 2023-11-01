@@ -35,6 +35,7 @@ import org.bukkit.material.SpawnEgg;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.maxgamer.quickshop.api.event.ShopPurchaseEvent;
 import pl.minecodes.plots.api.event.entry.PrePlotEntryEvent;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.MarryCache;
@@ -83,12 +84,25 @@ public class OthersListener implements Listener {
     static Set<UUID> snowballs = new HashSet<>(), shooters = new HashSet<>();
 
     @EventHandler
+    public void onShop(ShopPurchaseEvent event) {
+        Player ownerShop = Bukkit.getPlayer(event.getShop().getOwner());
+        Player player = event.getPlayer();
+        if (ownerShop == null) {
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz kupować ani sprzedawać gdy właściciel sklepu jest offline!");
+            event.setCancelled(true);
+        } else if (!ownerShop.isOnline()) {
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz kupować ani sprzedawać gdy właściciel sklepu jest offline!");
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onDrugPlantEvent(DrugPlantPlantEvent event) {
         Player player = event.getPlayer();
         if (event.isCancelled()) return;
 
         if (delayPlantDrugHook.containsKey(player.getName()) && delayPlantDrugHook.get(player.getName()) > System.currentTimeMillis()) {
-            if (player.hasPermission("core.plant.drugs.bypass")) return;
+            if (player.hasPermission("core.cooldown.bypass")) return;
             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zasadzić sadzonke narkotyku musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayPlantDrugHook.get(player.getName()))));
             event.setCancelled(true);
             player.closeInventory();
@@ -98,7 +112,7 @@ public class OthersListener implements Listener {
 
         event.setCancelled(false);
 
-        delayPlantDrugHook.put(player.getName(), TimerApi.parseDateDiff("3m", true));
+        delayPlantDrugHook.put(player.getName(), TimerApi.parseDateDiff("1m", true));
     }
 
     @EventHandler
@@ -511,10 +525,15 @@ public class OthersListener implements Listener {
         Protection protection;
         if(event.getDamager() instanceof Player damager){
             protection = Protection.get(damager.getUniqueId());
+
             if(protection != null && protection.getProtection() > System.currentTimeMillis()){
+                if (RegionApi.isInRegion(damager.getLocation(), "pvp")) return;
+
                 Api.sendMessage(damager, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz uderzać mając ochrone!");
                 event.setCancelled(true);
             } else if(event.getEntity() instanceof Player victim){
+                if (RegionApi.isInRegion(victim.getLocation(), "pvp"))
+
                 protection = Protection.get(victim.getUniqueId());
                 if(protection != null && protection.getProtection() > System.currentTimeMillis()){
                     Api.sendMessage(damager, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz uderzyć graczy, który ma ochrone!");

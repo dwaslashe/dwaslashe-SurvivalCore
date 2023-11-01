@@ -5,9 +5,6 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.utils.Api;
@@ -20,10 +17,7 @@ import java.util.Map;
 @Getter @Setter
 public class ChatCommand extends Command {
 
-    public static Map<TYPE, Boolean> disablechat = new HashMap<TYPE, Boolean>(){{
-        put(TYPE.AVAILABLE, false);
-        put(TYPE.WRITABLE, true);
-    }};
+    public static HashMap<String, Boolean> switchChat = new HashMap<>();
 
     public ChatCommand() {
         super("chat", "/chat <on, off, clear>", "");
@@ -38,13 +32,13 @@ public class ChatCommand extends Command {
             if (args[0].equalsIgnoreCase("on")) {
                 Api.sendBroadcast(Main.pluginConfig.getChat().getOn());
                 Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś czat");
-                disablechat.remove(TYPE.WRITABLE);
-                disablechat.put(TYPE.WRITABLE, false);
+                switchChat.remove("switchChat");
+                switchChat.put("switchChat", true);
             } else if (args[0].equalsIgnoreCase("off")) {
                 Api.sendBroadcast(Main.pluginConfig.getChat().getOff());
                 Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyłączyłeś czat");
-                disablechat.remove(TYPE.WRITABLE);
-                disablechat.put(TYPE.WRITABLE, true);
+                switchChat.remove("switchChat");
+                switchChat.put("switchChat", false);
             } else if (args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("cc") || args[0].equalsIgnoreCase("c")) {
                 Bukkit.getOnlinePlayers().forEach(ChatCommand::clear);
                 Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyczyściłeś czat");
@@ -66,7 +60,7 @@ public class ChatCommand extends Command {
     }
 
     public enum TYPE {
-        AVAILABLE,
-        WRITABLE
+        TRUE,
+        FALSE
     }
 }

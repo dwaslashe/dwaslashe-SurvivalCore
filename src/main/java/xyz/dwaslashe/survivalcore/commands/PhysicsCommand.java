@@ -151,7 +151,7 @@ public class PhysicsCommand extends Command {
             inventoryHelper.setItem(21, (userTree.getAnimation().equals("sand")) ? glass_lime : glass_red);
             inventoryHelper.setItem(14, quick);
             inventoryHelper.setItem(23, (userTree.getAnimation().equals("quick")) ? glass_lime : glass_red);
-            inventoryHelper.setItem(16, animation);
+            //inventoryHelper.setItem(16, animation);
             //inventoryHelper.setItem(25, (userTree.getAnimation().equals("animation")) ? glass_lime : glass_red);
             inventoryHelper.setItem(40, back);
 
