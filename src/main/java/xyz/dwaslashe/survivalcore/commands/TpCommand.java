@@ -6,8 +6,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
+import xyz.dwaslashe.survivalcore.helpers.DiscordHelper;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,30 +22,49 @@ public class TpCommand extends Command {
     }
 
     @Override
-    public void commandExecute(CommandSender s, String[] args) {
-        Player p = (Player) s;
-        Player p2;
+    public void commandExecute(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
+        Player secondPlayer;
+
+        DiscordHelper discordHelper = new DiscordHelper("https://discord.com/api/webhooks/1171894824354467841/b5pqy9eszrbCrepGo1Br0lVe69ApdlpulIhpw6MbRc1bvRtVQ8oHhadoFwVITo3wLizC");
+
         if (args.length == 0) {
             wrongUsage();
             return;
         } else if (args.length == 1) {
-            p2 = Bukkit.getPlayer(args[0]);
-            if (p2 == null) {
+            secondPlayer = Bukkit.getPlayer(args[0]);
+            if (secondPlayer == null) {
                 offlinePlayer();
                 return;
             } else {
-                Location loc = p2.getLocation();
-                p.teleport(loc);
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aZostales przeteleportowany do &e" + p2.getName());
+                Location loc = secondPlayer.getLocation();
+                player.teleport(loc);
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aZostales przeteleportowany do &e" + secondPlayer.getName());
+                discordHelper.setUsername(player.getName() + " (TELEPORT DO GRACZA)");
+                discordHelper.setAvatarUrl("https://minotar.net/avatar/" + player.getName());
+                discordHelper.setContent("Gracz **" + player.getName() + "** przeteleportował się do: **'" + secondPlayer.getName() + "'**, kordy gracza **X: " + secondPlayer.getLocation().getBlockX() + ", Y: " + secondPlayer.getLocation().getBlockY() + ", Z: " + secondPlayer.getLocation().getBlockX() + "**");
+                try {
+                    discordHelper.execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (args.length == 2) {
-            p2 = Bukkit.getPlayer(args[0]);
-            Player p3 = Bukkit.getPlayer(args[1]);
-            if (p2 != null && p3 != null) {
-                Location loc = p3.getLocation();
-                p2.teleport(loc);
-                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + p3.getName() + " &aprzeteleportowal Ciebie do siebie!");
-                Api.sendMessage(p3, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowałeś do siebie gracza &e" + p2.getName());
+            secondPlayer = Bukkit.getPlayer(args[0]);
+            Player thirdPlayer = Bukkit.getPlayer(args[1]);
+            if (secondPlayer != null && thirdPlayer != null) {
+                Location loc = thirdPlayer.getLocation();
+                secondPlayer.teleport(loc);
+                Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + thirdPlayer.getName() + " &aprzeteleportowal Ciebie do siebie!");
+                Api.sendMessage(thirdPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowałeś do siebie gracza &e" + secondPlayer.getName());
+                discordHelper.setUsername(player.getName() + " (TELEPORT GRACZA DO GRACZA)");
+                discordHelper.setAvatarUrl("https://minotar.net/avatar/" + player.getName());
+                discordHelper.setContent("Gracz **" + player.getName() + "** przeteleportował gracza: **'" + secondPlayer.getName() + "'** do **'" + thirdPlayer.getName() + "'**");
+                try {
+                    discordHelper.execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else {
                 offlinePlayer();
                 return;
@@ -53,23 +74,40 @@ public class TpCommand extends Command {
                 final double z = Double.parseDouble(args[args.length - 1]);
                 final double y = Double.parseDouble(args[args.length - 2]);
                 final double x = Double.parseDouble(args[args.length - 3]);
-                Location loc = new Location(p.getWorld(), x, y, z);
-                p.teleport(loc);
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zostałeś przeteleportowany na kordynaty!");
+                Location loc = new Location(player.getWorld(), x, y, z);
+                player.teleport(loc);
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zostałeś przeteleportowany na kordynaty!");
+                discordHelper.setUsername(player.getName() + " (TELEPORT NA KORDY)");
+                discordHelper.setAvatarUrl("https://minotar.net/avatar/" + player.getName());
+                discordHelper.setContent("Gracz **" + player.getName() + "** przeteleportował się na kordy: **X: " + x + "**, **Y: " + y + "**, **Z: " + z + "**");
+                try {
+                    discordHelper.execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else wrongUsage();
         } else if (args.length == 4) {
-            p2 = Bukkit.getPlayer(args[0]);
-            if (p2 == null) {
+            secondPlayer = Bukkit.getPlayer(args[0]);
+            if (secondPlayer == null) {
                 offlinePlayer();
                 return;
             } else {
                 final double z = Double.parseDouble(args[args.length - 1]);
                 final double y = Double.parseDouble(args[args.length - 2]);
                 final double x = Double.parseDouble(args[args.length - 3]);
-                Location loc = new Location(p.getWorld(), x, y, z);
-                p2.teleport(loc);
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie gracz &e" + p2.getName() + " &azostał przeteleportwany na kordynaty!");
-                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś przeteleportowany na kordynaty!");
+                Location loc = new Location(player.getWorld(), x, y, z);
+                secondPlayer.teleport(loc);
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie gracz &e" + secondPlayer.getName() + " &azostał przeteleportwany na kordynaty!");
+                Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś przeteleportowany na kordynaty!");
+
+                discordHelper.setUsername(player.getName() + " (TELEPORT GRACZA NA KORDY)");
+                discordHelper.setAvatarUrl("https://minotar.net/avatar/" + player.getName());
+                discordHelper.setContent("Gracz **" + player.getName() + "** przeteleportował gracza **'" + secondPlayer.getName() +  "'** na kordy: **X: " + x + "**, **Y: " + y + "**, **Z: " + z + "**");
+                try {
+                    discordHelper.execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } else wrongUsage();
     }

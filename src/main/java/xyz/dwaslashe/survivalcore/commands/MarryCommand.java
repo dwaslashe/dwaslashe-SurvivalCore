@@ -1,5 +1,6 @@
 package xyz.dwaslashe.survivalcore.commands;
 
+import me.realized.duels.DuelsPlugin;
 import net.saidora.api.notifications.NotificationBuilder;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -9,6 +10,7 @@ import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.MarryCache;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.helpers.InventoryHelper;
+import xyz.dwaslashe.survivalcore.objects.Logout;
 import xyz.dwaslashe.survivalcore.objects.Marry;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.RegionApi;
@@ -128,6 +130,17 @@ public class MarryCommand extends Command {
                         Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz dać prezent swojemu małżonkowi bo nie trzymasz żadnego przedmiotu!");
                         return;
                     }
+                    DuelsPlugin duelsPlugin = new DuelsPlugin();
+                    if (duelsPlugin.getArenaManager().isInMatch(husband)) {
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz dać prezent swojemu małżonkowi bo jest w trakcie walki!");
+                        return;
+                    }
+                    Logout logout = Logout.get(husband);
+                    if (logout.getTime() > System.currentTimeMillis()) {
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz dać prezent swojemu małżonkowi bo jest w trakcie walki!");
+                        return;
+                    }
+
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś prezent swojemu małżonkowi!");
                     Api.sendMessage(husband, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dostałeś prezent od swojego małżonka!");
                     player.getInventory().remove(itemStack);

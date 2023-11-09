@@ -1,5 +1,7 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
+import es.pollitoyeye.vehicles.events.VehicleEnterEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -15,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.event.vehicle.VehicleEnterEvent;
 import pl.minecodes.plots.api.event.entry.PrePlotEntryEvent;
 import pl.minecodes.plots.api.event.leave.PrePlotLeaveEvent;
 import xyz.dwaslashe.survivalcore.Main;
@@ -116,7 +117,7 @@ public class PlayerCombatListener implements Listener {
 
     @EventHandler
     public void onEnterVehicle(VehicleEnterEvent event) {
-        Player player = (Player) event.getEntered();
+        Player player = event.getPlayer();
         Logout logout = Logout.get(player);
 
         if (logout.getTime() > System.currentTimeMillis()) {

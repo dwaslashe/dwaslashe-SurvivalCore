@@ -8,7 +8,12 @@ import lombok.Getter;
 import lombok.Setter;
 import me.badbones69.blockparticles.api.ParticleManager;
 import me.dexuby.UltimateDrugs.api.DrugPlantPlantEvent;
+import net.brcdev.shopgui.event.ShopPostTransactionEvent;
+import net.brcdev.shopgui.shop.ShopManager;
+import net.brcdev.shopgui.shop.ShopTransactionResult;
+import net.saidora.api.helpers.ItemHelper;
 import net.saidora.api.helpers.MathHelper;
+import net.saidora.economy.manager.UserManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -19,6 +24,7 @@ import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.command.Command;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -81,10 +87,79 @@ public class OthersListener implements Listener {
             .setLore(Arrays.asList("", " &#E7E7E7Masz &#9DF89F20% &#E7E7E7szans na złapanie zwierzęcia w jajko", " &#E7E7E7wyrzucając &#ee1515Poke&#f0f0f0Balla &#E7E7E7prosto w zwierzecie!"))
             .getItemStack();
 
+    public static ItemStack weedLow = new ItemApi(Material.GREEN_DYE)
+            .setName("&x&f&a&2&d&1&eKonopia niskiej jakości")
+            .setLore(Arrays.asList("", " &x&e&7&e&7&e&7Przepal w piecu aby móc ją skonsumować", " &x&e&7&e&7&e&7lub sprzedaj za pieniądze u dilera!"))
+            .getItemStack();
+
+    public static ItemStack weedMedium = new ItemApi(Material.GREEN_DYE)
+            .setName("&x&f&a&7&a&1&eKonopia średniej jakości")
+            .setLore(Arrays.asList("", " &x&e&7&e&7&e&7Przepal w piecu aby móc ją skonsumować", " &x&e&7&e&7&e&7lub sprzedaj za pieniądze u dilera!"))
+            .getItemStack();
+
+    public static ItemStack weedHigh = new ItemApi(Material.GREEN_DYE)
+            .setName("&x&3&b&f&a&1&eKonopia wysokiej jakości")
+            .setLore(Arrays.asList("", " &x&e&7&e&7&e&7Przepal w piecu aby móc ją skonsumować", " &x&e&7&e&7&e&7lub sprzedaj za pieniądze u dilera!"))
+            .getItemStack();
+
+    public static ItemStack cleanCocaine = new ItemApi(Material.SUGAR)
+            .setName("&x&e&d&b&0&7&2Czysta kokaina")
+            .setLore(Arrays.asList("", " &x&e&7&e&7&e&7Wciągnij ją lub sprzedaj u dilera!", "", " &x&f&b&f&d&8&c&nKliknij prawym, aby wciągnąć do nosa kokaine!"))
+            .getItemStack();
+
+    public static ItemStack cleanAmphetamine = new ItemApi(Material.SUGAR)
+            .setName("&x&d&1&e&3&e&dCzysta amfetamina")
+            .setLore(Arrays.asList("", " &x&e&7&e&7&e&7Wciągnij ją lub sprzedaj u dilera!", "", " &x&f&b&f&d&8&c&nKliknij prawym, aby wciągnąć do nosa amfetamine!"))
+            .getItemStack();
+
+    public static ItemStack hoochLow = new ItemApi(Material.HONEY_BOTTLE)
+            .setName("&x&f&5&a&7&4&2Bimber niskiej jakości")
+            .setLore(Arrays.asList("", " &x&e&7&e&7&e&7Sprzedaj u Włodzimierza Białego aby umylić mu wieczór"))
+            .getItemStack();
+
+    public static ItemStack hoochMedium = new ItemApi(Material.HONEY_BOTTLE)
+            .setName("&x&d&e&9&4&3&3Bimber średniej jakości")
+            .setLore(Arrays.asList("", " &x&e&7&e&7&e&7Sprzedaj u Włodzimierza Białego aby umylić mu wieczór"))
+            .getItemStack();
+
+    public static ItemStack hoochHigh = new ItemApi(Material.HONEY_BOTTLE)
+            .setName("&x&b&5&7&2&1&9Bimber wysokiej jakości")
+            .setLore(Arrays.asList("", " &x&e&7&e&7&e&7Sprzedaj u Włodzimierza Białego aby umylić mu wieczór"))
+            .getItemStack();
+
     static Set<UUID> snowballs = new HashSet<>(), shooters = new HashSet<>();
 
     @EventHandler
-    public void onShop(ShopPurchaseEvent event) {
+    public void onShopBuyDrugs(ShopPostTransactionEvent event) {
+        Player player = event.getResult().getPlayer();
+        if (event.getResult().getResult() == ShopTransactionResult.ShopTransactionResultType.SUCCESS && (event.getResult().getShopAction().equals(ShopManager.ShopAction.SELL) || event.getResult().getShopAction().equals(ShopManager.ShopAction.SELL_ALL))) {
+            if (event.getResult().getShopItem().getItem().equals(weedMedium) || event.getResult().getShopItem().getItem().equals(weedLow) || event.getResult().getShopItem().getItem().equals(weedHigh) || event.getResult().getShopItem().getItem().equals(cleanCocaine) || event.getResult().getShopItem().getItem().equals(cleanAmphetamine) || event.getResult().getShopItem().getItem().equals(hoochLow) || event.getResult().getShopItem().getItem().equals(hoochMedium) || event.getResult().getShopItem().getItem().equals(hoochHigh)) {
+                System.out.println("[DIRTY WITHDRAW] Money amount: " + event.getResult().getPrice() + ", Player: " + event.getResult().getPlayer().getName() + ", Amount sell drugs: " + event.getResult().getAmount());
+
+                UserManager.getInstance().getUser(player).ifPresent(user -> {
+                    user.withdraw(event.getResult().getPrice());
+                });
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aJako iż sprzedajesz narkotyki dostałeś &#3dfc49brudną gotówke&a, która musisz wyprać");
+                ItemStack dirtCash = makeDirtCash(event.getResult().getPrice(), Arrays.asList(
+                        "",
+                        " &#E7E7E7Wartość: &#FFF88F" + event.getResult().getPrice() + " &#FFC42E$"));
+                Api.giveOrDrop(player, dirtCash);
+            }
+        }
+    }
+
+    public static ItemStack makeDirtCash(double value, List<String> lore) {
+        return ItemHelper.edit(new ItemStack(Material.MOJANG_BANNER_PATTERN)).editNbtTagCompound(nbtItem -> {
+            nbtItem.setDouble("dirty-money-value",  value);
+        }).editItemMeta(ItemMeta.class, itemMeta -> {
+            itemMeta.setDisplayName(Api.fixColor("&#ab5824Brudny banknot gotówki"));
+            itemMeta.setLore(Api.fixColor(lore));
+        }).getItemStack();
+    }
+
+
+    @EventHandler
+    public void onPurchasePlayerShop(ShopPurchaseEvent event) {
         Player ownerShop = Bukkit.getPlayer(event.getShop().getOwner());
         Player player = event.getPlayer();
         if (ownerShop == null) {
@@ -97,7 +172,7 @@ public class OthersListener implements Listener {
     }
 
     @EventHandler
-    public void onDrugPlantEvent(DrugPlantPlantEvent event) {
+    public void onDrugPlant(DrugPlantPlantEvent event) {
         Player player = event.getPlayer();
         if (event.isCancelled()) return;
 
@@ -532,7 +607,7 @@ public class OthersListener implements Listener {
                 Api.sendMessage(damager, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz uderzać mając ochrone!");
                 event.setCancelled(true);
             } else if(event.getEntity() instanceof Player victim){
-                if (RegionApi.isInRegion(victim.getLocation(), "pvp"))
+                if (RegionApi.isInRegion(victim.getLocation(), "pvp")) return;
 
                 protection = Protection.get(victim.getUniqueId());
                 if(protection != null && protection.getProtection() > System.currentTimeMillis()){

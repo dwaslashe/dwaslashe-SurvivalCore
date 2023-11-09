@@ -12,6 +12,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import pl.minecodes.plots.api.plot.PlotServiceApi;
@@ -157,7 +158,6 @@ public class Main extends JavaPlugin {
             it.load(true);
         });
         //Furnace Recipe
-
         //new RecipeChoice.ExactChoice(OthersListener.driedChestnut)
         //FurnaceRecipe furnaceRecipe = new FurnaceRecipe(NamespacedKey.minecraft("wywrotkamc_chestnut"), OthersListener.chestnut, Material.DARK_OAK_BOAT, 5F, 60);
         //Bukkit.addRecipe(furnaceRecipe);
@@ -229,7 +229,10 @@ public class Main extends JavaPlugin {
         connector.getScanner(DragonLevel.class).ifPresent(DragonLevelDataObjectScanner -> DragonLevelDataObjectScanner.load(DragonLevelCache.getInstance()));
 
         connector.registerDataObjectToScan(MoneyTarget.class);
-        connector.getScanner(MoneyTarget.class).ifPresent(DragonLevelDataObjectScanner -> DragonLevelDataObjectScanner.load(MoneyTargetCache.getInstance()));
+        connector.getScanner(MoneyTarget.class).ifPresent(MoneyTargetDataObjectScanner -> MoneyTargetDataObjectScanner.load(MoneyTargetCache.getInstance()));
+
+        connector.registerDataObjectToScan(Ticket.class);
+        connector.getScanner(Ticket.class).ifPresent(TicketDataObjectScanner -> TicketDataObjectScanner.load(TicketCache.getInstance()));
 
         connector.registerDataObjectToScan(Marry.class);
         connector.getScanner(Marry.class).ifPresent(MarryDataObjectScanner -> MarryDataObjectScanner.load(MarryCache.getInstance()));
@@ -315,6 +318,12 @@ public class Main extends JavaPlugin {
                 MarryCache.getInstance().getToUpdate().removeAll(MarrySet);
             });
 
+            Set<Ticket> TicketSet = new HashSet<>(TicketCache.getInstance().getToUpdate());
+            connector.getScanner(Ticket.class).ifPresent(scanner -> {
+                TicketSet.forEach(scanner::update);
+                TicketCache.getInstance().getToUpdate().removeAll(TicketSet);
+            });
+
         }, 20, 20 * 10);
     }
 
@@ -350,6 +359,10 @@ public class Main extends JavaPlugin {
             MarryCache.getInstance().getToUpdate().forEach(scanner::update);
         });
 
+        connector.getScanner(Ticket.class).ifPresent(scanner -> {
+            TicketCache.getInstance().getToUpdate().forEach(scanner::update);
+        });
+
         try {
             connector.getConnection().close();
         } catch (SQLException ignore) {}
@@ -374,6 +387,12 @@ public class Main extends JavaPlugin {
 
     public void loadCommands() {
         CommandManager.register(new TestCommand(), true);
+        CommandManager.register(new FBICommand(), pluginConfig.getCommands().isFbi());
+        CommandManager.register(new PayTicketCommand(), pluginConfig.getCommands().isTicket());
+        CommandManager.register(new TicketCommand(), pluginConfig.getCommands().isTicket());
+        CommandManager.register(new RainbowChatCommand(), pluginConfig.getCommands().isRainbowChat());
+        CommandManager.register(new WikiCommand(), pluginConfig.getCommands().isWiki());
+        CommandManager.register(new YouTubeCommand(), pluginConfig.getCommands().isYouTube());
         CommandManager.register(new OnaMiala10LatCommand(), pluginConfig.getCommands().isOnamiala10lat());
         CommandManager.register(new FaQCommand(), pluginConfig.getCommands().isFaq());
         CommandManager.register(new EmergencyNumberCommand(), pluginConfig.getCommands().isEmergencyNumber());
@@ -408,7 +427,7 @@ public class Main extends JavaPlugin {
         CommandManager.register(new HealCommand(), pluginConfig.getCommands().isHeal());
         CommandManager.register(new HelpCommand(), pluginConfig.getCommands().isHelp());
         CommandManager.register(new HelperCommand(), pluginConfig.getCommands().isHelper());
-        CommandManager.register(new InvseeCommand(), pluginConfig.getCommands().isInvsee());
+        CommandManager.register(new InvseeCommand(), pluginConfig.getCommands().isInvSee());
         CommandManager.register(new MoreCommand(), pluginConfig.getCommands().isMore());
         CommandManager.register(new ItemCommand(), pluginConfig.getCommands().isItem());
         CommandManager.register(new TrashCommand(), pluginConfig.getCommands().isTrash());
@@ -502,6 +521,8 @@ public class Main extends JavaPlugin {
     public void loadEvents() {
         registerEvent(new DrugListener(), true);
 
+        registerEvent(new TicketCommand(), pluginConfig.getCommands().isTicket());
+        registerEvent(new RockPaperScissorsCommand(), pluginConfig.getCommands().isRockPaperScissors());
         registerEvent(new VapeCommand(), pluginConfig.getCommands().isVape());
         registerEvent(new VoucherListener(), pluginConfig.getCommands().isVoucher());
         registerEvent(new BoosterCommand(), pluginConfig.getCommands().isBooster());
@@ -680,7 +701,7 @@ public class Main extends JavaPlugin {
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         item = new CustomItemImpl(11, itemHelper);
-        itemHelper.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE,0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemHelper.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE,1.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
         itemHelper.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED,0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
         itemCache.register(item);
     }

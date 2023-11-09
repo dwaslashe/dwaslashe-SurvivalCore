@@ -103,7 +103,9 @@ public class PlayerJoinListener implements Listener {
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(), () -> {
             sendImage(player);
-
+            Api.sendMessage(player, "");
+            Api.sendMessage(player, "&#29f25f&lAKTULIZACJA &#848a86(2.0) &8>> &#a3f79cWszystkie nowości dodane na serwer możesz zobaczyć w filmie, który powstał: &#ff462ehttps://www.youtube.com/watch?v=yea_oVzLsGg");
+            Api.sendMessage(player, "");
             //Create book in join
             //ItemStack book = BookUtil.writtenBook()
             //        .author("WywrotkaMC")

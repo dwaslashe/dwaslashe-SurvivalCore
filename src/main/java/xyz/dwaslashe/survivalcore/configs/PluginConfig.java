@@ -84,6 +84,8 @@ public class PluginConfig extends OkaeriConfig {
         private String discord = "dc.wywrotkamc.pl";
         private String tiktok = "www.tiktok.com/@dwaslashe";
         private String website = "www.wywrotkamc.pl";
+        private String youtube = "https://www.youtube.com/@WywrotkaMC";
+        private String wiki = "wiki.wywrotkamc.pl";
         private String server = "wywrotkamc.pl";
         private String data = "18.02.2022";
     }
@@ -160,6 +162,11 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Commands extends OkaeriConfig {
 
+        private boolean fbi = true;
+        private boolean ticket = true;
+        private boolean rainbowChat = true;
+        private boolean wiki = true;
+        private boolean youTube = true;
         private boolean onamiala10lat = true;
         private boolean faq = true;
         private boolean emergencyNumber = true;
@@ -199,7 +206,7 @@ public class PluginConfig extends OkaeriConfig {
         private boolean heal = true;
         private boolean help = true;
         private boolean helper = true;
-        private boolean invsee = true;
+        private boolean invSee = true;
         private boolean more = true;
         private boolean item = true;
         private boolean trash = true;

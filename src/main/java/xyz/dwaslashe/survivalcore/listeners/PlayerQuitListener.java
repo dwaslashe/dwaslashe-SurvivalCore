@@ -23,7 +23,7 @@ public class PlayerQuitListener implements Listener {
 
         if (locYaw.get(uuid) != null) {
             if ((double) player.getLocation().getYaw() == locYaw.get(uuid)) {
-                player.sendTitle(Api.fixColor("&#F23D07&lANTY-AFK"), Api.fixColor("&8>> &fe, śpisz? &8<<"));
+                player.sendTitle(Api.fixColor("&#F23D07&lANTY-AFK"), Api.fixColor("&8>> &#fcbd7ee, śpisz? &8<<"));
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_SNARE, 10, 10);
                 Bukkit.getScheduler().runTaskLater(Main.getPlugin(), new Runnable() {
                     @Override
@@ -43,9 +43,15 @@ public class PlayerQuitListener implements Listener {
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
         Player player = event.getPlayer();
+
+        if (PlayerInteractListener.loadingProgress.containsKey(player.getName())) {
+            PlayerInteractListener.itemStackLoading.remove(player.getName());
+            PlayerInteractListener.loadingTime.remove(player.getName());
+            PlayerInteractListener.loadingProgress.remove(player.getName());
+        }
 
         PlayerTime playerTime = PlayerTime.getPlayer(player);
         playerTime.setTime("0s");

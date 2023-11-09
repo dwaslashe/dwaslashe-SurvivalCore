@@ -1,5 +1,6 @@
 package xyz.dwaslashe.survivalcore.placeholder;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -105,6 +106,14 @@ public class PlaceholderHooks extends PlaceholderExpansion {
             if (player.getPlayer().hasPermission("core.group.fbi")) {
                 return " <#004791>FBI";
             } else return "";
+        }
+        if (params.equals("team")) {
+
+            if (PlaceholderAPI.setPlaceholders(player, "%mineteams_team_tag%").equalsIgnoreCase("Brak!")) {
+                return "Punkty: &#4eed6e%mineteams_profile_ranking%pkt &#fcee83#%ajlb_position_mineteams_profile_ranking_alltime%";
+            } else {
+                return "Drużyna: &#4eed6e%mineteams_team_tag%&#4eed6e%mineteams_team_ranking%pkt &#fcee83#%ajlb_position_mineteams_team_ranking_alltime%";
+            }
         }
         return null;
     }

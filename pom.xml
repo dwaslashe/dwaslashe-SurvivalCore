@@ -190,6 +190,20 @@
             <scope>system</scope>
             <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/BlockParticles.v1.11.1.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>Duels</groupId>
+            <artifactId>pluginduels</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/Duels-3.5.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>Vehicles</groupId>
+            <artifactId>pluginvehicles</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/Vehicles(14.1).jar</systemPath>
+        </dependency>
         <!--
         <dependency>
             <groupId>net.dv8tion</groupId>

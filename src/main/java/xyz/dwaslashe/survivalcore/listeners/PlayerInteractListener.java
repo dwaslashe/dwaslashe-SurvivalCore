@@ -1,6 +1,7 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
 import com.google.common.collect.Maps;
+import de.tr7zw.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.saidora.api.extension.PlayerExtension;
@@ -14,6 +15,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -39,23 +41,18 @@ import static xyz.dwaslashe.survivalcore.listeners.OthersListener.*;
 
 public class PlayerInteractListener implements Listener {
     public static final Map<UUID, Integer> playerCooldownMap = new HashMap<>();
-
     protected static final Map<Player, Long> delayModifyRate = Maps.newHashMap();
     protected static final Map<Player, Long> delayHook = Maps.newHashMap();
     protected static final Map<Player, Long> delayKiss = Maps.newHashMap();
-
-    @EventHandler
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        Player player = event.getPlayer();
-        if (player.isSneaking() && event.getRightClicked() instanceof Player) {
-            Player target = (Player) event.getRightClicked();
-            Logout logout = Logout.get(player);
-            if (logout.getTime() > System.currentTimeMillis()) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego robić podczas walki!");
-
-            } else openGui(0, player, target);
-        }
-    }
+    public static Map<String, Integer> loadingProgress = new HashMap<>();
+    public static Map<String, Integer> loadingTime = new HashMap<>();
+    public static Map<String, ItemStack> itemStackLoading = new HashMap<>();
+    public static ItemStack cleaningWaterCloth = ItemHelper.edit(new ItemStack(Material.RABBIT_HIDE)).editItemMeta(ItemMeta.class, itemMeta -> {
+        itemMeta.setDisplayName(Api.fixColor("&#ffbd52Nasączona ściereczka z wodą"));
+        itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Pozwala na mycie brudnej gotówki klikając prawym.", " &#c72810UWAGA! &#fa4125Pamiętaj, że możesz ją użyć tylko raz do prania jednej gotówki!")));
+        itemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+    }).getItemStack();
 
     private void openGui(int guiID, Player player, Player secondPlayer) {
         //0
@@ -528,6 +525,123 @@ public class PlayerInteractListener implements Listener {
 
             inventoryHelper.open(player);
         }
+        //4
+        if (guiID == 4) {
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "Połóż brudną gotówke", 4);
+
+            ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
+                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                    itemMeta.setDisplayName(" ");
+                });
+            });
+
+            ItemStack air = inventoryHelper.prepareItemStack(Material.AIR, itemStack -> {
+            });
+
+            ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
+                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                    itemMeta.setDisplayName(Api.fixColor("&#FF3131Zamknij"));
+                });
+            });
+
+            inventoryHelper.click(e -> {
+                e.setCancelled(true);
+                if (e.getRawSlot() == 13) {
+                    e.setCancelled(false);
+                } else if (e.getSlot() == 31) {
+                    player.closeInventory();
+                }
+            });
+
+            inventoryHelper.setItemRange(0, 36, glass_black);
+
+            inventoryHelper.setItem(13, air);
+            inventoryHelper.setItem(31, back);
+
+            inventoryHelper.open(player);
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+
+        if (event.getView().getTitle().equals("Połóż brudną gotówke") && event.getRawSlot() == 13) {
+            ItemStack currentItem = event.getCursor();
+
+            if (currentItem != null && currentItem.getAmount() > 0 && currentItem.getAmount() == 1) {
+                NBTItem nbtItem = new NBTItem(currentItem);
+                if (nbtItem.hasCustomNbtData()) {
+                    if (nbtItem.hasNBTData()) {
+                        if (currentItem.getType().equals(Material.MOJANG_BANNER_PATTERN)) {
+                            startLoading(player, currentItem);
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zacząłeś pranie brudnej gotówki!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&4&lUWAGA &cWychodząc z serwera pranie zostanie zakończone niepowodzeniem!");
+                            currentItem.setAmount(currentItem.getAmount() - 1);
+                            player.closeInventory();
+                        }
+                    }
+                }
+            } else {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wyprać tego przedmiotu! Możesz tylko wyprać &njedną ilość&c brudnej gotówki!");
+            }
+        }
+    }
+
+    public void startLoading(Player player, ItemStack itemStack) {
+        if (!loadingProgress.containsKey(player.getName())) {
+            loadingProgress.put(player.getName(), 0);
+            itemStackLoading.put(player.getName(), itemStack);
+            loadingTime.put(player.getName(), 180);
+        }
+    }
+
+    public static void showLoadingScreen(Player player) {
+        int progress = loadingProgress.get(player.getName());
+        int time = loadingTime.get(player.getName());
+
+        if (progress > 100 || time <= 0) {
+            player.resetTitle();
+            loadingProgress.remove(player.getName());
+            loadingTime.remove(player.getName());
+
+            if (progress > 100) {
+                ItemStack dirtCash = itemStackLoading.get(player.getName());
+                float valueMoney = Float.parseFloat(ChatColor.stripColor(dirtCash.getItemMeta().getLore().get(1)).replace('$', ' ').replace("Wartość:", " "));
+
+                System.out.println("[WASHIN DIRTY CASH] Player: " + player.getName() + ", Money: " + valueMoney + ", Amount" + dirtCash.getAmount());
+                ItemStack paperCash = makePaper(valueMoney, Arrays.asList(
+                        "",
+                        " &#E7E7E7Wartość: &#FFF88F" + valueMoney + " &#FFC42E$",
+                        " &#E7E7E7Właściciel: &#9DF89F" + player.getName()));
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aBrudna gotówka pomyślnie została wyprana!");
+                Api.giveOrDrop(player, paperCash);
+                itemStackLoading.remove(player.getName());
+            }
+            return;
+        }
+
+        String title = "&#f58742Mycie gotówki: &#f5da62" + progress + "%";
+        String subtitle = getLoadingBar(progress);
+        player.sendTitle(Api.fixColor(title), Api.fixColor(subtitle), 0, 20, 0);
+        progress++;
+        loadingTime.put(player.getName(), time - 1);
+        loadingProgress.put(player.getName(), progress);
+    }
+
+    public static String getLoadingBar(int progress) {
+        int bars = progress / 5;
+        int spaces = 20 - bars;
+
+        StringBuilder loadingBar = new StringBuilder();
+        for (int i = 0; i < bars; i++) {
+            loadingBar.append("&#41FB07█");
+        }
+        for (int i = 0; i < spaces; i++) {
+            loadingBar.append("&#FA2D1E█");
+        }
+
+        return Api.fixColor(loadingBar.toString());
     }
 
     public static String colorAverage(String input) {
@@ -632,10 +746,44 @@ public class PlayerInteractListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        if (player.isSneaking() && event.getRightClicked() instanceof Player) {
+            Player target = (Player) event.getRightClicked();
+            Logout logout = Logout.get(player);
+            if (logout.getTime() > System.currentTimeMillis()) {
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego robić podczas walki!");
+
+            } else openGui(0, player, target);
+        }
+    }
+
+    @EventHandler
     private void onPlayerInteract(PlayerInteractEvent event) {
         int timeCooldownPearl = 30;
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getItemInHand();
+
+        if (event.getAction() != null && event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (itemInHand.isSimilar(cleaningWaterCloth)) {
+                if (!loadingProgress.containsKey(player.getName())) {
+                    openGui(4, player, player);
+
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cTwoja ścierka nasączona wodą została zniszczona ponieważ zacząłeś ją używać!");
+                    itemInHand.setAmount(itemInHand.getAmount() - 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1, 1);
+
+                    event.setCancelled(true);
+                    event.setUseInteractedBlock(Event.Result.DENY);
+                    event.setUseItemInHand(Event.Result.DENY);
+                } else {
+                    event.setCancelled(true);
+                    event.setUseInteractedBlock(Event.Result.DENY);
+                    event.setUseItemInHand(Event.Result.DENY);
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz prać kolejnej brudnej gotówki jak jesteś w trakcie prania!");
+                }
+            }
+        }
 
         if (event.getClickedBlock() == null && event.getAction() == Action.RIGHT_CLICK_AIR) {
             if (itemInHand.getType().equals(Material.SNOWBALL) && itemInHand.getItemMeta().hasDisplayName() && itemInHand.isSimilar(pokeball)) {
@@ -677,6 +825,28 @@ public class PlayerInteractListener implements Listener {
                                 Main.getPlugin().getLogger().info(Api.fixColor("[WITHDRAW] &aGracz &e" + player.getName() + " &awplacil banknot o wartosci: &e$" + amount));
                                 Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na konto &#FFF88F" + amount + " &#FFC42E$");
                                 player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+                            }
+                        });
+                    }
+                });
+            } else if (event.getMaterial() == Material.MOJANG_BANNER_PATTERN && event.getAction().equals(Action.RIGHT_CLICK_AIR) && Objects.equals(event.getHand(), EquipmentSlot.HAND)) {
+                ItemHelper itemHelper = ItemHelper.edit(itemInHand);
+                itemHelper.editNbtTagCompound(nbtItem -> {
+                    if (nbtItem.hasKey("dirty-money-value")) {
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz użyć brudnej gotówki! Musisz ją wyprać za pomocą przedmiotu nasączonej wody ścieraczki!");
+                        event.setUseItemInHand(Event.Result.DENY);
+                        event.setCancelled(true);
+                        event.setUseItemInHand(Event.Result.DENY);
+                    } else {
+                        itemHelper.editItemMeta(ItemMeta.class, itemMeta -> {
+                            if (itemMeta.getDisplayName().contains("Brudny banknot gotówki")) {
+                                if (!itemInHand.getItemMeta().hasLore()) {
+                                    return;
+                                }
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz użyć brudnej gotówki! Musisz ją wyprać za pomocą przedmiotu nasączonej wody ścieraczki!");
+                                event.setUseItemInHand(Event.Result.DENY);
+                                event.setCancelled(true);
+                                event.setUseItemInHand(Event.Result.DENY);
                             }
                         });
                     }
@@ -772,13 +942,6 @@ public class PlayerInteractListener implements Listener {
             itemMeta.addEnchant(Enchantment.DURABILITY, 0, true);
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }).getItemStack();
-        //ItemStack cash = new ItemApi(Material.PAPER)
-        //        .setName("&#3dfc49Banknot gotówki")
-        //        .addEnchant(Enchantment.DURABILITY, 11)
-        //        .addItemFlag(ItemFlag.HIDE_ENCHANTS)
-        //        .setLore(Api.fixColor(lore))
-        //        .getItemStack();
-        //return cash;
     }
 
     public static ItemStack makeBottle(int value, List<String> lore) {
@@ -788,12 +951,5 @@ public class PlayerInteractListener implements Listener {
             itemMeta.setDisplayName(Api.fixColor("&#da42f5Butelka doświadczenia"));
             itemMeta.setLore(Api.fixColor(lore));
         }).getItemStack();
-        //ItemStack xpbottle = new ItemApi(Material.EXPERIENCE_BOTTLE)
-        //        .setName("&#da42f5Butelka doświadczenia")
-        //        .addEnchant(Enchantment.DURABILITY, 10)
-        //        .addItemFlag(ItemFlag.HIDE_ENCHANTS)
-        //        .setLore(Api.fixColor(lore))
-        //        .getItemStack();
-        //return xpbottle;
     }
 }

@@ -41,7 +41,7 @@ public class WarpCommand extends Command implements Listener {
             if(warp == null){
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie ma takiego warpa!");
                 return;
-            } else if(warp.getName().equalsIgnoreCase("sprawdzarka")){
+            } else if (warp.getName().equalsIgnoreCase("sprawdzarka") || warp.getName().equalsIgnoreCase("wiezienie")){
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cTen warp jest zablokowany!");
                 return;
             }

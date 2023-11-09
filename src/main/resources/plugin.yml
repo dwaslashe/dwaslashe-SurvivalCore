@@ -10,6 +10,8 @@ loadbefore:
   - WorldGuard
   - QuickShop
 depend:
+  - Duels
+  - Vehicles
   - QuickShop
   - Multiverse-Core
   - Vault

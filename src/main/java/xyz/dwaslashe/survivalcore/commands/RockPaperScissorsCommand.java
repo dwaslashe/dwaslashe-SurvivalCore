@@ -7,13 +7,17 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerCommandSendEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.helpers.InventoryHelper;
+import xyz.dwaslashe.survivalcore.objects.Logout;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.RandomApi;
 
@@ -21,9 +25,9 @@ import java.util.*;
 
 import static xyz.dwaslashe.survivalcore.Main.plugin;
 
-public class RockPaperScissorsCommand extends Command {
+public class RockPaperScissorsCommand extends Command implements Listener {
     public RockPaperScissorsCommand() {
-        super("rockpaperscissors", "/kamienpapiernozyczki <gracz> <zakład(max 50000, min 1000), akceptuj, odmow>", "", "kamienpapiernozyczki");
+        super("rockpaperscissors", "/kamienpapiernozyczki <gracz> <zakład(max 50000, min 1000), akceptuj, odmow>", "", "kamienpapiernozyczki", "kpn");
         setPermission("core.command.rockpaperscissors");
         setOnlyPlayer(true);
     }
@@ -121,19 +125,31 @@ public class RockPaperScissorsCommand extends Command {
                     choseTypeGame.put(player, "ROCK");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &ekamień!");
                     sendChoseTypeGame(player, secondPlayer);
+                    System.out.println("player: " + player.getName());
+                    System.out.println("secondPlayer: " + secondPlayer.getName());
+                    System.out.println("bool: " + choseTypeRequests.containsKey(player) + ", bool2: " + (choseTypeRequests.get(player) == secondPlayer));
                     choseTypeRequests.remove(player);
+                    choseTypeRequests.remove(player, secondPlayer);
+                    //choseTypeRequests.remove(secondPlayer, player);
+                    //choseTypeRequests.remove(secondPlayer);
                 } else if (e.getSlot() == 13) {
                     player.closeInventory();
                     choseTypeGame.put(player, "PAPER");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &epapier!");
                     sendChoseTypeGame(player, secondPlayer);
                     choseTypeRequests.remove(player);
+                    choseTypeRequests.remove(player, secondPlayer);
+                    //choseTypeRequests.remove(secondPlayer, player);
+                    //choseTypeRequests.remove(secondPlayer);
                 } else if (e.getSlot() == 15) {
                     player.closeInventory();
                     choseTypeGame.put(player, "SCISSORS");
                     Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &enożyczki!");
                     sendChoseTypeGame(player, secondPlayer);
                     choseTypeRequests.remove(player);
+                    choseTypeRequests.remove(player, secondPlayer);
+                    //choseTypeRequests.remove(secondPlayer, player);
+                    //choseTypeRequests.remove(secondPlayer);
                 }
             });
 
@@ -420,6 +436,31 @@ public class RockPaperScissorsCommand extends Command {
     public static void acceptGameRequest(Player player) {
         if (gameRequests.containsKey(player)) {
             Player secondPlayer = gameRequests.get(player);
+
+            UserManager.getInstance().getUser(player).ifPresent(user -> {
+                UserManager.getInstance().getUser(secondPlayer).ifPresent(secondUser -> {
+                    double balanceUser = user.balance();
+                    double balanceSecondUser = secondUser.balance();
+                    if (!(balanceUser >= betAmountGame.get(player))) {
+                        gameRequests.remove(player);
+                        gameRequests.remove(secondPlayer);
+                        betAmountGame.remove(player);
+                        betAmountGame.remove(secondPlayer);
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczająco pieniędzy aby zaakceptować gre!");
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&cTwój przecinik nie posiada wystarczająco pieniędzy aby zaakceptować gre!");
+                        return;
+                    } else if (!(balanceSecondUser >= betAmountGame.get(secondPlayer))) {
+                        gameRequests.remove(player);
+                        gameRequests.remove(secondPlayer);
+                        betAmountGame.remove(player);
+                        betAmountGame.remove(secondPlayer);
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczająco pieniędzy aby zaakceptować gre!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cTwój przecinik nie posiada wystarczająco pieniędzy aby zaakceptować gre!");
+                        return;
+                    }
+                });
+            });
+
             inGameCheck.put(secondPlayer, true);
             inGameCheck.put(player, true);
 
@@ -501,7 +542,7 @@ public class RockPaperScissorsCommand extends Command {
     }
 
     public static void sendChoseTypeGame(Player player, Player secondPlayer) {
-        if ((!choseTypeGame.get(player).isEmpty() || choseTypeGame.get(player) == null) && (!choseTypeGame.get(secondPlayer).isEmpty() || choseTypeGame.get(secondPlayer) == null)) {
+        if (choseTypeGame.get(player) != null && choseTypeGame.get(secondPlayer) != null) {
             gameRequests.remove(player);
             gameRequests.remove(secondPlayer);
             inGameCheck.remove(player);
@@ -586,7 +627,11 @@ public class RockPaperScissorsCommand extends Command {
     @EventHandler
     public void onCloseInventory(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        if (inGameCheck.get(player) == true) {
+
+        if (!inGameCheck.containsKey(player)) return;
+        if (inGameCheck.get(player) == null) return;
+
+        if (inGameCheck.get(player)) {
             List<String> stringList = Arrays.asList("ROCK", "PAPER", "SCISSORS");
             String randomList = RandomApi.randomElementList(stringList);
             Player secondPlayer = gameRequests.get(player);
@@ -602,7 +647,11 @@ public class RockPaperScissorsCommand extends Command {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (inGameCheck.get(player) == true) {
+
+        if (!inGameCheck.containsKey(player)) return;
+        if (inGameCheck.get(player) == null) return;
+
+        if (inGameCheck.get(player)) {
             List<String> stringList = Arrays.asList("ROCK", "PAPER", "SCISSORS");
             String randomList = RandomApi.randomElementList(stringList);
             Player secondPlayer = gameRequests.get(player);
@@ -614,5 +663,18 @@ public class RockPaperScissorsCommand extends Command {
             Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&cTwój przeciwnik wyszedł z gry dlatego system wybrał za niego losowy wybór!");
         }
 
+    }
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+
+        if (!inGameCheck.containsKey(player)) return;
+        if (inGameCheck.get(player) == null) return;
+
+        if (inGameCheck.get(player)) {
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz używać żadnych komend podczas gry!");
+            event.setCancelled(true);
+        }
     }
 }
