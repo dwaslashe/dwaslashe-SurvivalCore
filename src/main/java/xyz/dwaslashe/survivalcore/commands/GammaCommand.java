@@ -23,10 +23,10 @@ public class GammaCommand extends Command {
         Player p = (Player) sender;
         if (p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
             p.removePotionEffect(PotionEffectType.NIGHT_VISION);
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyłączono &egamme");
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wyłączono &#fcb419gamme");
         } else {
             p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 1000000, 50, false, false, false));
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączono &egamme");
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie włączono &#fcb419gamme");
         }
     }
 

@@ -34,9 +34,9 @@ public class DeleteHomeCommand extends Command {
             String nameHome = StringUtils.join(args, " ", 0, args.length);
             if (user.getHomes().contains(nameHome)) {
                 user.removeHomes(nameHome);
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie usuniętego dom &e" + nameHome);
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie usuniętego dom &#fcb419" + nameHome);
             } else {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz domu o nazwie &e" + nameHome);
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz domu o nazwie &#fcb419" + nameHome);
             }
         } else wrongUsage();
     }

@@ -33,10 +33,10 @@ public class EmergencyNumberCommand extends Command {
         Player player = (Player) sender;
         if (args.length == 0) {
             wrongUsage();
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPrzykład: &e/112 gracz Marcin123 ma postawioną widoczną farme marihuany na kordach, których jestem");
+            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Przykład: &#fcb419/112 gracz Marcin123 ma postawioną widoczną farme marihuany na kordach, których jestem");
         } else if (args.length >= 1) {
             if (delayHook.containsKey(player) && delayHook.get(player) > System.currentTimeMillis()) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby wywołać powiadomienie do służb specjalnych musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby wywołać powiadomienie do służb specjalnych musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
                 player.closeInventory();
                 return;
             }
@@ -45,11 +45,11 @@ public class EmergencyNumberCommand extends Command {
             String message = StringUtils.join(args, " ", 0, args.length);
 
             if(message.isEmpty()) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cWiadomość nie może być pusta");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Wiadomość nie może być pusta");
                 return;
             }
 
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wysłano zgłoszenie do służb specjalnych. W swoim wolnym czasie służby to sprawdzą!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wysłano zgłoszenie do służb specjalnych. W swoim wolnym czasie służby to sprawdzą!");
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
             for (Player allPlayer : Bukkit.getOnlinePlayers()) {
                 if (allPlayer.hasPermission("core.command.emergencynumber.bypass")) {

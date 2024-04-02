@@ -47,16 +47,14 @@ public class TicketCommand extends Command implements Listener {
                 int value = Integer.valueOf(args[1]);
                 if (!args[2].isEmpty() || (TimerApi.getTime("1d") < TimerApi.getTime(args[2]))) {
                     Ticket ticketPlayer = TicketCache.getInstance().compute(secondPlayer.getUniqueId());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie nałożyłeś karę na gracza &e" + secondPlayer.getName() + "&a o kwocie &e" + value + "$ &ai czasie &e" + args[2]);
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie nałożyłeś karę na gracza &#fcb419" + secondPlayer.getName() + "&#4cf739 o kwocie &#fcb419" + value + "$ &#4cf739i czasie &#fcb419" + args[2]);
                     if (secondPlayer.isOnline()) {
-                        System.out.println("online");
                         ticketPlayer.setOnline(1);
                         ((Player) secondPlayer).playSound(player.getLocation(), Sound.ENTITY_VILLAGER_HURT, 1, 1);
-                        ((Player) secondPlayer).sendTitle(Api.fixColor("&#c91212&lMANDAT"), Api.fixColor("&8>> &aZostałeś ukarany o kwocie &#FFF88F" + value + " &#FFC42E$&a, czas na spłacenie &#ffd56c" + args[2] + " &#ffc942⌚ &8<<"));
+                        ((Player) secondPlayer).sendTitle(Api.fixColor("&#c91212&lMANDAT"), Api.fixColor("&8>> &#4cf739Zostałeś ukarany o kwocie &#FFF88F" + value + " &f&#4cf739, czas na spłacenie &#ffd56c" + args[2] + " &fᎠ &8<<"));
                         ((Player) secondPlayer).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 50, false, false, false));
                         ((Player) secondPlayer).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 50, false, false, false));
                     } else {
-                        System.out.println("offline");
                         ticketPlayer.setOnline(0);
                     }
 
@@ -76,8 +74,8 @@ public class TicketCommand extends Command implements Listener {
             if (args[1].equalsIgnoreCase("check")) {
                 Ticket ticketPlayer = TicketCache.getInstance().compute(secondPlayer.getUniqueId());
                 if (ticketPlayer.getEnable() == 1) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aGracz: " + secondPlayer.getName() + "&a, kara &e" + ticketPlayer.getValue() + "$&a, maksymalny czas na spłacenie: &e" + TimerApi.getDurationBreakdownShort(ticketPlayer.getMaxTime()) + "&a, czas upłynięty: &e" + TimerApi.getDurationBreakdownShort(ticketPlayer.getTime()));
-                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cGracz nie posiada żadnego mandatu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz: " + secondPlayer.getName() + "&#4cf739, kara &#fcb419" + ticketPlayer.getValue() + "$&#4cf739, maksymalny czas na spłacenie: &#fcb419" + TimerApi.getDurationBreakdownShort(ticketPlayer.getMaxTime()) + "&#4cf739, czas upłynięty: &#fcb419" + TimerApi.getDurationBreakdownShort(ticketPlayer.getTime()));
+                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Gracz nie posiada żadnego mandatu!");
             } else wrongUsage();
         } else wrongUsage();
     }
@@ -91,7 +89,7 @@ public class TicketCommand extends Command implements Listener {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_HURT, 1, 1);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 50, false, false, false));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 50, false, false, false));
-                player.sendTitle(Api.fixColor("&#c91212&lMANDAT"), Api.fixColor("&8>> &aZostałeś ukarany w kwocie &#FFF88F" + ticketPlayer.getValue() + " &#FFC42E$&a, czas na spłacenie &#ffd56c" + TimerApi.getDurationBreakdownShort(ticketPlayer.getMaxTime()) + " &#ffc942⌚ &8<<"));
+                player.sendTitle(Api.fixColor("&#c91212&lMANDAT"), Api.fixColor("&8>> &#4cf739Zostałeś ukarany w kwocie &#FFF88F" + ticketPlayer.getValue() + " &f&#4cf739, czas na spłacenie &#ffd56c" + TimerApi.getDurationBreakdownShort(ticketPlayer.getMaxTime()) + " &fᎠ &8<<"));
             }
         }
     }
@@ -101,7 +99,7 @@ public class TicketCommand extends Command implements Listener {
         Player player = event.getPlayer();
         Ticket ticketPlayer = TicketCache.getInstance().compute(player.getUniqueId());
         if (ticketPlayer.getEnableJail() == 1) {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz używać żadnych komend będąc w więzieniu!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz używać żadnych komend będąc w więzieniu!");
             event.setCancelled(true);
         }
     }

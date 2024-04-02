@@ -12,7 +12,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.FurnaceRecipe;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import pl.minecodes.plots.api.plot.PlotServiceApi;
@@ -259,7 +259,7 @@ public class Main extends JavaPlugin {
                         User userPlayer = UserCache.getInstance().compute(player.getUniqueId());
                         userPlayer.addTimeAfk(60000);
                         PlayerQuitListener.locYaw.remove(player.getUniqueId());
-                        player.sendTitle(Api.fixColor("&#F23D07&lAFK"), Api.fixColor("&8>> &aZa spędzenie minuty w strefie afk dostałeś &#FFF88F2 &#FFC42E$&a! &8<<"));
+                        player.sendTitle(Api.fixColor("&#F23D07&lAFK"), Api.fixColor("&8>> &#4cf739Za spędzenie minuty w strefie afk dostałeś &#FFF88F2 &f&#4cf739! &8<<"));
                         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_BOTTLE_THROW, 10, 10);
                         UserManager.getInstance().getUser(player).ifPresent(user -> user.deposit(2));
                     }}
@@ -396,7 +396,7 @@ public class Main extends JavaPlugin {
         CommandManager.register(new OnaMiala10LatCommand(), pluginConfig.getCommands().isOnamiala10lat());
         CommandManager.register(new FaQCommand(), pluginConfig.getCommands().isFaq());
         CommandManager.register(new EmergencyNumberCommand(), pluginConfig.getCommands().isEmergencyNumber());
-        CommandManager.register(new ZielarzCommand(), pluginConfig.getCommands().isZielarz());
+        //CommandManager.register(new ZielarzCommand(), pluginConfig.getCommands().isZielarz());
         CommandManager.register(new EventCommand(), pluginConfig.getCommands().isEvent());
         CommandManager.register(new VapeCommand(), pluginConfig.getCommands().isVape());
         CommandManager.register(new RockPaperScissorsCommand(), pluginConfig.getCommands().isRockPaperScissors());
@@ -519,35 +519,34 @@ public class Main extends JavaPlugin {
     }
 
     public void loadEvents() {
-        registerEvent(new DrugListener(), true);
-
-        registerEvent(new TicketCommand(), pluginConfig.getCommands().isTicket());
-        registerEvent(new RockPaperScissorsCommand(), pluginConfig.getCommands().isRockPaperScissors());
+        //registerEvent(new TicketCommand(), pluginConfig.getCommands().isTicket());
+        //registerEvent(new RockPaperScissorsCommand(), pluginConfig.getCommands().isRockPaperScissors());
         registerEvent(new VapeCommand(), pluginConfig.getCommands().isVape());
         registerEvent(new VoucherListener(), pluginConfig.getCommands().isVoucher());
         registerEvent(new BoosterCommand(), pluginConfig.getCommands().isBooster());
-        registerEvent(new DragonLevelListener(), pluginConfig.getEvents().isDragonLevel());
-        registerEvent(new RegionListener(), true);
+        //registerEvent(new DragonLevelListener(), pluginConfig.getEvents().isDragonLevel());
+        registerEvent(new CustomItemsListener(), true);
+        //registerEvent(new RegionListener(), true);
         registerEvent(new PlayerJoinListener(this), true);
         registerEvent(new BlockBreakListener(), pluginConfig.getCommands().isPhysics());
         registerEvent(new PlayerChatListener(), true);
         registerEvent(new OthersListener(), true);
         registerEvent(new PlayerQuitListener(), true);
-        registerEvent(new PlayerCombatListener(), true);
+        //registerEvent(new PlayerCombatListener(), true);
         registerEvent(new PlayerDeathListener(), true);
         registerEvent(new ItemCraftListener(), true);
         registerEvent(new VanishCommand.VanishEvent(), true);
         registerEvent(new ChatBuffer(), true);
         registerEvent(new CheckCommand(), true);
         registerEvent(new PlayerInteractListener(), true);
-        registerEvent(new PlotSellWandListener(plotServiceApi), true);
+        //registerEvent(new PlotSellWandListener(plotServiceApi), true);
         InventoryHelper.implement(this);
     }
 
     private void registerEvent(Listener listener, boolean enable) {
         if (enable) {
             Bukkit.getPluginManager().registerEvents(listener, this);
-        } else Api.sendLog("&cEvent " + listener + " has disabled!");
+        } else Api.sendLog("&#fc2419Event " + listener + " has disabled!");
     }
 
     private void loadItems() {
@@ -566,7 +565,7 @@ public class Main extends JavaPlugin {
         //Korona
         ItemHelper itemHelper = new ItemHelper(Material.GOLDEN_HELMET);
         itemHelper.setDisplayName(Api.fixColor("&#FDBD01Korona"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item daje &c5 serc &#E7E7E7i &bSZYBKOŚĆ 3!")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item daje &#fc24195 serc &#E7E7E7i &bSZYBKOŚĆ 3!")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         itemHelper.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH,10, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
@@ -592,7 +591,7 @@ public class Main extends JavaPlugin {
         //Hełm Orka
         itemHelper = new ItemHelper(Material.DIAMOND_HELMET);
         itemHelper.setDisplayName(Api.fixColor("&#008443Hełm Orka"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item daje &c2 serca &#E7E7E7i &bWIDZENIE W CIEMNOŚCI 3!")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item daje &#fc24192 serca &#E7E7E7i &bWIDZENIE W CIEMNOŚCI 3!")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         itemHelper.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH,4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
@@ -605,7 +604,7 @@ public class Main extends JavaPlugin {
         //Kilof Górnika
         itemHelper = new ItemHelper(Material.DIAMOND_PICKAXE);
         itemHelper.setDisplayName(Api.fixColor("&#FF5F1FKilof Górnika"));
-        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item zabiera &c5 serc &#E7E7E7i daje &bSZBYKIE KOPANIE 2, ŚLEPOTA 2!")));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Item zabiera &#fc24195 serc &#E7E7E7i daje &bSZBYKIE KOPANIE 2, ŚLEPOTA 2!")));
         itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
 
         itemHelper.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH,-10, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
@@ -703,6 +702,65 @@ public class Main extends JavaPlugin {
         item = new CustomItemImpl(11, itemHelper);
         itemHelper.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE,1.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
         itemHelper.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED,0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        itemCache.register(item);
+
+        //Miecz odrzutu
+        itemHelper = new ItemHelper(Material.DIAMOND_SWORD);
+        itemHelper.setDisplayName(Api.fixColor("<#3ba4f5>Miecz odrzutu</#1b64f5>"));
+        itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
+        itemHelper.addEnchant(Enchantment.KNOCKBACK, 5);
+        itemHelper.addEnchant(Enchantment.DAMAGE_ALL, 5);
+        itemHelper.addEnchant(Enchantment.DURABILITY, 3);
+
+        item = new CustomItemImpl(12, itemHelper);
+        itemCache.register(item);
+
+        //Wybuchowy łuk
+        itemHelper = new ItemHelper(Material.BOW);
+        itemHelper.setDisplayName(Api.fixColor("<#f59b42>Wybuchowy łuk</#f53220>"));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Wystrzelona strzała tworzy", " &#E7E7E7eksplozje przy uderzeniu", " &#E7E7E7Czas odnowienia &#ffd56c30 sekund &fᎠ")));
+        itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
+
+        item = new CustomItemImpl(13, itemHelper);
+        itemCache.register(item);
+
+        //Niszczyciel burzy
+        itemHelper = new ItemHelper(Material.DIAMOND_AXE);
+        itemHelper.setDisplayName(Api.fixColor("<#ffe32b>Niszczyciel burzy</#ffb52b>"));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Przy uderzeniu przyzywa piorun", " &#E7E7E7Szansa na pojawienie się piorunu &#f58e2740%")));
+        itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
+
+        item = new CustomItemImpl(14, itemHelper);
+        itemCache.register(item);
+
+        //Miecz ognia
+        itemHelper = new ItemHelper(Material.DIAMOND_SWORD);
+        itemHelper.setDisplayName(Api.fixColor("<#ff6b2b>Miecz ognia</#ff2b2b>"));
+        itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
+        itemHelper.addEnchant(Enchantment.FIRE_ASPECT, 3);
+        itemHelper.addEnchant(Enchantment.DAMAGE_ALL, 5);
+        itemHelper.addEnchant(Enchantment.DURABILITY, 3);
+
+        item = new CustomItemImpl(15, itemHelper);
+        itemCache.register(item);
+
+        //Smocza fajerewerka
+        itemHelper = new ItemHelper(Material.FIREWORK_ROCKET);
+        itemHelper.setDisplayName(Api.fixColor("<#b342f5>Smocza fajerwerka</#6d28ed>"));
+        itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
+        itemHelper.addEnchant(Enchantment.DURABILITY, 3);
+        itemHelper.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+        item = new CustomItemImpl(16, itemHelper);
+        itemCache.register(item);
+
+        //Łuk zamrożenia
+        itemHelper = new ItemHelper(Material.BOW);
+        itemHelper.setDisplayName(Api.fixColor("<#43e5fa>Łuk zamrożenia</#27a6f5>"));
+        itemHelper.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Wystrzelona strzała w gracza", " &#E7E7E7daje mu zamrożenia na &#ffd56c2 sekundy &fᎠ", " &#E7E7E7Czas odnowienia &#ffd56c30 sekund &fᎠ")));
+        itemHelper.withMeta(itemMeta -> itemMeta.setCustomModelData(1));
+
+        item = new CustomItemImpl(17, itemHelper);
         itemCache.register(item);
     }
 }

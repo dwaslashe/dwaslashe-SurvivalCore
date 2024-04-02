@@ -46,29 +46,24 @@ public class AboveNameShopCommand extends Command {
     private void openGui(Player player, List<AbovenameShop> abovenameShopList, Integer page) {
         InventoryHelper inventoryHelper = new InventoryHelper(player, "Tytuły" + " (" + abovenameShopList.size() + ")", 6);
 
-        ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
+        ItemStack back = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
             inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                itemMeta.setDisplayName(" ");
-            });
-        });
-
-        ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
-            inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                itemMeta.setCustomModelData(11196);
                 itemMeta.setDisplayName(Api.fixColor("&#FF3131Zamknij"));
             });
         });
 
         ItemStack previous = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
             inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                itemMeta.setDisplayName(Api.fixColor("&#39FF14Poprzednia strona"));
-                itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby przejsc do poprzedniej strony!")));
+                itemMeta.setDisplayName(Api.fixColor("#FF3131Poprzednia"));
+                itemMeta.setCustomModelData(11189);
             });
         });
 
         ItemStack next = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
             inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                itemMeta.setDisplayName(Api.fixColor("&#39FF14Nastepna strona"));
-                itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby przejsc do nastepnej strony!")));
+                itemMeta.setDisplayName(Api.fixColor("&#FF3131Następna"));
+                itemMeta.setCustomModelData(11191);
             });
         });
 
@@ -101,8 +96,6 @@ public class AboveNameShopCommand extends Command {
             tempItemList = abovenameShopList;
         }
 
-        inventoryHelper.setItemRange(0, 54, glass_black);
-
         for (AbovenameShop serviceItem : tempItemList) {
             ItemStack service = inventoryHelper.prepareItemStack(Material.LEGACY_SKULL_ITEM, itemStack -> {
                 itemStack.setDurability((short) 3);
@@ -110,7 +103,7 @@ public class AboveNameShopCommand extends Command {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor(serviceItem.getGui_item_name()));
                     List<String> itemLore = serviceItem.getGui_item_lore();
-                    List<String> addLore = Arrays.asList(player.hasPermission(serviceItem.getPermission()) ? " &#39FF14Masz już zakupiony ten tytuł!" : " &#FBA632Koszt: &#F9731C" + serviceItem.getCost() + "$", "", player.hasPermission(serviceItem.getPermission()) ? " &#FBFD8C&nKliknij aby ustawić tytuł!" : " &#FBFD8C&nKliknij aby kupić tytuł!");
+                    List<String> addLore = Arrays.asList(player.hasPermission(serviceItem.getPermission()) ? " &#39FF14Masz już zakupiony ten tytuł!" : " &#FBA632Koszt: &#F9731C" + serviceItem.getCost() + " &f\uE094", "", player.hasPermission(serviceItem.getPermission()) ? " &f᎘ &#FBFD8CAby ustawić tytuł" : " &f᎘ &#FBFD8CAby kupić tytuł");
                     List<String> combinedList = new ArrayList<>(itemLore);
                     combinedList.addAll(addLore);
                     itemMeta.setLore(Api.fixColor(combinedList));
@@ -140,7 +133,7 @@ public class AboveNameShopCommand extends Command {
                     double balance = user.balance();
                     player.closeInventory();
                     if (player.hasPermission(abovenameShopList.get(((computeSlot(e.getSlot()) + (page * 14)))).getPermission())) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniono twój tytuł!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniono twój tytuł!");
                         List<String> commands = abovenameShopList.get(((computeSlot(e.getSlot()) + (page * 14)))).getCommandLine();
                         for (String command : commands) {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
@@ -149,7 +142,7 @@ public class AboveNameShopCommand extends Command {
                         if (balance - abovenameShopList.get(((computeSlot(e.getSlot()) + (page * 14)))).getCost() >= 0) {
                             user.withdraw(abovenameShopList.get(((computeSlot(e.getSlot()) + (page * 14)))).getCost());
 
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie kupiono tytuł!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie kupiono tytuł!");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set " + abovenameShopList.get(((computeSlot(e.getSlot()) + (page * 14)))).getPermission());
 
                             List<String> commands = abovenameShopList.get(((computeSlot(e.getSlot()) + (page * 14)))).getCommandLine();
@@ -157,10 +150,10 @@ public class AboveNameShopCommand extends Command {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
                             }
                         } else {
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                         }
                     } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz wystarczającą kwotę do zakupu tego tytułu!");
                     }
                 });
             }

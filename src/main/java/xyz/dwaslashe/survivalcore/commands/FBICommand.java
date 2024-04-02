@@ -19,6 +19,6 @@ public class FBICommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aWszystkie informacje o działaniu FBI: &#4680ebchttps://wiki.wywrotkamc.pl/pl/survivaldzialki/fbi");
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Wszystkie informacje o działaniu FBI: &#4680ebchttps://wiki.wywrotkamc.pl/pl/survivaldzialki/fbi");
     }
 }

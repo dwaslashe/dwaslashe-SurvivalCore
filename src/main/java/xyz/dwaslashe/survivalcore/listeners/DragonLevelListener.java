@@ -1,15 +1,19 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
+import com.codingforcookies.armorequip.ArmorEquipEvent;
+import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import org.bukkit.*;
 import org.bukkit.attribute.Attributable;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
@@ -20,6 +24,7 @@ import xyz.dwaslashe.survivalcore.cache.DragonLevelCache;
 import xyz.dwaslashe.survivalcore.objects.DragonLevel;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.ItemApi;
+import xyz.dwaslashe.survivalcore.utils.RandomApi;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,16 +38,29 @@ public class DragonLevelListener implements Listener {
         if (event.getEntity() instanceof org.bukkit.entity.EnderDragon) {
             LivingEntity livingEntity = event.getEntity();
             Location dragondeathlocation = livingEntity.getLocation();
-            Item item = Bukkit.getWorld("world_the_end").dropItem(dragondeathlocation, elytra);
-            item.setCustomNameVisible(true);
-            item.setCustomName(Api.fixColor("&#f04de5Elytra"));
-            item.setVisualFire(true);
-            item.setGlowing(true);
-            item.setGravity(false);
-            item.setPickupDelay(220);
+            Item item = null;
+
+            if (RandomApi.getChance(50)) {
+                item = Bukkit.getWorld("world_the_end").dropItem(dragondeathlocation, elytra);
+                item.setCustomNameVisible(true);
+                item.setCustomName(Api.fixColor("&#f04de5Elytra"));
+                item.setVisualFire(true);
+                item.setGlowing(true);
+                item.setGravity(false);
+                item.setPickupDelay(220);
+            } else {
+                item = Bukkit.getWorld("world_the_end").dropItem(dragondeathlocation, OthersListener.elementEnderDragon);
+                item.setCustomNameVisible(true);
+                item.setCustomName(Api.fixColor("<#aa2bff>Fragment Smoka</#912bff>"));
+                item.setVisualFire(true);
+                item.setGlowing(true);
+                item.setGravity(false);
+                item.setPickupDelay(220);
+            }
+            Item finalItem = item;
             Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
                 public void run() {
-                    item.setGravity(true);
+                    finalItem.setGravity(true);
                 }
             },  200L, 60L);
         }
@@ -67,7 +85,7 @@ public class DragonLevelListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void removeElytras(ChunkPopulateEvent event) {
+    public void removeElytra(ChunkPopulateEvent event) {
         if (event.getWorld().getEnvironment().equals(World.Environment.THE_END)) {
             Entity[] var2 = event.getChunk().getEntities();
             int var3 = var2.length;
@@ -86,43 +104,74 @@ public class DragonLevelListener implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        ItemStack item = event.getCurrentItem();
-        if (item == null || item.getItemMeta() == null || item.getItemMeta().getLore() == null) return;
+    public void onArmorEquip(ArmorEquipEvent event) {
+        Player player = event.getPlayer();
+        ItemStack currentItem = event.getNewArmorPiece();
 
-        List<String> lore = item.getItemMeta().getLore();
+        if (currentItem == null) return;
+
+        if (!currentItem.hasItemMeta()) return;
+        List<String> lore = currentItem.getItemMeta().getLore();
         if (lore.size() < 2) return;
 
         String owner = ChatColor.stripColor(lore.get(1).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", ""));
-        if (item.getType() == Material.ELYTRA && item.hasItemMeta()) {
+        if (currentItem.getType() == Material.ELYTRA) {
             if (player.getGameMode() == GameMode.SURVIVAL) {
                 if (!player.getName().equalsIgnoreCase(owner)) {
                     event.setCancelled(true);
-                    player.sendMessage(Api.fixColor(" &8>> &cNie możesz użyć tej elytry bo nie jest twoja!"));
+                    player.closeInventory();
+                    player.sendMessage(Api.fixColor(" &8>> &#fc2419Nie możesz użyć tej elytry bo nie jest twoja!"));
                 }
             }
         }
     }
 
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
-        if (item == null || item.getItemMeta() == null || item.getItemMeta().getLore() == null) return;
-        List<String> lore = item.getItemMeta().getLore();
-        if (lore.size() > 1) {
-            String owner = lore.get(1).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", "");
-            if (item.getType() == Material.ELYTRA) {
-                if (player.getGameMode() == GameMode.SURVIVAL) {
-                    if (!player.getName().equalsIgnoreCase(owner)) {
-                        event.setCancelled(true);
-                        player.sendMessage(Api.fixColor(" &8>> &cNie możesz użyć tej elytry bo nie jest twoja!"));
-                    }
-                }
-            }
-        }
-    }
+    //@EventHandler
+    //public void onInventoryClick(InventoryClickEvent event) {
+    //    Player player = (Player) event.getWhoClicked();
+    //    ItemStack currentItem = event.getCursor();
+    //    System.out.println("slot: " + event.getSlot());
+    //    System.out.println("slotType: " + event.getSlotType());
+    //    if ((event.getSlotType() == InventoryType.SlotType.ARMOR && event.getSlot() == 38) || event.getSlotType() == InventoryType.SlotType.QUICKBAR) {
+    //        if (!currentItem.hasItemMeta()) return;
+    //        List<String> lore = currentItem.getItemMeta().getLore();
+    //        if (lore.size() < 2) return;
+    //        String owner = ChatColor.stripColor(lore.get(1).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", ""));
+    //        System.out.println("click 1");
+    //        if (currentItem.getType() == Material.ELYTRA) {
+    //            System.out.println("click 2");
+    //            if (player.getGameMode() == GameMode.SURVIVAL) {
+    //                System.out.println("click 3");
+    //                if (!player.getName().equalsIgnoreCase(owner)) {
+    //                    System.out.println("click 4");
+    //                    event.setResult(Event.Result.DENY);
+    //                    event.setCancelled(true);
+    //                    player.closeInventory();
+    //                    player.sendMessage(Api.fixColor(" &8>> &#fc2419Nie możesz użyć tej elytry bo nie jest twoja!"));
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+
+    //@EventHandler
+    //public void onPlayerInteract(PlayerInteractEvent event) {
+    //    Player player = event.getPlayer();
+    //    ItemStack item = event.getItem();
+    //    if (item == null || item.getItemMeta() == null || item.getItemMeta().getLore() == null) return;
+    //    List<String> lore = item.getItemMeta().getLore();
+    //    if (lore.size() > 1) {
+    //        String owner = lore.get(1).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", "");
+    //        if (item.getType() == Material.ELYTRA) {
+    //            if (player.getGameMode() == GameMode.SURVIVAL) {
+    //                if (!player.getName().equalsIgnoreCase(owner)) {
+    //                    event.setCancelled(true);
+    //                    player.sendMessage(Api.fixColor(" &8>> &#fc2419Nie możesz użyć tej elytry bo nie jest twoja!"));
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     @EventHandler
     public void pickupItem(PlayerPickupItemEvent event) {
@@ -131,6 +180,17 @@ public class DragonLevelListener implements Listener {
         if (item.getItemStack().isSimilar(elytra)) {
             lock(item.getItemStack(), player);
         }
+        //} else if (item.getItemStack().getType() == Material.ELYTRA && item.getItemStack().hasItemMeta()) {
+        //    List<String> lore = item.getItemStack().getItemMeta().getLore();
+        //    if (lore.size() < 2) return;
+        //    if (player.getGameMode() == GameMode.SURVIVAL) {
+        //        String owner = ChatColor.stripColor(lore.get(1).replace("Właściciel:", "").replace(" ", "").replace("§x§E§7§E§7§E§7§x§9§D§F§8§9§F", ""));
+        //        if (!player.getName().equalsIgnoreCase(owner)) {
+        //            event.setCancelled(true);
+        //            player.sendMessage(Api.fixColor(" &8>> &#fc2419Nie możesz podnieść tej elytry bo nie jest twoja!"));
+        //        }
+        //    }
+        //}
     }
 
     private void lock(ItemStack item, Player owner) {

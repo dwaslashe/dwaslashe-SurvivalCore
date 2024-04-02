@@ -29,7 +29,7 @@ public class VapeCommand extends Command implements Listener {
         setPermission("core.command.vape");
     }
 
-    protected static final Map<Player, Long> delayHook = Maps.newHashMap();
+    protected static final Map<String, Long> delayHook = Maps.newHashMap();
 
     @Override
     public List<String> tabCompleteExecute(CommandSender sender, String[] args) {
@@ -47,7 +47,7 @@ public class VapeCommand extends Command implements Listener {
                     int argument = Integer.parseInt(args[1]);
                     List<VapeItem> vapeItemList = Main.pluginVapes.getItems().getVapeItems().getItems();
                     if (vapeItemList.get(argument) != null) {
-                        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie nadano vape o id &e" + argument + "&a, dla gracza &e" + secondPlayer.getName());
+                        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie nadano vape o id &#fcb419" + argument + "&#4cf739, dla gracza &#fcb419" + secondPlayer.getName());
 
                         ItemStack vape = ItemHelper.edit(new ItemStack(vapeItemList.get(argument).getItem_material())).editNbtTagCompound(nbtItem -> {
                             nbtItem.setInteger("vape", vapeItemList.get(argument).getDurability());
@@ -113,14 +113,14 @@ public class VapeCommand extends Command implements Listener {
                                 if (itemInHand.getType().equals(vapeItem.getItem_material())) {
 
                                     if (nbtItem.getInteger("vape") > 1) {
-                                        if (delayHook.containsKey(player) && delayHook.get(player) > System.currentTimeMillis() && !player.hasPermission("core.vape.bypass")) {
-                                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby ponownie użyć vape musisz poczekać za &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
+                                        if (delayHook.containsKey(player.getName()) && delayHook.get(player.getName()) > System.currentTimeMillis() && !player.hasPermission("core.vape.bypass")) {
+                                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby ponownie użyć vape musisz poczekać za &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player.getName()))));
                                             event.setCancelled(true);
                                             event.setUseInteractedBlock(Event.Result.DENY);
                                             event.setUseItemInHand(Event.Result.DENY);
                                             return;
                                         }
-                                        delayHook.remove(player);
+                                        delayHook.remove(player.getName());
                                         event.setCancelled(true);
                                         event.setUseInteractedBlock(Event.Result.DENY);
                                         event.setUseItemInHand(Event.Result.DENY);
@@ -150,7 +150,7 @@ public class VapeCommand extends Command implements Listener {
                                         new VapeTask(player, vapeItem.getDuration(), vapeItem.getPower()).runTaskTimer(Main.getPlugin(), 0, 1);
 
                                         Api.sendMessage(player, "&7&oAle chmura, chyba jestem prawdziwym vaperem..");
-                                        delayHook.put(player, TimerApi.parseDateDiff("1m", true));
+                                        delayHook.put(player.getName(), TimerApi.parseDateDiff("15s", true));
                                     } else {
                                         new VapeTask(player, vapeItem.getDuration(), vapeItem.getPower()).runTaskTimer(Main.getPlugin(), 0, 1);
 
@@ -158,7 +158,7 @@ public class VapeCommand extends Command implements Listener {
                                         event.setUseInteractedBlock(Event.Result.DENY);
                                         event.setUseItemInHand(Event.Result.DENY);
                                         player.getInventory().remove(itemInHand);
-                                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNiestety twój vape już Ci się skończył!");
+                                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Niestety twój vape już Ci się skończył!");
                                     }
                                 }
                             }

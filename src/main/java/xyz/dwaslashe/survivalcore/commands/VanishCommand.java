@@ -73,13 +73,13 @@ public class VanishCommand extends Command implements Listener {
                         user.setPlayer(player);
                         user.setMoney(qu.moon.tablist.Main.getInstance().getEconomyHelper().getMoney(player));
                     } if (!player.hasPermission("core.command.vanish.more")) {
-                        player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.vanish.more&8) &8<<"));
+                        player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#fc2419Nie posiadasz uprawnien &8(&#fcb419core.command.vanish.more&8) &8<<"));
                         return;
                     } else if(args[0].equalsIgnoreCase("check")){
                         if(sender.getName().equalsIgnoreCase(player.getName())){
-                            Api.sendActionBar(player, " &8>> &aTwój vanish jest " + (vanishObject.isEnable() ? "&ewłączony" : "&ewyłączony" + " &8<<"));
+                            Api.sendActionBar(player, " &8>> &#4cf739Twój vanish jest " + (vanishObject.isEnable() ? "&#fcb419włączony" : "&#fcb419wyłączony" + " &8<<"));
                         } else {
-                            Api.sendActionBar(player, " &8>> &aVanish gracza &e" + player.getName() + " &ajest " + (vanishObject.isInteract() ? "&ewłączony" : "&ewyłączony" + " &8<<"));
+                            Api.sendActionBar(player, " &8>> &#4cf739Vanish gracza &#fcb419" + player.getName() + " &#4cf739jest " + (vanishObject.isInteract() ? "&#fcb419włączony" : "&#fcb419wyłączony" + " &8<<"));
                         }
                     } else if(args[0].equalsIgnoreCase("panel") && sender instanceof Player){
                         openGui(0, player);
@@ -305,7 +305,7 @@ public class VanishCommand extends Command implements Listener {
         }
     }
 
-    private static class VanishObject {
+    public static class VanishObject {
 
         public static VanishObject get(String name){
             for (VanishObject vanishObject : vanishObjects) {

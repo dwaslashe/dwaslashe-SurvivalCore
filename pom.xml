@@ -93,11 +93,18 @@
         -->
 
         <dependency>
+            <groupId>armorequipevent</groupId>
+            <artifactId>armorequipevent</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/ArmorEquipEvent-1.7.6.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>paper</groupId>
             <artifactId>paper</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/purpur-1.20.1.jar</systemPath>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/purpur-1.20.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.mojang</groupId>
@@ -153,7 +160,14 @@
             <artifactId>minePlots</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/minePlots-4.2.0-public.jar</systemPath>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/minePlots-4.3.0-public.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.combat</groupId>
+            <artifactId>DeluxeCombats</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/DeluxeCombat v.1.50.8.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>u.drugs</groupId>
@@ -220,13 +234,13 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <version>1.20.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <version>1.20.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -382,7 +396,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.3</version>
+            <version>2.11.5</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

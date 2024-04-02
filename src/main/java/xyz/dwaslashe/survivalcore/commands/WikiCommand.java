@@ -19,6 +19,6 @@ public class WikiCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aWiki serwera: &#ffb521https://wiki.wywrotkamc.pl/");
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Wiki serwera: &#ffb521https://wiki.wywrotkamc.pl/");
     }
 }

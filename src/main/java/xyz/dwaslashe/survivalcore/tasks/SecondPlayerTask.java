@@ -43,7 +43,7 @@ public class SecondPlayerTask extends BukkitRunnable {
         Protection.getProtectionMap().forEach((uuid, protection) -> {
             if (protection.getProtection() > System.currentTimeMillis()) {
                 if (Bukkit.getPlayer(uuid) != null) protection.getBar().addPlayer(Bukkit.getPlayer(uuid));
-                protection.getBar().setTitle(Api.fixColor("&8>> &#d3f4f5Twoja &#0394fc\uD83D\uDEE1 &#037bfc&lOCHRONA &#0394fc\uD83D\uDEE1 &#d3f4f5trwać będzie jeszcze &#ffd56c{TIME} &#ffc942⌚ &8<<").replace("{TIME}", TimerApi.secondsToString(protection.getProtection())));
+                protection.getBar().setTitle(Api.fixColor("&8>> &#d3f4f5Twoja &#0394fc\uD83D\uDEE1 &#037bfc&lOCHRONA &#0394fc\uD83D\uDEE1 &#d3f4f5trwać będzie jeszcze &#ffd56c{TIME} &fᎠ &8<<").replace("{TIME}", TimerApi.secondsToString(protection.getProtection())));
                 protection.getBar().setProgress(Api.mapLongToDouble((protection.getProtection() - System.currentTimeMillis()), 0L, protection.getMaxTimeProtection()));
             } else {
                 keysToRemove.add(uuid);
@@ -58,7 +58,6 @@ public class SecondPlayerTask extends BukkitRunnable {
         }
 
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            System.out.println("offlinePlayer");
             Ticket ticketPlayer = TicketCache.getInstance().compute(offlinePlayer.getUniqueId());
 
             if (ticketPlayer.getTime() > ticketPlayer.getMaxTime()) {
@@ -74,12 +73,12 @@ public class SecondPlayerTask extends BukkitRunnable {
         }
 
         for (Player allPlayers : Bukkit.getOnlinePlayers()) {
-            System.out.println("allPlayers");
-            Ticket ticketPlayer = TicketCache.getInstance().compute(allPlayers.getUniqueId());
 
-            System.out.println("enableJail:" + (ticketPlayer.getEnableJail() == 1));
-            System.out.println("enable:" + (ticketPlayer.getEnable() == 1));
-            System.out.println("enable2:" + (ticketPlayer.getEnable() == 1));
+            if (PlayerInteractListener.loadingProgress.containsKey(allPlayers.getName())) {
+                PlayerInteractListener.showLoadingScreen(allPlayers);
+            }
+
+            Ticket ticketPlayer = TicketCache.getInstance().compute(allPlayers.getUniqueId());
 
             if ((ticketPlayer.getEnableJail() == 1) || (ticketPlayer.getEnableJail() == 1 && ticketPlayer.getOnlineTimeOut() == 0)) {
                 if (ticketPlayer.getTimeJail() > ticketPlayer.getTimeMaxJail()) {
@@ -87,7 +86,7 @@ public class SecondPlayerTask extends BukkitRunnable {
                     allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_VILLAGER_HURT, 1, 1);
                     allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 50, false, false, false));
                     allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 50, false, false, false));
-                    allPlayers.sendTitle(Api.fixColor("&#c91212&lUNIEWAŻNIENIE MANDATU"), Api.fixColor("&8>> &aSpędziłeś cały czas w więzieniu! Zostałeś uwolniony! &8<<"));
+                    allPlayers.sendTitle(Api.fixColor("&#c91212&lUNIEWAŻNIENIE MANDATU"), Api.fixColor("&8>> &#4cf739Spędziłeś cały czas w więzieniu! Zostałeś uwolniony! &8<<"));
 
                     ticketPlayer.setEnableJail(0);
                     ticketPlayer.setEnable(0);
@@ -98,14 +97,11 @@ public class SecondPlayerTask extends BukkitRunnable {
                     ticketPlayer.setTimeMaxJail(0);
                 }
 
-                Api.sendActionBar(allPlayers, Main.pluginConfig.getMessages().getPrefix() + "&cJeseteś w więzieniu musisz odczekać: <#ffd56c>" + TimerApi.getDurationBreakdownShort(ticketPlayer.getTimeMaxJail() - ticketPlayer.getTimeJail()) + " <#ffc942>⌚ &8<<");
+                Api.sendActionBar(allPlayers, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Jeseteś w więzieniu musisz odczekać: <#ffd56c>" + TimerApi.getDurationBreakdownShort(ticketPlayer.getTimeMaxJail() - ticketPlayer.getTimeJail()) + " <#ffc942>⌚ &8<<");
                 ticketPlayer.addTimeJail(TimerApi.getTime("1s"));
-
-                System.out.println("enable jail, time: " + ticketPlayer.getTimeJail() + ", maxtime: " + ticketPlayer.getTimeMaxJail());
             }
 
             if (ticketPlayer.getEnable() == 1) {
-                System.out.println("enable");
 
                 if (ticketPlayer.getTime() > ticketPlayer.getMaxTime()) {
                     Warp warp = WarpCache.getInstance().get("wiezienie");
@@ -119,40 +115,33 @@ public class SecondPlayerTask extends BukkitRunnable {
                     allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_VILLAGER_HURT, 1, 1);
                     allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 50, false, false, false));
                     allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 50, false, false, false));
-                    allPlayers.sendTitle(Api.fixColor("&#c91212&lBRAK OPŁATY MANDATU"), Api.fixColor("&8>> &aZostałeś przeniesiony do więzienia na czas: &#ffd56c" + TimerApi.getDurationBreakdownShort(ticketPlayer.getTimeMaxJail()) + " &#ffc942⌚ &8<<"));
+                    allPlayers.sendTitle(Api.fixColor("&#c91212&lBRAK OPŁATY MANDATU"), Api.fixColor("&8>> &#4cf739Zostałeś przeniesiony do więzienia na czas: &#ffd56c" + TimerApi.getDurationBreakdownShort(ticketPlayer.getTimeMaxJail()) + " &fᎠ &8<<"));
                 }
 
                 if (Integer.valueOf(String.valueOf(ticketPlayer.getTime())) % 6000 == 0) {
                     allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_VILLAGER_HURT, 1, 1);
                     allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 50, false, false, false));
                     allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 50, false, false, false));
-                    allPlayers.sendTitle(Api.fixColor("&#c91212&lPRZYPOMNIENIE MANDATU"), Api.fixColor("&8>> &aPozostało: &#ffd56c" + TimerApi.getDurationBreakdownShort(ticketPlayer.getMaxTime() - ticketPlayer.getTime()) + " &#ffc942⌚ &8<<"));
+                    allPlayers.sendTitle(Api.fixColor("&#c91212&lPRZYPOMNIENIE MANDATU"), Api.fixColor("&8>> &#4cf739Pozostało: &#ffd56c" + TimerApi.getDurationBreakdownShort(ticketPlayer.getMaxTime() - ticketPlayer.getTime()) + " &fᎠ &8<<"));
                 }
-
-                System.out.println("enable, time: " + ticketPlayer.getTime() + ", maxtime: " + ticketPlayer.getMaxTime());
                 ticketPlayer.addTime(TimerApi.getTime("1s"));
             }
 
         }
 
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            if (PlayerInteractListener.loadingProgress.containsKey(player.getName())) {
-                PlayerInteractListener.showLoadingScreen(player);
-            }
-
-
-            PlayerTime user = PlayerTime.getPlayer(player);
-            long time = System.currentTimeMillis();
-            long playTime = time - user.getTime();
-
-            if (Main.pluginConfig.getEvents().getBossBarSpawn().isEnable()) {
-                BossBar bar = barMap.get(player.getUniqueId());
-                ProtectedRegion region = null;
-                if ((region = RegionApi.getRegion(player.getLocation(), "spawn")) != null) {
-                    if (!bar.getPlayers().contains(player)) bar.addPlayer(player);
-                    bar.setTitle(PlaceholderAPI.setPlaceholders(player, Api.fixColor(Main.pluginConfig.getEvents().getBossBarSpawn().getTitle()).replace("{region}", toUpperFirstCharacter(region.getId()).replace("_", " ")).replace("{playTime}", TimerApi.getDurationBreakdownShort(playTime))));
-                } else bar.removePlayer(player);
-            }
-        });
+        //Bukkit.getOnlinePlayers().forEach(player -> {
+        //    PlayerTime user = PlayerTime.getPlayer(player);
+        //    long time = System.currentTimeMillis();
+        //    long playTime = time - user.getTime();
+        //    if (Main.pluginConfig.getEvents().getBossBarSpawn().isEnable()) {
+        //        BossBar bar = barMap.get(player.getUniqueId());
+        //        ProtectedRegion region = null;
+        //        if ((region = RegionApi.getRegion(player.getLocation(), "spawn")) != null) {
+        //            if (!bar.getPlayers().contains(player)) bar.addPlayer(player);
+        //            String regionName = PlaceholderAPI.setPlaceholders(player, "%worldguard_region_name%");
+        //            bar.setTitle(Api.fixColor(Main.pluginConfig.getEvents().getBossBarSpawn().getTitle()).replace("{region}", toUpperFirstCharacter(regionName).replace("_", " ")).replace("{playTime}", TimerApi.getDurationBreakdownShort(playTime)));
+        //        } else bar.removePlayer(player);
+        //    }
+        //});
     }
 }

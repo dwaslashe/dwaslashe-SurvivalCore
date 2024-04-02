@@ -28,7 +28,7 @@ public class AdmitsCommand extends Command {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + player.getName() + " 2d przyznanie się do używania niedozwolonego oprogramowania");
                 CheckCommand.checks.remove(player.getName());
             } else {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś sprawdzany");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie jesteś sprawdzany");
             }
         }
     }

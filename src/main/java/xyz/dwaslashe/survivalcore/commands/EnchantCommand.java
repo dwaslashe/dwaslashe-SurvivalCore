@@ -43,14 +43,14 @@ public class EnchantCommand extends Command {
         } else {
             if (args.length >= 1) {
                 if (p.getItemInHand() == null || p.getItemInHand().getType() == Material.AIR) {
-                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cPrzedmiotem nie moze byc powietrze!");
+                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Przedmiotem nie moze byc powietrze!");
                 } else {
                     if (args.length == 2) {
                         if (args[0].equalsIgnoreCase("all")) {
                             for (Enchantment value : EnchantList.getEnchants().values()) {
                                 p.setItemInHand(new ItemApi(p.getItemInHand()).addEnchant(value, 32765).getItemStack());
                             }
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyslnie dodano wszystkie enchanty o poziomie &b32765");
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyslnie dodano wszystkie enchanty o poziomie &b32765");
                         } else {
                             Enchantment enchantment = null;
                             if (Api.isInt(args[0])) {
@@ -61,7 +61,7 @@ public class EnchantCommand extends Command {
                             if (enchantment == null) {
                                 enchantment = EnchantList.get(args[0]);
                                 if (enchantment == null) {
-                                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie odnaleziono takiego enchantu!");
+                                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie odnaleziono takiego enchantu!");
                                     return;
                                 }
                             }
@@ -69,18 +69,18 @@ public class EnchantCommand extends Command {
                             if (Api.isInt(args[1])) {
                                 level = Integer.parseInt(args[1]);
                             } else {
-                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cPoziom musi byc liczba!");
+                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Poziom musi byc liczba!");
                                 return;
                             }
                             ItemMeta meta = p.getItemInHand().getItemMeta();
                             if (level == 0) {
                                 meta.removeEnchant(enchantment);
                                 p.getItemInHand().setItemMeta(meta);
-                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cUsunieto enchant &e" + enchantment.toString().toUpperCase().split(" ")[1].split("]")[0]);
+                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Usunieto enchant &#fcb419" + enchantment.toString().toUpperCase().split(" ")[1].split("]")[0]);
                             } else {
                                 meta.addEnchant(enchantment, level, true);
                                 p.getItemInHand().setItemMeta(meta);
-                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aDodano enchant &e" + enchantment.toString().toUpperCase().split(" ")[1].split("]")[0] + "&a, poziom zaklecia &e" + level);
+                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Dodano enchant &#fcb419" + enchantment.toString().toUpperCase().split(" ")[1].split("]")[0] + "&#4cf739, poziom zaklecia &#fcb419" + level);
                             }
                         }
                     }

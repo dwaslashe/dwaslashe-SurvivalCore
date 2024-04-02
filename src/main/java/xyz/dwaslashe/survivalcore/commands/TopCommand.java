@@ -61,16 +61,16 @@ public class TopCommand extends Command {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#00FFFFTopka Czasu"));
                     itemMeta.setLore(Api.fixColor(PlaceholderAPI.setPlaceholders(player, Arrays.asList("",
-                            " &#FF31311. &e%ajlb_lb_statistic_time_played_1_alltime_name% %ajlb_lb_statistic_time_played_1_alltime_time%",
-                            " &#39ff142. &e%ajlb_lb_statistic_time_played_2_alltime_name% %ajlb_lb_statistic_time_played_2_alltime_time%",
-                            " &#FFF01F3. &e%ajlb_lb_statistic_time_played_3_alltime_name% %ajlb_lb_statistic_time_played_3_alltime_time%",
-                            " &74. &e%ajlb_lb_statistic_time_played_4_alltime_name% %ajlb_lb_statistic_time_played_4_alltime_time%",
-                            " &75. &e%ajlb_lb_statistic_time_played_5_alltime_name% %ajlb_lb_statistic_time_played_5_alltime_time%",
-                            //" &76. &e%ajlb_lb_statistic_time_played_6_alltime_name% %ajlb_lb_statistic_time_played_6_alltime_time%",
-                            //" &77. &e%ajlb_lb_statistic_time_played_7_alltime_name% %ajlb_lb_statistic_time_played_7_alltime_time%",
-                            //" &78. &e%ajlb_lb_statistic_time_played_8_alltime_name% %ajlb_lb_statistic_time_played_8_alltime_time%",
-                            //" &79. &e%ajlb_lb_statistic_time_played_9_alltime_name% %ajlb_lb_statistic_time_played_9_alltime_time%",
-                            //" &710. &e%ajlb_lb_statistic_time_played_10_alltime_name% %ajlb_lb_statistic_time_played_10_alltime_time%",
+                            " &#FF31311. &#fcb419%ajlb_lb_statistic_time_played_1_alltime_name% %ajlb_lb_statistic_time_played_1_alltime_time%",
+                            " &#39ff142. &#fcb419%ajlb_lb_statistic_time_played_2_alltime_name% %ajlb_lb_statistic_time_played_2_alltime_time%",
+                            " &#FFF01F3. &#fcb419%ajlb_lb_statistic_time_played_3_alltime_name% %ajlb_lb_statistic_time_played_3_alltime_time%",
+                            " &74. &#fcb419%ajlb_lb_statistic_time_played_4_alltime_name% %ajlb_lb_statistic_time_played_4_alltime_time%",
+                            " &75. &#fcb419%ajlb_lb_statistic_time_played_5_alltime_name% %ajlb_lb_statistic_time_played_5_alltime_time%",
+                            //" &76. &#fcb419%ajlb_lb_statistic_time_played_6_alltime_name% %ajlb_lb_statistic_time_played_6_alltime_time%",
+                            //" &77. &#fcb419%ajlb_lb_statistic_time_played_7_alltime_name% %ajlb_lb_statistic_time_played_7_alltime_time%",
+                            //" &78. &#fcb419%ajlb_lb_statistic_time_played_8_alltime_name% %ajlb_lb_statistic_time_played_8_alltime_time%",
+                            //" &79. &#fcb419%ajlb_lb_statistic_time_played_9_alltime_name% %ajlb_lb_statistic_time_played_9_alltime_time%",
+                            //" &710. &#fcb419%ajlb_lb_statistic_time_played_10_alltime_name% %ajlb_lb_statistic_time_played_10_alltime_time%",
                             "",
                             " &#FBFD8C&nKliknij aby zobaczyć na czacie!"
                     ))));
@@ -83,16 +83,16 @@ public class TopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#FFC42ETopka Śmierci"));
                     itemMeta.setLore(Api.fixColor(PlaceholderAPI.setPlaceholders(player, Arrays.asList(
                             "",
-                            " &#FF31311. &e%ajlb_lb_statistic_deaths_1_alltime_name% %ajlb_lb_statistic_deaths_1_alltime_value%",
-                            " &#39ff142. &e%ajlb_lb_statistic_deaths_2_alltime_name% %ajlb_lb_statistic_deaths_2_alltime_value%",
-                            " &#FFF01F3. &e%ajlb_lb_statistic_deaths_3_alltime_name% %ajlb_lb_statistic_deaths_3_alltime_value%",
-                            " &74. &e%ajlb_lb_statistic_deaths_4_alltime_name% %ajlb_lb_statistic_deaths_4_alltime_value%",
-                            " &75. &e%ajlb_lb_statistic_deaths_5_alltime_name% %ajlb_lb_statistic_deaths_5_alltime_value%   ",
-                            //" &76. &e%ajlb_lb_statistic_deaths_6_alltime_name% %ajlb_lb_statistic_deaths_6_alltime_value%",
-                            //" &77. &e%ajlb_lb_statistic_deaths_7_alltime_name% %ajlb_lb_statistic_deaths_7_alltime_value%",
-                            //" &78. &e%ajlb_lb_statistic_deaths_8_alltime_name% %ajlb_lb_statistic_deaths_8_alltime_value%",
-                            //" &79. &e%ajlb_lb_statistic_deaths_9_alltime_name% %ajlb_lb_statistic_deaths_9_alltime_value%",
-                            //" &710. &e%ajlb_lb_statistic_deaths_10_alltime_name% %ajlb_lb_statistic_deaths_10_alltime_value%",
+                            " &#FF31311. &#fcb419%ajlb_lb_statistic_deaths_1_alltime_name% %ajlb_lb_statistic_deaths_1_alltime_value%",
+                            " &#39ff142. &#fcb419%ajlb_lb_statistic_deaths_2_alltime_name% %ajlb_lb_statistic_deaths_2_alltime_value%",
+                            " &#FFF01F3. &#fcb419%ajlb_lb_statistic_deaths_3_alltime_name% %ajlb_lb_statistic_deaths_3_alltime_value%",
+                            " &74. &#fcb419%ajlb_lb_statistic_deaths_4_alltime_name% %ajlb_lb_statistic_deaths_4_alltime_value%",
+                            " &75. &#fcb419%ajlb_lb_statistic_deaths_5_alltime_name% %ajlb_lb_statistic_deaths_5_alltime_value%   ",
+                            //" &76. &#fcb419%ajlb_lb_statistic_deaths_6_alltime_name% %ajlb_lb_statistic_deaths_6_alltime_value%",
+                            //" &77. &#fcb419%ajlb_lb_statistic_deaths_7_alltime_name% %ajlb_lb_statistic_deaths_7_alltime_value%",
+                            //" &78. &#fcb419%ajlb_lb_statistic_deaths_8_alltime_name% %ajlb_lb_statistic_deaths_8_alltime_value%",
+                            //" &79. &#fcb419%ajlb_lb_statistic_deaths_9_alltime_name% %ajlb_lb_statistic_deaths_9_alltime_value%",
+                            //" &710. &#fcb419%ajlb_lb_statistic_deaths_10_alltime_name% %ajlb_lb_statistic_deaths_10_alltime_value%",
                             "",
                             " &#FBFD8C&nKliknij aby zobaczyć na czacie!"
                     ))));
@@ -105,16 +105,16 @@ public class TopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#FF10F0Topka Zabitych Mobów"));
                     itemMeta.setLore(Api.fixColor(PlaceholderAPI.setPlaceholders(player, Arrays.asList(
                             "",
-                            " &#FF31311. &e%ajlb_lb_statistic_mob_kills_1_alltime_name% %ajlb_lb_statistic_mob_kills_1_alltime_value%",
-                            " &#39ff142. &e%ajlb_lb_statistic_mob_kills_2_alltime_name% %ajlb_lb_statistic_mob_kills_2_alltime_value%",
-                            " &#FFF01F3. &e%ajlb_lb_statistic_mob_kills_3_alltime_name% %ajlb_lb_statistic_mob_kills_3_alltime_value%",
-                            " &74. &e%ajlb_lb_statistic_mob_kills_4_alltime_name% %ajlb_lb_statistic_mob_kills_4_alltime_value%",
-                            " &75. &e%ajlb_lb_statistic_mob_kills_5_alltime_name% %ajlb_lb_statistic_mob_kills_5_alltime_value%   ",
-                            //" &76. &e%ajlb_lb_statistic_mob_kills_6_alltime_name% %ajlb_lb_statistic_mob_kills_6_alltime_value%",
-                            //" &77. &e%ajlb_lb_statistic_mob_kills_7_alltime_name% %ajlb_lb_statistic_mob_kills_7_alltime_value%",
-                            //" &78. &e%ajlb_lb_statistic_mob_kills_8_alltime_name% %ajlb_lb_statistic_mob_kills_8_alltime_value%",
-                            //" &79. &e%ajlb_lb_statistic_mob_kills_9_alltime_name% %ajlb_lb_statistic_mob_kills_9_alltime_value%",
-                            //" &710. &e%ajlb_lb_statistic_mob_kills_10_alltime_name% %ajlb_lb_statistic_mob_kills_10_alltime_value%",
+                            " &#FF31311. &#fcb419%ajlb_lb_statistic_mob_kills_1_alltime_name% %ajlb_lb_statistic_mob_kills_1_alltime_value%",
+                            " &#39ff142. &#fcb419%ajlb_lb_statistic_mob_kills_2_alltime_name% %ajlb_lb_statistic_mob_kills_2_alltime_value%",
+                            " &#FFF01F3. &#fcb419%ajlb_lb_statistic_mob_kills_3_alltime_name% %ajlb_lb_statistic_mob_kills_3_alltime_value%",
+                            " &74. &#fcb419%ajlb_lb_statistic_mob_kills_4_alltime_name% %ajlb_lb_statistic_mob_kills_4_alltime_value%",
+                            " &75. &#fcb419%ajlb_lb_statistic_mob_kills_5_alltime_name% %ajlb_lb_statistic_mob_kills_5_alltime_value%   ",
+                            //" &76. &#fcb419%ajlb_lb_statistic_mob_kills_6_alltime_name% %ajlb_lb_statistic_mob_kills_6_alltime_value%",
+                            //" &77. &#fcb419%ajlb_lb_statistic_mob_kills_7_alltime_name% %ajlb_lb_statistic_mob_kills_7_alltime_value%",
+                            //" &78. &#fcb419%ajlb_lb_statistic_mob_kills_8_alltime_name% %ajlb_lb_statistic_mob_kills_8_alltime_value%",
+                            //" &79. &#fcb419%ajlb_lb_statistic_mob_kills_9_alltime_name% %ajlb_lb_statistic_mob_kills_9_alltime_value%",
+                            //" &710. &#fcb419%ajlb_lb_statistic_mob_kills_10_alltime_name% %ajlb_lb_statistic_mob_kills_10_alltime_value%",
                             "",
                             " &#FBFD8C&nKliknij aby zobaczyć na czacie!"
                     ))));
@@ -127,16 +127,16 @@ public class TopCommand extends Command {
                     itemMeta.setDisplayName(Api.fixColor("&#7289daTopka Pieniędzy"));
                     itemMeta.setLore(Api.fixColor(PlaceholderAPI.setPlaceholders(player, Arrays.asList(
                             "",
-                            " &#FF31311. &e%ajlb_lb_vault_eco_balance_1_alltime_name% %ajlb_lb_vault_eco_balance_1_alltime_value%$",
-                            " &#39ff142. &e%ajlb_lb_vault_eco_balance_2_alltime_name% %ajlb_lb_vault_eco_balance_2_alltime_value%$",
-                            " &#FFF01F3. &e%ajlb_lb_vault_eco_balance_3_alltime_name% %ajlb_lb_vault_eco_balance_3_alltime_value%$",
-                            " &74. &e%ajlb_lb_vault_eco_balance_4_alltime_name% %ajlb_lb_vault_eco_balance_4_alltime_value%$",
-                            " &75. &e%ajlb_lb_vault_eco_balance_5_alltime_name% %ajlb_lb_vault_eco_balance_5_alltime_value%$",
-                            //" &76. &e%ajlb_lb_vault_eco_balance_6_alltime_name% %ajlb_lb_vault_eco_balance_6_alltime_value%$",
-                            //" &77. &e%ajlb_lb_vault_eco_balance_7_alltime_name% %ajlb_lb_vault_eco_balance_7_alltime_value%$",
-                            //" &78. &e%ajlb_lb_vault_eco_balance_8_alltime_name% %ajlb_lb_vault_eco_balance_8_alltime_value%$",
-                            //" &79. &e%ajlb_lb_vault_eco_balance_9_alltime_name% %ajlb_lb_vault_eco_balance_9_alltime_value%$",
-                            //" &710. &e%ajlb_lb_vault_eco_balance_10_alltime_name% %ajlb_lb_vault_eco_balance_10_alltime_value%$",
+                            " &#FF31311. &#fcb419%ajlb_lb_vault_eco_balance_1_alltime_name% %ajlb_lb_vault_eco_balance_1_alltime_value%$",
+                            " &#39ff142. &#fcb419%ajlb_lb_vault_eco_balance_2_alltime_name% %ajlb_lb_vault_eco_balance_2_alltime_value%$",
+                            " &#FFF01F3. &#fcb419%ajlb_lb_vault_eco_balance_3_alltime_name% %ajlb_lb_vault_eco_balance_3_alltime_value%$",
+                            " &74. &#fcb419%ajlb_lb_vault_eco_balance_4_alltime_name% %ajlb_lb_vault_eco_balance_4_alltime_value%$",
+                            " &75. &#fcb419%ajlb_lb_vault_eco_balance_5_alltime_name% %ajlb_lb_vault_eco_balance_5_alltime_value%$",
+                            //" &76. &#fcb419%ajlb_lb_vault_eco_balance_6_alltime_name% %ajlb_lb_vault_eco_balance_6_alltime_value%$",
+                            //" &77. &#fcb419%ajlb_lb_vault_eco_balance_7_alltime_name% %ajlb_lb_vault_eco_balance_7_alltime_value%$",
+                            //" &78. &#fcb419%ajlb_lb_vault_eco_balance_8_alltime_name% %ajlb_lb_vault_eco_balance_8_alltime_value%$",
+                            //" &79. &#fcb419%ajlb_lb_vault_eco_balance_9_alltime_name% %ajlb_lb_vault_eco_balance_9_alltime_value%$",
+                            //" &710. &#fcb419%ajlb_lb_vault_eco_balance_10_alltime_name% %ajlb_lb_vault_eco_balance_10_alltime_value%$",
                             "",
                             " &#FBFD8C&nKliknij aby zobaczyć na czacie!"
                     ))));
@@ -153,52 +153,52 @@ public class TopCommand extends Command {
                 e.setCancelled(true);
                 if (e.getSlot() == 13) {
                     player.getOpenInventory().close();
-                    Api.sendMessage(player, "&#FF31311. &e%ajlb_lb_statistic_time_played_1_alltime_name% %ajlb_lb_statistic_time_played_1_alltime_time%");
-                    Api.sendMessage(player, "&#39ff142. &e%ajlb_lb_statistic_time_played_2_alltime_name% %ajlb_lb_statistic_time_played_2_alltime_time%");
-                    Api.sendMessage(player, "&#FFF01F3. &e%ajlb_lb_statistic_time_played_3_alltime_name% %ajlb_lb_statistic_time_played_3_alltime_time%");
-                    Api.sendMessage(player, "&74. &e%ajlb_lb_statistic_time_played_4_alltime_name% %ajlb_lb_statistic_time_played_4_alltime_time%");
-                    Api.sendMessage(player, "&75. &e%ajlb_lb_statistic_time_played_5_alltime_name% %ajlb_lb_statistic_time_played_5_alltime_time%");
-                    //Api.sendMessage(player, "&76. &e%ajlb_lb_statistic_time_played_6_alltime_name% %ajlb_lb_statistic_time_played_6_alltime_time%");
-                    //Api.sendMessage(player, "&77. &e%ajlb_lb_statistic_time_played_7_alltime_name% %ajlb_lb_statistic_time_played_7_alltime_time%");
-                    //Api.sendMessage(player, "&78. &e%ajlb_lb_statistic_time_played_8_alltime_name% %ajlb_lb_statistic_time_played_8_alltime_time%");
-                    //Api.sendMessage(player, "&79. &e%ajlb_lb_statistic_time_played_9_alltime_name% %ajlb_lb_statistic_time_played_9_alltime_time%");
-                    //Api.sendMessage(player, "&710. &e%ajlb_lb_statistic_time_played_10_alltime_name% %ajlb_lb_statistic_time_played_10_alltime_time%");
+                    Api.sendMessage(player, "&#FF31311. &#fcb419%ajlb_lb_statistic_time_played_1_alltime_name% %ajlb_lb_statistic_time_played_1_alltime_time%");
+                    Api.sendMessage(player, "&#39ff142. &#fcb419%ajlb_lb_statistic_time_played_2_alltime_name% %ajlb_lb_statistic_time_played_2_alltime_time%");
+                    Api.sendMessage(player, "&#FFF01F3. &#fcb419%ajlb_lb_statistic_time_played_3_alltime_name% %ajlb_lb_statistic_time_played_3_alltime_time%");
+                    Api.sendMessage(player, "&74. &#fcb419%ajlb_lb_statistic_time_played_4_alltime_name% %ajlb_lb_statistic_time_played_4_alltime_time%");
+                    Api.sendMessage(player, "&75. &#fcb419%ajlb_lb_statistic_time_played_5_alltime_name% %ajlb_lb_statistic_time_played_5_alltime_time%");
+                    //Api.sendMessage(player, "&76. &#fcb419%ajlb_lb_statistic_time_played_6_alltime_name% %ajlb_lb_statistic_time_played_6_alltime_time%");
+                    //Api.sendMessage(player, "&77. &#fcb419%ajlb_lb_statistic_time_played_7_alltime_name% %ajlb_lb_statistic_time_played_7_alltime_time%");
+                    //Api.sendMessage(player, "&78. &#fcb419%ajlb_lb_statistic_time_played_8_alltime_name% %ajlb_lb_statistic_time_played_8_alltime_time%");
+                    //Api.sendMessage(player, "&79. &#fcb419%ajlb_lb_statistic_time_played_9_alltime_name% %ajlb_lb_statistic_time_played_9_alltime_time%");
+                    //Api.sendMessage(player, "&710. &#fcb419%ajlb_lb_statistic_time_played_10_alltime_name% %ajlb_lb_statistic_time_played_10_alltime_time%");
                 } else if (e.getSlot() == 15) {
                     player.closeInventory();
-                    Api.sendMessage(player, "&#FF31311. &e%ajlb_lb_statistic_deaths_1_alltime_name% %ajlb_lb_statistic_deaths_1_alltime_value%");
-                    Api.sendMessage(player, "&#39ff142. &e%ajlb_lb_statistic_deaths_2_alltime_name% %ajlb_lb_statistic_deaths_2_alltime_value");
-                    Api.sendMessage(player, "&#FFF01F3. &e%ajlb_lb_statistic_deaths_3_alltime_name% %ajlb_lb_statistic_deaths_3_alltime_value%");
-                    Api.sendMessage(player, "&74. &e%ajlb_lb_statistic_deaths_4_alltime_name% %ajlb_lb_statistic_deaths_4_alltime_value%");
-                    Api.sendMessage(player, "&75. &e%ajlb_lb_statistic_deaths_5_alltime_name% %ajlb_lb_statistic_deaths_5_alltime_value%");
-                    //Api.sendMessage(player, "&76. &e%ajlb_lb_statistic_deaths_6_alltime_name% %ajlb_lb_statistic_deaths_6_alltime_value%");
-                    //Api.sendMessage(player, "&77. &e%ajlb_lb_statistic_deaths_7_alltime_name% %ajlb_lb_statistic_deaths_7_alltime_value%");
-                    //Api.sendMessage(player, "&78. &e%ajlb_lb_statistic_deaths_8_alltime_name% %ajlb_lb_statistic_deaths_8_alltime_value%");
-                    //Api.sendMessage(player, "&79. &e%ajlb_lb_statistic_deaths_9_alltime_name% %ajlb_lb_statistic_deaths_9_alltime_value%");
-                    //Api.sendMessage(player, "&710. &e%ajlb_lb_statistic_deaths_10_alltime_name% %ajlb_lb_statistic_deaths_10_alltime_value%");
+                    Api.sendMessage(player, "&#FF31311. &#fcb419%ajlb_lb_statistic_deaths_1_alltime_name% %ajlb_lb_statistic_deaths_1_alltime_value%");
+                    Api.sendMessage(player, "&#39ff142. &#fcb419%ajlb_lb_statistic_deaths_2_alltime_name% %ajlb_lb_statistic_deaths_2_alltime_value");
+                    Api.sendMessage(player, "&#FFF01F3. &#fcb419%ajlb_lb_statistic_deaths_3_alltime_name% %ajlb_lb_statistic_deaths_3_alltime_value%");
+                    Api.sendMessage(player, "&74. &#fcb419%ajlb_lb_statistic_deaths_4_alltime_name% %ajlb_lb_statistic_deaths_4_alltime_value%");
+                    Api.sendMessage(player, "&75. &#fcb419%ajlb_lb_statistic_deaths_5_alltime_name% %ajlb_lb_statistic_deaths_5_alltime_value%");
+                    //Api.sendMessage(player, "&76. &#fcb419%ajlb_lb_statistic_deaths_6_alltime_name% %ajlb_lb_statistic_deaths_6_alltime_value%");
+                    //Api.sendMessage(player, "&77. &#fcb419%ajlb_lb_statistic_deaths_7_alltime_name% %ajlb_lb_statistic_deaths_7_alltime_value%");
+                    //Api.sendMessage(player, "&78. &#fcb419%ajlb_lb_statistic_deaths_8_alltime_name% %ajlb_lb_statistic_deaths_8_alltime_value%");
+                    //Api.sendMessage(player, "&79. &#fcb419%ajlb_lb_statistic_deaths_9_alltime_name% %ajlb_lb_statistic_deaths_9_alltime_value%");
+                    //Api.sendMessage(player, "&710. &#fcb419%ajlb_lb_statistic_deaths_10_alltime_name% %ajlb_lb_statistic_deaths_10_alltime_value%");
                 } else if (e.getSlot() == 22) {
                     player.closeInventory();
-                    Api.sendMessage(player, "&#FF31311. &e%ajlb_lb_statistic_mob_kills_1_alltime_name% %ajlb_lb_statistic_mob_kills_1_alltime_value%");
-                    Api.sendMessage(player, "&#39ff142. &e%ajlb_lb_statistic_mob_kills_2_alltime_name% %ajlb_lb_statistic_mob_kills_2_alltime_value%");
-                    Api.sendMessage(player, "&#FFF01F3. &e%ajlb_lb_statistic_mob_kills_3_alltime_name% %ajlb_lb_statistic_mob_kills_3_alltime_value%");
-                    Api.sendMessage(player, "&74. &e%ajlb_lb_statistic_mob_kills_4_alltime_name% %ajlb_lb_statistic_mob_kills_4_alltime_value%");
-                    Api.sendMessage(player, "&75. &e%ajlb_lb_statistic_mob_kills_5_alltime_name% %ajlb_lb_statistic_mob_kills_5_alltime_value%");
-                    //Api.sendMessage(player, "&76. &e%ajlb_lb_statistic_mob_kills_6_alltime_name% %ajlb_lb_statistic_mob_kills_6_alltime_value%");
-                    //Api.sendMessage(player, "&77. &e%ajlb_lb_statistic_mob_kills_7_alltime_name% %ajlb_lb_statistic_mob_kills_7_alltime_value%");
-                    //Api.sendMessage(player, "&78. &e%ajlb_lb_statistic_mob_kills_8_alltime_name% %ajlb_lb_statistic_mob_kills_8_alltime_value%");
-                    //Api.sendMessage(player, "&79. &e%ajlb_lb_statistic_mob_kills_9_alltime_name% %ajlb_lb_statistic_mob_kills_9_alltime_value%");
-                    //Api.sendMessage(player, "&710. &e%ajlb_lb_statistic_mob_kills_10_alltime_name% %ajlb_lb_statistic_mob_kills_10_alltime_value%");
+                    Api.sendMessage(player, "&#FF31311. &#fcb419%ajlb_lb_statistic_mob_kills_1_alltime_name% %ajlb_lb_statistic_mob_kills_1_alltime_value%");
+                    Api.sendMessage(player, "&#39ff142. &#fcb419%ajlb_lb_statistic_mob_kills_2_alltime_name% %ajlb_lb_statistic_mob_kills_2_alltime_value%");
+                    Api.sendMessage(player, "&#FFF01F3. &#fcb419%ajlb_lb_statistic_mob_kills_3_alltime_name% %ajlb_lb_statistic_mob_kills_3_alltime_value%");
+                    Api.sendMessage(player, "&74. &#fcb419%ajlb_lb_statistic_mob_kills_4_alltime_name% %ajlb_lb_statistic_mob_kills_4_alltime_value%");
+                    Api.sendMessage(player, "&75. &#fcb419%ajlb_lb_statistic_mob_kills_5_alltime_name% %ajlb_lb_statistic_mob_kills_5_alltime_value%");
+                    //Api.sendMessage(player, "&76. &#fcb419%ajlb_lb_statistic_mob_kills_6_alltime_name% %ajlb_lb_statistic_mob_kills_6_alltime_value%");
+                    //Api.sendMessage(player, "&77. &#fcb419%ajlb_lb_statistic_mob_kills_7_alltime_name% %ajlb_lb_statistic_mob_kills_7_alltime_value%");
+                    //Api.sendMessage(player, "&78. &#fcb419%ajlb_lb_statistic_mob_kills_8_alltime_name% %ajlb_lb_statistic_mob_kills_8_alltime_value%");
+                    //Api.sendMessage(player, "&79. &#fcb419%ajlb_lb_statistic_mob_kills_9_alltime_name% %ajlb_lb_statistic_mob_kills_9_alltime_value%");
+                    //Api.sendMessage(player, "&710. &#fcb419%ajlb_lb_statistic_mob_kills_10_alltime_name% %ajlb_lb_statistic_mob_kills_10_alltime_value%");
                 } else if (e.getSlot() == 24) {
                     player.closeInventory();
-                    Api.sendMessage(player, "&#FF31311. &e%ajlb_lb_vault_eco_balance_1_alltime_name% %ajlb_lb_vault_eco_balance_1_alltime_value%");
-                    Api.sendMessage(player, "&#39ff142. &e%ajlb_lb_vault_eco_balance_2_alltime_name% %ajlb_lb_vault_eco_balance_2_alltime_value%");
-                    Api.sendMessage(player, "&#FFF01F3. &e%ajlb_lb_vault_eco_balance_3_alltime_name% %ajlb_lb_vault_eco_balance_3_alltime_value%");
-                    Api.sendMessage(player, "&74. &e%ajlb_lb_vault_eco_balance_4_alltime_name% %ajlb_lb_vault_eco_balance_4_alltime_value%");
-                    Api.sendMessage(player, "&75. &e%ajlb_lb_vault_eco_balance_5_alltime_name% %ajlb_lb_vault_eco_balance_5_alltime_value%");
-                    //Api.sendMessage(player, "&76. &e%ajlb_lb_vault_eco_balance_6_alltime_name% %ajlb_lb_vault_eco_balance_6_alltime_value%");
-                    //Api.sendMessage(player, "&77. &e%ajlb_lb_vault_eco_balance_7_alltime_name% %ajlb_lb_vault_eco_balance_7_alltime_value%");
-                    //Api.sendMessage(player, "&78. &e%ajlb_lb_vault_eco_balance_8_alltime_name% %ajlb_lb_vault_eco_balance_8_alltime_value%");
-                    //Api.sendMessage(player, "&79. &e%ajlb_lb_vault_eco_balance_9_alltime_name% %ajlb_lb_vault_eco_balance_9_alltime_value%");
-                    //Api.sendMessage(player, "&710. &e%ajlb_lb_vault_eco_balance_10_alltime_name% %ajlb_lb_vault_eco_balance_10_alltime_value%");
+                    Api.sendMessage(player, "&#FF31311. &#fcb419%ajlb_lb_vault_eco_balance_1_alltime_name% %ajlb_lb_vault_eco_balance_1_alltime_value%");
+                    Api.sendMessage(player, "&#39ff142. &#fcb419%ajlb_lb_vault_eco_balance_2_alltime_name% %ajlb_lb_vault_eco_balance_2_alltime_value%");
+                    Api.sendMessage(player, "&#FFF01F3. &#fcb419%ajlb_lb_vault_eco_balance_3_alltime_name% %ajlb_lb_vault_eco_balance_3_alltime_value%");
+                    Api.sendMessage(player, "&74. &#fcb419%ajlb_lb_vault_eco_balance_4_alltime_name% %ajlb_lb_vault_eco_balance_4_alltime_value%");
+                    Api.sendMessage(player, "&75. &#fcb419%ajlb_lb_vault_eco_balance_5_alltime_name% %ajlb_lb_vault_eco_balance_5_alltime_value%");
+                    //Api.sendMessage(player, "&76. &#fcb419%ajlb_lb_vault_eco_balance_6_alltime_name% %ajlb_lb_vault_eco_balance_6_alltime_value%");
+                    //Api.sendMessage(player, "&77. &#fcb419%ajlb_lb_vault_eco_balance_7_alltime_name% %ajlb_lb_vault_eco_balance_7_alltime_value%");
+                    //Api.sendMessage(player, "&78. &#fcb419%ajlb_lb_vault_eco_balance_8_alltime_name% %ajlb_lb_vault_eco_balance_8_alltime_value%");
+                    //Api.sendMessage(player, "&79. &#fcb419%ajlb_lb_vault_eco_balance_9_alltime_name% %ajlb_lb_vault_eco_balance_9_alltime_value%");
+                    //Api.sendMessage(player, "&710. &#fcb419%ajlb_lb_vault_eco_balance_10_alltime_name% %ajlb_lb_vault_eco_balance_10_alltime_value%");
                 } else if (e.getSlot() == 40) {
                     player.closeInventory();
                 }

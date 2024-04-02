@@ -78,13 +78,13 @@ public class PunishmentCommand extends Command implements Listener {
                 inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setOwner(offlinePlayer.getName());
                     itemMeta.setDisplayName(Api.fixColor(offlinePlayer.getName()));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &7Ping&8: &a" + (offlinePlayer.isOnline() ? Api.getPing(offlinePlayer.getPlayer()) : "&cnie można pobrać pingu"), " &7UUID&8: &a" + offlinePlayer.getUniqueId())));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &7Ping&8: &#4cf739" + (offlinePlayer.isOnline() ? Api.getPing(offlinePlayer.getPlayer()) : "&#fc2419nie można pobrać pingu"), " &7UUID&8: &#4cf739" + offlinePlayer.getUniqueId())));
                 });
             });
 
             ItemStack player_history = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> inventoryHelper
                     .editMetaForItemStack(itemStack, itemMeta -> {
-                        itemMeta.setDisplayName(Api.fixColor("&eHistoria"));
+                        itemMeta.setDisplayName(Api.fixColor("&#fcb419Historia"));
                         itemMeta.setLore(Api.fixColor(Arrays.asList(" ", " &#FBFD8C&nKliknij lewym aby zobaczyc historie gracza!")));
                     }));
 
@@ -92,24 +92,24 @@ public class PunishmentCommand extends Command implements Listener {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTZiMWQ0OTQ3NzYzOTE3ODE0YWUxNjMyYjgyMDY5NjA5ODkyNzg5NWFhYWYxMjRjZDI5ZWIzNTg1NmFhYTViOSJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&cBan"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.ban") ? "&aPomyślnie posiadasz permisje do tej funkcji" : "&cPomyślnie posiadasz permisje do tej funkcji", "", " &#FBFD8C&nKliknij aby przejść dalej!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#fc2419Ban"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.ban") ? "&#4cf739Pomyślnie posiadasz permisje do tej funkcji" : "&#fc2419Pomyślnie posiadasz permisje do tej funkcji", "", " &#FBFD8C&nKliknij aby przejść dalej!")));
                 });
             });
             ItemStack kick = inventoryHelper.prepareItemStack(Material.LEGACY_SKULL_ITEM, itemStack -> {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTZiMWQ0OTQ3NzYzOTE3ODE0YWUxNjMyYjgyMDY5NjA5ODkyNzg5NWFhYWYxMjRjZDI5ZWIzNTg1NmFhYTViOSJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&cKick"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.kick") ? "&aPomyślnie posiadasz permisje do tej funkcji" : "&cPomyślnie posiadasz permisje do tej funkcji", "", " &#FBFD8C&nKliknij aby przejść dalej!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#fc2419Kick"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.kick") ? "&#4cf739Pomyślnie posiadasz permisje do tej funkcji" : "&#fc2419Pomyślnie posiadasz permisje do tej funkcji", "", " &#FBFD8C&nKliknij aby przejść dalej!")));
                 });
             });
             ItemStack mute = inventoryHelper.prepareItemStack(Material.LEGACY_SKULL_ITEM, itemStack -> {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTZiMWQ0OTQ3NzYzOTE3ODE0YWUxNjMyYjgyMDY5NjA5ODkyNzg5NWFhYWYxMjRjZDI5ZWIzNTg1NmFhYTViOSJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&cMute"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.mute") ? "&aPomyślnie posiadasz permisje do tej funkcji" : "&cPomyślnie posiadasz permisje do tej funkcji", "", " &#FBFD8C&nKliknij aby przejść dalej!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#fc2419Mute"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("&r", player.hasPermission("punishment.mute") ? "&#4cf739Pomyślnie posiadasz permisje do tej funkcji" : "&#fc2419Pomyślnie posiadasz permisje do tej funkcji", "", " &#FBFD8C&nKliknij aby przejść dalej!")));
                 });
             });
 
@@ -123,19 +123,19 @@ public class PunishmentCommand extends Command implements Listener {
                     if (player.hasPermission("core.command.punishment.ban")) {
                         player.closeInventory();
                         openGui(1, player, offlinePlayer);
-                    } else player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.punishment.ban&8) &8<<"));
+                    } else player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#fc2419Nie posiadasz uprawnien &8(&#fcb419core.command.punishment.ban&8) &8<<"));
                 } else if (e.getSlot() == 31) {
                     player.closeInventory();
                     if (player.hasPermission("core.command.punishment.kick")) {
                         player.closeInventory();
                         openGui(3, player, offlinePlayer);
-                    } else player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.punishment.kick&8) &8<<"));
+                    } else player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#fc2419Nie posiadasz uprawnien &8(&#fcb419core.command.punishment.kick&8) &8<<"));
                 } else if (e.getSlot() == 32) {
                     player.closeInventory();
                     if (player.hasPermission("core.command.punishment.mute")) {
                         player.closeInventory();
                         openGui(2, player, offlinePlayer);
-                    } else player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.punishment.mute&8) &8<<"));
+                    } else player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#fc2419Nie posiadasz uprawnien &8(&#fcb419core.command.punishment.mute&8) &8<<"));
                 } else if (e.getSlot() == 44) {
                     player.getOpenInventory().close();
                 }
@@ -197,7 +197,7 @@ public class PunishmentCommand extends Command implements Listener {
                     itemStack.setDurability((short) 3);
                     inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
                         itemMeta.setOwner(offlinePlayer.getName());
-                        itemMeta.setDisplayName(Api.fixColor("&e" + reason));
+                        itemMeta.setDisplayName(Api.fixColor("&#fcb419" + reason));
                         itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby przejsc dalej!")));
                     });
                 });
@@ -292,7 +292,7 @@ public class PunishmentCommand extends Command implements Listener {
                     itemStack.setDurability((short) 3);
                     inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
                         itemMeta.setOwner(offlinePlayer.getName());
-                        itemMeta.setDisplayName(Api.fixColor("&e" + reason));
+                        itemMeta.setDisplayName(Api.fixColor("&#fcb419" + reason));
                         itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby przejsc dalej!")));
                     });
                 });
@@ -363,7 +363,7 @@ public class PunishmentCommand extends Command implements Listener {
                     itemStack.setDurability((short) 3);
                     inventoryHelper.editSkullMetaForItemStack(itemStack, itemMeta -> {
                         itemMeta.setOwner(offlinePlayer.getName());
-                        itemMeta.setDisplayName(Api.fixColor("&e" + reason));
+                        itemMeta.setDisplayName(Api.fixColor("&#fcb419" + reason));
                         itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby przejsc dalej!")));
                     });
                 });
@@ -382,31 +382,31 @@ public class PunishmentCommand extends Command implements Listener {
                 if (e.getSlot() == 10) {
                     player.getOpenInventory().close();
                     player.chat("/kick " + offlinePlayer.getName() + " " + reason);
-                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason));
+                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason));
                 } else if (e.getSlot() == 11) {
                     player.closeInventory();
                     player.chat("/kick " + offlinePlayer.getName() + " " + reason);
-                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason));
+                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason));
                 } else if (e.getSlot() == 12) {
                     player.getOpenInventory().close();
                     player.chat("/kick " + offlinePlayer.getName() + " " + reason);
-                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason));
+                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason));
                 } else if (e.getSlot() == 13) {
                     player.getOpenInventory().close();
                     player.chat("/kick " + offlinePlayer.getName() + " " + reason);
-                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason));
+                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason));
                 } else if (e.getSlot() == 14) {
                     player.getOpenInventory().close();
                     player.chat("/kick " + offlinePlayer.getName() + " " + reason);
-                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason));
+                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason));
                 } else if (e.getSlot() == 15) {
                     player.getOpenInventory().close();
                     player.chat("/kick " + offlinePlayer.getName() + " " + reason);
-                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason));
+                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason));
                 } else if (e.getSlot() == 16) {
                     player.getOpenInventory().close();
                     player.chat("/kick " + offlinePlayer.getName() + " " + reason);
-                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason));
+                    player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason));
                 }
             });
 
@@ -455,7 +455,7 @@ public class PunishmentCommand extends Command implements Listener {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmZlN2Q0NjMyMjQ3N2Q2MWQ0MWMxODc4OGY1YzFhZmQyNGVkNTI2ZWIzZWQ4NDEyN2YyMTJlMjUxNWIxODgzIn19fQ==");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&e" + time));
+                    itemMeta.setDisplayName(Api.fixColor("&#fcb419" + time));
                     itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby zbanować gracza!")));
                 });
             });
@@ -467,51 +467,51 @@ public class PunishmentCommand extends Command implements Listener {
             if (e.getSlot() == 10) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "10m");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 11) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "15m");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 12) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "30m");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 13) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "1h");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 14) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "2h");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 15) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "6h");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 16) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "1d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 20) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "2d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 21) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "7d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 22) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "14d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 23) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "21d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             } else if (e.getSlot() == 24) {
                 player.getOpenInventory().close();
                 player.chat("/tempban " + offlinePlayer.getName() + " " + reason + " " + "28d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyrzuciłes gracza &e" + offlinePlayer.getName() + " &aza &e" + reason + " &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyrzuciłes gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739za &#fcb419" + reason + " &8<<"));
             }
         });
 
@@ -569,7 +569,7 @@ public class PunishmentCommand extends Command implements Listener {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmZlN2Q0NjMyMjQ3N2Q2MWQ0MWMxODc4OGY1YzFhZmQyNGVkNTI2ZWIzZWQ4NDEyN2YyMTJlMjUxNWIxODgzIn19fQ==");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&e" + time));
+                    itemMeta.setDisplayName(Api.fixColor("&#fcb419" + time));
                     itemMeta.setLore(Api.fixColor(Arrays.asList("&r", " &#FBFD8C&nKliknij aby wyciszyć gracza!")));
                 });
             });
@@ -581,51 +581,51 @@ public class PunishmentCommand extends Command implements Listener {
             if (e.getSlot() == 10) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "10m");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e10m &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb41910m &8<<"));
             } else if (e.getSlot() == 11) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "15m");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e15m &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb41915m &8<<"));
             } else if (e.getSlot() == 12) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "30m");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e30m &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb41930m &8<<"));
             } else if (e.getSlot() == 13) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "1h");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e1h &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb4191h &8<<"));
             } else if (e.getSlot() == 14) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "2h");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e2h &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb4192h &8<<"));
             } else if (e.getSlot() == 15) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "6h");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e6h &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb4196h &8<<"));
             } else if (e.getSlot() == 16) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "1d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e1d &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb4191d &8<<"));
             } else if (e.getSlot() == 20) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "2d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e2d &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb4192d &8<<"));
             } else if (e.getSlot() == 21) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "7d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e7d &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb4197d &8<<"));
             } else if (e.getSlot() == 22) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "14d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e14d &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb41914d &8<<"));
             } else if (e.getSlot() == 23) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "21d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e21d &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb41921d &8<<"));
             } else if (e.getSlot() == 24) {
                 player.getOpenInventory().close();
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + reason + " " + "28d");
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &aPomyślnie wyciszono gracza &e" + offlinePlayer.getName() + " &ana &e28d &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&8>> &#4cf739Pomyślnie wyciszono gracza &#fcb419" + offlinePlayer.getName() + " &#4cf739na &#fcb41928d &8<<"));
             } else if (e.getSlot() == 31) {
                 player.getOpenInventory().close();
                 custommuteGui(reason, player, offlinePlayer);
@@ -664,10 +664,10 @@ public class PunishmentCommand extends Command implements Listener {
                 itemMeta.setDisplayName(Api.fixColor("&6Dodaj czas"));
                 itemMeta.setLore(Api.fixColor(Arrays.asList(
                         "",
-                        " &e+1 min &8- &elpm",
-                        " &e+10 min &8- &elpm + shift",
-                        " &e+1 godz &8- &eppm",
-                        " &e+1 dzien &8- &eppm + shift"
+                        " &#fcb419+1 min &8- &#fcb419lpm",
+                        " &#fcb419+10 min &8- &#fcb419lpm + shift",
+                        " &#fcb419+1 godz &8- &#fcb419ppm",
+                        " &#fcb419+1 dzien &8- &#fcb419ppm + shift"
                 )));
             });
         });
@@ -679,10 +679,10 @@ public class PunishmentCommand extends Command implements Listener {
                 itemMeta.setDisplayName(Api.fixColor("&6Obniz czas"));
                 itemMeta.setLore(Api.fixColor(Arrays.asList(
                         "",
-                        " &e-1 min &8- &elpm",
-                        " &e-10 min &8- &elpm + shift",
-                        " &e-1 godz &8- &eppm",
-                        " &e-1 dzien &8- &eppm + shift"
+                        " &#fcb419-1 min &8- &#fcb419lpm",
+                        " &#fcb419-10 min &8- &#fcb419lpm + shift",
+                        " &#fcb419-1 godz &8- &#fcb419ppm",
+                        " &#fcb419-1 dzien &8- &#fcb419ppm + shift"
                 )));
             });
         });
@@ -703,8 +703,8 @@ public class PunishmentCommand extends Command implements Listener {
             meta.setLore(Api.fixColor(
                     Arrays.asList(
                             "",
-                            " &7Gracz &a" + offlinePlayer.getName(),
-                            " &7Aktualny czas wyciszenia&8: &anic",
+                            " &7Gracz &#4cf739" + offlinePlayer.getName(),
+                            " &7Aktualny czas wyciszenia&8: &#4cf739nic",
                             "",
                             " &#FBFD8C&nKliknij aby wyciszyć gracza"
                     )
@@ -715,7 +715,7 @@ public class PunishmentCommand extends Command implements Listener {
             event.setCancelled(true);
             if(event.getSlot() == 4){
                 if(time.get() <= 10000){
-                    Api.sendMessage(player, " &8>> &cCzas musi być większy niż 10 sekund!");
+                    Api.sendMessage(player, " &8>> &#fc2419Czas musi być większy niż 10 sekund!");
                     return;
                 }
                 player.chat("/tempmute " + offlinePlayer.getName() + " " + TimeUnit.MILLISECONDS.toSeconds(time.get()) + "s " + reason);
@@ -739,8 +739,8 @@ public class PunishmentCommand extends Command implements Listener {
                     meta.setLore(Api.fixColor(
                             Arrays.asList(
                                     "",
-                                    " &7Gracz &a" + offlinePlayer.getName(),
-                                    " &7Aktualny czas wyciszenia&8: &a" + (time.get() < 0 ? "nic" : getTime(time.get())),
+                                    " &7Gracz &#4cf739" + offlinePlayer.getName(),
+                                    " &7Aktualny czas wyciszenia&8: &#4cf739" + (time.get() < 0 ? "nic" : getTime(time.get())),
                                     "",
                                     " &#FBFD8C&nKliknij aby wyciszyć gracza"
                             )
@@ -765,8 +765,8 @@ public class PunishmentCommand extends Command implements Listener {
                     meta.setLore(Api.fixColor(
                             Arrays.asList(
                                     "",
-                                    " &7Gracz &a" + offlinePlayer.getName(),
-                                    " &7Aktualny czas wyciszenia&8: &a" + (time.get() < 0 ? "nic" : getTime(time.get())),
+                                    " &7Gracz &#4cf739" + offlinePlayer.getName(),
+                                    " &7Aktualny czas wyciszenia&8: &#4cf739" + (time.get() < 0 ? "nic" : getTime(time.get())),
                                     "",
                                     " &#FBFD8C&nKliknij aby wyciszyć gracza"
                             )

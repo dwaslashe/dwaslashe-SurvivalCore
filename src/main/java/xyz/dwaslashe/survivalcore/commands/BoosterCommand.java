@@ -85,7 +85,7 @@ public class BoosterCommand extends Command implements Listener {
             if (args.length >= 3) {
                 if (booleanHashMap.containsKey(args[1])) {
                     if (booleanHashMap.get(args[1]) == Integer.valueOf(args[2])) {
-                        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cPomyślnie usunąłeś ulepszenie!");
+                        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Pomyślnie usunąłeś ulepszenie!");
                         booleanHashMap.remove(args[1]);
                     } else wrongUsage();
                 } else wrongUsage();
@@ -96,15 +96,15 @@ public class BoosterCommand extends Command implements Listener {
     public static HashMap<String, Integer> booleanHashMap = new HashMap<>();
     public static void boosterExecute(String type, long time, Player player, int multiplication) {
         if (booleanHashMap.containsKey(type)) {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego zrobić ponieważ te ulepszenie trwa na serwerze!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz tego zrobić ponieważ te ulepszenie trwa na serwerze!");
             return;
         }
 
         booleanHashMap.put(type, multiplication);
         long[] taskTime = {0};
         long[] barTime = {time};
-        Api.sendBroadcast("\n        &#3a92f0&lGLOBALNE ULEPSZENIE\n \n&8>> &#bcd8ebGracz &#FFC42E" + player.getName() + " &#bcd8ebaktywował ulepszenie &#75e810&l" + type + " &#a6fc5b" + multiplication + "x\n&8>> &#bcd8ebNa czas &#ffd56c" + TimerApi.getDurationBreakdownShort(barTime[0]) + " &#ffc942⌚ \n ");
-        BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &#bcd8ebUlepszenie &#75e810&l" + type + " &#a6fc5b" + multiplication + "x &#bcd8ebod &#e8af10" + player.getName() + " &#bcd8ebbędzie trwać jeszcze &#ffd56c" + TimerApi.getDurationBreakdownShort(barTime[0]) + " &#ffc942⌚ &8<<"), BarColor.BLUE, BarStyle.SEGMENTED_10, new BarFlag[0]);
+        Api.sendBroadcast("\n        &#3a92f0&lGLOBALNE ULEPSZENIE\n \n&8>> &#bcd8ebGracz &#FFC42E" + player.getName() + " &#bcd8ebaktywował ulepszenie &#75e810&l" + type + " &#a6fc5b" + multiplication + "x\n&8>> &#bcd8ebNa czas &#ffd56c" + TimerApi.getDurationBreakdownShort(barTime[0]) + " &fᎠ \n ");
+        BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &#bcd8ebUlepszenie &#75e810&l" + type + " &#a6fc5b" + multiplication + "x &#bcd8ebod &#e8af10" + player.getName() + " &#bcd8ebbędzie trwać jeszcze &#ffd56c" + TimerApi.getDurationBreakdownShort(barTime[0]) + " &fᎠ &8<<"), BarColor.BLUE, BarStyle.SEGMENTED_10, new BarFlag[0]);
 
         new BukkitRunnable() {
             @Override
@@ -116,7 +116,7 @@ public class BoosterCommand extends Command implements Listener {
 
                     barTime[0] -= 1000L;
 
-                    bar.setTitle(Api.fixColor("&8>> &#bcd8ebUlepszenie &#75e810&l" + type + " &#a6fc5b" + multiplication + "x &#bcd8ebod &#e8af10" + player.getName() + " &#bcd8ebbędzie trwać jeszcze &#ffd56c" + TimerApi.getDurationBreakdownShort(barTime[0]) + " &#ffc942⌚ &8<<"));
+                    bar.setTitle(Api.fixColor("&8>> &#bcd8ebUlepszenie &#75e810&l" + type + " &#a6fc5b" + multiplication + "x &#bcd8ebod &#e8af10" + player.getName() + " &#bcd8ebbędzie trwać jeszcze &#ffd56c" + TimerApi.getDurationBreakdownShort(barTime[0]) + " &fᎠ &8<<"));
                     bar.setProgress(Api.mapLongToDouble(barTime[0], 0L, time));
 
                     for (Player all : Bukkit.getOnlinePlayers()) {
@@ -145,7 +145,7 @@ public class BoosterCommand extends Command implements Listener {
                     }
 
                     if (player.isOnline()) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cTwoje ulepszenie zostało wyłączone!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Twoje ulepszenie zostało wyłączone!");
                     }
 
                     this.cancel();
@@ -200,7 +200,7 @@ public class BoosterCommand extends Command implements Listener {
 
                     float amount = Float.parseFloat(ChatColor.stripColor(player.getItemInHand().getItemMeta().getLore().get(1)).replace('$', ' ').replace("Wartość:", " "));
 
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś ulepszenie!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie włączyłeś ulepszenie!");
                     player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
                 }
             });

@@ -81,12 +81,12 @@ public class IncognitoCommand extends Command implements Listener {
                 e.setCancelled(true);
                 if (e.getSlot() == 11) {
                     player.getOpenInventory().close();
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś &eincognito!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie włączyłeś &#fcb419incognito!");
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " " + generate(10) + " nickonly");
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set prefix.1000.");
                 } else if (e.getSlot() == 15) {
                     player.closeInventory();
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPomyślnie wyłączyłeś &eincognito!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Pomyślnie wyłączyłeś &#fcb419incognito!");
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " " + player.getName());
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission unset prefix.1000.");
                 } else if (e.getSlot() == 31) {

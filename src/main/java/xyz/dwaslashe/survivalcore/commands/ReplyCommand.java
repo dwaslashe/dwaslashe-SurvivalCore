@@ -37,7 +37,7 @@ public class ReplyCommand extends Command {
             if (args.length > 0) {
                 Player secondPlayer = MsgCommand.getLastMsg().get(player);
                 if (secondPlayer == null) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz komu odpisać");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie masz komu odpisać");
                     return;
                 }
 
@@ -46,12 +46,12 @@ public class ReplyCommand extends Command {
                 User userSecondPlayer = UserCache.getInstance().compute(secondPlayer.getUniqueId());
 
                 if (userSecondPlayer.getIgnoreAllPlayers() == 1) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ dana osoba wyłączyła wysyłanie prywatnych wiadomości!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wysłać wiadomości ponieważ dana osoba wyłączyła wysyłanie prywatnych wiadomości!");
                     return;
                 }
 
                 if (MsgCommand.getInputPlayer(secondPlayer.getName(), userPlayer.getIgnorePlayers()) || MsgCommand.getInputPlayer(player.getName(), userSecondPlayer.getIgnorePlayers())) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ dana osoba Cię wyciszyła lub ją wyciszyłeś!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wysłać wiadomości ponieważ dana osoba Cię wyciszyła lub ją wyciszyłeś!");
                     return;
                 }
 
@@ -62,7 +62,7 @@ public class ReplyCommand extends Command {
                         .map(o -> o = Bukkit.getPlayer((String) o))
                         .filter(Objects::nonNull)
                         .forEach(po -> {
-                            ((Player) po).sendMessage(Api.fixColor("&c&lSocialSPY &8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003" + secondPlayer.getDisplayName() + " &8] &8» &#E7E7E7" + msg));
+                            ((Player) po).sendMessage(Api.fixColor("&#fc2419&lSocialSPY &8[ &#B3F003" + player.getDisplayName() + " &8> &#B3F003" + secondPlayer.getDisplayName() + " &8] &8» &#E7E7E7" + msg));
                         });
 
                 Api.sendMessage(player, "&8[ &#B3F003TY &8> &#B3F003" + secondPlayer.getDisplayName() + " &8] &8» &#E7E7E7" + msg);

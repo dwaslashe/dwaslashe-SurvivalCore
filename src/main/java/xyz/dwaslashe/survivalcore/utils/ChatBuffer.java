@@ -37,7 +37,7 @@ public class ChatBuffer implements Listener {
     private Map<String, Queue<String>> chatQueue = new HashMap<>();
 
     public void receiveChat(Player player, String msg) {
-        String prefix = Api.fixColor("&a&lGracz napisał:");
+        String prefix = Api.fixColor("&#4cf739&lGracz napisał:");
         if (msg.length() <= this.maxBubbleWidth) {
             this.queueChat(player, Api.fixColor(prefix + "\n" + msg + "\n" + "\n" + "\n&r"));
         } else {

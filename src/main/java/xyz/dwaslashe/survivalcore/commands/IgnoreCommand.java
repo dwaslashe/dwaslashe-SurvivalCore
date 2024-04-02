@@ -38,10 +38,10 @@ public class IgnoreCommand extends Command {
 
             if (args[0].equalsIgnoreCase("all")) {
                 if (userPlayer.getIgnoreAllPlayers() == 0) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyciszono wszystkich graczy w prywatnych wiadomościach!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wyciszono wszystkich graczy w prywatnych wiadomościach!");
                     userPlayer.setIgnoreAllPlayers(1);
                 } else {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie odciszono wszystkich graczy w prywatnych wiadomściach!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie odciszono wszystkich graczy w prywatnych wiadomściach!");
                     userPlayer.setIgnoreAllPlayers(0);
                 }
                 return;
@@ -54,9 +54,9 @@ public class IgnoreCommand extends Command {
 
             if (MsgCommand.getInputPlayer(secondPlayer.getName(), userPlayer.getIgnorePlayers())) {
                 userPlayer.setIgnorePlayers(removePlayer(secondPlayer.getName(), userPlayer.getIgnorePlayers()));
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie odciszono gracza &e" + secondPlayer.getName());
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie odciszono gracza &#fcb419" + secondPlayer.getName());
             } else {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyciszono gracza &e" + secondPlayer.getName());
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wyciszono gracza &#fcb419" + secondPlayer.getName());
                 userPlayer.addIgnorePlayers(secondPlayer.getName() + "&");
             }
         }

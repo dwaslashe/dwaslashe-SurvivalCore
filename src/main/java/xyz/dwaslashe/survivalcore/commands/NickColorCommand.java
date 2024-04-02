@@ -119,18 +119,18 @@ public class NickColorCommand extends Command implements Listener {
                     player.getOpenInventory().close();
                     if (player.hasPermission("core.command.nickcolor.color")) {
                         openGui(1, player);
-                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz do tego permisji!");
+                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie masz do tego permisji!");
                 } else if (e.getSlot() == 15) {
                     player.closeInventory();
                     if (player.hasPermission("core.command.nickcolor.gradient")) {
                         openGui(2, player);
-                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz do tego permisji!");
+                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie masz do tego permisji!");
                 } else if (e.getSlot() == 40) {
                     player.closeInventory();
                 } else if (e.getSlot() == 13) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " " + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zrestartowałeś kolor nicku!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zrestartowałeś kolor nicku!");
                 }
             });
 
@@ -274,59 +274,59 @@ public class NickColorCommand extends Command implements Listener {
                 if (e.getSlot() == 10) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#008443" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 11) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#FE5000" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 12) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#EA00FF" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 13) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#21F8F6" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 14) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#FFF01F" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 15) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#39ff14" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 16) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#098AFA" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 19) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#D47E07" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 20) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#09FADE" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 21) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#808080" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 22) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#F5F5F5" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 23) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#fe019a" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 24) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#A907EC" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 25) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " &#F6ADEC" + player.getName());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 40) {
                     player.getOpenInventory().close();
                 }
@@ -473,59 +473,59 @@ public class NickColorCommand extends Command implements Listener {
                 if (e.getSlot() == 10) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#008443");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 11) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#FE5000");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 12) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#EA00FF");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 13) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#21F8F6");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 14) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#FFF01F");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 15) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#39ff14");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 16) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#098AFA");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 19) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#D47E07");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 20) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#09FADE");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 21) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#808080");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 22) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#F5F5F5");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 23) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#fe019a");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 24) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#A907EC");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 25) {
                     player.getOpenInventory().close();
                     nextColorGradientGui(1, player, "#F6ADEC");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś pierwszy kolory gradientu!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś pierwszy kolory gradientu!");
                 } else if (e.getSlot() == 40) {
                     player.getOpenInventory().close();
                 }
@@ -674,59 +674,59 @@ public class NickColorCommand extends Command implements Listener {
                 if (e.getSlot() == 10) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#008443>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 11) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#FE5000>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 12) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#EA00FF>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 13) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#21F8F6>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 14) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#FFF01F>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 15) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#39ff14>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 16) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#098AFA>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 19) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#D47E07>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 20) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#09FADE>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 21) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#808080>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 22) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#F5F5F5>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 23) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#fe019a>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 24) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#A907EC>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 25) {
                     player.getOpenInventory().close();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "adminnick " + player.getName() + " <gradient:" + color + ":#F6ADEC>" + player.getName() + "</gradient>");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś nick na &e" + player.getDisplayName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś nick na &#fcb419" + player.getDisplayName());
                 } else if (e.getSlot() == 40) {
                     player.getOpenInventory().close();
                 }

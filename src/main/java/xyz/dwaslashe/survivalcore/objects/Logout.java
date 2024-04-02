@@ -65,13 +65,13 @@ public class Logout {
     public void create() {
         if (!this.exists()) {
             LogoutManager.getLogouts().add(this);
-            final BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &#FF3131Nie logaj się przez &#ffd56c" + this.time + " &#ffc942⌚ &8&l-" + Main.pluginConfig.getMessages().getIp() + " &8<<"), BarColor.RED, BarStyle.SOLID, new BarFlag[0]);
+            final BossBar bar = Bukkit.createBossBar(Api.fixColor("&8>> &#FF3131Nie logaj się przez &#ffd56c" + this.time + " &fᎠ &8&l-" + Main.pluginConfig.getMessages().getIp() + " &8<<"), BarColor.RED, BarStyle.SOLID, new BarFlag[0]);
             bar.addPlayer(this.player);
             (new BukkitRunnable() {
                 public void run() {
                     if (Logout.this.player != null && Logout.this.player.isOnline()) {
                         if (Logout.this.time > System.currentTimeMillis()) {
-                            bar.setTitle(Api.fixColor("&8>> &#FF3131Nie logaj się przez &#ffd56c" + TimerApi.secondsToString(Logout.this.getTime()) + " &#ffc942⌚ &8&l- " + Main.pluginConfig.getMessages().getIp() + " &8<<"));
+                            bar.setTitle(Api.fixColor("&8>> &#FF3131Nie logaj się przez &#ffd56c" + TimerApi.secondsToString(Logout.this.getTime()) + " &fᎠ &8&l- " + Main.pluginConfig.getMessages().getIp() + " &8<<"));
                             bar.setProgress(Api.mapLongToDouble(TimerApi.getTime(TimerApi.secondsToString(Logout.this.getTime())), 0L, 19000L));
                         } else {
                             bar.setTitle(Api.fixColor("&8>> &#8dfa52Skończyłeś już walke! Teraz możesz się wylogować! &8<<"));

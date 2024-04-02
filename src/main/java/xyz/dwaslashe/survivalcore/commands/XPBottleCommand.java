@@ -36,12 +36,12 @@ public class XPBottleCommand extends Command {
                         else expToWithdraw = Integer.parseInt(args[0]);
 
                         if (expToWithdraw <= 0) {
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPodana wartość musisz być większa niż 0!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Podana wartość musisz być większa niż 0!");
                             return;
                         }
                         int totalExp = extension.getExperience();
                         if (totalExp < expToWithdraw) {
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle doświadczenia aby wypłacić! &c" + totalExp + "&8/&4" + expToWithdraw);
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz tyle doświadczenia aby wypłacić! &#fc2419" + totalExp + "&8/&4" + expToWithdraw);
                             return;
                         }
 
@@ -53,13 +53,13 @@ public class XPBottleCommand extends Command {
                                 " &#E7E7E7Poziom: &#aa42f5" + ExperienceHelper.getInstance().expToLevel(expToWithdraw),
                                 " &#E7E7E7Właściciel: &#9DF89F" + player.getName()));
                         Api.giveOrDrop(player, bottle);
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wypłaciłeś &2" + expToWithdraw + " EXP");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wypłaciłeś &2" + expToWithdraw + " EXP");
                     });
                 } catch (NumberFormatException e){
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPodana wartość nie jest liczbą!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Podana wartość nie jest liczbą!");
                 }
             } else {
-                PlayerExtension.getPlayerExtend(player, extension -> Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPosiadane doświadczenie: &2{exp}\n".replace("{exp}", String.valueOf(extension.getExperience())) + Main.pluginConfig.getMessages().getPrefix() + "&cWypłać doświadczenie&8: &e{usage}".replace("{usage}", getUsage())));
+                PlayerExtension.getPlayerExtend(player, extension -> Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Posiadane doświadczenie: &2{exp}\n".replace("{exp}", String.valueOf(extension.getExperience())) + Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Wypłać doświadczenie&8: &#fcb419{usage}".replace("{usage}", getUsage())));
             }
         }
     }

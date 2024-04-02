@@ -29,6 +29,6 @@ public class TrashCommand extends Command {
         Inventory inventory = Bukkit.createInventory(null, 54, "Kosz");
         inventory.clear();
         player.openInventory(inventory);
-        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otworzyłeś &ekosz");
+        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie otworzyłeś &#fcb419kosz");
     }
 }

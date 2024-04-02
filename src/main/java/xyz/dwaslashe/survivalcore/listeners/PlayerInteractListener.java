@@ -15,6 +15,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -47,6 +48,7 @@ public class PlayerInteractListener implements Listener {
     public static Map<String, Integer> loadingProgress = new HashMap<>();
     public static Map<String, Integer> loadingTime = new HashMap<>();
     public static Map<String, ItemStack> itemStackLoading = new HashMap<>();
+    public static Map<String, Integer> itemStackAmountLoading = new HashMap<>();
     public static ItemStack cleaningWaterCloth = ItemHelper.edit(new ItemStack(Material.RABBIT_HIDE)).editItemMeta(ItemMeta.class, itemMeta -> {
         itemMeta.setDisplayName(Api.fixColor("&#ffbd52Nasączona ściereczka z wodą"));
         itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Pozwala na mycie brudnej gotówki klikając prawym.", " &#c72810UWAGA! &#fa4125Pamiętaj, że możesz ją użyć tylko raz do prania jednej gotówki!")));
@@ -59,12 +61,6 @@ public class PlayerInteractListener implements Listener {
         if (guiID == 0) {
             InventoryHelper inventoryHelper = new InventoryHelper(player, "Interakcje " + secondPlayer.getName(), 5);
             User user = UserCache.getInstance().compute(secondPlayer.getUniqueId());
-
-            ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(" ");
-                });
-            });
 
             ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
@@ -95,10 +91,11 @@ public class PlayerInteractListener implements Listener {
                             " &#E7E7E7Średnia ocena profilu: " + colorAverage(user.getRates()) + "&8/&#54f5425",
                             " &#E7E7E7Twoja ocena profilu: " + colorCountByName(user.getRates(), player.getName()),
                             "",
-                            " &#E7E7E7Saldo: &#FFF88F%economy_money% &#FFC42E$",
+                            " &#E7E7E7Ping: &#FFC42E" + Api.getPing(secondPlayer) + "ms",
+                            " &#E7E7E7Saldo: &#FFF88F%economy_money% &f",
                             " &#E7E7E7Śmierci: &#ff6e6e%statistic_deaths% &#ff4545☠",
                             " &#E7E7E7Zabójstwa: &#4DFFFF%statistic_player_kills% &#1AE6E6⚔",
-                            " &#E7E7E7Przegrane godziny: &#ffd56c%statistic_hours_played%g &#ffc942⌚",
+                            " &#E7E7E7Przegrane godziny: &#ffd56c%statistic_hours_played%g &fᎠ",
                             " &#E7E7E7Wykopane bloki: &#10F70C%statistic_mine_block% &#09b106⛏",
                             " &#E7E7E7Punkty rankingu: &#4eed6e%mineteams_profile_ranking%pkt",
                             " &#E7E7E7Ilość powitanych nowych graczy: &#8eeb6c%Greeter_amount%"
@@ -138,7 +135,7 @@ public class PlayerInteractListener implements Listener {
                 e.setCancelled(true);
                 if (e.getSlot() == 19) {
                     if (delayHook.containsKey(player) && delayHook.get(player) > System.currentTimeMillis()) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zaczepić gracza musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zaczepić gracza musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
                         player.closeInventory();
                         return;
                     }
@@ -146,8 +143,8 @@ public class PlayerInteractListener implements Listener {
                     delayHook.remove(player);
 
                     player.closeInventory();
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zaczepiłeś gracza!");
-                    secondPlayer.sendTitle(Api.fixColor("&#95eb34&lHej"), Api.fixColor("&8>> &aGracz &e" + player.getDisplayName() + "&a zaczepił Cię!"));
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zaczepiłeś gracza!");
+                    secondPlayer.sendTitle(Api.fixColor("&#95eb34&lHej"), Api.fixColor("&8>> &#4cf739Gracz &#fcb419" + player.getDisplayName() + "&#4cf739 zaczepił Cię!"));
                     secondPlayer.playSound(secondPlayer.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1.0F, 1.0F);
 
                     delayHook.put(player, TimerApi.parseDateDiff("5s", true));
@@ -157,7 +154,7 @@ public class PlayerInteractListener implements Listener {
                 } else if (e.getSlot() == 23) {
                     player.closeInventory();
                     NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT,
-                            " &8» <hover:show_text:\"<yellow>Kliknij mnie!\"><click:suggest_command:/msg <nick> >&aKliknij w wiadomość aby napisać do gracza prywatną wiadomość!</click></hover>"
+                            " &8» <hover:show_text:\"<yellow>Kliknij mnie!\"><click:suggest_command:/msg <nick> >&#4cf739Kliknij w wiadomość aby napisać do gracza prywatną wiadomość!</click></hover>"
                     , Placeholder.parsed("nick", secondPlayer.getName())).send(player);
                 } else if (e.getSlot() == 25) {
                     openGui(1, player, secondPlayer);
@@ -167,8 +164,6 @@ public class PlayerInteractListener implements Listener {
                     openGui(2, player, secondPlayer);
                 }
             });
-
-            inventoryHelper.setItemRange(0, 45, glass_black);
 
             inventoryHelper.setItem(4, information);
             inventoryHelper.setItem(19, hook);
@@ -186,12 +181,6 @@ public class PlayerInteractListener implements Listener {
         if (guiID == 1) {
             InventoryHelper inventoryHelper = new InventoryHelper(player, "Oceń profil", 5);
             User user = UserCache.getInstance().compute(secondPlayer.getUniqueId());
-
-            ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(" ");
-                });
-            });
 
             ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
@@ -252,12 +241,12 @@ public class PlayerInteractListener implements Listener {
                     if (!checkPlayerName(user.getRates(), player.getName())) {
                         delayModifyRate.put(player, TimerApi.parseDateDiff("12h", true));
                         user.addRates(1 + "-" + player.getName() + "#");
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono ocene gracza &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &austawił Ci ocene profilu na &e1");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie ustawiono ocene gracza &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739ustawił Ci ocene profilu na &#fcb4191");
                         player.closeInventory();
                     } else {
                         if (delayModifyRate.containsKey(player) && delayModifyRate.get(player) > System.currentTimeMillis()) {
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zmienić ocene musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayModifyRate.get(player))));
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zmienić ocene musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayModifyRate.get(player))));
                             player.closeInventory();
                             return;
                         }
@@ -265,8 +254,8 @@ public class PlayerInteractListener implements Listener {
                         delayModifyRate.remove(player);
 
                         user.setRates(replaceNumber(user.getRates(), player.getName(), "1"));
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś ocene &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &austawił Ci ocene profilu na &e1");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś ocene &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739ustawił Ci ocene profilu na &#fcb4191");
                         player.closeInventory();
 
                         delayModifyRate.put(player, TimerApi.parseDateDiff("12h", true));
@@ -275,12 +264,12 @@ public class PlayerInteractListener implements Listener {
                     if (!checkPlayerName(user.getRates(), player.getName())) {
                         delayModifyRate.put(player, TimerApi.parseDateDiff("12h", true));
                         user.addRates(2 + "-" + player.getName() + "#");
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono ocene gracza &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &austawił Ci ocene profilu na &e2");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie ustawiono ocene gracza &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739ustawił Ci ocene profilu na &#fcb4192");
                         player.closeInventory();
                     } else {
                         if (delayModifyRate.containsKey(player) && delayModifyRate.get(player) > System.currentTimeMillis()) {
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zmienić ocene musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayModifyRate.get(player))));
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zmienić ocene musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayModifyRate.get(player))));
                             player.closeInventory();
                             return;
                         }
@@ -288,8 +277,8 @@ public class PlayerInteractListener implements Listener {
                         delayModifyRate.remove(player);
 
                         user.setRates(replaceNumber(user.getRates(), player.getName(), "2"));
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś ocene &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &austawił Ci ocene profilu na &e2");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś ocene &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739ustawił Ci ocene profilu na &#fcb4192");
                         player.closeInventory();
 
                         delayModifyRate.put(player, TimerApi.parseDateDiff("12h", true));
@@ -298,12 +287,12 @@ public class PlayerInteractListener implements Listener {
                     if (!checkPlayerName(user.getRates(), player.getName())) {
                         delayModifyRate.put(player, TimerApi.parseDateDiff("12h", true));
                         user.addRates(3 + "-" + player.getName() + "#");
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono ocene gracza &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &austawił Ci ocene profilu na &e3");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie ustawiono ocene gracza &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739ustawił Ci ocene profilu na &#fcb4193");
                         player.closeInventory();
                     } else {
                         if (delayModifyRate.containsKey(player) && delayModifyRate.get(player) > System.currentTimeMillis()) {
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zmienić ocene musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayModifyRate.get(player))));
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zmienić ocene musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayModifyRate.get(player))));
                             player.closeInventory();
                             return;
                         }
@@ -311,8 +300,8 @@ public class PlayerInteractListener implements Listener {
                         delayModifyRate.remove(player);
 
                         user.setRates(replaceNumber(user.getRates(), player.getName(), "3"));
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś ocene &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &austawił Ci ocene profilu na &e3");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś ocene &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739ustawił Ci ocene profilu na &#fcb4193");
                         player.closeInventory();
 
                         delayModifyRate.put(player, TimerApi.parseDateDiff("12h", true));
@@ -321,12 +310,12 @@ public class PlayerInteractListener implements Listener {
                     if (!checkPlayerName(user.getRates(), player.getName())) {
                         delayModifyRate.put(player, TimerApi.parseDateDiff("12h", true));
                         user.addRates(4 + "-" + player.getName() + "#");
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono ocene gracza &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &austawił Ci ocene profilu na &e4");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie ustawiono ocene gracza &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739ustawił Ci ocene profilu na &#fcb4194");
                         player.closeInventory();
                     } else {
                         if (delayModifyRate.containsKey(player) && delayModifyRate.get(player) > System.currentTimeMillis()) {
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zmienić ocene musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayModifyRate.get(player))));
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zmienić ocene musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayModifyRate.get(player))));
                             player.closeInventory();
                             return;
                         }
@@ -334,8 +323,8 @@ public class PlayerInteractListener implements Listener {
                         delayModifyRate.remove(player);
 
                         user.setRates(replaceNumber(user.getRates(), player.getName(), "4"));
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś ocene &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &austawił Ci ocene profilu na &e4");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś ocene &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739ustawił Ci ocene profilu na &#fcb4194");
                         player.closeInventory();
 
                         delayModifyRate.put(player, TimerApi.parseDateDiff("12h", true));
@@ -344,12 +333,12 @@ public class PlayerInteractListener implements Listener {
                     if (!checkPlayerName(user.getRates(), player.getName())) {
                         delayModifyRate.put(player, TimerApi.parseDateDiff("12h", true));
                         user.addRates(5 + "-" + player.getName() + "#");
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono ocene gracza &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &austawił Ci ocene profilu na &e5");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie ustawiono ocene gracza &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739ustawił Ci ocene profilu na &#fcb4195");
                         player.closeInventory();
                     } else {
                         if (delayModifyRate.containsKey(player) && delayModifyRate.get(player) > System.currentTimeMillis()) {
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zmienić ocene musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayModifyRate.get(player))));
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zmienić ocene musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayModifyRate.get(player))));
                             player.closeInventory();
                             return;
                         }
@@ -357,8 +346,8 @@ public class PlayerInteractListener implements Listener {
                         delayModifyRate.remove(player);
 
                         user.setRates(replaceNumber(user.getRates(), player.getName(), "5"));
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś ocene &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &austawił Ci ocene profilu na &e5");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś ocene &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739ustawił Ci ocene profilu na &#fcb4195");
                         player.closeInventory();
 
                         delayModifyRate.put(player, TimerApi.parseDateDiff("12h", true));
@@ -367,8 +356,6 @@ public class PlayerInteractListener implements Listener {
                     openGui(0, player, secondPlayer);
                 }
             });
-
-            inventoryHelper.setItemRange(0, 45, glass_black);
 
             inventoryHelper.setItem(4, information);
             inventoryHelper.setItem(20, one);
@@ -385,12 +372,6 @@ public class PlayerInteractListener implements Listener {
         if (guiID == 2) {
             InventoryHelper inventoryHelper = new InventoryHelper(player, "Interakcje " + secondPlayer.getName(), 5);
             User user = UserCache.getInstance().compute(secondPlayer.getUniqueId());
-
-            ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(" ");
-                });
-            });
 
             ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
@@ -414,10 +395,10 @@ public class PlayerInteractListener implements Listener {
                             " &#E7E7E7Średnia ocena profilu: " + colorAverage(user.getRates()) + "&8/&#54f5425",
                             " &#E7E7E7Twoja ocena profilu: " + colorCountByName(user.getRates(), player.getName()),
                             "",
-                            " &#E7E7E7Saldo: &#FFF88F%economy_money% &#FFC42E$",
+                            " &#E7E7E7Saldo: &#FFF88F%economy_money% &f",
                             " &#E7E7E7Śmierci: &#ff6e6e%statistic_deaths% &#ff4545☠",
                             " &#E7E7E7Zabójstwa: &#4DFFFF%statistic_player_kills% &#1AE6E6⚔",
-                            " &#E7E7E7Przegrane godziny: &#ffd56c%statistic_hours_played%g &#ffc942⌚",
+                            " &#E7E7E7Przegrane godziny: &#ffd56c%statistic_hours_played%g &fᎠ",
                             " &#E7E7E7Wykopane bloki: &#10F70C%statistic_mine_block% &#09b106⛏",
                             " &#E7E7E7Punkty rankingu: &#4eed6e%mineteams_profile_ranking%pkt",
                             " &#E7E7E7Ilość powitanych nowych graczy: &#8eeb6c%Greeter_amount%"
@@ -437,7 +418,7 @@ public class PlayerInteractListener implements Listener {
                 if (e.getSlot() == 19) {
 
                     if (delayKiss.containsKey(player) && delayKiss.get(player) > System.currentTimeMillis()) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby pocałować gracza musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayKiss.get(player))));
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby pocałować gracza musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayKiss.get(player))));
                         player.closeInventory();
                         return;
                     }
@@ -445,9 +426,9 @@ public class PlayerInteractListener implements Listener {
                     delayKiss.remove(player);
 
                     if (Api.isNearby(player, secondPlayer, 3)) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wysłano zapytanie o pocałunek! Nie oddalaj się od niego!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wysłano zapytanie o pocałunek! Nie oddalaj się od niego!");
                         openGui(3, secondPlayer, player);
-                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać mu zapytanie o pocałunek bo nie jesteś w obrębie gracza");
+                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wysłać mu zapytanie o pocałunek bo nie jesteś w obrębie gracza");
 
                     player.closeInventory();
 
@@ -458,8 +439,6 @@ public class PlayerInteractListener implements Listener {
                     openGui(0, player, secondPlayer);
                 }
             });
-
-            inventoryHelper.setItemRange(0, 45, glass_black);
 
             inventoryHelper.setItem(4, information);
             inventoryHelper.setItem(19, kiss);
@@ -473,12 +452,6 @@ public class PlayerInteractListener implements Listener {
         //3
         if (guiID == 3) {
             InventoryHelper inventoryHelper = new InventoryHelper(player, "Pozwolenie o pocałunek od " + secondPlayer.getName(), 3);
-
-            ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(" ");
-                });
-            });
 
             ItemStack yes = inventoryHelper.prepareItemStack(Material.LIME_WOOL, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
@@ -500,25 +473,23 @@ public class PlayerInteractListener implements Listener {
                     World world = player.getWorld();
 
                     if (Api.isNearby(player, secondPlayer, 3)) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie pocałowałeś gracza &e" + secondPlayer.getName());
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie pocałowałeś gracza &e" + player.getName());
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie pocałowałeś gracza &#fcb419" + secondPlayer.getName());
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie pocałowałeś gracza &#fcb419" + player.getName());
                         world.spawnParticle(Particle.HEART, player.getLocation().add(0.0D, 2.0D, 0.0D), 10);
                         world.spawnParticle(Particle.HEART, secondPlayer.getLocation().add(0.0D, 2.0D, 0.0D), 10);
                         player.closeInventory();
                         secondPlayer.closeInventory();
                     } else {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cJuż nie możesz zaakceptować pocałunku bo jesteś za daleko od gracza!");
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&cGracz potwierdził pocałunek ale jesteś za daleko od niego!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Już nie możesz zaakceptować pocałunku bo jesteś za daleko od gracza!");
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Gracz potwierdził pocałunek ale jesteś za daleko od niego!");
                     }
                     player.closeInventory();
                 } else if (e.getSlot() == 15) {
-                    Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie odrzuciłeś propozycje pocałunku!");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cGracz &e" + secondPlayer.getName() + "&c odrzucił propozycje pocałunku!");
+                    Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie odrzuciłeś propozycje pocałunku!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Gracz &#fcb419" + secondPlayer.getName() + "&#fc2419 odrzucił propozycje pocałunku!");
                     player.closeInventory();
                 }
             });
-
-            inventoryHelper.setItemRange(0, 27, glass_black);
 
             inventoryHelper.setItem(11, yes);
             inventoryHelper.setItem(15, no);
@@ -527,36 +498,17 @@ public class PlayerInteractListener implements Listener {
         }
         //4
         if (guiID == 4) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Połóż brudną gotówke", 4);
-
-            ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(" ");
-                });
-            });
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "Połóż brudną gotówke", 3);
 
             ItemStack air = inventoryHelper.prepareItemStack(Material.AIR, itemStack -> {
             });
 
-            ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&#FF3131Zamknij"));
-                });
-            });
-
             inventoryHelper.click(e -> {
+                if (e.getSlot() == 13) return;
                 e.setCancelled(true);
-                if (e.getRawSlot() == 13) {
-                    e.setCancelled(false);
-                } else if (e.getSlot() == 31) {
-                    player.closeInventory();
-                }
             });
-
-            inventoryHelper.setItemRange(0, 36, glass_black);
 
             inventoryHelper.setItem(13, air);
-            inventoryHelper.setItem(31, back);
 
             inventoryHelper.open(player);
         }
@@ -566,32 +518,43 @@ public class PlayerInteractListener implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
 
-        if (event.getView().getTitle().equals("Połóż brudną gotówke") && event.getRawSlot() == 13) {
-            ItemStack currentItem = event.getCursor();
+        if (event.getView().getTitle().equals("Połóż brudną gotówke") && event.getSlot() == 13) {
+            if (event.getAction().equals(InventoryAction.PLACE_ONE) || event.getAction().equals(InventoryAction.PLACE_ALL) || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) {
+                ItemStack currentItem = event.getCursor();
 
-            if (currentItem != null && currentItem.getAmount() > 0 && currentItem.getAmount() == 1) {
-                NBTItem nbtItem = new NBTItem(currentItem);
-                if (nbtItem.hasCustomNbtData()) {
-                    if (nbtItem.hasNBTData()) {
-                        if (currentItem.getType().equals(Material.MOJANG_BANNER_PATTERN)) {
-                            startLoading(player, currentItem);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zacząłeś pranie brudnej gotówki!");
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&4&lUWAGA &cWychodząc z serwera pranie zostanie zakończone niepowodzeniem!");
-                            currentItem.setAmount(currentItem.getAmount() - 1);
-                            player.closeInventory();
+                if (currentItem != null && currentItem.getAmount() > 0) {
+                    NBTItem nbtItem = new NBTItem(currentItem);
+                    if (nbtItem.hasCustomNbtData()) {
+                        if (nbtItem.hasNBTData()) {
+                            if (currentItem.getType().equals(Material.MOJANG_BANNER_PATTERN) || currentItem.getType().equals(Material.MAP)) {
+                                if (nbtItem.hasKey("dirty-money-value")) {
+                                    startLoading(player, currentItem, currentItem.getAmount());
+                                    System.out.println("start loading: " + player.getName());
+                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zacząłeś pranie brudnej gotówki!");
+                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&4&lUWAGA &#fc2419Wychodząc z serwera pranie zostanie zakończone niepowodzeniem!");
+                                    currentItem.setAmount(currentItem.getAmount() - currentItem.getAmount());
+                                    player.closeInventory();
+                                } else if (currentItem.getItemMeta().getDisplayName().contains("Brudny banknot gotówki")) {
+                                    startLoading(player, currentItem, currentItem.getAmount());
+                                    System.out.println("start loading second: " + player.getName());
+                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zacząłeś pranie brudnej gotówki!");
+                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&4&lUWAGA &#fc2419Wychodząc z serwera pranie zostanie zakończone niepowodzeniem!");
+                                    currentItem.setAmount(currentItem.getAmount() - currentItem.getAmount());
+                                    player.closeInventory();
+                                }
+                            }
                         }
                     }
                 }
-            } else {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wyprać tego przedmiotu! Możesz tylko wyprać &njedną ilość&c brudnej gotówki!");
             }
         }
     }
 
-    public void startLoading(Player player, ItemStack itemStack) {
+    public void startLoading(Player player, ItemStack itemStack, int amount) {
         if (!loadingProgress.containsKey(player.getName())) {
             loadingProgress.put(player.getName(), 0);
             itemStackLoading.put(player.getName(), itemStack);
+            itemStackAmountLoading.put(player.getName(), amount);
             loadingTime.put(player.getName(), 180);
         }
     }
@@ -612,10 +575,12 @@ public class PlayerInteractListener implements Listener {
                 System.out.println("[WASHIN DIRTY CASH] Player: " + player.getName() + ", Money: " + valueMoney + ", Amount" + dirtCash.getAmount());
                 ItemStack paperCash = makePaper(valueMoney, Arrays.asList(
                         "",
-                        " &#E7E7E7Wartość: &#FFF88F" + valueMoney + " &#FFC42E$",
+                        " &#E7E7E7Wartość: &#FFF88F" + valueMoney + " &f",
                         " &#E7E7E7Właściciel: &#9DF89F" + player.getName()));
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aBrudna gotówka pomyślnie została wyprana!");
+                paperCash.setAmount(itemStackAmountLoading.get(player.getName()));
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Brudna gotówka pomyślnie została wyprana!");
                 Api.giveOrDrop(player, paperCash);
+                itemStackAmountLoading.remove(player.getName());
                 itemStackLoading.remove(player.getName());
             }
             return;
@@ -752,7 +717,7 @@ public class PlayerInteractListener implements Listener {
             Player target = (Player) event.getRightClicked();
             Logout logout = Logout.get(player);
             if (logout.getTime() > System.currentTimeMillis()) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego robić podczas walki!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz tego robić podczas walki!");
 
             } else openGui(0, player, target);
         }
@@ -760,7 +725,7 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     private void onPlayerInteract(PlayerInteractEvent event) {
-        int timeCooldownPearl = 30;
+        int timeCooldownPearl = 20;
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getItemInHand();
 
@@ -769,7 +734,7 @@ public class PlayerInteractListener implements Listener {
                 if (!loadingProgress.containsKey(player.getName())) {
                     openGui(4, player, player);
 
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cTwoja ścierka nasączona wodą została zniszczona ponieważ zacząłeś ją używać!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Twoja ścierka nasączona wodą została zniszczona ponieważ zacząłeś ją używać!");
                     itemInHand.setAmount(itemInHand.getAmount() - 1);
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1, 1);
 
@@ -780,14 +745,14 @@ public class PlayerInteractListener implements Listener {
                     event.setCancelled(true);
                     event.setUseInteractedBlock(Event.Result.DENY);
                     event.setUseItemInHand(Event.Result.DENY);
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz prać kolejnej brudnej gotówki jak jesteś w trakcie prania!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz prać kolejnej brudnej gotówki jak jesteś w trakcie prania!");
                 }
             }
         }
 
         if (event.getClickedBlock() == null && event.getAction() == Action.RIGHT_CLICK_AIR) {
-            if (itemInHand.getType().equals(Material.SNOWBALL) && itemInHand.getItemMeta().hasDisplayName() && itemInHand.isSimilar(pokeball)) {
-                shooters.add(player.getUniqueId());
+            if (itemInHand.getType().equals(Material.SNOWBALL) && itemInHand.getItemMeta().hasDisplayName() && itemInHand.isSimilar(pokeBall)) {
+                CustomItemsListener.shooters.add(player.getUniqueId());
                 return;
             }
         }
@@ -795,7 +760,7 @@ public class PlayerInteractListener implements Listener {
         if (!player.hasPermission("core.cooldown.enderpearl.use.bypass")) {
             if (Main.pluginConfig.getEvents().isEnderPearlCooldown() && event.getMaterial() == Material.ENDER_PEARL && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
                 if (isPlayerInCooldown(player) && getTimeRemaining(player).intValue() < timeCooldownPearl) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPerły kolejny raz możesz użyć za &#ffd56c" + getTimeRemaining(player) + "sek &#ffc942⌚");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Perły kolejny raz możesz użyć za &#ffd56c" + getTimeRemaining(player) + "sek &fᎠ");
                     event.setCancelled(true);
                 } else {
                     addPlayerToMap(player, Integer.valueOf(timeCooldownPearl));
@@ -803,37 +768,48 @@ public class PlayerInteractListener implements Listener {
             }
         }
 
+        if (event.getMaterial() == Material.PAPER && (event.getAction().isRightClick() || event.getAction().isLeftClick())) {
+            ItemHelper itemHelper = ItemHelper.edit(itemInHand);
+            itemHelper.editNbtTagCompound(nbtItem -> {
+                if (nbtItem.hasKey("money-value")) {
+                    System.out.println("[NIELEGALNA GOTOWKA] Gracz " + player.getName() + " posiadal nielegalna gotowka i chcial wplacic!");
+                    player.getItemInHand().setAmount((player.getItemInHand().getAmount() - 1));
+                }
+            });
+        }
+
+
         if (!RegionApi.isInRegion(player.getLocation(), "pvp")) {
             if (event.getMaterial() == Material.PAPER && event.getAction().equals(Action.RIGHT_CLICK_AIR) && Objects.equals(event.getHand(), EquipmentSlot.HAND)) {
                 ItemHelper itemHelper = ItemHelper.edit(itemInHand);
                 DecimalFormat decimalFormat = new DecimalFormat("##.####");
                 itemHelper.editNbtTagCompound(nbtItem -> {
-                    if (nbtItem.hasKey("money-value")) {
-                        double value = nbtItem.getDouble("money-value");
+                    if (nbtItem.hasKey("withdraw-money")) {
+                        double value = nbtItem.getDouble("withdraw-money");
                         UserManager.getInstance().getUser(player).ifPresent(user -> user.deposit(value));
-                        Main.getPlugin().getLogger().info(Api.fixColor("[WITHDRAW] &aGracz &e" + player.getName() + " &awplacil banknot o wartosci: &e$" + decimalFormat.format(value)));
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na konto &#FFF88F" + decimalFormat.format(value) + " &#FFC42E$");
+                        Main.getPlugin().getLogger().info(Api.fixColor("[WITHDRAW] &#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739wplacil banknot o wartosci: &#fcb419$" + decimalFormat.format(value)));
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wpłaciłeś na konto &#FFF88F" + decimalFormat.format(value) + " &f");
                         player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
-                    } else {
-                        itemHelper.editItemMeta(ItemMeta.class, itemMeta -> {
-                            if (itemMeta.getDisplayName().contains("Banknot gotówki")) {
-                                if (!itemInHand.getItemMeta().hasLore()) {
-                                    return;
-                                }
-                                float amount = Float.parseFloat(ChatColor.stripColor(player.getItemInHand().getItemMeta().getLore().get(1)).replace('$', ' ').replace("Wartość:", " "));
-                                UserManager.getInstance().getUser(event.getPlayer()).ifPresent(user -> user.deposit(amount));
-                                Main.getPlugin().getLogger().info(Api.fixColor("[WITHDRAW] &aGracz &e" + player.getName() + " &awplacil banknot o wartosci: &e$" + amount));
-                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na konto &#FFF88F" + amount + " &#FFC42E$");
-                                player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
-                            }
-                        });
                     }
+                    //    itemHelper.editItemMeta(ItemMeta.class, itemMeta -> {
+                    //        if (itemMeta.getDisplayName().contains("Banknot gotówki")) {
+                    //            if (!itemInHand.getItemMeta().hasLore()) {
+                    //                return;
+                    //            }
+                    //            float amount = Float.parseFloat(ChatColor.stripColor(player.getItemInHand().getItemMeta().getLore().get(1)).replace('$', ' ').replace("Wartość:", " "));
+                    //            UserManager.getInstance().getUser(event.getPlayer()).ifPresent(user -> user.deposit(amount));
+                    //            Main.getPlugin().getLogger().info(Api.fixColor("[WITHDRAW] &#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739wplacil banknot o wartosci: &#fcb419$" + amount));
+                    //            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wpłaciłeś na konto &#FFF88F" + amount + " &f");
+                    //            player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+                    //        }
+                    //    });
+                    //}
                 });
-            } else if (event.getMaterial() == Material.MOJANG_BANNER_PATTERN && event.getAction().equals(Action.RIGHT_CLICK_AIR) && Objects.equals(event.getHand(), EquipmentSlot.HAND)) {
+            } else if ((event.getMaterial() == Material.MAP || event.getMaterial() == Material.MOJANG_BANNER_PATTERN) && Objects.equals(event.getHand(), EquipmentSlot.HAND) && (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK))) {
                 ItemHelper itemHelper = ItemHelper.edit(itemInHand);
                 itemHelper.editNbtTagCompound(nbtItem -> {
                     if (nbtItem.hasKey("dirty-money-value")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz użyć brudnej gotówki! Musisz ją wyprać za pomocą przedmiotu nasączonej wody ścieraczki!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz użyć brudnej gotówki! Musisz ją wyprać za pomocą przedmiotu nasączonej wody ścieraczki! Więcej o tym przedmiocie znajdziesz na naszej stronie: &#ffa41chttps://wiki.wywrotkamc.pl/pl/survivaldzialki/narkotyki");
                         event.setUseItemInHand(Event.Result.DENY);
                         event.setCancelled(true);
                         event.setUseItemInHand(Event.Result.DENY);
@@ -843,7 +819,7 @@ public class PlayerInteractListener implements Listener {
                                 if (!itemInHand.getItemMeta().hasLore()) {
                                     return;
                                 }
-                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz użyć brudnej gotówki! Musisz ją wyprać za pomocą przedmiotu nasączonej wody ścieraczki!");
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz użyć brudnej gotówki! Musisz ją wyprać za pomocą przedmiotu nasączonej wody ścieraczki! Więcej o tym przedmiocie znajdziesz na naszej stronie: &#ffa41chttps://wiki.wywrotkamc.pl/pl/survivaldzialki/narkotyki");
                                 event.setUseItemInHand(Event.Result.DENY);
                                 event.setCancelled(true);
                                 event.setUseItemInHand(Event.Result.DENY);
@@ -857,8 +833,8 @@ public class PlayerInteractListener implements Listener {
                     if (nbtItem.hasKey("exp-value")) {
                         int value = nbtItem.getInteger("exp-value");
                         PlayerExtension.getPlayerExtend(player, extension -> extension.addExperience(value));
-                        Main.getPlugin().getLogger().info(Api.fixColor("[XPBOTTLE] &aGracz &e" + player.getName() + " &awplacil butelke doswiadczenie wartosci EXP: &e" + value));
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otrzymałeś &2" + value + " EXP");
+                        Main.getPlugin().getLogger().info(Api.fixColor("[XPBOTTLE] &#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739wplacil butelke doswiadczenie wartosci EXP: &#fcb419" + value));
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie otrzymałeś &2" + value + " EXP");
                         player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
                         event.setCancelled(true);
                         event.setUseInteractedBlock(Event.Result.DENY);
@@ -874,8 +850,8 @@ public class PlayerInteractListener implements Listener {
                                 PlayerExtension.getPlayerExtend(player, extension -> {
                                     extension.addExperience(amount);
                                 });
-                                Main.getPlugin().getLogger().info(Api.fixColor("[XPBOTTLE] &aGracz &e" + player.getName() + " &awplacil butelke doswiadczenie wartosci EXP: &e" + amount));
-                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otrzymałeś &2" + amount + " EXP");
+                                Main.getPlugin().getLogger().info(Api.fixColor("[XPBOTTLE] &#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739wplacil butelke doswiadczenie wartosci EXP: &#fcb419" + amount));
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie otrzymałeś &2" + amount + " EXP");
                                 player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
                                 event.setCancelled(true);
                                 event.setUseInteractedBlock(Event.Result.DENY);
@@ -900,7 +876,7 @@ public class PlayerInteractListener implements Listener {
                     }
                 }
             }
-        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego używać podczas duela!");
+        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz tego używać podczas duela!");
     }
 
     public void EnderpearlCooldown(Main plugin) {
@@ -910,7 +886,7 @@ public class PlayerInteractListener implements Listener {
                     if (playerCooldownMap.get(uuid) == 1) {
                         playerCooldownMap.remove(uuid);
                         if (Bukkit.getPlayer(uuid) != null)
-                            Bukkit.getPlayer(uuid).sendMessage(Api.fixColor(Main.pluginConfig.getMessages().getPrefix() + "&aMożesz użyć perły!"));
+                            Bukkit.getPlayer(uuid).sendMessage(Api.fixColor(Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Możesz użyć perły!"));
                         continue;
                     }
                     playerCooldownMap.put(uuid, playerCooldownMap.get(uuid) - 1);
@@ -935,7 +911,7 @@ public class PlayerInteractListener implements Listener {
 
     public static ItemStack makePaper(double value, List<String> lore) {
         return ItemHelper.edit(new ItemStack(Material.PAPER)).editNbtTagCompound(nbtItem -> {
-            nbtItem.setDouble("money-value",  value);
+            nbtItem.setDouble("withdraw-money",  value);
         }).editItemMeta(ItemMeta.class, itemMeta -> {
             itemMeta.setDisplayName(Api.fixColor("&#3dfc49Banknot gotówki"));
             itemMeta.setLore(Api.fixColor(lore));

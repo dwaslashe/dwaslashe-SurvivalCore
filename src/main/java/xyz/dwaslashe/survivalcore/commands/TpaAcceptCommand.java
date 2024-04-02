@@ -23,12 +23,12 @@ public class TpaAcceptCommand extends Command {
             TpaCommand.currentRequest.remove(p.getName());
             if (p2 != null) {
                 TeleportManager.teleport(p2, 5, p.getLocation());
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zakecptowałeś teleportacje gracza &e" + p2.getDisplayName());
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zakecptowałeś teleportacje gracza &#fcb419" + p2.getDisplayName());
             } else {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz prośby o teleportacje!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie masz prośby o teleportacje!");
             }
         } else {
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz prośby o teleportacje!");
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie masz prośby o teleportacje!");
         }
     }
 

@@ -30,7 +30,7 @@ public class PluginCommands extends OkaeriConfig {
         @Getter @Setter
         public static class HelpCommand extends OkaeriConfig {
 
-            private List<String> help = List.of(" &8[ &a&LSURVIVAL - LISTA KOMEND &8]", "&2* &a/kosz &8- &fotwiera kosz", "&2* &a/list &8- &fwysyła liste graczy", "&2* &a/money &8- &fwysyła twoje saldo", "&2* &a/ah &8- &fotwiera aukcje");
+            private List<String> help = List.of(" &8[ &#4cf739&LSURVIVAL - LISTA KOMEND &8]", "&2* &#4cf739/kosz &8- &fotwiera kosz", "&2* &#4cf739/list &8- &fwysyła liste graczy", "&2* &#4cf739/money &8- &fwysyła twoje saldo", "&2* &#4cf739/ah &8- &fotwiera aukcje");
 
         }
 
@@ -58,7 +58,7 @@ public class PluginCommands extends OkaeriConfig {
         @Getter @Setter
         public static class YtCommand extends OkaeriConfig {
 
-            private List<String> yt = List.of(" &8[ &a&LSURVIVAL - LISTA KOMEND &8]", "&2* &a/kosz &8- &fotwiera kosz", "&2* &a/list &8- &fwysyła liste graczy", "&2* &a/money &8- &fwysyła twoje saldo", "&2* &a/ah &8- &fotwiera aukcje");
+            private List<String> yt = List.of(" &8[ &#4cf739&LSURVIVAL - LISTA KOMEND &8]", "&2* &#4cf739/kosz &8- &fotwiera kosz", "&2* &#4cf739/list &8- &fwysyła liste graczy", "&2* &#4cf739/money &8- &fwysyła twoje saldo", "&2* &#4cf739/ah &8- &fotwiera aukcje");
 
         }
 

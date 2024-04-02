@@ -26,10 +26,10 @@ public class RainbowChatCommand extends Command {
         Player player = (Player) sender;
 
         if (player.hasPermission("core.chat.rainbow")) {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPomyślnie wyłączyłeś pisanie na kolorowo!");
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission remove core.chat.rainbow");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Pomyślnie wyłączyłeś pisanie na kolorowo!");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.chat.rainbow false");
         } else {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś pisanie na kolorowo!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie włączyłeś pisanie na kolorowo!");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.chat.rainbow");
         }
     }

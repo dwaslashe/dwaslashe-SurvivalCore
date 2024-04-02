@@ -37,12 +37,12 @@ public class HomesCommand extends Command {
             if (containsPhrase(user.getHomes(), nameHome)) {
                 if (player.hasPermission("core.command.admin")) {
                     player.teleport(new LocationParser().serialize(extractLocationsFromHome(user.getHomes(), nameHome)));
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano do domu &e" + nameHome);
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie przeteleportowano do domu &#fcb419" + nameHome);
                 } else {
                     TeleportManager.teleport(player, 5, new LocationParser().serialize(extractLocationsFromHome(user.getHomes(), nameHome)));
                 }
             } else {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz takiego domu o nazwie &e" + nameHome);
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz takiego domu o nazwie &#fcb419" + nameHome);
             }
         } else wrongUsage();
     }

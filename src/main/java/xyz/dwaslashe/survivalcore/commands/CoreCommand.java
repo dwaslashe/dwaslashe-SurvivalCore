@@ -27,14 +27,14 @@ public class CoreCommand extends Command {
         if (args.length == 0) {
             wrongUsage();
         } else if (args[0].equalsIgnoreCase("author")) {
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPlugin wykonany przez dwaslashe, kontakt discord #FF500Bdwaslashe");
+            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Plugin wykonany przez dwaslashe, kontakt discord #FF500Bdwaslashe");
         } else if (args[0].equalsIgnoreCase("server")) {
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aCały ram&8: &f" + (Runtime.getRuntime().totalMemory() / 1024 / 1024) + "&8/&7" + (Runtime.getRuntime().maxMemory() / 1024 / 1024));
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aUżyty ram&8: &f" + ((Runtime.getRuntime().totalMemory() / 1024 / 1024) - (Runtime.getRuntime().freeMemory() / 1024 / 1024)));
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aNie użyty ram&8: &f" + (Runtime.getRuntime().freeMemory() / 1024 / 1024));
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aProcesory&8: &f" + (Runtime.getRuntime().availableProcessors()));
+            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Cały ram&8: &f" + (Runtime.getRuntime().totalMemory() / 1024 / 1024) + "&8/&7" + (Runtime.getRuntime().maxMemory() / 1024 / 1024));
+            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Użyty ram&8: &f" + ((Runtime.getRuntime().totalMemory() / 1024 / 1024) - (Runtime.getRuntime().freeMemory() / 1024 / 1024)));
+            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Nie użyty ram&8: &f" + (Runtime.getRuntime().freeMemory() / 1024 / 1024));
+            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Procesory&8: &f" + (Runtime.getRuntime().availableProcessors()));
         } else if (args[0].equalsIgnoreCase("reload")) {
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeładowano Plugin!");
+            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie przeładowano Plugin!");
             Main.pluginConfig.load();
             Main.pluginCommands.load();
             Main.pluginRank.load();
@@ -44,7 +44,7 @@ public class CoreCommand extends Command {
         } else if (args[0].equalsIgnoreCase("blockrecipes")) {
             if (args.length >= 2 && Api.isBoolean(args[1])) {
                 Main.pluginConfig.getRecipes().setBlockMaterials(Boolean.parseBoolean(args[1]));
-            } else Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aFunkcja jest: &e" + Main.pluginConfig.getRecipes().isBlockMaterials());
+            } else Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Funkcja jest: &#fcb419" + Main.pluginConfig.getRecipes().isBlockMaterials());
         }
     }
 }

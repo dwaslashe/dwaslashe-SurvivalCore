@@ -6,13 +6,9 @@ website: dwaslashe.xyz
 description: Core for Servers Survival
 api-version: 1.19
 loadbefore:
-  - Citiznes
   - WorldGuard
-  - QuickShop
 depend:
   - Duels
-  - Vehicles
-  - QuickShop
   - Multiverse-Core
   - Vault
   - LuckPerms
@@ -20,11 +16,10 @@ depend:
   - NBTAPI
   - SA-Economy
   - minePlots
-  - DeluxeSellwands
   - dwaslashe-TabList
 softdepend:
   - PlaceholderAPI
-  - WGRegionEvents
+#  - WGRegionEvents
   - WorldGuard
 commands:
   sb:

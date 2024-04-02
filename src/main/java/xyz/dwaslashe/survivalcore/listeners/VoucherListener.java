@@ -63,11 +63,11 @@ public class VoucherListener implements Listener {
                                                                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%owner%", player.getName()));
                                                                 }
                                                             } else
-                                                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz użyć tego ulepszenie ponieważ już istnieje taki! Poczekaj aż się skończy!");
+                                                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz użyć tego ulepszenie ponieważ już istnieje taki! Poczekaj aż się skończy!");
                                                         }
                                                     }
                                                 } else
-                                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś właścicielem tego vouchery aby go odebrać!");
+                                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie jesteś właścicielem tego vouchery aby go odebrać!");
                                             } else {
                                                 if (nbtItem.hasKey("voucher")) {
                                                     event.setCancelled(true);
@@ -88,7 +88,7 @@ public class VoucherListener implements Listener {
                         }
                     }
                 }
-            } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego używać podczas duela!");
+            } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz tego używać podczas duela!");
         }
     }
 }

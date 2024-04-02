@@ -34,21 +34,21 @@ public class WithdrawCommand extends Command {
                         else dollarAmount = Double.parseDouble(args[0]);
                         double balance = user.balance();
                         if(dollarAmount < 1){
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPodana wartość musi zaczynać się od &e1&c!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Podana wartość musi zaczynać się od &#fcb4191&#fc2419!");
                         } else if (balance >= dollarAmount && !Double.isInfinite(dollarAmount) && Double.isFinite(dollarAmount)) {
                             user.withdraw(dollarAmount);
                             ItemStack paper = PlayerInteractListener.makePaper(dollarAmount, Arrays.asList(
                                     "",
-                                    " &#E7E7E7Wartość: &#FFF88F" + dollarAmount + " &#FFC42E$",
+                                    " &#E7E7E7Wartość: &#FFF88F" + dollarAmount + " &f",
                                     " &#E7E7E7Właściciel: &#9DF89F" + player.getName()));
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wypłaciłeś z konta &#FFF88F" + dollarAmount + " &#FFC42E$");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wypłaciłeś z konta &#FFF88F" + dollarAmount + " &f");
                             Api.giveOrDrop(player, paper);
 
                         } else
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniedzy!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz tyle pieniedzy!");
                     });
                 } catch (NumberFormatException e) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cŹle określono kwote, którą chcesz wypłacić.\n&cDostępny format: &e&n1001.032");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Źle określono kwote, którą chcesz wypłacić.\n&#fc2419Dostępny format: &#fcb419&n1001.032");
                 }
             } else wrongUsage();
         } else wrongUsage();

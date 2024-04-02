@@ -35,30 +35,30 @@ public class WarpCommand extends Command implements Listener {
     public void commandExecute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length == 0) {
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aLista dostępnych warpów &e" + String.join(", ", new ArrayList<>(WarpCache.getInstance().getWarpMap().keySet())));
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Lista dostępnych warpów &#fcb419" + String.join(", ", new ArrayList<>(WarpCache.getInstance().getWarpMap().keySet())));
         } else if (args.length == 1) {
             Warp warp = WarpCache.getInstance().get(args[0]);
             if(warp == null){
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie ma takiego warpa!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie ma takiego warpa!");
                 return;
             } else if (warp.getName().equalsIgnoreCase("sprawdzarka") || warp.getName().equalsIgnoreCase("wiezienie")){
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cTen warp jest zablokowany!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Ten warp jest zablokowany!");
                 return;
             }
             Location warpLocation = warp.getLocation();
             if (warpLocation == null) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNieprawidłowa lokalizacja warpa!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nieprawidłowa lokalizacja warpa!");
                 return;
             }
             World warpWorld = warpLocation.getWorld();
             if (warpWorld == null) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNieprawidłowy świat warpa!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nieprawidłowy świat warpa!");
                 return;
             }
             Location loc = new Location(Bukkit.getServer().getWorld(warpWorld.getKey()), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
             if (p.hasPermission("core.command.admin")) {
                 p.teleport(loc);
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na &e" + args[0]);
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie przeteleportowano na &#fcb419" + args[0]);
             } else {
                 TeleportManager.teleport(p, 5, loc);
             }
@@ -68,14 +68,14 @@ public class WarpCommand extends Command implements Listener {
             Warp warp = cache.get(args[1]);
             if(warp == null){
                 warp = cache.compute(args[1]);
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aWarp &e" + warp.getName() + " &azostał pomyślnie stworzony!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Warp &#fcb419" + warp.getName() + " &#4cf739został pomyślnie stworzony!");
             } else {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zaktulizowano istniejący warp!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zaktulizowano istniejący warp!");
             }
             warp.setLocation(p.getLocation());
         } else if (args.length == 2 && args[0].equalsIgnoreCase("remove") && sender.hasPermission("core.command.admin")) {
             WarpCache.getInstance().getWarpMap().remove(args[1]);
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie usunięto warp!");
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie usunięto warp!");
         }
     }
 }

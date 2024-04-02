@@ -27,17 +27,17 @@ public class FeedCommand extends Command {
         Player player = (Player) sender;
         if (args.length == 0) {
             if (delayHook.containsKey(player) && delayHook.get(player) > System.currentTimeMillis()) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby ponownie użyj tej komendy musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby ponownie użyj tej komendy musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player))));
                 player.closeInventory();
                 return;
             }
             delayHook.remove(player);
             player.setFoodLevel(20);
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie się najadłeś");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie się najadłeś");
             delayHook.put(player, TimerApi.parseDateDiff("5m", true));
         } else if (args.length == 1) {
             if (!player.hasPermission("core.command.admin")) {
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.admin&8) &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#fc2419Nie posiadasz uprawnien &8(&#fcb419core.command.admin&8) &8<<"));
                 return;
             }
             Player secondPlayer = Bukkit.getPlayer(args[0]);
@@ -46,8 +46,8 @@ public class FeedCommand extends Command {
                 return;
             } else {
                 secondPlayer.setFoodLevel(20);
-                Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś najedzony przez &e" + player.getName());
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie najadałeś gracza &e" + secondPlayer.getName());
+                Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Zostałeś najedzony przez &#fcb419" + player.getName());
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie najadałeś gracza &#fcb419" + secondPlayer.getName());
             }
         } else wrongUsage();
     }

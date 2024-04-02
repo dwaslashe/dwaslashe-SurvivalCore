@@ -26,7 +26,7 @@ public class TexturpackCommand extends Command {
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
         Player player = (Player)sender;
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś TexturPack serwerowy");
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie włączyłeś TexturPack serwerowy");
         player.setResourcePack(RESOURCE_PACK_URL.toString());
     }
 

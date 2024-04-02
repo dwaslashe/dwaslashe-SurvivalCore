@@ -36,20 +36,20 @@ public class RepairCommand extends Command {
             CooldownManager.addColdown(p, "5m");
             ItemStack itemStack = p.getItemInHand();
             if (itemStack == null || itemStack.getType() == Material.AIR) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz naprawić powietrza");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz naprawić powietrza");
             } else if (itemStack.getDurability() == 0) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cTen przedmiot jest już naprawiony");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Ten przedmiot jest już naprawiony");
             } else {
                 itemStack.setDurability((short) 0);
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPrzedmiot &e" + itemStack.getType().toString().toUpperCase() + " &azostał naprawiony");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Przedmiot &#fcb419" + itemStack.getType().toString().toUpperCase() + " &#4cf739został naprawiony");
             }
 
         } else if (args[0].equalsIgnoreCase("all")) {
             if (!p.hasPermission("core.command.repair.all")) {
-                p.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.repair.all&8) &8<<"));
+                p.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#fc2419Nie posiadasz uprawnien &8(&#fcb419core.command.repair.all&8) &8<<"));
                 return;
             }
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie naprawiono wszystkie przedmioty");
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie naprawiono wszystkie przedmioty");
             for (int i = 0; i < p.getInventory().getSize(); ++i) {
                 if (p.getInventory().getItem(i) != null && p.getInventory().getItem(i).getType() != Material.AIR && p.getInventory().getItem(i).getDurability() != 0 && p.getInventory().getItem(i).getType() != Material.GOLDEN_APPLE) {
                     p.getInventory().getItem(i).setDurability((short) 0);

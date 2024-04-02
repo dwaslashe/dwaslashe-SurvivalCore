@@ -69,7 +69,7 @@ public class PlayerChatListener implements Listener {
             if (ChatCommand.switchChat.get("switchChat") == true) return true;
             if (!ChatCommand.switchChat.get("switchChat")) {
                 if (!event.getPlayer().hasPermission("core.chat.bypass")) {
-                    Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz pisać ponieważ czat jest jest wyłączony!");
+                    Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz pisać ponieważ czat jest jest wyłączony!");
                     return false;
                 }
             }
@@ -105,7 +105,7 @@ public class PlayerChatListener implements Listener {
                 if (!player.hasPermission("core.chat.samemessage.bypass")) {
                     if (previousMessages.containsKey(player)) {
                         if (event.message().equals(previousMessages.get(player))) {
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać znowu takiej samej wiadomości!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wysłać znowu takiej samej wiadomości!");
                             return false;
                         }
                     }
@@ -120,7 +120,7 @@ public class PlayerChatListener implements Listener {
                 if (!player.hasPermission("core.chat.openchatbreak.bypass")) {
                     User user = UserCache.getInstance().compute(player.getUniqueId());
                     if (user.getBlockBreak() < (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() - 1)) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ potrzebujesz wykopać #fc2617&n" + user.getBlockBreak() + "&7/#b52016&n" + Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() + "&c bloków! ");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wysłać wiadomości ponieważ potrzebujesz wykopać #fc2617&n" + user.getBlockBreak() + "&7/#b52016&n" + Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() + "&#fc2419 bloków! ");
                         return false;
                     }
                 }
@@ -242,7 +242,7 @@ public class PlayerChatListener implements Listener {
 
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (user.getChat() == 1) {
-                Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wysłać wiadomości ponieważ wyłączyłeś wiadomości na czacie!");
+                Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wysłać wiadomości ponieważ wyłączyłeś wiadomości na czacie!");
             }
             Api.sendMessage(all, event.message());
         }

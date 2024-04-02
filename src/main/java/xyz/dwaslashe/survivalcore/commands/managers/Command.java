@@ -69,11 +69,11 @@ public abstract class Command extends org.bukkit.command.Command {
     }
 
     public void wrongUsage() {
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cPoprawne użycie&8: &e{usage}".replace("{usage}", getUsage()));
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Poprawne użycie&8: &#fcb419{usage}".replace("{usage}", getUsage()));
     }
 
     public void offlinePlayer() {
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cTen gracz jest &enieaktywny!");
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Ten gracz jest &#fcb419nieaktywny!");
     }
 
     public Command(String name, String usage, String description, String... aliases){

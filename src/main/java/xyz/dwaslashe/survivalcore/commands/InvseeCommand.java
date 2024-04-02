@@ -40,7 +40,7 @@ public class InvseeCommand extends Command {
                 return;
             }
             player.openInventory(secondPlayer.getInventory());
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aOtworzyłeś ekwipunek gracza &e" + secondPlayer.getName());
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Otworzyłeś ekwipunek gracza &#fcb419" + secondPlayer.getName());
 
             if (args.length >= 2) {
                 if (args[1].equalsIgnoreCase("armor")) {
@@ -54,7 +54,7 @@ public class InvseeCommand extends Command {
                     if (secondPlayer.getInventory().getBoots() != null && secondPlayer.getInventory().getBoots().getType() != Material.AIR)
                         inv.setItem(3, secondPlayer.getInventory().getBoots().clone());
                     player.openInventory(inv);
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aOtworzyłeś armor gracza &e" + secondPlayer.getName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Otworzyłeś armor gracza &#fcb419" + secondPlayer.getName());
                 } else wrongUsage();
             }
         } else wrongUsage();

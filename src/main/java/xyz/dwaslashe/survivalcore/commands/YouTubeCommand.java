@@ -19,6 +19,6 @@ public class YouTubeCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aNasz kanał YouTube &#f2391d" + Main.pluginConfig.getMessages().getYoutube());
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Nasz kanał YouTube &#f2391d" + Main.pluginConfig.getMessages().getYoutube());
     }
 }

@@ -36,7 +36,7 @@ public class MoneyTargetCommand extends Command {
         MoneyTarget moneyTarget = MoneyTargetCache.getInstance().compute(1);
         if (args.length == 0) {
             if (moneyTarget.getMoney() >= moneyTarget.getLimitMoney()) {
-                player.sendTitle(Api.fixColor("&#eb9f34&lCEL PIENIĘDZY"), Api.fixColor("&8>> &aCel został już osiągniety! &8<<"));
+                player.sendTitle(Api.fixColor("&#eb9f34&lCEL PIENIĘDZY"), Api.fixColor("&f楸 &#4cf739Cel został już osiągniety! &f楸"));
                 return;
             }
             openGui(0, player);
@@ -47,35 +47,35 @@ public class MoneyTargetCommand extends Command {
                     moneyTarget.setMoney(0);
                     moneyTarget.setLimitMoney(0);
                     moneyTarget.setTitle("");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zrestartowano statystyki celu pieniędzy!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zrestartowano statystyki celu pieniędzy!");
                 } else if (args[0].equalsIgnoreCase("set")) {
                     if (args.length == 1) {
                         wrongUsage();
                     } else if (Api.isInt(args[1])) {
                         int value = Integer.parseInt(args[1]);
                         moneyTarget.setMoney(value);
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono zdobyte pieniądze!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie ustawiono zdobyte pieniądze!");
                     } else
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cArgument musi być liczbą!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Argument musi być liczbą!");
                 } else if (args[0].equalsIgnoreCase("setlimit")) {
                     if (args.length == 1) {
                         wrongUsage();
                     } else if (Api.isInt(args[1])) {
                         int value = Integer.parseInt(args[1]);
                         moneyTarget.setLimitMoney(value);
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono limit celu pieniędzy!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie ustawiono limit celu pieniędzy!");
                     } else
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cArgument musi być liczbą!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Argument musi być liczbą!");
                 } else if (args.length >= 1) {
                     if (args.length == 1) {
                         wrongUsage();
                     } else if (args[0].equalsIgnoreCase("title")) {
                         String title = StringUtils.join(args, " ", 1, args.length);
                         moneyTarget.setTitle(title);
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie ustawiono tytuł celu pieniędzy!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie ustawiono tytuł celu pieniędzy!");
                     }
                 }
-            } else player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.moneytarget&8) &8<<"));
+            } else player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#fc2419Nie posiadasz uprawnien &8(&#fcb419core.command.moneytarget&8) &8<<"));
         }
     }
 
@@ -85,14 +85,9 @@ public class MoneyTargetCommand extends Command {
             InventoryHelper inventoryHelper = new InventoryHelper(player, "Cel pieniędzy", 6);
             MoneyTarget moneyTarget = MoneyTargetCache.getInstance().compute(1);
 
-            ItemStack glass_black = inventoryHelper.prepareItemStack(Material.BLACK_STAINED_GLASS_PANE, itemStack -> {
+            ItemStack diamond = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(" ");
-                });
-            });
-
-            ItemStack diamond = inventoryHelper.prepareItemStack(Material.DIAMOND_BLOCK, itemStack -> {
-                inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                    itemMeta.setCustomModelData(11211);
                     itemMeta.setDisplayName(Api.fixColor("&#03befc#1"));
                 });
             });
@@ -114,8 +109,8 @@ public class MoneyTargetCommand extends Command {
                         int highestNumber = Integer.parseInt(parts[0]);
                         String highestPlayer = parts[1];
                         itemMeta.setOwner(highestPlayer);
-                        itemMeta.setDisplayName(Api.fixColor("&#03befc#1. &#f7e53b" + highestPlayer + " &8- &#FFF88F" + highestNumber + " &#FFC42E$"));
-                        itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktualna ilość wydanych twoich pieniędzy na cel: &#FFF88F" + getNumberPlayer(moneyTarget.getTransactions(), player.getName()) + " &#FFC42E$")));
+                        itemMeta.setDisplayName(Api.fixColor("&#03befc#1. &#f7e53b" + highestPlayer + " &8- &#FFF88F" + highestNumber + " &f"));
+                        itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktualna ilość wydanych twoich pieniędzy na cel: &#FFF88F" + getNumberPlayer(moneyTarget.getTransactions(), player.getName()) + " &f")));
                     } else {
                         itemMeta.setOwner("null");
                         itemMeta.setDisplayName(Api.fixColor("&#fc3826Brak"));
@@ -123,8 +118,9 @@ public class MoneyTargetCommand extends Command {
                 });
             });
 
-            ItemStack gold = inventoryHelper.prepareItemStack(Material.GOLD_BLOCK, itemStack -> {
+            ItemStack gold = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                    itemMeta.setCustomModelData(11229);
                     itemMeta.setDisplayName(Api.fixColor("&#f5bf1d#2"));
                 });
             });
@@ -145,8 +141,8 @@ public class MoneyTargetCommand extends Command {
                         int secondhighestNumber = Integer.parseInt(parts[0]);
                         String secondhighestPlayer = parts[1];
                         itemMeta.setOwner(secondhighestPlayer);
-                        itemMeta.setDisplayName(Api.fixColor("&#f5bf1d#2. &#f7e53b" + secondhighestPlayer + " &8- &#FFF88F" + secondhighestNumber + " &#FFC42E$"));
-                        itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktualna ilość wydanych twoich pieniędzy na cel: &#FFF88F" + getNumberPlayer(moneyTarget.getTransactions(), player.getName()) + " &#FFC42E$")));
+                        itemMeta.setDisplayName(Api.fixColor("&#f5bf1d#2. &#f7e53b" + secondhighestPlayer + " &8- &#FFF88F" + secondhighestNumber + " &f"));
+                        itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktualna ilość wydanych twoich pieniędzy na cel: &#FFF88F" + getNumberPlayer(moneyTarget.getTransactions(), player.getName()) + " &f")));
                     } else {
                         itemMeta.setOwner("null");
                         itemMeta.setDisplayName(Api.fixColor("&#fc3826Brak"));
@@ -154,8 +150,9 @@ public class MoneyTargetCommand extends Command {
                 });
             });
 
-            ItemStack iron = inventoryHelper.prepareItemStack(Material.IRON_BLOCK, itemStack -> {
+            ItemStack iron = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                    itemMeta.setCustomModelData(11201);
                     itemMeta.setDisplayName(Api.fixColor("&#aba89f#3"));
                 });
             });
@@ -176,8 +173,8 @@ public class MoneyTargetCommand extends Command {
                         int thidhighestNumber = Integer.parseInt(parts[0]);
                         String thidhighestPlayer = parts[1];
                         itemMeta.setOwner(thidhighestPlayer);
-                        itemMeta.setDisplayName(Api.fixColor("&#aba89f#3. &#f7e53b" + thidhighestPlayer + " &8- &#FFF88F" + thidhighestNumber + " &#FFC42E$"));
-                        itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktualna ilość wydanych twoich pieniędzy na cel: &#FFF88F" + getNumberPlayer(moneyTarget.getTransactions(), player.getName()) + " &#FFC42E$")));
+                        itemMeta.setDisplayName(Api.fixColor("&#aba89f#3. &#f7e53b" + thidhighestPlayer + " &8- &#FFF88F" + thidhighestNumber + " &f"));
+                        itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktualna ilość wydanych twoich pieniędzy na cel: &#FFF88F" + getNumberPlayer(moneyTarget.getTransactions(), player.getName()) + " &f")));
                     } else {
                         itemMeta.setOwner("null");
                         itemMeta.setDisplayName(Api.fixColor("&#fc3826Brak"));
@@ -189,8 +186,8 @@ public class MoneyTargetCommand extends Command {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjI2ODExNTI0NDdhM2RiZDc1ODQxYTk2ZTNmN2FjNTJhODhjMDcxNWM4NzdjZWE0YmVjZDliNWQwMzgwZGM4NiJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&#FFF88F500 &#FFC42E$"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby dodać pieniądze do celu!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFF88F500 &f"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f᎘ Aby dodać pieniądze do celu")));
                 });
             });
 
@@ -198,8 +195,8 @@ public class MoneyTargetCommand extends Command {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjI2ODExNTI0NDdhM2RiZDc1ODQxYTk2ZTNmN2FjNTJhODhjMDcxNWM4NzdjZWE0YmVjZDliNWQwMzgwZGM4NiJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&#FFF88F1000 &#FFC42E$"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby dodać pieniądze do celu!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFF88F1000 &f"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f᎘ Aby dodać pieniądze do celu")));
                 });
             });
 
@@ -207,8 +204,8 @@ public class MoneyTargetCommand extends Command {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjI2ODExNTI0NDdhM2RiZDc1ODQxYTk2ZTNmN2FjNTJhODhjMDcxNWM4NzdjZWE0YmVjZDliNWQwMzgwZGM4NiJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&#FFF88F5000 &#FFC42E$"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby dodać pieniądze do celu!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFF88F5000 &f"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f᎘ Aby dodać pieniądze do celu")));
                 });
             });
 
@@ -216,13 +213,14 @@ public class MoneyTargetCommand extends Command {
                 itemStack.setDurability((short) 3);
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjI2ODExNTI0NDdhM2RiZDc1ODQxYTk2ZTNmN2FjNTJhODhjMDcxNWM4NzdjZWE0YmVjZDliNWQwMzgwZGM4NiJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setDisplayName(Api.fixColor("&#FFF88F10000 &#FFC42E$"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#FBFD8C&nKliknij aby dodać pieniądze do celu!")));
+                    itemMeta.setDisplayName(Api.fixColor("&#FFF88F10000 &f"));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &f᎘ Aby dodać pieniądze do celu")));
                 });
             });
 
-            ItemStack back = inventoryHelper.prepareItemStack(Material.BARRIER, itemStack -> {
+            ItemStack back = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
+                    itemMeta.setCustomModelData(11196);
                     itemMeta.setDisplayName(Api.fixColor("&#FF3131Zamknij"));
                 });
             });
@@ -236,7 +234,7 @@ public class MoneyTargetCommand extends Command {
                         if (balance >= 500) {
                             user.withdraw(500);
                             moneyTarget.addMoney(500);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na cel pieniędzy!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wpłaciłeś na cel pieniędzy!");
                             player.closeInventory();
 
                             if (moneyTarget.getTransactions() == null) {
@@ -249,12 +247,12 @@ public class MoneyTargetCommand extends Command {
                             } else {
                                 moneyTarget.addTransactions("500&" + player.getName() + "@");
                             }
-                        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniędzy!");
+                        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz tyle pieniędzy!");
                     } else if (e.getSlot() == 30) {
                         if (balance >= 1000) {
                             user.withdraw(1000);
                             moneyTarget.addMoney(1000);
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na cel pieniędzy!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wpłaciłeś na cel pieniędzy!");
                             player.closeInventory();
 
                             if (moneyTarget.getTransactions() == null) {
@@ -267,7 +265,7 @@ public class MoneyTargetCommand extends Command {
                             } else {
                                 moneyTarget.addTransactions("1000&" + player.getName() + "@");
                             }
-                        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniędzy!");
+                        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz tyle pieniędzy!");
                     } else if (e.getSlot() == 32) {
                         if (balance >= 5000) {
                             user.withdraw(5000);
@@ -279,13 +277,13 @@ public class MoneyTargetCommand extends Command {
                                 return;
                             }
 
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na cel pieniędzy!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wpłaciłeś na cel pieniędzy!");
                             if (isExistPlayer(moneyTarget.getTransactions(), player.getName())) {
                                 moneyTarget.setTransactions(modifyNumberPlayer(moneyTarget.getTransactions(), player.getName(), String.valueOf(getNumberPlayer(moneyTarget.getTransactions(), player.getName()) + 5000)));
                             } else {
                                 moneyTarget.addTransactions("5000&" + player.getName() + "@");
                             }
-                        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniędzy!");
+                        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz tyle pieniędzy!");
                     } else if (e.getSlot() == 34) {
                         if (balance >= 10000) {
                             user.withdraw(10000);
@@ -297,20 +295,18 @@ public class MoneyTargetCommand extends Command {
                                 return;
                             }
 
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wpłaciłeś na cel pieniędzy!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wpłaciłeś na cel pieniędzy!");
                             if (isExistPlayer(moneyTarget.getTransactions(), player.getName())) {
                                 moneyTarget.setTransactions(modifyNumberPlayer(moneyTarget.getTransactions(), player.getName(), String.valueOf(getNumberPlayer(moneyTarget.getTransactions(), player.getName()) + 10000)));
                             } else {
                                 moneyTarget.addTransactions("10000&" + player.getName() + "@");
                             }
-                        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniędzy!");
+                        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz tyle pieniędzy!");
                     } else if (e.getSlot() == 49) {
                         player.closeInventory();
                     }
                 });
             });
-
-            inventoryHelper.setItemRange(0, 54, glass_black);
 
             inventoryHelper.setItem(3, oneplayer);
             inventoryHelper.setItem(12, diamond);

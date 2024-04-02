@@ -42,22 +42,22 @@ public class ItemCommand extends Command {
                 if (args.length >= 2) {
                     if (args[0].equalsIgnoreCase("name")) {
                         if (args[1].contains("Banknot") && args[1].contains("Butelka doświadczenia") && args[1].contains("AUTO") && args[1].contains("DRILL" ) && args[1].contains("TRAKTOR") && args[1].contains("SPADOCHRON") && args[1].contains("HELIKOPTER") && args[1].contains("ROBOT")) {
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego zrobić!");
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz tego zrobić!");
                             return;
                         }
                         p.setItemInHand(new ItemApi(p.getItemInHand()).setName(StringUtils.join(args, " ", 1, args.length)).getItemStack());
-                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aNazwa przedmiotu została zmieniona");
+                        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Nazwa przedmiotu została zmieniona");
                         return;
                     } else if (args[0].equalsIgnoreCase("lore")) {
                         if (args[1].equalsIgnoreCase("clear")) {
                             p.setItemInHand(new ItemApi(p.getItemInHand()).setLore(new ArrayList()).getItemStack());
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aOpis przedmiotu został usuniety");
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Opis przedmiotu został usuniety");
                             return;
                         } else if (args[1].contains(p.getName())) {
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego zrobić");
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz tego zrobić");
                             return;
                         } else if (args[2].contains(p.getName())) {
-                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz tego zrobić");
+                            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz tego zrobić");
                             return;
                         } else {
                             if (p.getItemInHand() != null) {
@@ -66,18 +66,18 @@ public class ItemCommand extends Command {
                                 for (String text : texts) {
                                     p.setItemInHand(new ItemApi(p.getItemInHand()).addLore(text).getItemStack());
                                 }
-                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cOpis przedmiotu został zmieniony");
+                                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Opis przedmiotu został zmieniony");
                                 return;
                             }
                         }
                     } else if (args[0].equalsIgnoreCase("info")) {
-                        Api.sendMessage(p, " &8[ &a&lINFORMACJE O PRZEDMIOCIE &8]\n" +
-                                "&2* &7Nazwa&8: &A" + p.getItemInHand().getType().toString() + "\n" +
-                                "&2* &7ID&8: &A" + p.getItemInHand().getType().getId() + ":" + p.getItemInHand().getDurability() + "\n" +
-                                "&2* &7Ordinal ID&8: &A" + p.getInventory().getType().ordinal());
+                        Api.sendMessage(p, " &8[ &#4cf739&lINFORMACJE O PRZEDMIOCIE &8]\n" +
+                                "&2* &7Nazwa&8: &#4cf739" + p.getItemInHand().getType().toString() + "\n" +
+                                "&2* &7ID&8: &#4cf739" + p.getItemInHand().getType().getId() + ":" + p.getItemInHand().getDurability() + "\n" +
+                                "&2* &7Ordinal ID&8: &#4cf739" + p.getInventory().getType().ordinal());
                         return;
                     }
-                } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie mozesz zmienić nazwy/opisu powietrza");
+                } else Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie mozesz zmienić nazwy/opisu powietrza");
             } else wrongUsage();
         }
     }

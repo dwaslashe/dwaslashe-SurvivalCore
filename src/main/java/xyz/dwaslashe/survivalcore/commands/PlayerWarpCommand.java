@@ -34,16 +34,16 @@ public class PlayerWarpCommand extends Command implements Listener {
     public void commandExecute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length == 0) {
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aLista dostępnych warpów &e" + String.join(", ", new ArrayList<>(PlayerWarpCache.getInstance().getWarpMap().keySet())));
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Lista dostępnych warpów &#fcb419" + String.join(", ", new ArrayList<>(PlayerWarpCache.getInstance().getWarpMap().keySet())));
         } else if (args.length == 2 && args[0].equalsIgnoreCase("teleport")) {
             PlayerWarp warp = PlayerWarpCache.getInstance().get(args[1]);
             if(warp == null) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie ma takiego warpa!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie ma takiego warpa!");
                 return;
             }
             if (p.hasPermission("core.command.admin")) {
                 p.teleport(warp.getLocation());
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na warp &e" + args[0] + " &agracza &e" + warp.getNick());
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie przeteleportowano na warp &#fcb419" + args[0] + " &#4cf739gracza &#fcb419" + warp.getNick());
             } else {
                 TeleportManager.teleport(p, 5, warp.getLocation());
             }
@@ -53,15 +53,15 @@ public class PlayerWarpCommand extends Command implements Listener {
             PlayerWarp warp = cache.get(args[1]);
             if (warp == null){
                 warp = cache.compute(args[1]);
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aTwój warp &e" + warp.getName() + " &azostał pomyślnie stworzony!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Twój warp &#fcb419" + warp.getName() + " &#4cf739został pomyślnie stworzony!");
                 warp.setNick(p.getName());
                 warp.setLocation(p.getLocation());
             } else {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz stworzyć takiego samego warpu!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz stworzyć takiego samego warpu!");
             }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("remove") && sender.hasPermission("core.command.admin")) {
             PlayerWarpCache.getInstance().getWarpMap().remove(args[1]);
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie usunięto warp!");
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie usunięto warp!");
         }
     }
 }

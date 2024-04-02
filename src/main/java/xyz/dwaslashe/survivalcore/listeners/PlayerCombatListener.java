@@ -1,10 +1,15 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import es.pollitoyeye.vehicles.events.VehicleEnterEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
@@ -17,6 +22,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 import pl.minecodes.plots.api.event.entry.PrePlotEntryEvent;
 import pl.minecodes.plots.api.event.leave.PrePlotLeaveEvent;
 import xyz.dwaslashe.survivalcore.Main;
@@ -24,8 +31,7 @@ import xyz.dwaslashe.survivalcore.objects.Logout;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.RegionApi;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class PlayerCombatListener implements Listener {
 
@@ -38,7 +44,7 @@ public class PlayerCombatListener implements Listener {
                 e.getPlayer().closeInventory();
                 e.setCancelled(true);
                 e.setUseInteractedBlock(Event.Result.DENY);
-                Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cInterakcja z tym blokiem podczas pvp jest zablokowana");
+                Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Interakcja z tym blokiem podczas pvp jest zablokowana");
                 e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
             }
         }
@@ -49,7 +55,7 @@ public class PlayerCombatListener implements Listener {
         Logout logout = Logout.get(e.getPlayer());
         if (logout.getTime() > System.currentTimeMillis()) {
             if (e.getBlock().getType() == Material.NOTE_BLOCK) {
-                Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cInterakcja z tym blokiem podczas pvp jest zablokowana");
+                Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Interakcja z tym blokiem podczas pvp jest zablokowana");
                 e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
             }
         }
@@ -107,7 +113,7 @@ public class PlayerCombatListener implements Listener {
         if (logout.getTime() > System.currentTimeMillis()) {
             for (String string : Main.pluginConfig.getAntylogout().getCommands()) {
                 if (string.toLowerCase().equalsIgnoreCase(command)) {
-                    Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cKomenda jest wyłączona podczas walki!");
+                    Api.sendMessage(e.getPlayer(), Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Komenda jest wyłączona podczas walki!");
                     e.setCancelled(true);
                     break;
                 }
@@ -115,16 +121,15 @@ public class PlayerCombatListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onEnterVehicle(VehicleEnterEvent event) {
-        Player player = event.getPlayer();
-        Logout logout = Logout.get(player);
-
-        if (logout.getTime() > System.currentTimeMillis()) {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wsiąść do pojazdu podczas walki!");
-            event.setCancelled(true);
-        }
-    }
+    //@EventHandler
+    //public void onEnterVehicle(VehicleEnterEvent event) {
+    //    Player player = event.getPlayer();
+    //    Logout logout = Logout.get(player);
+    //    if (logout.getTime() > System.currentTimeMillis()) {
+    //        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wsiąść do pojazdu podczas walki!");
+    //        event.setCancelled(true);
+    //    }
+    //}
 
     @EventHandler
     public void onGliding(EntityToggleGlideEvent e){
@@ -133,7 +138,7 @@ public class PlayerCombatListener implements Listener {
 
         if (e.isGliding()) {
             if (logout.getTime() > System.currentTimeMillis()) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz latać podczas walki!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz latać podczas walki!");
                 e.setCancelled(true);
             }
         }
@@ -154,14 +159,59 @@ public class PlayerCombatListener implements Listener {
             Player player = event.getPlayer();
             if (logout.getTime() > System.currentTimeMillis()) {
                 for (String unavailableRegion : Main.pluginConfig.getAntylogout().getRegions()) {
-                    if (RegionApi.isInRegion(locationTo, unavailableRegion) && logout.getTime() > System.currentTimeMillis()) {
-                        Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cTen region jest niedostępny podczas walki!");
-                        player.setVelocity(event.getTo().toVector().subtract(locationFrom.toVector()).multiply(-3));
+                    if (RegionApi.isInRegion(locationTo, unavailableRegion)) {
+                        Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Ten region jest niedostępny podczas walki!");
+                        Vector playerDirection = player.getLocation().getDirection();
+                        //player.setVelocity(playerDirection.multiply(-15));
+                        createBarrier(player, locationTo);
+                        player.setVelocity(event.getTo().toVector().subtract(locationFrom.toVector()).multiply(-2));
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
-                        event.setCancelled(true);
+                        //event.setCancelled(true);
                     }
                 }
+            } else {
+                removeBarrier(player);
             }
+        }
+    }
+
+    private Map<UUID, List<Location>> barrierLocations = new HashMap<>();
+
+    private void createBarrier(Player player, Location location) {
+        World world = player.getWorld();
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+
+        List<Location> barrierLocationsForPlayer = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            Location blockLocation = new Location(world, x, y + i, z);
+            if (blockLocation.getBlock().getType() == Material.AIR) {
+                player.sendBlockChange(blockLocation, Material.BARRIER.createBlockData());
+                // Dodaj lokalizację do listy, aby później usunąć bloki BARRIER
+                barrierLocationsForPlayer.add(blockLocation);
+
+                // Dodaj drugą warstwę bloków BARRIER poniżej
+                Location blockLocationBelow = new Location(world, x, y - i, z);
+                if (blockLocationBelow.getBlock().getType() == Material.AIR) {
+                    player.sendBlockChange(blockLocationBelow, Material.BARRIER.createBlockData());
+                    barrierLocationsForPlayer.add(blockLocationBelow);
+                }
+            }
+        }
+
+        // Dodaj listę lokalizacji do mapy, aby później usunąć bloki BARRIER
+        barrierLocations.putIfAbsent(player.getUniqueId(), new ArrayList<>());
+        barrierLocations.get(player.getUniqueId()).addAll(barrierLocationsForPlayer);
+    }
+
+    private void removeBarrier(Player player) {
+        // Usuń bloki BARRIER, jeśli istnieją dla danego gracza
+        if (barrierLocations.containsKey(player.getUniqueId())) {
+            for (Location location : barrierLocations.get(player.getUniqueId())) {
+                player.sendBlockChange(location, location.getBlock().getBlockData());
+            }
+            barrierLocations.remove(player.getUniqueId());
         }
     }
 
@@ -171,7 +221,7 @@ public class PlayerCombatListener implements Listener {
         Player player = event.getPlayer();
 
         if (logout.getTime() > System.currentTimeMillis()) {
-            Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cTen region jest niedostępny podczas walki!");
+            Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Ten region jest niedostępny podczas walki!");
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
             event.setCancelled(true);
         }
@@ -182,7 +232,7 @@ public class PlayerCombatListener implements Listener {
         Logout logout = Logout.get(event.getPlayer());
         Player player = event.getPlayer();
         if (logout.getTime() > System.currentTimeMillis()) {
-            Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&cTen region jest niedostępny podczas walki!");
+            Api.sendMessage(event.getPlayer(), Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Ten region jest niedostępny podczas walki!");
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
             event.setCancelled(true);
         }
@@ -204,7 +254,7 @@ public class PlayerCombatListener implements Listener {
             if (logout.getTime() > System.currentTimeMillis()) {
                 for (String unavailableRegion : Main.pluginConfig.getAntylogout().getRegions()) {
                     if (RegionApi.isInRegion(locationTo, unavailableRegion) && logout.getTime() > System.currentTimeMillis()) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cTen region jest niedostępny podczas walki!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Ten region jest niedostępny podczas walki!");
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_FALL, 1.0F, 1.0F);
                         e.setCancelled(true);
                     }

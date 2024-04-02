@@ -42,7 +42,7 @@ public class MagnetCommand extends Command implements Listener {
             openGui(0, player);
         } else if (args[0].equalsIgnoreCase("give")) {
             if (!player.hasPermission("core.command.magnet.give")) {
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.magnet.give&8) &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#fc2419Nie posiadasz uprawnien &8(&#fcb419core.command.magnet.give&8) &8<<"));
                 return;
             }
             if (args.length == 2) {
@@ -51,7 +51,7 @@ public class MagnetCommand extends Command implements Listener {
                     offlinePlayer();
                     return;
                 }
-                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś graczu &e" + secondPlayer.getName() + " &dMagnez");
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie dałeś graczu &#fcb419" + secondPlayer.getName() + " &dMagnez");
                 Api.giveOrDrop(secondPlayer, OthersListener.magnet);
             }
         }

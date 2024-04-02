@@ -19,7 +19,7 @@ public class TikTokCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aLink do naszego porfilu na TikTok &#ff0050" + Main.pluginConfig.getMessages().getTiktok());
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Link do naszego porfilu na TikTok &#ff0050" + Main.pluginConfig.getMessages().getTiktok());
     }
 }
 

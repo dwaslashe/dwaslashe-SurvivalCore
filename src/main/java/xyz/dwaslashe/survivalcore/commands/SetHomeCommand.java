@@ -36,26 +36,26 @@ public class SetHomeCommand extends Command {
             int countHomes = user.getHomes() == null || user.getHomes().isEmpty() ? 0 : extractPhrases(user.getHomes()).size();
 
             if (nameHome.contains("&") && nameHome.contains("#")) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz stworzyć domu z znakiem &e& &ci &e#&c!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz stworzyć domu z znakiem &#fcb419& &#fc2419i &#fcb419#&#fc2419!");
                 return;
             }
             if (countHomes >= maxHomes(player)) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz stworzyć więcej domów ponieważ twój limit na to nie pozwala! &e" + countHomes + "&c/&e" + maxHomes(player));
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz stworzyć więcej domów ponieważ twój limit na to nie pozwala! &#fcb419" + countHomes + "&#fc2419/&#fcb419" + maxHomes(player));
                 return;
             }
             if (nameHome.length() > 16) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz stworzyć dom, który posiada więcej niż 16 cyfr w nazwie!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz stworzyć dom, który posiada więcej niż 16 cyfr w nazwie!");
                 return;
             }
             if (user.getHomes().contains(nameHome)) {
                 user.removeHomes(nameHome);
                 user.addHomes(nameHome + "&" + new LocationParser().deserialize(player.getLocation()) + "#");
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zaktualizowałeś dom o nazwie &e" + nameHome);
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zaktualizowałeś dom o nazwie &#fcb419" + nameHome);
                 return;
             }
 
             user.addHomes(nameHome + "&" + new LocationParser().deserialize(player.getLocation()) + "#");
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie stworzyłeś nowy dom o nazwie &e" + nameHome);
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie stworzyłeś nowy dom o nazwie &#fcb419" + nameHome);
         } else wrongUsage();
     }
 

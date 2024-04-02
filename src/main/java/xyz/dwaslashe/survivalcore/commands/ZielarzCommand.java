@@ -14,6 +14,7 @@ import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
 import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.RandomApi;
+import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
 import java.util.*;
 
@@ -43,13 +44,13 @@ public class ZielarzCommand extends Command {
             if (!tasks.containsKey(playerUUID)) {
                 tasks.put(playerUUID, new CombinationTask(randomCombinationName, playerUUID));
                 CombinationTask task = tasks.get(playerUUID);
-                player.sendTitle(Api.fixColor("#6df03a&lNOWE ZADANIE"), Api.fixColor("&8>> &aRozpoczęto nowe zadanie! &8<<"));
+                player.sendTitle(Api.fixColor("#6df03a&lNOWE ZADANIE"), Api.fixColor("&8>> &#4cf739Rozpoczęto nowe zadanie! &8<<"));
                 Api.sendMessage(player, "&7&oWidze, że potrzebujesz kupić różne ciekawe sadzonki ale potrzebuje pewnych przedmiotów abyś mógł je zakupić ponieważ chce mieć ubezpieczenie ze względu na ryzyko.");
                 Api.sendMessage(player, "&#f74c39Wymagane przedmioty:");
                 for (Map.Entry<Material, Integer> entry : task.getRequiredItems().entrySet()) {
                     Api.sendMessage(player, "#f0c86c- " + entry.getValue() + "x " + entry.getKey().name());
                 }
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aRozpocząłeś nową kombinację, masz &#ffd56c30 minut &#ffc942⌚ &ana zebranie itemów inaczej zmieni Ci się kombinacja!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Rozpocząłeś nową kombinację, masz &#ffd56c30 minut &fᎠ &#4cf739na zebranie itemów inaczej zmieni Ci się kombinacja!");
             } else {
                 CombinationTask task = tasks.get(playerUUID);
                 if (task.checkCombination(player.getInventory())) {
@@ -61,7 +62,7 @@ public class ZielarzCommand extends Command {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "shop " + player.getName() + " apteka");
                 } else {
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
-                    Api.sendMessage(player, "&7&oPogrywasz ze mną? To nie są przedmioty jakie chciałem, następnym razem nie przychodź bez tych przedmiotów. Przypominam tylko, że pozostało Ci &#ffd56c" + task.getTimeLeft() + " minut &#ffc942⌚");
+                    Api.sendMessage(player, "&7&oPogrywasz ze mną? To nie są przedmioty jakie chciałem, następnym razem nie przychodź bez tych przedmiotów. Przypominam tylko, że pozostało Ci &#ffd56c" + TimerApi.getDurationBreakdownShort(task.getTimeLeft()) + " &fᎠ");
                     Api.sendMessage(player, "&#f74c39Wymagane przedmioty:");
                     for (Map.Entry<Material, Integer> entry : task.getRequiredItems().entrySet()) {
                         Api.sendMessage(player, "#f0c86c- " + entry.getValue() + "x " + entry.getKey().name());
@@ -159,10 +160,10 @@ public class ZielarzCommand extends Command {
             }
         }
 
-        public int getTimeLeft() {
+        public long getTimeLeft() {
             long currentTime = System.currentTimeMillis();
-            long elapsedMinutes = (currentTime - startTime) / 60000;
-            return Math.max(30 - (int) elapsedMinutes, 0);
+            long longTime = currentTime - startTime;
+            return longTime;
         }
 
         private void startTimer() {

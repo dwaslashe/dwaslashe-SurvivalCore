@@ -28,14 +28,14 @@ public class PurchaseCommand extends Command {
         if (args.length == 0) {
             wrongUsage();
         } else if (args.length == 1) {
-            Api.sendBroadcast("&#FFC42E&lDZIĘKUJEMY &8>> &fGracz &e" + secondPlayer.getName() + " &fkupił u nas coś w sklepie! &#FFC42EDziękujemy za wsparcie serwera!");
+            Api.sendBroadcast("&#FFC42E&lDZIĘKUJEMY &8>> &fGracz &#fcb419" + secondPlayer.getName() + " &fkupił u nas coś w sklepie! &#FFC42EDziękujemy za wsparcie serwera!");
             for (Player all : Bukkit.getOnlinePlayers()) {
-                all.sendTitle(Api.fixColor("&#FFC42E&lDZIĘKUJEMY"), Api.fixColor("&8>> &fGracz &e" + secondPlayer.getName() + " &fkupił u nas coś w sklepie! &8<<"));
+                all.sendTitle(Api.fixColor("&#FFC42E&lDZIĘKUJEMY"), Api.fixColor("&8>> &fGracz &#fcb419" + secondPlayer.getName() + " &fkupił u nas coś w sklepie! &8<<"));
             }
         } else if (args.length >= 2) {
-            Api.sendBroadcast("&#FFC42E&lDZIĘKUJEMY &8>> &fGracz &e" + secondPlayer.getName() + " &fkupił u nas &b" + StringUtils.join(args, " ", 1, args.length) + "&f! &#FFC42EDziękujemy za wsparcie serwera!");
+            Api.sendBroadcast("&#FFC42E&lDZIĘKUJEMY &8>> &fGracz &#fcb419" + secondPlayer.getName() + " &fkupił u nas &b" + StringUtils.join(args, " ", 1, args.length) + "&f! &#FFC42EDziękujemy za wsparcie serwera!");
             for (Player all : Bukkit.getOnlinePlayers()) {
-                all.sendTitle(Api.fixColor("&#FFC42E&lDZIĘKUJEMY"), Api.fixColor("&8>> &r&fGracz &e" + secondPlayer.getName() + " &fkupił u nas &b" + StringUtils.join(args, " ", 1, args.length) + " &8<<"));
+                all.sendTitle(Api.fixColor("&#FFC42E&lDZIĘKUJEMY"), Api.fixColor("&8>> &r&fGracz &#fcb419" + secondPlayer.getName() + " &fkupił u nas &b" + StringUtils.join(args, " ", 1, args.length) + " &8<<"));
             }
         }
     }

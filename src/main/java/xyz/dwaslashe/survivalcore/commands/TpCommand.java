@@ -39,7 +39,7 @@ public class TpCommand extends Command {
             } else {
                 Location loc = secondPlayer.getLocation();
                 player.teleport(loc);
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aZostales przeteleportowany do &e" + secondPlayer.getName());
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Zostales przeteleportowany do &#fcb419" + secondPlayer.getName());
                 discordHelper.setUsername(player.getName() + " (TELEPORT DO GRACZA)");
                 discordHelper.setAvatarUrl("https://minotar.net/avatar/" + player.getName());
                 discordHelper.setContent("Gracz **" + player.getName() + "** przeteleportował się do: **'" + secondPlayer.getName() + "'**, kordy gracza **X: " + secondPlayer.getLocation().getBlockX() + ", Y: " + secondPlayer.getLocation().getBlockY() + ", Z: " + secondPlayer.getLocation().getBlockX() + "**");
@@ -55,8 +55,8 @@ public class TpCommand extends Command {
             if (secondPlayer != null && thirdPlayer != null) {
                 Location loc = thirdPlayer.getLocation();
                 secondPlayer.teleport(loc);
-                Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + thirdPlayer.getName() + " &aprzeteleportowal Ciebie do siebie!");
-                Api.sendMessage(thirdPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowałeś do siebie gracza &e" + secondPlayer.getName());
+                Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + thirdPlayer.getName() + " &#4cf739przeteleportowal Ciebie do siebie!");
+                Api.sendMessage(thirdPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie przeteleportowałeś do siebie gracza &#fcb419" + secondPlayer.getName());
                 discordHelper.setUsername(player.getName() + " (TELEPORT GRACZA DO GRACZA)");
                 discordHelper.setAvatarUrl("https://minotar.net/avatar/" + player.getName());
                 discordHelper.setContent("Gracz **" + player.getName() + "** przeteleportował gracza: **'" + secondPlayer.getName() + "'** do **'" + thirdPlayer.getName() + "'**");
@@ -76,7 +76,7 @@ public class TpCommand extends Command {
                 final double x = Double.parseDouble(args[args.length - 3]);
                 Location loc = new Location(player.getWorld(), x, y, z);
                 player.teleport(loc);
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zostałeś przeteleportowany na kordynaty!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zostałeś przeteleportowany na kordynaty!");
                 discordHelper.setUsername(player.getName() + " (TELEPORT NA KORDY)");
                 discordHelper.setAvatarUrl("https://minotar.net/avatar/" + player.getName());
                 discordHelper.setContent("Gracz **" + player.getName() + "** przeteleportował się na kordy: **X: " + x + "**, **Y: " + y + "**, **Z: " + z + "**");
@@ -97,8 +97,8 @@ public class TpCommand extends Command {
                 final double x = Double.parseDouble(args[args.length - 3]);
                 Location loc = new Location(player.getWorld(), x, y, z);
                 secondPlayer.teleport(loc);
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie gracz &e" + secondPlayer.getName() + " &azostał przeteleportwany na kordynaty!");
-                Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aZostałeś przeteleportowany na kordynaty!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie gracz &#fcb419" + secondPlayer.getName() + " &#4cf739został przeteleportwany na kordynaty!");
+                Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Zostałeś przeteleportowany na kordynaty!");
 
                 discordHelper.setUsername(player.getName() + " (TELEPORT GRACZA NA KORDY)");
                 discordHelper.setAvatarUrl("https://minotar.net/avatar/" + player.getName());

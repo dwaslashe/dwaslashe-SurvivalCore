@@ -46,8 +46,8 @@ public class MarryCommand extends Command {
                 if (marry.getRightuuid() == null || marry.getRightuuid().equals(player.getUniqueId())) {
                     if (RegionApi.isInRegion(player.getLocation(), "kosciol")) {
                         acceptMarriageRequest(player);
-                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zakceptować zaproszenie do małżeństwa musisz to zrobić w kościele! &e/warp kosciol");
-                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cJesteś już w małżeństwie! Aby rozwodzić się wpisz &e/slub rozwod");
+                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zakceptować zaproszenie do małżeństwa musisz to zrobić w kościele! &#fcb419/warp kosciol");
+                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Jesteś już w małżeństwie! Aby rozwodzić się wpisz &#fcb419/slub rozwod");
             } else if (args[0].equalsIgnoreCase("zapros") || args[0].equalsIgnoreCase("invite")) {
                 if (marry.getRightuuid() == null || marry.getRightuuid().equals(player.getUniqueId())) {
                     if (RegionApi.isInRegion(player.getLocation(), "kosciol")) {
@@ -58,34 +58,34 @@ public class MarryCommand extends Command {
                             String targetPlayerName = args[1];
                             Player targetPlayer = Bukkit.getPlayer(targetPlayerName);
                             if (targetPlayer == player) {
-                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz siebie zaprosić do ślubu!");
+                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz siebie zaprosić do ślubu!");
                             } else if (targetPlayer != null) {
                                 if (!hasSentMarriageRequest(player, targetPlayer)) {
-                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wysłałeś zaproszenie do małżeństwa graczowi &e" + targetPlayer.getName() + "&a. Gracz ma &#ffd56c60 sekund &#ffc942⌚ &aaby zaakceptować zaproszenie!");
+                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wysłałeś zaproszenie do małżeństwa graczowi &#fcb419" + targetPlayer.getName() + "&#4cf739. Gracz ma &#ffd56c60 sekund &fᎠ &#4cf739aby zaakceptować zaproszenie!");
                                     sendMarriageRequest(player, targetPlayer);
                                 }
                             } else offlinePlayer();
                         }
-                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby zaprosić kogoś do małżeństwa musisz to zrobić w kościele! &e/warp kosciol");
-                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cJesteś już w małżeństwie! Aby rozwodzić się wpisz &e/slub rozwod");
+                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zaprosić kogoś do małżeństwa musisz to zrobić w kościele! &#fcb419/warp kosciol");
+                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Jesteś już w małżeństwie! Aby rozwodzić się wpisz &#fcb419/slub rozwod");
             } else if (args[0].equalsIgnoreCase("pvp") || args[0].equalsIgnoreCase("walka")) {
                 if (marry.getRightuuid() != null && marry.getRightuuid() != player.getUniqueId()) {
                     Marry marryPartner = MarryCache.getInstance().compute(marry.getRightuuid());
                     if (marry.getPvp() == null || marry.getPvp().equals("NULL")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyłączyłeś walke między małżeństwem!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wyłączyłeś walke między małżeństwem!");
                         marry.setPvp("NO");
                         marryPartner.setPvp("NO");
                     } else if (marry.getPvp().equalsIgnoreCase("YES")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyłączyłeś walke między małżeństwem!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wyłączyłeś walke między małżeństwem!");
                         marry.setPvp("NO");
                         marryPartner.setPvp("NO");
                     } else if (marry.getPvp().equalsIgnoreCase("NO")) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś walke między małżeństwem!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie włączyłeś walke między małżeństwem!");
                         marry.setPvp("YES");
                         marryPartner.setPvp("YES");
                     }
                 } else
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś w żadnym małżeństwie!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie jesteś w żadnym małżeństwie!");
             //} else if (args[0].equalsIgnoreCase("uderz") || args[0].equalsIgnoreCase("slap")) {
             //    if (isHusbandPlayer(player)) {
             //        World world = player.getWorld();
@@ -94,55 +94,55 @@ public class MarryCommand extends Command {
             //            husband.setVelocity(husband.getLocation().toVector().subtract(husband.getLocation().getDirection()).multiply(-3));
             //            world.spawnParticle(Particle.VILLAGER_ANGRY, player.getLocation().add(0.0D, 2.0D, 0.0D), 10);
             //            world.spawnParticle(Particle.VILLAGER_ANGRY, husband.getLocation().add(0.0D, 2.0D, 0.0D), 10);
-            //            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie uderzyłeś małżonka!");
-            //            Api.sendMessage(husband, Main.pluginConfig.getMessages().getPrefix() + "&aTwój małżonek uderzył Cię!");
-            //        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz uderzyć małżonka bo jesteś za daleko od gracza!");
+            //            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie uderzyłeś małżonka!");
+            //            Api.sendMessage(husband, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Twój małżonek uderzył Cię!");
+            //        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz uderzyć małżonka bo jesteś za daleko od gracza!");
             //    }
             } else if (args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp")) {
                 if (isHusbandPlayer(player)) {
                     Player husband = Bukkit.getPlayer(marry.getRightuuid());
                     player.teleport(husband);
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przteleportowano się do małżonka!");
-                    Api.sendMessage(husband, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie twój małżonek przeteleportował się do Ciebie!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie przteleportowano się do małżonka!");
+                    Api.sendMessage(husband, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie twój małżonek przeteleportował się do Ciebie!");
                 }
             } else if (args[0].equalsIgnoreCase("sprawdz") || args[0].equalsIgnoreCase("check")) {
                 if (marry.getRightuuid() != null || (!marry.getRightuuid().equals(player.getUniqueId()))) {
                     OfflinePlayer husband = Bukkit.getOfflinePlayer(marry.getRightuuid());
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aTwoja druga połówka: &e" + husband.getName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Twoja druga połówka: &#fcb419" + husband.getName());
                 } else
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś w żadnym małżeństwie!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie jesteś w żadnym małżeństwie!");
             } else if (args[0].equalsIgnoreCase("pocalunek") || args[0].equalsIgnoreCase("kiss")) {
                 if (isHusbandPlayer(player)) {
                     Player husband = Bukkit.getPlayer(marry.getRightuuid());
                     World world = player.getWorld();
                     if (Api.isNearby(player, husband, 3)) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie pocałowałeś gracza &e" + husband.getName());
-                        Api.sendMessage(husband, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zostałeś pocałowany przez gracza &e" + player.getName());
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie pocałowałeś gracza &#fcb419" + husband.getName());
+                        Api.sendMessage(husband, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zostałeś pocałowany przez gracza &#fcb419" + player.getName());
                         world.spawnParticle(Particle.HEART, player.getLocation().add(0.0D, 2.0D, 0.0D), 10);
                         world.spawnParticle(Particle.HEART, husband.getLocation().add(0.0D, 2.0D, 0.0D), 10);
-                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz pocałować bo jesteś za daleko od gracza!");
+                    } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz pocałować bo jesteś za daleko od gracza!");
                 }
             } else if (args[0].equalsIgnoreCase("prezent") || args[0].equalsIgnoreCase("gift")) {
                 if (isHusbandPlayer(player)) {
                     Player husband = Bukkit.getPlayer(marry.getRightuuid());
                     ItemStack itemStack = player.getInventory().getItemInMainHand();
                     if (itemStack.getType() == Material.AIR) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz dać prezent swojemu małżonkowi bo nie trzymasz żadnego przedmiotu!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz dać prezent swojemu małżonkowi bo nie trzymasz żadnego przedmiotu!");
                         return;
                     }
                     DuelsPlugin duelsPlugin = new DuelsPlugin();
                     if (duelsPlugin.getArenaManager().isInMatch(husband)) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz dać prezent swojemu małżonkowi bo jest w trakcie walki!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz dać prezent swojemu małżonkowi bo jest w trakcie walki!");
                         return;
                     }
                     Logout logout = Logout.get(husband);
                     if (logout.getTime() > System.currentTimeMillis()) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz dać prezent swojemu małżonkowi bo jest w trakcie walki!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz dać prezent swojemu małżonkowi bo jest w trakcie walki!");
                         return;
                     }
 
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś prezent swojemu małżonkowi!");
-                    Api.sendMessage(husband, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dostałeś prezent od swojego małżonka!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie dałeś prezent swojemu małżonkowi!");
+                    Api.sendMessage(husband, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie dostałeś prezent od swojego małżonka!");
                     player.getInventory().remove(itemStack);
                     Api.giveOrDrop(husband, itemStack);
                 }
@@ -151,7 +151,7 @@ public class MarryCommand extends Command {
                     OfflinePlayer husband = Bukkit.getOfflinePlayer(marry.getRightuuid());
                     openGui(0, player, husband);
                 } else
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś w żadnym małżeństwie!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie jesteś w żadnym małżeństwie!");
             }
         }
     }
@@ -164,7 +164,7 @@ public class MarryCommand extends Command {
         Api.sendMessage(target, "        &#a503fc&lZAPROSZENIE DO MAŁŻEŃSTWA");
         Api.sendMessage(target, "");
         Api.sendMessage(target, "&8>> &#8dfa52Otrzymałeś zaproszenie od &#46b9f2" + player.getName());
-        Api.sendMessage(target, "&8>> &#8dfa52Masz &#ffd56c60 sekund &#ffc942⌚ &#8dfa52na potwierdzenie zaproszenia do gry!");
+        Api.sendMessage(target, "&8>> &#8dfa52Masz &#ffd56c60 sekund &fᎠ &#8dfa52na potwierdzenie zaproszenia do gry!");
         Api.sendMessage(target, "");
         NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT,
                 "            <hover:show_text:\"<white>Kliknij aby zaakceptować!\"><click:suggest_command:/marry akceptuj><#4BF72D>&l[AKCEPTUJ]</click></hover> <hover:show_text:\"<white>Kliknij aby odmówić!\"><click:suggest_command:/marry odmow><#F7442D>&l[ODMÓW]</click></hover>").send(target);
@@ -173,8 +173,8 @@ public class MarryCommand extends Command {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (marriageRequests.containsKey(target) && marriageRequests.get(target) == player) {
                 marriageRequests.remove(target);
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cZaproszenie do małżeństwa dla gracza &e" + target.getName() + "&c wygasło");
-                Api.sendMessage(target, Main.pluginConfig.getMessages().getPrefix() + "&cZaproszenie do małżeństwa od gracza &e" + player.getName() + "&c wygasło");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Zaproszenie do małżeństwa dla gracza &#fcb419" + target.getName() + "&#fc2419 wygasło");
+                Api.sendMessage(target, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Zaproszenie do małżeństwa od gracza &#fcb419" + player.getName() + "&#fc2419 wygasło");
             }
         }, 60 * 20L);
     }
@@ -189,8 +189,8 @@ public class MarryCommand extends Command {
             marryPartner.setRightuuid(player.getUniqueId());
             Marry marry = MarryCache.getInstance().compute(player.getUniqueId());
             marry.setRightuuid(partner.getUniqueId());
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zaakceptowałeś zaproszenie do małżeństwa od gracza &e" + partner.getName());
-            Api.sendMessage(partner, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &azaakceptował twoje zaproszenie do małżeństwa!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zaakceptowałeś zaproszenie do małżeństwa od gracza &#fcb419" + partner.getName());
+            Api.sendMessage(partner, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739zaakceptował twoje zaproszenie do małżeństwa!");
             Api.sendBroadcast("\n        &#a503fc&lŚLUB\n \n&8>> &#8dfa52Gracz &#FFC42E" + player.getName() + " &#8dfa52poślubił się z &#f7482d" + partner.getName() + " &#8dfa52życzmy im udanej miłości! &#fc2c03&l❤ \n&8>> &#8dfa52Napisz nowemu małżeństwu coś miłego! =)  \n ");
             for (Player all : Bukkit.getOnlinePlayers()) {
                 World world = all.getWorld();
@@ -199,7 +199,7 @@ public class MarryCommand extends Command {
 
             marriageRequests.remove(player);
         } else {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz żadnych oczekujących zaproszeń do małżeństwa!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie masz żadnych oczekujących zaproszeń do małżeństwa!");
         }
     }
 
@@ -237,13 +237,13 @@ public class MarryCommand extends Command {
                     marryPartner.setRightuuid(secondPlayer.getUniqueId());
                     marryPartner.setPvp("NULL");
                     Api.sendBroadcast("\n        &#a503fc&lROZWÓD\n \n&8>> &#8dfa52Gracz &#FFC42E" + player.getName() + " &#8dfa52zabrał rozwód z &#f7482d" + secondPlayer.getName() + "  \n ");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie potwierdziłeś rozwód z &e" + secondPlayer.getName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie potwierdziłeś rozwód z &#fcb419" + secondPlayer.getName());
                     if (secondPlayer.isOnline()) {
-                        Api.sendMessage((Player) secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&cTwój małżonek rozwiódł się z tobą!");
+                        Api.sendMessage((Player) secondPlayer, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Twój małżonek rozwiódł się z tobą!");
                     }
                     player.closeInventory();
                 } else if (e.getSlot() == 15) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie odrzuciłeś rozwód z &e" + secondPlayer.getName());
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie odrzuciłeś rozwód z &#fcb419" + secondPlayer.getName());
                     player.closeInventory();
                 }
             });
@@ -264,15 +264,15 @@ public class MarryCommand extends Command {
                 if (Bukkit.getOfflinePlayer(marry.getRightuuid()).isOnline()) {
                     return true;
                 } else {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cTwój małżonek jest teraz &enieaktywny!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Twój małżonek jest teraz &#fcb419nieaktywny!");
                     return false;
                 }
             } else {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś w żadnym małżeństwie!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie jesteś w żadnym małżeństwie!");
                 return  false;
             }
         } else {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie jesteś w żadnym małżeństwie!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie jesteś w żadnym małżeństwie!");
             return  false;
         }
 

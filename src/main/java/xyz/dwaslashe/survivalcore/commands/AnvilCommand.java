@@ -23,7 +23,7 @@ public class AnvilCommand extends Command {
     public void commandExecute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         player.openAnvil(null, true);
-        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyśłnie otworzyłeś &ekowadło");
+        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyśłnie otworzyłeś &#fcb419kowadło");
     }
 }
 

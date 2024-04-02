@@ -32,10 +32,10 @@ public class GlowingCommand extends Command {
 
         if (args.length == 0) {
             if (player.isGlowing()) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cPomyślnie wyłączyłeś &eglowing!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Pomyślnie wyłączyłeś &#fcb419glowing!");
                 player.setGlowing(false);
             } else {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś &eglowing!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie włączyłeś &#fcb419glowing!");
                 player.setGlowing(true);
             }
         } else wrongUsage();
@@ -90,7 +90,7 @@ public class GlowingCommand extends Command {
                 inventoryHelper.setColor(itemStack, Color.PURPLE);
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#FF10F0Jasno fioletowy"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &a", "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &#4cf739", "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
                 });
             });
             inventoryHelper.click(e -> {

@@ -23,10 +23,10 @@ public class EcCommand extends Command {
         Player player = (Player) s;
         if (args.length == 0) {
             player.openInventory(player.getEnderChest());
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otworzyłeś swój &eenderchest");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie otworzyłeś swój &#fcb419enderchest");
         } else if (args.length == 1) {
             if (!player.hasPermission("core.command.admin")) {
-                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &cNie posiadasz uprawnien &8(&ecore.command.admin&8) &8<<"));
+                player.sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#fc2419Nie posiadasz uprawnien &8(&#fcb419core.command.admin&8) &8<<"));
                 return;
             }
             Player secondPlayer = Bukkit.getPlayer(args[0]);
@@ -35,7 +35,7 @@ public class EcCommand extends Command {
                 return;
             }
             player.openInventory(secondPlayer.getEnderChest());
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie otworzyłeś enderchest gracza &e" + secondPlayer.getName());
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie otworzyłeś enderchest gracza &#fcb419" + secondPlayer.getName());
         } else wrongUsage();
     }
 

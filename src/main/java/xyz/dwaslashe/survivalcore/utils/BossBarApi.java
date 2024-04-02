@@ -95,7 +95,7 @@ public class BossBarApi {
                     sendGlobal(all, color, BarStyle.SOLID, 5, Api.fixColor(message.toString()));
                 }
                 if (color == null) {
-                    Api.sendLog("&cNie ma takiego koloru! [BossBar]");
+                    Api.sendLog("&#fc2419Nie ma takiego koloru! [BossBar]");
                     return;
                 }
             }
@@ -114,7 +114,7 @@ public class BossBarApi {
                     sendGlobal2(all, color, BarStyle.SOLID, 5, Api.fixColor(message.toString()));
                 }
                 if (color == null) {
-                    Api.sendLog("&cNie ma takiego koloru! [BossBar]");
+                    Api.sendLog("&#fc2419Nie ma takiego koloru! [BossBar]");
                     return;
                 }
             }
@@ -133,7 +133,7 @@ public class BossBarApi {
                     sendGlobal3(all, color, BarStyle.SOLID, 5, Api.fixColor(message.toString()));
                 }
                 if (color == null) {
-                    Api.sendLog("&cNie ma takiego koloru! [BossBar]");
+                    Api.sendLog("&#fc2419Nie ma takiego koloru! [BossBar]");
                     return;
                 }
             }

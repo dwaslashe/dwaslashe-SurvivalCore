@@ -33,6 +33,6 @@ public class SocialSpyCommand extends Command {
         if(list.contains(p.getName()))
             list.remove(p.getName());
         else list.add(p.getName());
-        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aSocialSpy zostało " + (list.contains(p.getName()) ? "&awłączone" : "&cwyłączone"));
+        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739SocialSpy zostało " + (list.contains(p.getName()) ? "&#4cf739włączone" : "&#fc2419wyłączone"));
     }
 }

@@ -29,15 +29,15 @@ public class PayTicketCommand extends Command {
         Player player = (Player) sender;
         Ticket ticketPlayer = TicketCache.getInstance().compute(player.getUniqueId());
         if (ticketPlayer.getEnableJail() == 1) {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz już opłacić mandatu, za późno na to teraz musisz odczekać swoją karę!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz już opłacić mandatu, za późno na to teraz musisz odczekać swoją karę!");
         } else if (ticketPlayer.getEnable() == 1) {
             UserManager.getInstance().getUser(player).ifPresent(user -> {
                 double balanceUser = user.balance();
                 if (balanceUser >= ticketPlayer.getValue()) {
                     openGui(0, player, ticketPlayer.getValue());
-                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniędzy aby opłacić mandat w wysokości &#FFF88F" + ticketPlayer.getValue() + " &#FFC42E$");
+                } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz tyle pieniędzy aby opłacić mandat w wysokości &#FFF88F" + ticketPlayer.getValue() + " &f");
             });
-        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz opłacić mandatu ponieważ nie posiadasz żadnego mandatu!");
+        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz opłacić mandatu ponieważ nie posiadasz żadnego mandatu!");
     }
 
     private void openGui(int guiID, Player player, int value) {
@@ -91,10 +91,10 @@ public class PayTicketCommand extends Command {
                             ticketPlayer.setMaxTime(0);
                             ticketPlayer.setOnline(0);
 
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie opłacono mandat!");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie opłacono mandat!");
                             player.closeInventory();
                         } else {
-                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniędzy aby opłacić mandat w wysokości &#FFF88F" + value + " &#FFC42E$");
+                            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz tyle pieniędzy aby opłacić mandat w wysokości &#FFF88F" + value + " &f");
                             player.closeInventory();
                         }
                     });

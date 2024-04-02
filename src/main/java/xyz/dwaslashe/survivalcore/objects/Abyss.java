@@ -27,13 +27,13 @@ public class Abyss {
     public Abyss(int page) {
         this.page = page;
         this.inventory = Bukkit.createInventory(null, 5 * 9, "Otchlan - Strona " + page);
-        this.inventory.setItem(inventory.getSize() - 9, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&e ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 8, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&e ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 7, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&e ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 6, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&e ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 5, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&e ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 4, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&e ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 3, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&e ").getItemStack());
+        this.inventory.setItem(inventory.getSize() - 9, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
+        this.inventory.setItem(inventory.getSize() - 8, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
+        this.inventory.setItem(inventory.getSize() - 7, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
+        this.inventory.setItem(inventory.getSize() - 6, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
+        this.inventory.setItem(inventory.getSize() - 5, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
+        this.inventory.setItem(inventory.getSize() - 4, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
+        this.inventory.setItem(inventory.getSize() - 3, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
         update();
     }
 

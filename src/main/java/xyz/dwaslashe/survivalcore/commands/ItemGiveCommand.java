@@ -41,8 +41,8 @@ public class ItemGiveCommand extends Command {
 
             Main.getPlugin().getItemCache().getItem(id).ifPresentOrElse(customItem -> {
                 customItem.give(p2);
-                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dano użytkownikowi &e" + p2.getName() + " &aprzedmiot o id &e" + customItem.id());
-            }, () -> Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cItem o tym &eid &cnie istnieje"));
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie dano użytkownikowi &#fcb419" + p2.getName() + " &#4cf739przedmiot o id &#fcb419" + customItem.id());
+            }, () -> Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Item o tym &#fcb419id &#fc2419nie istnieje"));
         } else sender.sendMessage(getUsage());
     }
 }

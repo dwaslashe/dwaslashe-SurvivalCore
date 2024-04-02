@@ -28,22 +28,22 @@ public class MoreCommand extends Command {
         Player p = (Player) sender;
         if (args.length == 1) {
             if (p.getItemInHand() == null && p.getItemInHand().getType() == Material.AIR) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cPrzedmiot nie może być powietrzem");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Przedmiot nie może być powietrzem");
                 return;
             } else {
                 if (Api.isInt(args[0])) {
                     p.setItemInHand(new ItemApi(p.getItemInHand()).setAmount(Integer.parseInt(args[0])).getItemStack());
-                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aIlość została ustawiona");
+                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Ilość została ustawiona");
                 } else {
-                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cIlość musi być podana w liczbie");
+                    Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Ilość musi być podana w liczbie");
                 }
             }
         } else if (args.length == 0) {
             if (p.getItemInHand() == null && p.getItemInHand().getType() == Material.AIR) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cPrzedmiot nie może być powietrzem");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Przedmiot nie może być powietrzem");
             } else {
                 p.setItemInHand(new ItemApi(p.getItemInHand()).setAmount(64).getItemStack());
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aIlość została ustawiona");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Ilość została ustawiona");
             }
         } else wrongUsage();
     }

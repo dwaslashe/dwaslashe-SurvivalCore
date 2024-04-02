@@ -47,7 +47,7 @@ public class EventCommand extends Command {
         if (args.length >= 2) {
             if (args[0].equalsIgnoreCase("case")) {
                 if (eventMap.containsKey("SKRZYNIA")) {
-                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wywołać tego eventu ponieważ aktualnie on trwa!");
+                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wywołać tego eventu ponieważ aktualnie on trwa!");
                     return;
                 }
 
@@ -61,7 +61,7 @@ public class EventCommand extends Command {
                     ParticleManager.getInstance().getParticleControl().playFireSpew(caseLocation, "caseBlock");
 
                     eventMap.put("SKRZYNIA", true);
-                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie stworzono skrzynie!");
+                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie stworzono skrzynie!");
                     Api.sendBroadcast("\n        &#FDBD01&lEVENT SKRZYNIA\n \n&8>> &#e3c97dSkrzynia pojawiła się na &#f5c025X: " + caseLocation.getBlockX() + " Y: " + caseLocation.getBlockY() + " Z: " + caseLocation.getBlockZ() + "\n&8>> &#e3c97dKto pierwszy ten lepszy! \n ");
 
                     AtomicInteger counter = new AtomicInteger(0);
@@ -99,13 +99,13 @@ public class EventCommand extends Command {
                         }
                     }.runTaskTimer(Main.getPlugin(), 0L, 20L);
                     aCase.spawn(caseLocation);
-                }, () -> Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cNie istnieja taka skrzynia!"));
+                }, () -> Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie istnieja taka skrzynia!"));
             }
         }
         if (args.length >= 1) {
             if (args[0].equalsIgnoreCase("meteor")) {
                 if (eventMap.containsKey("METEORYT")) {
-                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz wywołać tego eventu ponieważ aktualnie on trwa!");
+                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wywołać tego eventu ponieważ aktualnie on trwa!");
                     return;
                 }
 
@@ -119,7 +119,7 @@ public class EventCommand extends Command {
                 ParticleManager.getInstance().getParticleControl().playSoulWell(meteorLocation, "meteorBlock");
 
                 eventMap.put("METEORYT", true);
-                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie stworzono meteoryt!");
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie stworzono meteoryt!");
                 Api.sendBroadcast("\n        &#8334eb&lEVENT METEORYT\n \n&8>> &#a06ee0Meteoryt pojawił się na &#7d5af2X: " + meteorLocation.getBlockX() + " Y: " + meteorLocation.getBlockY() + " Z: " + meteorLocation.getBlockZ() + " \n ");
 
                 AtomicInteger counter = new AtomicInteger(0);
@@ -155,7 +155,7 @@ public class EventCommand extends Command {
                 meteorLocation.getBlock().setType(Material.MAGMA_BLOCK);
                 meteorLocation.getBlock().setMetadata("MeteorBlock", new FixedMetadataValue(Main.getPlugin(), Bukkit.getOnlinePlayers().size() * 50));
             } else if (args[0].equalsIgnoreCase("random")) {
-                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zrespiono losowy event!");
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zrespiono losowy event!");
                 List<String> stringList = Arrays.asList("event case " + RandomApi.randomElementList(Main.pluginEvents.getListCases().getCaseRandomList()), "event meteor", "pinata spawn spawn");
                 String command = RandomApi.randomElementList(stringList);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);

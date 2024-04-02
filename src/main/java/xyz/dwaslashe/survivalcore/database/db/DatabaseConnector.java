@@ -61,7 +61,7 @@ public class DatabaseConnector {
 
     private HikariConfig getHikariConfig(DatabaseConfiguration dataBaseConfiguration) {
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(String.format("jdbc:mysql://%s:%d/%s?useSSL=" + dataBaseConfiguration.isSsl() + "&characterEncoding=utf8",
+        hikariConfig.setJdbcUrl(String.format("jdbc:mysql://%s:%d/%s?useSSL=" + dataBaseConfiguration.isSsl() + "&#fc2419haracterEncoding=utf8",
                 dataBaseConfiguration.getHost(),
                 dataBaseConfiguration.getPort(),
                 dataBaseConfiguration.getTable()));

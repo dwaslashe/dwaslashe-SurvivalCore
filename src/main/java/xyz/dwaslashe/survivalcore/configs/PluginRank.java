@@ -41,7 +41,7 @@ public class PluginRank extends OkaeriConfig {
                 " &7Cena usługi&8: &b20 zł",
                 " &7Czas trwania &dCała edycja!",
                 "",
-                "&6&l ⭐ &eKomendy rangi VIP:",
+                "&6&l ⭐ &#fcb419Komendy rangi VIP:",
                 "",
                 " &8>> &f/kit vip &8- &7Zestaw przedmiotów",
                 " &8>> &f/sklep vip &8- &7Sklep premium",
@@ -53,33 +53,33 @@ public class PluginRank extends OkaeriConfig {
                 " &8>> &f/plot close &8- &7Zamyka działke",
                 " &8>> &f/plot open &8- &7Otwiera działke",
                 "",
-                " &a&nKliknij prawym żeby podejrzeć link!");
+                " &#4cf739&nKliknij prawym żeby podejrzeć link!");
 
         @Comment("VIP: Leggings")
         private String leggings_name = "&#21F8F6&lVIP &7{PLAYER}";
         private List<String> leggings_lore = Arrays.asList(
                 "",
-                "&6&l ⭐ &ePrzywileje rangi VIP:",
+                "&6&l ⭐ &#fcb419Przywileje rangi VIP:",
                 "",
-                " &8>> &7Możliwość wejścia na &epełen &7serwer",
-                " &8>> &7Limit aukcji zwiększony do &e5",
-                " &8>> &7Limit &e2 &7domów do stworzenia",
+                " &8>> &7Możliwość wejścia na &#fcb419pełen &7serwer",
+                " &8>> &7Limit aukcji zwiększony do &#fcb4195",
+                " &8>> &7Limit &#fcb4192 &7domów do stworzenia",
                 " &8>> &7Dostęp do &bstrefy VIP",
                 " &8>> &7Otrzymuje rangę&b VIP&7 na Discordzie",
-                " &8>> &7Może pisać &bk&eo&dl&2o&6r&co&8w&3o&7 na tabliczkach",
+                " &8>> &7Może pisać &bk&#fcb419o&dl&2o&6r&#fc2419o&8w&3o&7 na tabliczkach",
                 " &8>> &7Posiada większy &dEnderChest&7, 36 slotów",
-                " &8>> &7Limit postawionych działek jest zwiększony do &e2",
-                " &8>> &7Może działke mieć do &e30&7 kratek",
-                " &8>> &7Może do działki dodać &e10&7 osób",
+                " &8>> &7Limit postawionych działek jest zwiększony do &#fcb4192",
+                " &8>> &7Może działke mieć do &#fcb41930&7 kratek",
+                " &8>> &7Może do działki dodać &#fcb41910&7 osób",
                 "",
-                " &a&nKliknij prawym żeby podejrzeć link!");
+                " &#4cf739&nKliknij prawym żeby podejrzeć link!");
 
         @Comment("VIP: Boots")
-        private String boots_name = "&aKliknij po link!";
+        private String boots_name = "&#4cf739Kliknij po link!";
 
         @Comment("VIP: Sword")
-        private String sword_name = "&eZestaw rangi VIP";
-        private List<String> sword_lore = Arrays.asList("", " &a&nKliknij aby zobaczyć zestaw rangi!");
+        private String sword_name = "&#fcb419Zestaw rangi VIP";
+        private List<String> sword_lore = Arrays.asList("", " &#4cf739&nKliknij aby zobaczyć zestaw rangi!");
         private String sword_command = "/kit preview vip";
     }
 
@@ -97,7 +97,7 @@ public class PluginRank extends OkaeriConfig {
                 " &7Cena usługi&8: &b30 zł",
                 " &7Czas trwania &dCała edycja!",
                 "",
-                "&6&l ⭐ &eKomendy rangi SVIP:",
+                "&6&l ⭐ &#fcb419Komendy rangi SVIP:",
                 "",
                 " &8>> &f/kit svip &8- &7Zestaw przedmiotów",
                 " &8>> &f/kit vip &8- &7Zestaw przedmiotów",
@@ -112,35 +112,35 @@ public class PluginRank extends OkaeriConfig {
                 " &8>> &f/plot close &8- &7Zamyka działke",
                 " &8>> &f/plot open &8- &7Otwiera działke",
                 "",
-                " &a&nKliknij prawym żeby podejrzeć link!");
+                " &#4cf739&nKliknij prawym żeby podejrzeć link!");
 
         @Comment("SVIP: Leggings")
         private String leggings_name = "&#FFC42E&lS&#FFF01F&lVIP &7{PLAYER}";
         private List<String> leggings_lore = Arrays.asList(
                 "",
-                "&6&l ⭐ &ePrzywileje rangi SVIP:",
+                "&6&l ⭐ &#fcb419Przywileje rangi SVIP:",
                 "",
-                " &8>> &7Możliwość wejścia na &epełen &7serwer",
-                " &8>> &7Limit aukcji zwiększony do &e10",
-                " &8>> &7Limit &e3 &7domów do stworzenia",
+                " &8>> &7Możliwość wejścia na &#fcb419pełen &7serwer",
+                " &8>> &7Limit aukcji zwiększony do &#fcb41910",
+                " &8>> &7Limit &#fcb4193 &7domów do stworzenia",
                 " &8>> &7Dostęp do &bstrefy VIP",
-                " &8>> &7Otrzymuje rangę&6 S&eVIP&7 na Discordzie",
-                " &8>> &7Może pisać &bk&eo&dl&2o&6r&co&8w&3o&7 na tabliczkach",
+                " &8>> &7Otrzymuje rangę&6 S&#fcb419VIP&7 na Discordzie",
+                " &8>> &7Może pisać &bk&#fcb419o&dl&2o&6r&#fc2419o&8w&3o&7 na tabliczkach",
                 " &8>> &7Posiada większy &dEnderChest&7, 45 slotów",
-                " &8>> &7Pisanie na &bk&eo&dl&2o&6r&co&8w&3o",
+                " &8>> &7Pisanie na &bk&#fcb419o&dl&2o&6r&#fc2419o&8w&3o",
                 " &8>> &7Może pisać na czacie bez opóźnienia",
-                " &8>> &7Limit postawionych działek jest zwiększony do &e3",
-                " &8>> &7Może działke mieć do &e40&7 kratek",
-                " &8>> &7Może do działki dodać &e15&7 osób",
+                " &8>> &7Limit postawionych działek jest zwiększony do &#fcb4193",
+                " &8>> &7Może działke mieć do &#fcb41940&7 kratek",
+                " &8>> &7Może do działki dodać &#fcb41915&7 osób",
                 "",
-                " &a&nKliknij prawym żeby podejrzeć link!");
+                " &#4cf739&nKliknij prawym żeby podejrzeć link!");
 
         @Comment("SVIP: Boots")
-        private String boots_name = "&aKliknij po link!";
+        private String boots_name = "&#4cf739Kliknij po link!";
 
         @Comment("SVIP: Sword")
-        private String sword_name = "&eZestaw rangi SVIP";
-        private List<String> sword_lore = Arrays.asList("", " &a&nKliknij aby zobaczyć zestaw rangi!");
+        private String sword_name = "&#fcb419Zestaw rangi SVIP";
+        private List<String> sword_lore = Arrays.asList("", " &#4cf739&nKliknij aby zobaczyć zestaw rangi!");
         private String sword_command = "/kit preview svip";
     }
 
@@ -158,7 +158,7 @@ public class PluginRank extends OkaeriConfig {
                 " &7Cena usługi&8: &b40 zł",
                 " &7Czas trwania &dCała edycja!",
                 "",
-                "&6&l ⭐ &eKomendy rangi MVP:",
+                "&6&l ⭐ &#fcb419Komendy rangi MVP:",
                 "",
                 " &8>> &f/kit mvp &8- &7Zestaw przedmiotów",
                 " &8>> &f/kit svip &8- &7Zestaw przedmiotów",
@@ -176,36 +176,36 @@ public class PluginRank extends OkaeriConfig {
                 " &8>> &f/plot open &8- &7Otwiera działke",
                 " &8>> &f/kolornick &8- &7Otwiera menu wyboru zmiany koloru nicku",
                 "",
-                " &a&nKliknij prawym żeby podejrzeć link!");
+                " &#4cf739&nKliknij prawym żeby podejrzeć link!");
 
         @Comment("MVP: Leggings")
         private String leggings_name = "&#FFF01F&lMVP &7{PLAYER}";
         private List<String> leggings_lore = Arrays.asList(
                 "",
-                "&6&l ⭐ &ePrzywileje rangi MVP:",
+                "&6&l ⭐ &#fcb419Przywileje rangi MVP:",
                 "",
-                " &8>> &7Możliwość wejścia na &epełen &7serwer",
-                " &8>> &7Limit aukcji zwiększony do &e15",
-                " &8>> &7Limit &e5 &7domów do stworzenia",
+                " &8>> &7Możliwość wejścia na &#fcb419pełen &7serwer",
+                " &8>> &7Limit aukcji zwiększony do &#fcb41915",
+                " &8>> &7Limit &#fcb4195 &7domów do stworzenia",
                 " &8>> &7Dostęp do &bstrefy VIP",
                 " &8>> &7Otrzymuje rangę&6 &bMVP&7 na Discordzie",
-                " &8>> &7Może pisać &bk&eo&dl&2o&6r&co&8w&3o&7 na tabliczkach",
+                " &8>> &7Może pisać &bk&#fcb419o&dl&2o&6r&#fc2419o&8w&3o&7 na tabliczkach",
                 " &8>> &7Posiada większy &dEnderChest&7, 54 slotów",
-                " &8>> &7Pisanie na &bk&eo&dl&2o&6r&co&8w&3o",
+                " &8>> &7Pisanie na &bk&#fcb419o&dl&2o&6r&#fc2419o&8w&3o",
                 " &8>> &7Może pisać na czacie bez opóźnienia",
-                " &8>> &7Limit postawionych działek jest zwiększony do &e4",
-                " &8>> &7Może działke mieć do &e50&7 kratek",
+                " &8>> &7Limit postawionych działek jest zwiększony do &#fcb4194",
+                " &8>> &7Może działke mieć do &#fcb41950&7 kratek",
                 " &8>> &7Może zmieniać kolor swojego nicku",
-                " &8>> &7Może do działki dodać &e20&7 osób",
+                " &8>> &7Może do działki dodać &#fcb41920&7 osób",
                 "",
-                " &a&nKliknij prawym żeby podejrzeć link!");
+                " &#4cf739&nKliknij prawym żeby podejrzeć link!");
 
         @Comment("MVP: Boots")
-        private String boots_name = "&aKliknij po link!";
+        private String boots_name = "&#4cf739Kliknij po link!";
 
         @Comment("MVP: Sword")
-        private String sword_name = "&eZestaw rangi MVP";
-        private List<String> sword_lore = Arrays.asList("", " &a&nKliknij aby zobaczyć zestaw rangi!");
+        private String sword_name = "&#fcb419Zestaw rangi MVP";
+        private List<String> sword_lore = Arrays.asList("", " &#4cf739&nKliknij aby zobaczyć zestaw rangi!");
         private String sword_command = "/kit preview mvp";
     }
 
@@ -223,7 +223,7 @@ public class PluginRank extends OkaeriConfig {
                 " &7Cena usługi&8: &b100 zł",
                 " &7Czas trwania &dNa Zawsze!",
                 "",
-                "&6&l ⭐ &eKomendy rangi MVP+:",
+                "&6&l ⭐ &#fcb419Komendy rangi MVP+:",
                 "",
                 " &8>> &f/kit mvp+ &8- &7Zestaw przedmiotów",
                 " &8>> &f/kit mvp &8- &7Zestaw przedmiotów",
@@ -246,37 +246,37 @@ public class PluginRank extends OkaeriConfig {
                 " &8>> &f/plot open &8- &7Otwiera działke",
                 " &8>> &f/kolornick &8- &7Otwiera menu wyboru zmiany koloru nicku",
                 "",
-                " &a&nKliknij prawym żeby podejrzeć link!");
+                " &#4cf739&nKliknij prawym żeby podejrzeć link!");
 
         @Comment("MVP+: Leggings")
         private String leggings_name = "&#B026FF&lMVP+ &7{PLAYER}";
         private List<String> leggings_lore = Arrays.asList(
                 "",
-                "&6&l ⭐ &ePrzywileje rangi MVP+:",
+                "&6&l ⭐ &#fcb419Przywileje rangi MVP+:",
                 "",
-                " &8>> &7Możliwość wejścia na &epełen &7serwer",
-                " &8>> &7Limit aukcji zwiększony do &e20",
-                " &8>> &7Limit &e12 &7domów do stworzenia",
+                " &8>> &7Możliwość wejścia na &#fcb419pełen &7serwer",
+                " &8>> &7Limit aukcji zwiększony do &#fcb41920",
+                " &8>> &7Limit &#fcb41912 &7domów do stworzenia",
                 " &8>> &7Dostęp do &bstrefy VIP",
                 " &8>> &7Otrzymuje rangę&6 &dMVP+&7 na Discordzie",
-                " &8>> &7Może pisać &bk&eo&dl&2o&6r&co&8w&3o&7 na tabliczkach",
+                " &8>> &7Może pisać &bk&#fcb419o&dl&2o&6r&#fc2419o&8w&3o&7 na tabliczkach",
                 " &8>> &7Posiada większy &dEnderChest&7, 54 slotów",
-                " &8>> &7Pisanie na &bk&eo&dl&2o&6r&co&8w&3o",
+                " &8>> &7Pisanie na &bk&#fcb419o&dl&2o&6r&#fc2419o&8w&3o",
                 " &8>> &7Może pisać na czacie bez opóźnienia",
-                " &8>> &7Limit postawionych działek jest zwiększony do &e5",
-                " &8>> &7Może działke mieć do &e60&7 kratek",
-                " &8>> &7Może do działki dodać &e22&7 osób",
+                " &8>> &7Limit postawionych działek jest zwiększony do &#fcb4195",
+                " &8>> &7Może działke mieć do &#fcb41960&7 kratek",
+                " &8>> &7Może do działki dodać &#fcb41922&7 osób",
                 " &8>> &7Może zmieniać kolor/gradient swojego nicku",
                 " &8>> &#FBFD8C&nMoże latać na swojej działce!",
                 "",
-                " &a&nKliknij prawym żeby podejrzeć link!");
+                " &#4cf739&nKliknij prawym żeby podejrzeć link!");
 
         @Comment("MVP+: Boots")
-        private String boots_name = "&aKliknij po link!";
+        private String boots_name = "&#4cf739Kliknij po link!";
 
         @Comment("MVP+: Sword")
-        private String sword_name = "&eZestaw rangi MVP+";
-        private List<String> sword_lore = Arrays.asList("", " &a&nKliknij aby zobaczyć zestaw rangi!");
+        private String sword_name = "&#fcb419Zestaw rangi MVP+";
+        private List<String> sword_lore = Arrays.asList("", " &#4cf739&nKliknij aby zobaczyć zestaw rangi!");
         private String sword_command = "/kit preview mvpplus";
     }
 
@@ -294,7 +294,7 @@ public class PluginRank extends OkaeriConfig {
                 " &7Cena usługi&8: &b200 zł",
                 " &7Czas trwania &dNa Zawsze!",
                 "",
-                "&6&l ⭐ &eKomendy rangi SPONSOR:",
+                "&6&l ⭐ &#fcb419Komendy rangi SPONSOR:",
                 "",
                 " &8>> &f/kit mvp+ &8- &7Zestaw przedmiotów",
                 " &8>> &f/kit mvp &8- &7Zestaw przedmiotów",
@@ -318,26 +318,26 @@ public class PluginRank extends OkaeriConfig {
                 " &8>> &f/kolornick &8- &7Otwiera menu wyboru zmiany koloru nicku",
                 " &8>> &f/incognito &8- &7Zostań incognito na serwerze!",
                 "",
-                " &a&nKliknij prawym żeby podejrzeć link!");
+                " &#4cf739&nKliknij prawym żeby podejrzeć link!");
 
         @Comment("SPONSOR: Leggings")
         private String leggings_name = "#FF3131&lS#FF5F1F&lP#FFF01F&lO#39FF14&lN#008443&LS#21F8F6&lO#1F51FF&lR &7{PLAYER}";
         private List<String> leggings_lore = Arrays.asList(
                 "",
-                "&6&l ⭐ &ePrzywileje rangi SPONSOR",
+                "&6&l ⭐ &#fcb419Przywileje rangi SPONSOR",
                 "",
-                " &8>> &7Możliwość wejścia na &epełen &7serwer",
-                " &8>> &7Limit aukcji zwiększony do &e100",
-                " &8>> &7Limit &e14 &7domów do stworzenia",
+                " &8>> &7Możliwość wejścia na &#fcb419pełen &7serwer",
+                " &8>> &7Limit aukcji zwiększony do &#fcb419100",
+                " &8>> &7Limit &#fcb41914 &7domów do stworzenia",
                 " &8>> &7Dostęp do &bstrefy VIP i specjalnej sterfy SPONSOR",
                 " &8>> &7Otrzymuje rangę&6 #FF3131S#FF5F1FP#FFF01FO#39FF14N#008443S#21F8F6O#1F51FFR&7 na Discordzie",
-                " &8>> &7Może pisać &bk&eo&dl&2o&6r&co&8w&3o&7 na tabliczkach",
+                " &8>> &7Może pisać &bk&#fcb419o&dl&2o&6r&#fc2419o&8w&3o&7 na tabliczkach",
                 " &8>> &7Posiada większy &dEnderChest&7, 54 slotów",
-                " &8>> &7Pisanie na &bk&eo&dl&2o&6r&co&8w&3o",
+                " &8>> &7Pisanie na &bk&#fcb419o&dl&2o&6r&#fc2419o&8w&3o",
                 " &8>> &7Może pisać na czacie bez opóźnienia",
-                " &8>> &7Limit postawionych działek jest zwiększony do &e14",
-                " &8>> &7Może działke mieć do &e60&7 kratek",
-                " &8>> &7Może do działki dodać &e22&7 osób",
+                " &8>> &7Limit postawionych działek jest zwiększony do &#fcb41914",
+                " &8>> &7Może działke mieć do &#fcb41960&7 kratek",
+                " &8>> &7Może do działki dodać &#fcb41922&7 osób",
                 " &8>> &7Może zmieniać kolor/gradient swojego nicku",
                 " &8>> &#FBFD8C&nMoże latać na swojej działce!",
                 " &8>> &#FBFD8C&nOdblokowuje wszystkie tytuły!",
@@ -346,14 +346,14 @@ public class PluginRank extends OkaeriConfig {
                 " &8>> &#FBFD8C&nMa dostęp do systemu incognito!",
                 " &8>> &#FBFD8C&nDostaje najszybszy dostęp do administracji!",
                 "",
-                " &a&nKliknij prawym żeby podejrzeć link!");
+                " &#4cf739&nKliknij prawym żeby podejrzeć link!");
 
         @Comment("SPONSOR: Boots")
-        private String boots_name = "&aKliknij po link!";
+        private String boots_name = "&#4cf739Kliknij po link!";
 
         @Comment("SPONSOR: Sword")
-        private String sword_name = "&eZestaw rangi SPONSOR";
-        private List<String> sword_lore = Arrays.asList("", " &a&nKliknij aby zobaczyć zestaw rangi!");
+        private String sword_name = "&#fcb419Zestaw rangi SPONSOR";
+        private List<String> sword_lore = Arrays.asList("", " &#4cf739&nKliknij aby zobaczyć zestaw rangi!");
         private String sword_command = "/kit preview sponsor";
     }
 }

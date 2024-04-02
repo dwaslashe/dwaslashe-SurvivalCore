@@ -24,15 +24,15 @@ public class ClearCommand extends Command {
         if (args.length == 0) {
             this.removeArmor(p);
             p.getInventory().clear();
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aTwój ekwipunek został &ewyczyszczony");
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Twój ekwipunek został &#fcb419wyczyszczony");
         } else if (args.length == 1) {
             Player p2 = Bukkit.getPlayer(args[0]);
             if (p2 == null) {
                 offlinePlayer();
                 return;
             } else {
-                Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyczysciłeś equ gracza &e" + p2.getName());
-                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aTwój ekwipunek został wyczyszczony przez &e" + s.getName());
+                Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wyczysciłeś equ gracza &#fcb419" + p2.getName());
+                Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Twój ekwipunek został wyczyszczony przez &#fcb419" + s.getName());
                 this.removeArmor(p2);
                 p2.getInventory().clear();
             }

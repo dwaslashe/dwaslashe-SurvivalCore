@@ -14,7 +14,7 @@ public class CooldownManager {
 
     public static void addColdown(CommandSender s, String time) {
         if (delay.containsKey(s) && delay.get(s) > System.currentTimeMillis()) {
-            Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefix() + "&cKomende możesz użyć za &e" + TimerApi.secondsToString(delay.get(s)));
+            Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Komende możesz użyć za &#fcb419" + TimerApi.secondsToString(delay.get(s)));
             return;
         }
         delay.remove(s);
@@ -30,7 +30,7 @@ public class CooldownManager {
 
     public static boolean checkDelay(CommandSender s) {
         if (delay.containsKey(s) && delay.get(s) > System.currentTimeMillis()) {
-            Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefix() + "&cKomende możesz użyć za &e" + TimerApi.secondsToString(delay.get(s)));
+            Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Komende możesz użyć za &#fcb419" + TimerApi.secondsToString(delay.get(s)));
             return true;
         } else return false;
     }

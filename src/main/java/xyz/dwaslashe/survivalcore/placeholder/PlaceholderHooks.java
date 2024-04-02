@@ -5,6 +5,8 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import pl.minecodes.plots.api.plot.PlotApi;
+import pl.minecodes.plots.api.plot.PlotServiceApi;
 import xyz.dwaslashe.survivalcore.cache.MarryCache;
 import xyz.dwaslashe.survivalcore.cache.MoneyTargetCache;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
@@ -61,7 +63,7 @@ public class PlaceholderHooks extends PlaceholderExpansion {
                 return "";
             } else if (marry.getRightuuid().equals(player.getUniqueId())) {
                 return "";
-            } else return "&x&e&b&e&c&f&0❤ &r";
+            } else return "&x&#fcb419&b&#fcb419&#fc2419&f&0❤ &r";
         }
         if (params.equals("rate")) {
             return PlayerInteractListener.colorAverage(user.getRates());
@@ -87,13 +89,32 @@ public class PlaceholderHooks extends PlaceholderExpansion {
         if (params.equals("moneytarget_limitmoney")) {
             return format.format(moneyTarget.getLimitMoney());
         }
+        if (params.equals("location")) {
+            String regionName = PlaceholderAPI.setPlaceholders(player, "%worldguard_region_name%");
+            String regionFinalText = toUpperFirstCharacter(regionName).replace("_", " ");
+            String plotName = PlaceholderAPI.setPlaceholders(player, "%mineplots_name%");
+            String finalText;
+            if (plotName.equals("Brak")) {
+                if (regionFinalText.equals("-")) {
+                    String worldName = PlaceholderAPI.setPlaceholders(player, "%multiverse_world_name%");
+                    if (worldName.equals("world")) {
+                        finalText = "Świat";
+                    } else if (worldName.equals("world_nether")) {
+                        finalText = "Piekło";
+                    } else if (worldName.equals("world_the_end")) {
+                        finalText = "Świat Kresu";
+                    } else finalText = "";
+                } else finalText = regionFinalText;
+            } else finalText = plotName + PlaceholderAPI.setPlaceholders(player, " - <#f47e07>@%mineplots_owner%</#f47e07>");
+            return finalText;
+        }
         if (params.equals("moneytarget_title")) {
             return moneyTarget.getTitle();
         }
         if (params.equals("belowname")) {
             if (Protection.getProtectionMap().containsKey(player.getUniqueId())) {
                 Protection protection = Protection.getProtectionMap().get(player.getUniqueId());
-                return "&#037bfc&lOCHRONA: &#ffd56c" + TimerApi.secondsToString(protection.getProtection()) + " &#ffc942⌚ ";
+                return "&#037bfc&lOCHRONA: &#ffd56c" + TimerApi.secondsToString(protection.getProtection()) + " &fᎠ ";
             } else return "%health% #FF3131❤";
         }
         if (params.equals("sessiontime")) {
@@ -102,19 +123,20 @@ public class PlaceholderHooks extends PlaceholderExpansion {
             long playTime = time - playerTime.getTime();
             return TimerApi.getDurationBreakdownShort(playTime);
         }
-        if (params.equals("fbi")) {
-            if (player.getPlayer().hasPermission("core.group.fbi")) {
-                return " <#004791>FBI";
-            } else return "";
-        }
         if (params.equals("team")) {
 
-            if (PlaceholderAPI.setPlaceholders(player, "%mineteams_team_tag%").equalsIgnoreCase("Brak!")) {
+            if (PlaceholderAPI.setPlaceholders(player, "%mineteams_team_ranking%").contains("&#fc2419Brak!")) {
                 return "Punkty: &#4eed6e%mineteams_profile_ranking%pkt &#fcee83#%ajlb_position_mineteams_profile_ranking_alltime%";
             } else {
-                return "Drużyna: &#4eed6e%mineteams_team_tag%&#4eed6e%mineteams_team_ranking%pkt &#fcee83#%ajlb_position_mineteams_team_ranking_alltime%";
+                return "Drużyna: &#4eed6e%mineteams_team_tag%&#4eed6e%mineteams_team_ranking%pkt";
             }
         }
         return null;
+    }
+
+    private String toUpperFirstCharacter(String s){
+        if(s.isEmpty()) return "-";
+        char c = s.charAt(0);
+        return s.replaceFirst(String.valueOf(c), String.valueOf(c).toUpperCase());
     }
 }

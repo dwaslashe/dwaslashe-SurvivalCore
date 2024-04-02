@@ -21,6 +21,6 @@ public class UpTimeCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aUpTime &#ffd56c" + TimerApi.getDurationBreakdownShort(ManagementFactory.getRuntimeMXBean().getUptime()) + " &#ffc942⌚");
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739UpTime &#ffd56c" + TimerApi.getDurationBreakdownShort(ManagementFactory.getRuntimeMXBean().getUptime()) + " &fᎠ");
     }
 }

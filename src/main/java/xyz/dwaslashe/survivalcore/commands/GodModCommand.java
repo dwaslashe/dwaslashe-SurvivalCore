@@ -24,10 +24,10 @@ public class GodModCommand extends Command {
         if (args.length == 0) {
             Player p = (Player) sender;
             if (p.isInvulnerable()) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cPomyślnie wyłączyłeś &egodmod!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Pomyślnie wyłączyłeś &#fcb419godmod!");
                 p.setInvulnerable(false);
             } else {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie włączyłeś &egodmod!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie włączyłeś &#fcb419godmod!");
                 p.setInvulnerable(true);
             }
         } else wrongUsage();

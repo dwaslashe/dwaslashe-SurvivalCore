@@ -26,14 +26,14 @@ public class SunCommand extends Command {
     public void commandExecute(CommandSender s, String[] args) {
         if (!(s instanceof Player)) {
             Bukkit.getWorld("world").setTime(0);
-            Api.sendMessage(s, "&aPomyślnie zmieniłeś pogode");
+            Api.sendMessage(s, "&#4cf739Pomyślnie zmieniłeś pogode");
         } else {
             final Player p = (Player) s;
             if (CooldownManager.checkDelay(p) == true) {
                 return;
             }
             CooldownManager.addColdown(p, "10m");
-            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zmieniłeś pogode");
+            Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś pogode");
             Bukkit.getWorld("world").setStorm(false);
         }
     }

@@ -24,11 +24,11 @@ public class AbyssCommand extends Command {
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
         if(!AbyssTask.isOpened()){
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cOtchłań jest zamknięta");
+            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Otchłań jest zamknięta");
             return;
         }
         if(AbyssTask.abyssList.isEmpty()){
-            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cOtchłań jest pusta");
+            Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Otchłań jest pusta");
             return;
         }
         Player player = (Player) sender;

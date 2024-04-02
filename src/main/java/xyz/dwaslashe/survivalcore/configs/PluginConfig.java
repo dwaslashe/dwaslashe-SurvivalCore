@@ -81,6 +81,8 @@ public class PluginConfig extends OkaeriConfig {
         @Comment("Messages")
         private String ip = " <#39ff14>svCore</#32a852>";
         private String prefix = " &8>> &7";
+        private String prefixSuccess = "&f楸 ";
+        private String prefixFail = "&f楹 ";
         private String discord = "dc.wywrotkamc.pl";
         private String tiktok = "www.tiktok.com/@dwaslashe";
         private String website = "www.wywrotkamc.pl";
@@ -110,7 +112,7 @@ public class PluginConfig extends OkaeriConfig {
         @Getter @Setter
         public static class BossBarSpawn extends OkaeriConfig {
 
-            private String title = "&#FFC42E{region} &8/ &#FBFFFFCzas sesji: &#ffd56c{playTime} &#ffc942⌚";
+            private String title = "&#FFC42E{region} &8/ &#FBFFFFCzas sesji: &#ffd56c{playTime} &fᎠ";
             private boolean enable = true;
 
         }
@@ -262,7 +264,7 @@ public class PluginConfig extends OkaeriConfig {
         public static class BossBarAuto extends OkaeriConfig {
 
             private int time = 1;
-            private List<String> messages = Arrays.asList("Zapraszająć znajomych na serwer wspierasz nas! &c❤ color:green");
+            private List<String> messages = Arrays.asList("Zapraszająć znajomych na serwer wspierasz nas! &#fc2419❤ color:green");
 
         }
 
@@ -272,7 +274,7 @@ public class PluginConfig extends OkaeriConfig {
         public static class MessagesAuto extends OkaeriConfig {
 
             private int time = 1;
-            private List<String> messages = Arrays.asList("&a✉ &8>> &7Sprawdź nasz discord &bhttps://discord.gg/6eacnBS");
+            private List<String> messages = Arrays.asList("&#4cf739✉ &8>> &7Sprawdź nasz discord &bhttps://discord.gg/6eacnBS");
 
         }
     }
@@ -283,7 +285,7 @@ public class PluginConfig extends OkaeriConfig {
     public static class Join extends OkaeriConfig {
 
         @Comment("#Join message, permission core.join.vip")
-        private String vipbroadcast = "{PREFIX}&8>> &aGracz &e{PLAYER} &adołączył na serwer! &bDziękujemy za wsparcie!";
+        private String vipbroadcast = "{PREFIX}&8>> &#4cf739Gracz &#fcb419{PLAYER} &#4cf739dołączył na serwer! &bDziękujemy za wsparcie!";
         private List<String> message = Arrays.asList(" &#39ff14&lWywrotkaMC.PL &8- &#39ff14&lSURVIVAL + EKONOMIA ", "&#39ff14&lSURVIVAL + EKONOMIA ");
         @Comment("#Join BossBar Flesh message")
         private String bossbarfleshmessage = "WIELKA ŚWIĄTECZNA AKTULIZACJA SERWERA!";
@@ -299,8 +301,8 @@ public class PluginConfig extends OkaeriConfig {
 
         @Comment("Chat")
         private String format = "{PREFIX}&7{PLAYER} &8>>&f <message>";
-        private String on = "&a&lCZAT ZOSTAŁ WŁĄCZONY";
-        private String off = "&c&LCZAT ZOSTAŁ WYŁĄCZONY";
+        private String on = "&#4cf739&lCZAT ZOSTAŁ WŁĄCZONY";
+        private String off = "&#fc2419&LCZAT ZOSTAŁ WYŁĄCZONY";
         private String clear = "&b&lCZAT ZOSTAŁ WYCZYSZCZONY";
 
         private List<String> blocktabcommands = Arrays.asList("/br",
@@ -409,7 +411,7 @@ public class PluginConfig extends OkaeriConfig {
     public static class Cooldown extends OkaeriConfig {
 
         @Comment("Cooldown")
-        private String message = " &8>> &cNastepna wiadomosc mozesz wyslac za &e{TIME}";
+        private String message = " &8>> &#fc2419Nastepna wiadomosc mozesz wyslac za &#fcb419{TIME}";
         private String time = "3s";
 
     }

@@ -21,7 +21,6 @@ public class PlayerTask extends BukkitRunnable {
             //}
 
 
-
             Logout logout = Logout.get(player);
             if (logout.getTime() > System.currentTimeMillis()) {
                 if (player.hasPermission("core.command.admin")) return;

@@ -51,9 +51,9 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                     if (gameRequests.containsKey(player)) {
                         gameRequests.remove(player);
                         gameRequests.remove(gameRequests.get(player));
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie odrzuciłeś propozycje gry!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie odrzuciłeś propozycje gry!");
                     } else
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz żadnych oczekujących zaproszeń do gry!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie masz żadnych oczekujących zaproszeń do gry!");
                     return;
                 }
                 if (args.length >= 2) {
@@ -70,13 +70,13 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                                             if (balanceUser >= Integer.valueOf(args[1])) {
                                                 if (balanceTargetUser >= Integer.valueOf(args[1])) {
                                                     if (!hasSentGameRequest(player, target)) {
-                                                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wysłano zaproszenie do gry dla &e" + target.getName() + "&a, ma &#ffd56c60 sekund &#ffc942⌚ &aaby potwierdzić zaproszenie!");
+                                                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wysłano zaproszenie do gry dla &#fcb419" + target.getName() + "&#4cf739, ma &#ffd56c60 sekund &fᎠ &#4cf739aby potwierdzić zaproszenie!");
                                                         sendGameRequest(player, target, Integer.valueOf(args[1]));
                                                     }
                                                 } else
-                                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cGracz zapraszany do pojedynku nie ma tyle pieniędzy na taki zakład!");
+                                                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Gracz zapraszany do pojedynku nie ma tyle pieniędzy na taki zakład!");
                                             } else
-                                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz tyle pieniędzy aby zrobić taki zakład!");
+                                                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz tyle pieniędzy aby zrobić taki zakład!");
                                         });
                                     });
                                 } else wrongUsage();
@@ -86,7 +86,7 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                 } else wrongUsage();
             } else wrongUsage();
 
-        } else Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cKomenda została wyłączona!");
+        } else Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Komenda została wyłączona!");
     }
 
     public static void openGui(int guiID, Player player, Player secondPlayer, int betAmount) {
@@ -123,7 +123,7 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                 if (e.getSlot() == 11) {
                     player.getOpenInventory().close();
                     choseTypeGame.put(player, "ROCK");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &ekamień!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś &#fcb419kamień!");
                     sendChoseTypeGame(player, secondPlayer);
                     System.out.println("player: " + player.getName());
                     System.out.println("secondPlayer: " + secondPlayer.getName());
@@ -135,7 +135,7 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                 } else if (e.getSlot() == 13) {
                     player.closeInventory();
                     choseTypeGame.put(player, "PAPER");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &epapier!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś &#fcb419papier!");
                     sendChoseTypeGame(player, secondPlayer);
                     choseTypeRequests.remove(player);
                     choseTypeRequests.remove(player, secondPlayer);
@@ -144,7 +144,7 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                 } else if (e.getSlot() == 15) {
                     player.closeInventory();
                     choseTypeGame.put(player, "SCISSORS");
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wybrałeś &enożyczki!");
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wybrałeś &#fcb419nożyczki!");
                     sendChoseTypeGame(player, secondPlayer);
                     choseTypeRequests.remove(player);
                     choseTypeRequests.remove(player, secondPlayer);
@@ -404,8 +404,8 @@ public class RockPaperScissorsCommand extends Command implements Listener {
         Api.sendMessage(target, "        &#f58a42&lGRA - KAMIEŃ PAPIER NOŻYCE");
         Api.sendMessage(target, "");
         Api.sendMessage(target, "&8>> &#8dfa52Otrzymałeś zaproszenie od &#46b9f2" + player.getName());
-        Api.sendMessage(target, "&8>> &#8dfa52Masz &#ffd56c60 sekund &#ffc942⌚ &#8dfa52na potwierdzenie zaproszenia do gry!");
-        Api.sendMessage(target, "&8>> &#8dfa52Zakład: &#FFF88F" + betAmount + " &#FFC42E$");
+        Api.sendMessage(target, "&8>> &#8dfa52Masz &#ffd56c60 sekund &fᎠ &#8dfa52na potwierdzenie zaproszenia do gry!");
+        Api.sendMessage(target, "&8>> &#8dfa52Zakład: &#FFF88F" + betAmount + " &f");
         Api.sendMessage(target, "");
         NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT,
                 "            <hover:show_text:\"<white>Kliknij aby zaakceptować!\"><click:suggest_command:/rockpaperscissors akceptuj><#4BF72D>&l[AKCEPTUJ]</click></hover> <hover:show_text:\"<white>Kliknij aby odmówić!\"><click:suggest_command:/rockpaperscissors odmow><#F7442D>&l[ODMÓW]</click></hover>").send(target);
@@ -424,8 +424,8 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                 gameRequests.remove(player);
                 betAmountGame.remove(target);
                 betAmountGame.remove(player);
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cZaproszenie do gry dla gracza &e" + target.getName() + "&c wygasło");
-                Api.sendMessage(target, Main.pluginConfig.getMessages().getPrefix() + "&cZaproszenie do gry od gracza &e" + player.getName() + "&c wygasło");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Zaproszenie do gry dla gracza &#fcb419" + target.getName() + "&#fc2419 wygasło");
+                Api.sendMessage(target, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Zaproszenie do gry od gracza &#fcb419" + player.getName() + "&#fc2419 wygasło");
             }
         }, 60 * 20L);
     }
@@ -446,16 +446,16 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                         gameRequests.remove(secondPlayer);
                         betAmountGame.remove(player);
                         betAmountGame.remove(secondPlayer);
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczająco pieniędzy aby zaakceptować gre!");
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&cTwój przecinik nie posiada wystarczająco pieniędzy aby zaakceptować gre!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz wystarczająco pieniędzy aby zaakceptować gre!");
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Twój przecinik nie posiada wystarczająco pieniędzy aby zaakceptować gre!");
                         return;
                     } else if (!(balanceSecondUser >= betAmountGame.get(secondPlayer))) {
                         gameRequests.remove(player);
                         gameRequests.remove(secondPlayer);
                         betAmountGame.remove(player);
                         betAmountGame.remove(secondPlayer);
-                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&cNie posiadasz wystarczająco pieniędzy aby zaakceptować gre!");
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cTwój przecinik nie posiada wystarczająco pieniędzy aby zaakceptować gre!");
+                        Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie posiadasz wystarczająco pieniędzy aby zaakceptować gre!");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Twój przecinik nie posiada wystarczająco pieniędzy aby zaakceptować gre!");
                         return;
                     }
                 });
@@ -464,8 +464,8 @@ public class RockPaperScissorsCommand extends Command implements Listener {
             inGameCheck.put(secondPlayer, true);
             inGameCheck.put(player, true);
 
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zaakceptowałeś zaproszenie do gry od gracza &e" + secondPlayer.getName());
-            Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + player.getName() + " &azaakceptował twoje zaproszenie do gry!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zaakceptowałeś zaproszenie do gry od gracza &#fcb419" + secondPlayer.getName());
+            Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + player.getName() + " &#4cf739zaakceptował twoje zaproszenie do gry!");
 
             (new BukkitRunnable() {
                 int time = 7;
@@ -495,8 +495,8 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                         }
                     } else {
                         this.cancel();
-                        secondPlayer.sendTitle(Api.fixColor("&#26E810&lSTART!"), Api.fixColor("&8>> &aMasz &#ffd56c60 sekund &#ffc942⌚ &ana wybór! &8<<"), 0, 20, 5);
-                        player.sendTitle(Api.fixColor("&#26E810&lSTART!"), Api.fixColor("&8>> &aMasz &#ffd56c60 sekund &#ffc942⌚ &ana wybór! &8<<"), 0, 20, 5);
+                        secondPlayer.sendTitle(Api.fixColor("&#26E810&lSTART!"), Api.fixColor("&8>> &#4cf739Masz &#ffd56c60 sekund &fᎠ &#4cf739na wybór! &8<<"), 0, 20, 5);
+                        player.sendTitle(Api.fixColor("&#26E810&lSTART!"), Api.fixColor("&8>> &#4cf739Masz &#ffd56c60 sekund &fᎠ &#4cf739na wybór! &8<<"), 0, 20, 5);
                         UserManager.getInstance().getUser(player).ifPresent(user -> {
                             UserManager.getInstance().getUser(secondPlayer).ifPresent(targetUser -> {
                                 user.withdraw(betAmountGame.get(player));
@@ -517,7 +517,7 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                                 choseTypeRequests.remove(secondPlayer); 
                                 secondPlayer.closeInventory();
                                 Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() +
-                                        "&cZa długo myślisz nad wyborem dlatego system wybrał za Ciebie! Wybrano: &e" + randomList);
+                                        "&#fc2419Za długo myślisz nad wyborem dlatego system wybrał za Ciebie! Wybrano: &#fcb419" + randomList);
 
                                 choseTypeGame.put(secondPlayer, randomList);
                                 sendChoseTypeGame(secondPlayer, player);
@@ -527,7 +527,7 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                                 choseTypeRequests.remove(player);
                                 player.closeInventory();
                                 Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() +
-                                        "&cZa długo myślisz nad wyborem dlatego system wybrał za Ciebie! Wybrano: &e" + randomList);
+                                        "&#fc2419Za długo myślisz nad wyborem dlatego system wybrał za Ciebie! Wybrano: &#fcb419" + randomList);
 
                                 choseTypeGame.put(player, randomList);
                                 sendChoseTypeGame(player, secondPlayer);
@@ -537,7 +537,7 @@ public class RockPaperScissorsCommand extends Command implements Listener {
                 }
             }).runTaskTimer(Main.getPlugin(), 0, 20);
         } else {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz żadnych oczekujących zaproszeń do gry!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie masz żadnych oczekujących zaproszeń do gry!");
         }
     }
 
@@ -622,7 +622,7 @@ public class RockPaperScissorsCommand extends Command implements Listener {
 
             betAmountGame.remove(secondPlayer);
             betAmountGame.remove(player);
-        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cMusisz poczekać na swojego przeciwinika aż do jego wyboru!");
+        } else Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Musisz poczekać na swojego przeciwinika aż do jego wyboru!");
     }
     @EventHandler
     public void onCloseInventory(InventoryCloseEvent event) {
@@ -639,7 +639,7 @@ public class RockPaperScissorsCommand extends Command implements Listener {
             choseTypeGame.put(player, randomList);
             sendChoseTypeGame(player, secondPlayer);
             System.out.println("InventoryClose in Game, random: " + randomList);
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cWyszedłeś podczas wyboru dlatego system wybrał Ci losowy wybór i jest to &e" + randomList);
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Wyszedłeś podczas wyboru dlatego system wybrał Ci losowy wybór i jest to &#fcb419" + randomList);
         }
 
     }
@@ -659,8 +659,8 @@ public class RockPaperScissorsCommand extends Command implements Listener {
             choseTypeGame.put(player, randomList);
             sendChoseTypeGame(player, secondPlayer);
             System.out.println("Player Quit in Game, random: " + randomList);
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cWyszedłeś podczas wyboru dlatego system wybrał Ci losowy wybór i jest to &e" + randomList);
-            Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefix() + "&cTwój przeciwnik wyszedł z gry dlatego system wybrał za niego losowy wybór!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Wyszedłeś podczas wyboru dlatego system wybrał Ci losowy wybór i jest to &#fcb419" + randomList);
+            Api.sendMessage(secondPlayer, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Twój przeciwnik wyszedł z gry dlatego system wybrał za niego losowy wybór!");
         }
 
     }
@@ -673,7 +673,7 @@ public class RockPaperScissorsCommand extends Command implements Listener {
         if (inGameCheck.get(player) == null) return;
 
         if (inGameCheck.get(player)) {
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz używać żadnych komend podczas gry!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz używać żadnych komend podczas gry!");
             event.setCancelled(true);
         }
     }

@@ -33,7 +33,7 @@ public class MeCommand extends Command {
         if (args.length >= 1) {
             if (delayCommand.containsKey(player.getName()) && delayCommand.get(player.getName()) > System.currentTimeMillis()) {
                 if (player.hasPermission("core.cooldown.bypass")) return;
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cAby wpisać ponownie tą komende musisz poczekać &e{TIME}".replace("{TIME}", TimerApi.secondsToString(delayCommand.get(player.getName()))));
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby wpisać ponownie tą komende musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayCommand.get(player.getName()))));
                 return;
             }
             delayCommand.remove(player.getName());

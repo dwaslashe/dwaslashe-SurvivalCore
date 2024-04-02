@@ -32,17 +32,17 @@ public class PokeBallCommand extends Command {
             Player secondPlayer = Bukkit.getPlayer(args[0]);
             if (secondPlayer != null) {
                 if (Api.isInt(args[1])) {
-                    OthersListener.pokeball.setAmount(Integer.valueOf(args[1]));
-                    Api.giveOrDrop(secondPlayer, OthersListener.pokeball);
-                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś &e" + args[1] + "x &apokeball graczowi &e" + secondPlayer.getName());
+                    OthersListener.pokeBall.setAmount(Integer.valueOf(args[1]));
+                    Api.giveOrDrop(secondPlayer, OthersListener.pokeBall);
+                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie dałeś &#fcb419" + args[1] + "x &#4cf739pokeball graczowi &#fcb419" + secondPlayer.getName());
                 } else wrongUsage();
             } else offlinePlayer();
         } else if (args.length == 1) {
             Player secondPlayer = Bukkit.getPlayer(args[0]);
             if (secondPlayer != null) {
-                OthersListener.pokeball.setAmount(Integer.valueOf(args[1]));
-                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś &e1x &apokeball graczowi &e" + secondPlayer.getName());
-                Api.giveOrDrop(secondPlayer, OthersListener.pokeball);
+                OthersListener.pokeBall.setAmount(Integer.valueOf(args[1]));
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie dałeś &#fcb4191x &#4cf739pokeball graczowi &#fcb419" + secondPlayer.getName());
+                Api.giveOrDrop(secondPlayer, OthersListener.pokeBall);
             } else offlinePlayer();
         } else wrongUsage();
     }

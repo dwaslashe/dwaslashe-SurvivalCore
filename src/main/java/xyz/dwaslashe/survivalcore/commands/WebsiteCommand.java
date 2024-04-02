@@ -19,6 +19,6 @@ public class WebsiteCommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aStrona WWW &#e6cf3c" + Main.pluginConfig.getMessages().getWebsite());
+        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Strona WWW &#e6cf3c" + Main.pluginConfig.getMessages().getWebsite());
     }
 }

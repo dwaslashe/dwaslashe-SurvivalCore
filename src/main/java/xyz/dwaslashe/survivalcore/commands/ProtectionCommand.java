@@ -30,18 +30,18 @@ public class ProtectionCommand extends Command {
         if (args.length == 0) {
             Protection protection = Protection.get(player.getUniqueId());
             if (protection != null && protection.getProtection() > System.currentTimeMillis()) {
-                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aTwoja ochrona trwa jeszcze &#ffd56c" + TimerApi.secondsToString(protection.getProtection()) + " &#ffc942⌚&a! &aAby ją wyłączyć wpisz &e/ochrona off");
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Twoja ochrona trwa jeszcze &#ffd56c" + TimerApi.secondsToString(protection.getProtection()) + " &fᎠ&#4cf739! &#4cf739Aby ją wyłączyć wpisz &#fcb419/ochrona off");
             } else {
-                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz włączonej ochrony!");
+                Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie masz włączonej ochrony!");
             }
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("off")) {
                 Protection protection = Protection.get(player.getUniqueId());
                 if(protection != null && protection.getProtection() > System.currentTimeMillis()) {
                     Protection.getProtectionMap().get(player.getUniqueId()).setProtection(0);
-                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie wyłączono ochronę!");
+                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie wyłączono ochronę!");
                 } else {
-                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&cNie masz włączonej ochrony!");
+                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie masz włączonej ochrony!");
                 }
             }
 

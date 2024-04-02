@@ -30,13 +30,13 @@ public class SpawnCommand extends Command {
         if(sender instanceof Player player) {
             Warp warp = WarpCache.getInstance().get("spawn");
             if (warp == null) {
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie ma stworzonego spawna!");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie ma stworzonego spawna!");
                 return;
             }
             Location loc = new Location(Bukkit.getServer().getWorld(warp.getLocation().getWorld().getKey()), warp.getLocation().getX(), warp.getLocation().getY(), warp.getLocation().getZ(), warp.getLocation().getYaw(), warp.getLocation().getPitch());
             if (player.hasPermission("core.command.admin")) {
                 player.teleport(loc);
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie przeteleportowano na &espawn");
+                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie przeteleportowano na &#fcb419spawn");
             } else {
                 TeleportManager.teleport(player, 5, loc);
             }

@@ -25,7 +25,7 @@ public class TntCommand extends Command {
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie zapalaiłeś &etnt");
+        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zapalaiłeś &#fcb419tnt");
         player.getWorld().spawn(player.getTargetBlock(null, 50).getLocation().add(0.0D, 1.0D, 0.0D), TNTPrimed.class);
     }
 }

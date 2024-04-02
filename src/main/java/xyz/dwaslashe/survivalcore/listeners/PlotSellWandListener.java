@@ -1,6 +1,8 @@
 package xyz.dwaslashe.survivalcore.listeners;
 
 import dev.norska.dsw.api.DeluxeSellwandPreSellEvent;
+import dev.norska.dsw.api.DeluxeSellwandSellEvent;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,7 +27,7 @@ public class PlotSellWandListener implements Listener {
         if (plot == null) return;
         if (!plot.hasAccess(player)) {
             event.setCancelled(true);
-            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefix() + "&cNie możesz użyć różdzki na nie swojej działce!");
+            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz użyć różdzki na nie swojej działce!");
         }
     }
 }

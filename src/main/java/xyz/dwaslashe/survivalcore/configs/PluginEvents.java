@@ -35,7 +35,7 @@ public class PluginEvents extends OkaeriConfig {
             aCase.addItem(new ItemStack(Material.DIAMOND), 30);
             aCase.addItem(new xyz.dwaslashe.survivalcore.helpers.ItemHelper(Material.DIAMOND_PICKAXE)
                     .withMeta(itemHelper -> {
-                        itemHelper.setDisplayName("&cSuper Kilof");
+                        itemHelper.setDisplayName("&#fc2419Super Kilof");
                         itemHelper.setLore(Arrays.asList("1", "2"));
                         //itemHelper.addUnsafeEnchantment(Enchantment.DIG_SPEED, 6);
                     }), 1);

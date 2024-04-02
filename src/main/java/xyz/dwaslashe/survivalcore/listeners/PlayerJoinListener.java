@@ -89,8 +89,9 @@ public class PlayerJoinListener implements Listener {
             BossBar bar = SecondPlayerTask.getBarMap().get(player.getUniqueId());
 
             if (bar == null) {
-                bar = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID);
+                bar = Bukkit.createBossBar("", BarColor.YELLOW, BarStyle.SOLID);
                 SecondPlayerTask.getBarMap().put(player.getUniqueId(), bar);
+                bar.setProgress(0);
                 bar.setVisible(true);
             } else {
                 bar.removeAll();
@@ -103,9 +104,6 @@ public class PlayerJoinListener implements Listener {
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(), () -> {
             sendImage(player);
-            Api.sendMessage(player, "");
-            Api.sendMessage(player, "&#29f25f&lAKTULIZACJA &#848a86(2.0) &8>> &#a3f79cWszystkie nowości dodane na serwer możesz zobaczyć w filmie, który powstał: &#ff462ehttps://www.youtube.com/watch?v=yea_oVzLsGg");
-            Api.sendMessage(player, "");
             //Create book in join
             //ItemStack book = BookUtil.writtenBook()
             //        .author("WywrotkaMC")
@@ -121,7 +119,7 @@ public class PlayerJoinListener implements Listener {
             //                new BookUtil.PageBuilder()
             //                        .add(Api.fixColor("&5* &8dodaliśmy w komendzie /invsee, wygląd armoru gracza"))
             //                        .newLine().newLine()
-            //                        .add(Api.fixColor("&a&lCo zmieniliśmy? 03.01.2022"))
+            //                        .add(Api.fixColor("&#4cf739&lCo zmieniliśmy? 03.01.2022"))
             //                        .newLine().newLine()
             //                        .add(Api.fixColor("&2* &8zmieniliśmy wygląd nicku na tabie, sidebarze i w większości wiadomościach na czacie"))
             //                        .build(),
@@ -156,6 +154,7 @@ public class PlayerJoinListener implements Listener {
             if (player.hasPermission("core.join.vip")) {
                 Api.sendBroadcast(Main.pluginConfig.getJoin().getVipbroadcast().replace("{PLAYER}", player.getDisplayName()).replace("{PREFIX}", ChatApi.getPrefix(player)));
             }
+
             if (Main.pluginConfig.getEvents().isJoinActionBar()) {
                 for (Player all : Bukkit.getOnlinePlayers()) {
                     Api.sendActionBar(all, "&8>> <#39FF14>Gracz <#FDBD01>" + player.getName() + " <#39FF14>dołączył na serwer! &8<<");

@@ -16,11 +16,11 @@ public class PlayerDeathListener implements Listener {
         event.setDeathMessage(null);
         if (Main.pluginConfig.getEvents().isDeathMessage()) {
             if (killer instanceof Player) {
-                player.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &cUmarłeś przez &e" + killer.getName() + " &8<<"));
+                player.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &#fc2419Umarłeś przez &#fcb419" + killer.getName() + " &8<<"));
                 if (killer.getName().equals(player.getName())) return;
-                killer.sendTitle(Api.fixColor("#85fc23&lZABIŁEŚ"), Api.fixColor("&8>> &aZabiłeś gracza &e" + player.getName() + " &8<<"));
+                killer.sendTitle(Api.fixColor("#85fc23&lZABIŁEŚ"), Api.fixColor("&8>> &#4cf739Zabiłeś gracza &#fcb419" + player.getName() + " &8<<"));
             } else {
-                player.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &cUmarłeś. &8<<"));
+                player.sendTitle(Api.fixColor("#fc2003&lUMARŁEŚ"), Api.fixColor("&8>> &#fc2419Umarłeś. &8<<"));
             }
 
             //for (Player all : Bukkit.getOnlinePlayers()) {

@@ -32,7 +32,7 @@ public class AdminProtectionCommand extends Command {
             Player secondPlayer = Bukkit.getPlayer(args[0]);
             if (secondPlayer != null) {
                 if (!args[1].isEmpty() || (TimerApi.getTime("1d") < TimerApi.getTime(args[1]))) {
-                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie dałeś ochrone na &#ffd56c" + args[1] + " &#ffc942⌚ &agraczowi &e" + secondPlayer.getName());
+                    Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie dałeś ochrone na &#ffd56c" + args[1] + " &fᎠ &#4cf739graczowi &#fcb419" + secondPlayer.getName());
 
                     Protection protection = Protection.compute(secondPlayer.getUniqueId());
                     protection.setProtection(System.currentTimeMillis() + TimerApi.getTime(args[1]));
@@ -40,8 +40,8 @@ public class AdminProtectionCommand extends Command {
 
                     if (secondPlayer.isOnline()) {
                         protection.actualize(secondPlayer.getPlayer());
-                        secondPlayer.getPlayer().sendTitle(Api.fixColor("&#0394fc&lOCHRONA"), Api.fixColor("&8>> &aTwoja ochrona została włączona przez &#ffd56c" + args[1] + " &#ffc942⌚&a! &8<<"));
-                        Api.sendMessage(secondPlayer.getPlayer(), Main.pluginConfig.getMessages().getPrefix() + "&aTwoja ochrona początkowa została włączona i trwa &#ffd56c" + args[1] + " minut &#ffc942⌚&a! Jeśli chcesz wyłączyć ochronę wpisz &e/ochrona off");
+                        secondPlayer.getPlayer().sendTitle(Api.fixColor("&#0394fc&lOCHRONA"), Api.fixColor("&f楸 &#4cf739Twoja ochrona została włączona przez &#ffd56c" + args[1] + " &fᎠ&#4cf739! &f楸"));
+                        Api.sendMessage(secondPlayer.getPlayer(), Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Twoja ochrona początkowa została włączona i trwa &#ffd56c" + args[1] + " minut &fᎠ&#4cf739! Jeśli chcesz wyłączyć ochronę wpisz &#fcb419/ochrona off");
                     }
                 } else wrongUsage();
             } else offlinePlayer();

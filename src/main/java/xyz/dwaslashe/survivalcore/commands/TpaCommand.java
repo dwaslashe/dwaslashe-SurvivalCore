@@ -33,7 +33,7 @@ public class TpaCommand extends Command {
             }
 
             if (target == p) {
-                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&cNie mozesz sie tepac do siebie!");
+                Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie mozesz sie tepac do siebie!");
             }
 
             this.sendRequest(p, target);
@@ -50,8 +50,8 @@ public class TpaCommand extends Command {
     }
 
     public void sendRequest(Player p, Player p2) {
-        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefix() + "&aWysłano prośbe o teleportacje");
-        Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefix() + "&aGracz &e" + p.getDisplayName() + " &aprosi o teleportacje. &aAby zakceptować teleportacje wpisz &e/tpaccept&a, aby anulować teleportację wpisz &e/tpadeny");
+        Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Wysłano prośbe o teleportacje");
+        Api.sendMessage(p2, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Gracz &#fcb419" + p.getDisplayName() + " &#4cf739prosi o teleportacje. &#4cf739Aby zakceptować teleportacje wpisz &#fcb419/tpaccept&#4cf739, aby anulować teleportację wpisz &#fcb419/tpadeny");
         currentRequest.put(p2.getName(), p.getName());
     }
 
@@ -59,7 +59,7 @@ public class TpaCommand extends Command {
         if (currentRequest.containsKey(key)) {
             Player loser = Bukkit.getServer().getPlayer((String)currentRequest.get(key));
             if (loser != null) {
-                Api.sendMessage(loser, Main.pluginConfig.getMessages().getPrefix() + "&cProśba o teleport wygasła!");
+                Api.sendMessage(loser, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Prośba o teleport wygasła!");
             }
 
             currentRequest.remove(key);

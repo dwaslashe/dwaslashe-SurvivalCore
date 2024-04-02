@@ -37,7 +37,7 @@ public class VoucherCommand extends Command {
                     int argument = Integer.parseInt(args[1]);
                     List<VoucherItem> voucherItemsList = Main.pluginVouchers.getItems().getVoucherItems().getItems();
                     if (voucherItemsList.get(argument) != null) {
-                        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefix() + "&aPomyślnie nadano voucher o id &e" + argument + "&a, dla gracza &e" + secondPlayer.getName());
+                        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie nadano voucher o id &#fcb419" + argument + "&#4cf739, dla gracza &#fcb419" + secondPlayer.getName());
 
                         ItemStack voucher = ItemHelper.edit(new ItemStack(voucherItemsList.get(argument).getItem_material())).editNbtTagCompound(nbtItem -> {
                             if (voucherItemsList.get(argument).getOwner()) {
