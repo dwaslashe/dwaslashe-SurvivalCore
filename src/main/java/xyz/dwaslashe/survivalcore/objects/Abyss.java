@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import xyz.dwaslashe.survivalcore.tasks.AbyssTask;
+import xyz.dwaslashe.survivalcore.utils.Api;
 import xyz.dwaslashe.survivalcore.utils.ItemApi;
 
 import java.util.HashMap;
@@ -26,41 +27,25 @@ public class Abyss {
 
     public Abyss(int page) {
         this.page = page;
-        this.inventory = Bukkit.createInventory(null, 5 * 9, "Otchlan - Strona " + page);
-        this.inventory.setItem(inventory.getSize() - 9, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 8, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 7, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 6, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 5, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 4, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
-        this.inventory.setItem(inventory.getSize() - 3, new ItemApi(Material.BLACK_STAINED_GLASS_PANE).setName("&#fcb419 ").getItemStack());
+        this.inventory = Bukkit.createInventory(null, 5 * 9, Api.fixColor("&fᵩɇ"));
         update();
     }
-
     private void update() {
         if (AbyssTask.abyssList.size() > page + 1) {
-            this.inventory.setItem(inventory.getSize() - 1, new ItemApi(Material.PLAYER_HEAD, 1, (short) 3)
-                    .setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19")
-                    .setName("&#39FF14Nastepna strona")
-                    .setLore(List.of("", " &#FBFD8C&nKliknij aby przejść na nastepną strone!"))
+            this.inventory.setItem(inventory.getSize() - 4, new ItemApi(Material.PAPER, 1, (short) 3)
+                    .setCustomModelData(11191)
+                    .setName("&#FF3131Następna")
                     .getItemStack());
         } else {
-            this.inventory.setItem(inventory.getSize() - 1, new ItemApi(Material.PLAYER_HEAD, 1, (short) 3)
-                    .setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzZkMWZhYmRmM2UzNDI2NzFiZDlmOTVmNjg3ZmUyNjNmNDM5ZGRjMmYxYzllYThmZjE1YjEzZjFlN2U0OGI5In19fQ==")
-                    .setName("&#FF3131Brak kolejnej strony")
-                    .getItemStack());
+            this.inventory.setItem(inventory.getSize() - 4, new ItemApi(Material.AIR, 1, (short) 3).getItemStack());
         }
         if (page > 0) {
-            this.inventory.setItem(inventory.getSize() - 2, new ItemApi(Material.PLAYER_HEAD, 1, (short) 3)
-                    .setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==")
-                    .setName("&#39FF14Poprzednia strona")
-                    .setLore(List.of("", " &#FBFD8C&nKliknij aby przejść na poprzednią strone!"))
+            this.inventory.setItem(inventory.getSize() - 6, new ItemApi(Material.PAPER, 1, (short) 3)
+                    .setCustomModelData(11189)
+                    .setName("&#FF3131Poprzednia")
                     .getItemStack());
         } else {
-            this.inventory.setItem(inventory.getSize() - 2, new ItemApi(Material.PLAYER_HEAD, 1, (short) 3)
-                    .setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzZkMWZhYmRmM2UzNDI2NzFiZDlmOTVmNjg3ZmUyNjNmNDM5ZGRjMmYxYzllYThmZjE1YjEzZjFlN2U0OGI5In19fQ==")
-                    .setName("&#FF3131Brak poprzedniej strony")
-                    .getItemStack());
+            this.inventory.setItem(inventory.getSize() - 6, new ItemApi(Material.AIR, 1, (short) 3).getItemStack());
         }
     }
 
@@ -74,16 +59,18 @@ public class Abyss {
         Inventory inventory = event.getInventory();
         if(event.getSlot() < inventory.getSize()-9) return;
         event.setCancelled(true);
-        if(event.getSlot() == inventory.getSize()-1){
+        if(event.getSlot() == inventory.getSize()-4){
             if(exists(page+1)) {
                 event.getWhoClicked().closeInventory();
                 get(page + 1).open((Player) event.getWhoClicked());
             }
-        } else if(event.getSlot() == inventory.getSize()-2){
+        } else if(event.getSlot() == inventory.getSize()-6){
             if(exists(page-1)){
                 event.getWhoClicked().closeInventory();
                 get(page - 1).open((Player) event.getWhoClicked());
             }
+        } else if(event.getSlot() == inventory.getSize()-5){
+            event.getWhoClicked().closeInventory();
         }
     }
 

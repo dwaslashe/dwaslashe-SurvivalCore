@@ -1,23 +1,12 @@
 package xyz.dwaslashe.survivalcore.tasks;
 
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Sound;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.dwaslashe.survivalcore.Main;
-import xyz.dwaslashe.survivalcore.cache.TicketCache;
-import xyz.dwaslashe.survivalcore.cache.UserCache;
-import xyz.dwaslashe.survivalcore.cache.WarpCache;
-import xyz.dwaslashe.survivalcore.listeners.PlayerInteractListener;
 import xyz.dwaslashe.survivalcore.objects.*;
 import xyz.dwaslashe.survivalcore.utils.Api;
-import xyz.dwaslashe.survivalcore.utils.RegionApi;
 import xyz.dwaslashe.survivalcore.utils.TimerApi;
 
 import java.util.*;
@@ -55,78 +44,6 @@ public class SecondPlayerTask extends BukkitRunnable {
 
         for (UUID key : keysToRemove) {
             Protection.getProtectionMap().remove(key);
-        }
-
-        for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            Ticket ticketPlayer = TicketCache.getInstance().compute(offlinePlayer.getUniqueId());
-
-            if (ticketPlayer.getTime() > ticketPlayer.getMaxTime()) {
-                ticketPlayer.setEnable(0);
-                ticketPlayer.setEnableJail(1);
-                ticketPlayer.setOnlineTimeOut(0);
-                ticketPlayer.setTimeMaxJail(ticketPlayer.getValue() * TimerApi.getTime("1s"));
-            }
-
-            if (ticketPlayer.getEnable() == 1) {
-                ticketPlayer.addTime(TimerApi.getTime("1s"));
-            }
-        }
-
-        for (Player allPlayers : Bukkit.getOnlinePlayers()) {
-
-            if (PlayerInteractListener.loadingProgress.containsKey(allPlayers.getName())) {
-                PlayerInteractListener.showLoadingScreen(allPlayers);
-            }
-
-            Ticket ticketPlayer = TicketCache.getInstance().compute(allPlayers.getUniqueId());
-
-            if ((ticketPlayer.getEnableJail() == 1) || (ticketPlayer.getEnableJail() == 1 && ticketPlayer.getOnlineTimeOut() == 0)) {
-                if (ticketPlayer.getTimeJail() > ticketPlayer.getTimeMaxJail()) {
-
-                    allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_VILLAGER_HURT, 1, 1);
-                    allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 50, false, false, false));
-                    allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 50, false, false, false));
-                    allPlayers.sendTitle(Api.fixColor("&#c91212&lUNIEWAŻNIENIE MANDATU"), Api.fixColor("&8>> &#4cf739Spędziłeś cały czas w więzieniu! Zostałeś uwolniony! &8<<"));
-
-                    ticketPlayer.setEnableJail(0);
-                    ticketPlayer.setEnable(0);
-                    ticketPlayer.setTime(0);
-                    ticketPlayer.setMaxTime(0);
-                    ticketPlayer.setValue(0);
-                    ticketPlayer.setTimeJail(0);
-                    ticketPlayer.setTimeMaxJail(0);
-                }
-
-                Api.sendActionBar(allPlayers, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Jeseteś w więzieniu musisz odczekać: <#ffd56c>" + TimerApi.getDurationBreakdownShort(ticketPlayer.getTimeMaxJail() - ticketPlayer.getTimeJail()) + " <#ffc942>⌚ &8<<");
-                ticketPlayer.addTimeJail(TimerApi.getTime("1s"));
-            }
-
-            if (ticketPlayer.getEnable() == 1) {
-
-                if (ticketPlayer.getTime() > ticketPlayer.getMaxTime()) {
-                    Warp warp = WarpCache.getInstance().get("wiezienie");
-                    allPlayers.teleport(warp.getLocation());
-
-                    ticketPlayer.setEnable(0);
-                    ticketPlayer.setEnableJail(1);
-                    ticketPlayer.setOnlineTimeOut(1);
-                    ticketPlayer.setTimeMaxJail(ticketPlayer.getValue() * TimerApi.getTime("1s"));
-
-                    allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_VILLAGER_HURT, 1, 1);
-                    allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 50, false, false, false));
-                    allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 50, false, false, false));
-                    allPlayers.sendTitle(Api.fixColor("&#c91212&lBRAK OPŁATY MANDATU"), Api.fixColor("&8>> &#4cf739Zostałeś przeniesiony do więzienia na czas: &#ffd56c" + TimerApi.getDurationBreakdownShort(ticketPlayer.getTimeMaxJail()) + " &fᎠ &8<<"));
-                }
-
-                if (Integer.valueOf(String.valueOf(ticketPlayer.getTime())) % 6000 == 0) {
-                    allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_VILLAGER_HURT, 1, 1);
-                    allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 50, false, false, false));
-                    allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 50, false, false, false));
-                    allPlayers.sendTitle(Api.fixColor("&#c91212&lPRZYPOMNIENIE MANDATU"), Api.fixColor("&8>> &#4cf739Pozostało: &#ffd56c" + TimerApi.getDurationBreakdownShort(ticketPlayer.getMaxTime() - ticketPlayer.getTime()) + " &fᎠ &8<<"));
-                }
-                ticketPlayer.addTime(TimerApi.getTime("1s"));
-            }
-
         }
 
         //Bukkit.getOnlinePlayers().forEach(player -> {

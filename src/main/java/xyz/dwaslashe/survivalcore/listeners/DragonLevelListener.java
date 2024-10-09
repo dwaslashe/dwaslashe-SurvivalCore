@@ -40,23 +40,14 @@ public class DragonLevelListener implements Listener {
             Location dragondeathlocation = livingEntity.getLocation();
             Item item = null;
 
-            if (RandomApi.getChance(50)) {
-                item = Bukkit.getWorld("world_the_end").dropItem(dragondeathlocation, elytra);
-                item.setCustomNameVisible(true);
-                item.setCustomName(Api.fixColor("&#f04de5Elytra"));
-                item.setVisualFire(true);
-                item.setGlowing(true);
-                item.setGravity(false);
-                item.setPickupDelay(220);
-            } else {
-                item = Bukkit.getWorld("world_the_end").dropItem(dragondeathlocation, OthersListener.elementEnderDragon);
-                item.setCustomNameVisible(true);
-                item.setCustomName(Api.fixColor("<#aa2bff>Fragment Smoka</#912bff>"));
-                item.setVisualFire(true);
-                item.setGlowing(true);
-                item.setGravity(false);
-                item.setPickupDelay(220);
-            }
+            item = Bukkit.getWorld("world_the_end").dropItem(dragondeathlocation, elytra);
+            item.setCustomNameVisible(true);
+            item.setCustomName(Api.fixColor("&#f04de5Elytra"));
+            item.setVisualFire(true);
+            item.setGlowing(true);
+            item.setGravity(false);
+            item.setPickupDelay(220);
+
             Item finalItem = item;
             Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new Runnable() {
                 public void run() {

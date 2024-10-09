@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xyz.dwaslashe.survivalcore.Main;
@@ -37,11 +38,13 @@ public class PlayerJoinListener implements Listener {
     }
 
     public void firstJoinExecute(Player player) {
-        ItemStack food = new ItemApi(Material.COOKED_BEEF, (short)0)
+        ItemStack food = new ItemApi(Material.BAKED_POTATO, (short)0)
                 .setAmount(16)
-                .setName("&#E7E7E7Cześć &#f5be1b%player% &#76f51bB)".replace("%player%", player.getName()))
-                .setLore(Arrays.asList("", " &#E7E7E7Strona: &#e6cf3cwww.wywrotkamc.pl", " &#E7E7E7Discord: &#7289dadc.wywrotkamc.pl"))
+                .setName("&#E7E7E7Cześć &#f5be1b%player% &f\uE1FC".replace("%player%", player.getName()))
+                .setLore(Arrays.asList("", " &#E7E7E7Strona: &#e6cf3cwww.hotmc.pl", " &#E7E7E7Discord: &#7289dadc.hotmc.pl"))
                 .getItemStack();
+        ItemMeta foodMeta = food.getItemMeta();
+        foodMeta.setCustomModelData(10000);
 
         Protection protection = Protection.compute(player.getUniqueId());
         protection.setProtection(System.currentTimeMillis() + TimerApi.getTime("10m"));
@@ -157,7 +160,7 @@ public class PlayerJoinListener implements Listener {
 
             if (Main.pluginConfig.getEvents().isJoinActionBar()) {
                 for (Player all : Bukkit.getOnlinePlayers()) {
-                    Api.sendActionBar(all, "&8>> <#39FF14>Gracz <#FDBD01>" + player.getName() + " <#39FF14>dołączył na serwer! &8<<");
+                    Api.sendActionBar(all, "&f楸 <#4cf739>Gracz <#fcb419>" + player.getName() + " <#4cf739>dołączył na serwer! &f楸");
                 }
             }
 

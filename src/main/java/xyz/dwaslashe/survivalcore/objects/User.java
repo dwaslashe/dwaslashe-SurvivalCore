@@ -24,6 +24,8 @@ public class User {
     @Value(key = "abyss", type = "INT(16)")
     private int abyss;
 
+    @Value(key = "killeffect", type = "INT(16)")
+    private int killEffect;
     @Value(key = "automsg", type = "INT(16)")
     private int autoMsg;
 
@@ -69,7 +71,8 @@ public class User {
             this.nickName = resultSet.getString("nickName");
             this.discordIdAccount = resultSet.getString("discordIdAccount");
             this.abyss = resultSet.getInt("abyss");
-            this.autoMsg = resultSet.getInt("automsg");
+            this.autoMsg = resultSet.getInt("killeffect");
+            this.killEffect = resultSet.getInt("automsg");
             this.autoBossBar = resultSet.getInt("autobossbar");
             this.deaths = resultSet.getInt("deaths");
             this.discordChat = resultSet.getInt("discordchat");
@@ -118,6 +121,16 @@ public class User {
 
     public void setAbyss(int abyss) {
         this.abyss = abyss;
+        UserCache.getInstance().getToUpdate().add(this);
+    }
+
+    //Kill Effect
+    public int getKillEffect() {
+        return killEffect;
+    }
+
+    public void setKillEffect(int killEffect) {
+        this.killEffect = killEffect;
         UserCache.getInstance().getToUpdate().add(this);
     }
 

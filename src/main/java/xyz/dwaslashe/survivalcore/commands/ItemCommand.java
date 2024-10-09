@@ -36,7 +36,7 @@ public class ItemCommand extends Command {
         if (CooldownManager.checkDelay(p) == true) {
             return;
         }
-        CooldownManager.addColdown(p, "5m");
+        CooldownManager.addCooldown(p, "5m");
         if (args.length >= 1) {
             if (p.getItemInHand() != null || p.getItemInHand().getType() != Material.AIR) {
                 if (args.length >= 2) {

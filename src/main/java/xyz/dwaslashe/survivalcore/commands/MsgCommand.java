@@ -112,6 +112,10 @@ public class MsgCommand extends Command {
     }
 
     public static boolean getInputPlayer(String player, String input) {
+        if (input == null || input.isEmpty()) {
+            return false;
+        }
+
         String[] players = input.split("&");
 
         for (String p : players) {

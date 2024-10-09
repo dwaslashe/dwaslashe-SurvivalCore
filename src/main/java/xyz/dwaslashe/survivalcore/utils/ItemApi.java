@@ -67,6 +67,12 @@ public class ItemApi {
         this.itemStack.setItemMeta(meta);
         return this;
     }
+    public ItemApi setCustomModelData(int customModelData){
+        ItemMeta meta = this.itemStack.getItemMeta();
+        meta.setCustomModelData(customModelData);
+        this.itemStack.setItemMeta(meta);
+        return this;
+    }
     public ItemApi addItemFlag(ItemFlag flag){
         ItemMeta meta = this.itemStack.getItemMeta();
         meta.addItemFlags(flag);

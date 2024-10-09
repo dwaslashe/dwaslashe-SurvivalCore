@@ -1,15 +1,16 @@
 package xyz.dwaslashe.survivalcore.commands;
 
 import org.bukkit.command.CommandSender;
-import xyz.dwaslashe.survivalcore.Main;
+import org.bukkit.entity.Player;
 import xyz.dwaslashe.survivalcore.commands.managers.Command;
-import xyz.dwaslashe.survivalcore.utils.Api;
+import xyz.dwaslashe.survivalcore.listeners.PlayerInteractListener;
 
 import java.util.List;
 
-public class FBICommand extends Command {
-    public FBICommand() {
-        super("fbi", "/fbi", "");
+public class ProfileCommand extends Command {
+    public ProfileCommand() {
+        super("profil", "/profil", "");
+        setOnlyPlayer(true);
     }
 
     @Override
@@ -19,6 +20,7 @@ public class FBICommand extends Command {
 
     @Override
     public void commandExecute(CommandSender sender, String[] args) {
-        Api.sendMessage(sender, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Wszystkie informacje o działaniu FBI: &#4680ebchttps://wiki.wywrotkamc.pl/pl/survivaldzialki/fbi");
+        Player player = (Player) sender;
+        PlayerInteractListener.openGui(0, player, player);
     }
 }

@@ -4,7 +4,6 @@ import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
-import xyz.dwaslashe.survivalcore.objects.AbovenameShop;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,30 +50,6 @@ public class PluginCommands extends OkaeriConfig {
 
             private List<String> onamiala10lat = List.of(" ");
 
-        }
-
-        private YtCommand yt = new YtCommand();
-
-        @Getter @Setter
-        public static class YtCommand extends OkaeriConfig {
-
-            private List<String> yt = List.of(" &8[ &#4cf739&LSURVIVAL - LISTA KOMEND &8]", "&2* &#4cf739/kosz &8- &fotwiera kosz", "&2* &#4cf739/list &8- &fwysyła liste graczy", "&2* &#4cf739/money &8- &fwysyła twoje saldo", "&2* &#4cf739/ah &8- &fotwiera aukcje");
-
-        }
-
-        private AbovenameShopCommand abovenameShop = new AbovenameShopCommand();
-
-        @Getter @Setter
-        public static class AbovenameShopCommand extends OkaeriConfig {
-
-            public List<AbovenameShop> items = Arrays.asList(new AbovenameShop(abovenameShop -> {
-                abovenameShop.setGui_item_name("&#39FF14Tytuł 1");
-                abovenameShop.setGui_item_lore(Arrays.asList(" ", " &6&l⭐ &#FFF01FTekst tytułu:", "", " &#1F51FFOd małego mówią mi, że jestem poj*bany", " &#1F51FFRobię poj*bany kwit, po dwie bańki od reklamy", ""));
-                abovenameShop.setGui_item_head_texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDZiYTYzMzQ0ZjQ5ZGQxYzRmNTQ4OGU5MjZiZjNkOWUyYjI5OTE2YTZjNTBkNjEwYmI0MGE1MjczZGM4YzgyIn19fQ==");
-                abovenameShop.setCommandLine(Arrays.asList("admintitletag %player% &#1F51FFOd małego mówią mi, że jestem poj*bany%newline%&#1F51FFRobię poj*bany kwit, po dwie bańki od reklamy"));
-                abovenameShop.setCost(20000.0);
-                abovenameShop.setPermission("core.abovenameshop.tag1");
-            }));
         }
     }
 }

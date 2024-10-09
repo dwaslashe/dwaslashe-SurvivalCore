@@ -51,20 +51,6 @@ public class TestCommand extends Command {
                 Block block = location.getBlock();
                 block.setType(Material.CHEST);
                 block.setMetadata("PirateBlockEvent", new FixedMetadataValue(Main.getPlugin(), ""));
-            } else if (args[0].equalsIgnoreCase("scierka")) {
-                player.getInventory().addItem(PlayerInteractListener.cleaningWaterCloth);
-                player.getInventory().addItem(OthersListener.cleanAmphetamine);
-                player.getInventory().addItem(OthersListener.cleanCocaine);
-            }
-        } else if (args.length >= 2) {
-            Player targetPlayer = Bukkit.getPlayer(args[0]);
-
-            if (targetPlayer != null) {
-                if (args[1].equalsIgnoreCase("piniata")) {
-                    Api.giveOrDrop(targetPlayer, OthersListener.elementPinata);
-                } else if (args[1].equalsIgnoreCase("dragon")) {
-                    Api.giveOrDrop(targetPlayer, OthersListener.elementEnderDragon);
-                }
             }
         }
     }

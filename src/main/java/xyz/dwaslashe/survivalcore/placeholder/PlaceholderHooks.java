@@ -2,11 +2,14 @@ package xyz.dwaslashe.survivalcore.placeholder;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.user.UserManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import pl.minecodes.plots.api.plot.PlotApi;
 import pl.minecodes.plots.api.plot.PlotServiceApi;
+import xyz.dwaslashe.survivalcore.Main;
 import xyz.dwaslashe.survivalcore.cache.MarryCache;
 import xyz.dwaslashe.survivalcore.cache.MoneyTargetCache;
 import xyz.dwaslashe.survivalcore.cache.UserCache;
@@ -56,14 +59,14 @@ public class PlaceholderHooks extends PlaceholderExpansion {
                 return "";
             } else if (marry.getRightuuid().equals(player.getUniqueId())) {
                 return "";
-            } else return "<#ff0c0c>❤ &r";
+            } else return "&f\uE20E &r";
         }
         if (params.equals("marry_hearth_another")) {
             if (marry.getRightuuid() == null) {
                 return "";
             } else if (marry.getRightuuid().equals(player.getUniqueId())) {
                 return "";
-            } else return "&x&#fcb419&b&#fcb419&#fc2419&f&0❤ &r";
+            } else return "&f\uE20E &r";
         }
         if (params.equals("rate")) {
             return PlayerInteractListener.colorAverage(user.getRates());
@@ -91,6 +94,7 @@ public class PlaceholderHooks extends PlaceholderExpansion {
         }
         if (params.equals("location")) {
             String regionName = PlaceholderAPI.setPlaceholders(player, "%worldguard_region_name%");
+            if (regionName.contains("pvparea")) regionName = "Arena_PvP";
             String regionFinalText = toUpperFirstCharacter(regionName).replace("_", " ");
             String plotName = PlaceholderAPI.setPlaceholders(player, "%mineplots_name%");
             String finalText;
@@ -115,7 +119,7 @@ public class PlaceholderHooks extends PlaceholderExpansion {
             if (Protection.getProtectionMap().containsKey(player.getUniqueId())) {
                 Protection protection = Protection.getProtectionMap().get(player.getUniqueId());
                 return "&#037bfc&lOCHRONA: &#ffd56c" + TimerApi.secondsToString(protection.getProtection()) + " &fᎠ ";
-            } else return "%health% #FF3131❤";
+            } else return "%health%&fᎏ %survivalcore_level%";
         }
         if (params.equals("sessiontime")) {
             PlayerTime playerTime = PlayerTime.getPlayer((Player) player);
@@ -131,7 +135,52 @@ public class PlaceholderHooks extends PlaceholderExpansion {
                 return "Drużyna: &#4eed6e%mineteams_team_tag%&#4eed6e%mineteams_team_ranking%pkt";
             }
         }
+        if (params.equals("level")) {
+            String level = PlaceholderAPI.setPlaceholders(player, "%clv_player_level%");
+            String iconLevel = PlaceholderAPI.setPlaceholders(player, "%img_rank" + level + "%");
+            String finalTextLevel = level + "lvl&f" + iconLevel;
+            return finalTextLevel;
+        }
+        if (params.equals("nameplatesrank")) {
+            if (isPlayerInGroup((Player) player, "wlasciciel")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_root_tag%");
+            } else if (isPlayerInGroup((Player) player, "admin+")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_adminplus_tag%");
+            } else if (isPlayerInGroup((Player) player, "admin")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_admin_tag%");
+            } else if (isPlayerInGroup((Player) player, "headadmin")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_headadmin_tag%");
+            } else if (isPlayerInGroup((Player) player, "moderator+")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_moderatorplus_tag%");
+            } else if (isPlayerInGroup((Player) player, "moderator")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_moderator_tag%");
+            } else if (isPlayerInGroup((Player) player, "support+")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_supportplus_tag%");
+            } else if (isPlayerInGroup((Player) player, "support")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_support_tag%");
+            } else if (isPlayerInGroup((Player) player, "helper+")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_helperplus_tag%");
+            } else if (isPlayerInGroup((Player) player, "helper")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_helper_tag%");
+            } else if (isPlayerInGroup((Player) player, "rekrut")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_rekrut_tag%");
+            } else if (isPlayerInGroup((Player) player, "mvp+")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_mvpplus_tag%");
+            } else if (isPlayerInGroup((Player) player, "mvp")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_mvp_tag%");
+            } else if (isPlayerInGroup((Player) player, "vip+")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_vipplus_tag%");
+            } else if (isPlayerInGroup((Player) player, "vip")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_vip_tag%");
+            } else if (isPlayerInGroup((Player) player, "default")) {
+                return PlaceholderAPI.setPlaceholders(player, "%nameplates_image_gracz_tag%");
+            } else return "";
+        }
         return null;
+    }
+
+    public static boolean isPlayerInGroup(Player player, String group) {
+        return player.hasPermission("group." + group);
     }
 
     private String toUpperFirstCharacter(String s){

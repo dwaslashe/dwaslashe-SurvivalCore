@@ -148,11 +148,6 @@ public class PluginConfig extends OkaeriConfig {
     @Getter @Setter
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Recipes extends OkaeriConfig {
-        @Comment("#Magnet")
-        private boolean magnet = true;
-        @Comment("#Enchanted Apple")
-        private boolean enchantedApple = false;
-
         @Comment("#Block list materials")
         private boolean blockMaterials = false;
         private List<String> blockedMaterials = Arrays.asList("DIAMOND_HELMET", "DIAMOND_CHESTPLATE", "DIAMOND_LEGGINGS", "DIAMOND_BOOTS", "DIAMOND_AXE", "DIAMOND_SWORD");
@@ -164,15 +159,14 @@ public class PluginConfig extends OkaeriConfig {
     @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
     public static class Commands extends OkaeriConfig {
 
-        private boolean fbi = true;
-        private boolean ticket = true;
+        private boolean emote = true;
+        private boolean killEffect = true;
         private boolean rainbowChat = true;
         private boolean wiki = true;
         private boolean youTube = true;
         private boolean onamiala10lat = true;
         private boolean faq = true;
         private boolean emergencyNumber = true;
-        private boolean zielarz = true;
         private boolean event = true;
         private boolean vape = true;
         private boolean rockPaperScissors = true;
@@ -185,6 +179,7 @@ public class PluginConfig extends OkaeriConfig {
         private boolean homes = true;
         private boolean pokeBall = true;
         private boolean elytraGive = true;
+        private boolean level = true;
         private boolean world = true;
         private boolean tiktok = true;
         private boolean xpBottle = true;
@@ -193,7 +188,6 @@ public class PluginConfig extends OkaeriConfig {
         private boolean broadcast = true;
         private boolean enchant = true;
         private boolean texturpack = false;
-        private boolean aboveNameShop = true;
         private boolean teleport = true;
         private boolean chat = true;
         private boolean clear = true;
@@ -234,7 +228,6 @@ public class PluginConfig extends OkaeriConfig {
         private boolean website = true;
         private boolean vanish = true;
         private boolean rank = true;
-        private boolean yt = true;
         private boolean night = true;
         private boolean sun = true;
         private boolean storm = true;
@@ -248,7 +241,6 @@ public class PluginConfig extends OkaeriConfig {
         private boolean reward = true;
         private boolean ping = true;
         private boolean godMod = true;
-        private boolean magnet = false;
         private boolean check = true;
         private boolean pracealiases = false;
     }

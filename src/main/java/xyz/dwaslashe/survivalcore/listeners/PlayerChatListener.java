@@ -120,7 +120,7 @@ public class PlayerChatListener implements Listener {
                 if (!player.hasPermission("core.chat.openchatbreak.bypass")) {
                     User user = UserCache.getInstance().compute(player.getUniqueId());
                     if (user.getBlockBreak() < (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() - 1)) {
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wysłać wiadomości ponieważ potrzebujesz wykopać #fc2617&n" + user.getBlockBreak() + "&7/#b52016&n" + Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() + "&#fc2419 bloków! ");
+                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz wysłać wiadomości ponieważ potrzebujesz wykopać #b52016" + user.getBlockBreak() + "/" + Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() + "&#fc2419 bloków! ");
                         return false;
                     }
                 }
@@ -170,7 +170,7 @@ public class PlayerChatListener implements Listener {
                                     }
                                     ZonedDateTime timeZone = TimerApi.getZoneDate("GMT+1");
                                     Component component = MiniMessage.miniMessage().deserialize(
-                                            "<hover:show_text:\" <#F79B2E>Oznaczenie <#f47e07>@" + onlinePlayer.getName() + "\n\n <#E7E7E7>Kliknij w oznaczoną wiadomość, aby\n <#E7E7E7>napisać do użytkownika\n\n <#77d916>Wiadomość wysłana: <#ffd56c>" + appendDigit(timeZone.getHour()) + ":" + appendDigit(timeZone.getMinute()) +  " <#ffc942>⌚\"><click:suggest_command:/msg " + onlinePlayer.getName() + " >" + f + onlinePlayer.getName() + "</click></hover>" + ColorEnums.translateAlternateColorCodes(ref.color));
+                                            "<hover:show_text:\" <#F79B2E>Oznaczenie <#f47e07>@" + onlinePlayer.getName() + "\n\n <#E7E7E7>Kliknij w oznaczoną wiadomość, aby\n <#E7E7E7>napisać do użytkownika\n\n <#77d916>Wiadomość wysłana: <#ffd56c>" + appendDigit(timeZone.getHour()) + ":" + appendDigit(timeZone.getMinute()) +  " &fᎠ\"><click:suggest_command:/msg " + onlinePlayer.getName() + " >" + f + onlinePlayer.getName() + "</click></hover>" + ColorEnums.translateAlternateColorCodes(ref.color));
                                     return Tag.inserting(Component.empty().append(component));
 
                                 }
@@ -257,7 +257,7 @@ public class PlayerChatListener implements Listener {
         if (userManager.getUser(player.getName()) == null) {
             realName = player.getName();
         } else realName = userManager.getUser(player.getName()).getCustomName();
-        String finalRealName = PlaceholderAPI.setPlaceholders(player, "<hover:show_text:\" <#4287f5>Statystyki gracza <#9c9898>" + realName + "\n \n <#E7E7E7>Saldo: <#FFF88F>%economy_money% <#FFC42E>$\n <#E7E7E7>Śmierci: <#ff6e6e>%statistic_deaths% <#ff4545>☠\n <#E7E7E7>Zabójstwa: <#4DFFFF>%statistic_player_kills% <#1AE6E6>⚔\n <#E7E7E7>Przegrane godziny: <#ffd56c>%statistic_hours_played%g <#ffc942>⌚\n <#E7E7E7>Wykopane bloki: <#10F70C>%statistic_mine_block% <#09b106>⛏\n <#E7E7E7>Punkty rankingu: <#4eed6e>%mineteams_profile_ranking%pkt\n <#E7E7E7>Ilość powitanych nowych graczy: <#8eeb6c>%Greeter_amount%\n <#E7E7E7>Średnia ocena profilu: %survivalcore_rate%&8/<#54f542>5\n <#E7E7E7>Spędzony czas w strefie afk: %survivalcore_afk_timespend%\n <#E7E7E7>Druga połówka: <#d834eb>%survivalcore_marry_husband%\n\"><click:suggest_command:/msg " + player.getName() + " >" + realName + "</click></hover>");
+        String finalRealName = PlaceholderAPI.setPlaceholders(player, "<hover:show_text:\" <#4287f5>Statystyki gracza: <#9c9898>%luckperms_prefix%<#9c9898>" + realName + "\n \n <#E7E7E7>Saldo: <#FFF88F>%economy_money% &f\n <#E7E7E7>Śmierci: <#b3b6ba>%statistic_deaths% &f%img_skull_01a%\n <#E7E7E7>Zabójstwa: <#d42626>%statistic_player_kills% &f%img_sword_03e%\n <#E7E7E7>Przegrane godziny: <#ffd56c>%statistic_hours_played%g &fᎠ\n <#E7E7E7>Wykopane bloki: <#10F70C>%statistic_mine_block% <#09b106>⛏\n <#E7E7E7>Punkty rankingu: <#4eed6e>%deluxecombat_ranking_points%pkt\n <#E7E7E7>Ilość powitanych nowych graczy: <#8eeb6c>%Greeter_amount%\n <#E7E7E7>Średnia ocena profilu: %survivalcore_rate%&8/<#54f542>5\n <#E7E7E7>Spędzony czas w strefie afk: %survivalcore_afk_timespend%\n <#E7E7E7>Druga połówka: <#d834eb>%survivalcore_marry_husband%\n\"><click:suggest_command:/msg " + player.getName() + " >" + realName + "</click></hover>");
 
         String message;
         if (player.hasPermission("core.chat.rainbow")) {

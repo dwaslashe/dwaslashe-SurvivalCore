@@ -161,12 +161,6 @@ public class Main extends JavaPlugin {
         //new RecipeChoice.ExactChoice(OthersListener.driedChestnut)
         //FurnaceRecipe furnaceRecipe = new FurnaceRecipe(NamespacedKey.minecraft("wywrotkamc_chestnut"), OthersListener.chestnut, Material.DARK_OAK_BOAT, 5F, 60);
         //Bukkit.addRecipe(furnaceRecipe);
-        if (pluginConfig.getRecipes().isMagnet()) {
-            Bukkit.addRecipe(OthersListener.getRecipeMagnet());
-        }
-        if (pluginConfig.getRecipes().isEnchantedApple()) {
-            Bukkit.addRecipe(OthersListener.getRecipeEnchantedApple());
-        }
 
         connector = new DatabaseConnector(new DatabaseConfiguration(pluginConfig.getDatabase().getHost(), pluginConfig.getDatabase().getUsername(), pluginConfig.getDatabase().getPassword(), pluginConfig.getDatabase().getTable(), pluginConfig.getDatabase().getPort(), pluginConfig.getDatabase().isSsl()));
 
@@ -184,7 +178,7 @@ public class Main extends JavaPlugin {
 
         new PlaceholderHooks().register();
         new ReflectionHelper().initialize();
-        new PlayerInteractListener().EnderpearlCooldown(this);
+        new PlayerInteractListener().EnderPearlCooldown(this);
         loadItems();
         loadTasks();
         loadCommands();
@@ -230,9 +224,6 @@ public class Main extends JavaPlugin {
 
         connector.registerDataObjectToScan(MoneyTarget.class);
         connector.getScanner(MoneyTarget.class).ifPresent(MoneyTargetDataObjectScanner -> MoneyTargetDataObjectScanner.load(MoneyTargetCache.getInstance()));
-
-        connector.registerDataObjectToScan(Ticket.class);
-        connector.getScanner(Ticket.class).ifPresent(TicketDataObjectScanner -> TicketDataObjectScanner.load(TicketCache.getInstance()));
 
         connector.registerDataObjectToScan(Marry.class);
         connector.getScanner(Marry.class).ifPresent(MarryDataObjectScanner -> MarryDataObjectScanner.load(MarryCache.getInstance()));
@@ -318,12 +309,6 @@ public class Main extends JavaPlugin {
                 MarryCache.getInstance().getToUpdate().removeAll(MarrySet);
             });
 
-            Set<Ticket> TicketSet = new HashSet<>(TicketCache.getInstance().getToUpdate());
-            connector.getScanner(Ticket.class).ifPresent(scanner -> {
-                TicketSet.forEach(scanner::update);
-                TicketCache.getInstance().getToUpdate().removeAll(TicketSet);
-            });
-
         }, 20, 20 * 10);
     }
 
@@ -359,10 +344,6 @@ public class Main extends JavaPlugin {
             MarryCache.getInstance().getToUpdate().forEach(scanner::update);
         });
 
-        connector.getScanner(Ticket.class).ifPresent(scanner -> {
-            TicketCache.getInstance().getToUpdate().forEach(scanner::update);
-        });
-
         try {
             connector.getConnection().close();
         } catch (SQLException ignore) {}
@@ -387,16 +368,16 @@ public class Main extends JavaPlugin {
 
     public void loadCommands() {
         CommandManager.register(new TestCommand(), true);
-        CommandManager.register(new FBICommand(), pluginConfig.getCommands().isFbi());
-        CommandManager.register(new PayTicketCommand(), pluginConfig.getCommands().isTicket());
-        CommandManager.register(new TicketCommand(), pluginConfig.getCommands().isTicket());
+        CommandManager.register(new CustomItemCommand(), true);
+        CommandManager.register(new ProfileCommand(), true);
+        CommandManager.register(new EmoteCommand(), pluginConfig.getCommands().isEmote());
+        CommandManager.register(new KillEffectCommand(), pluginConfig.getCommands().isKillEffect());
         CommandManager.register(new RainbowChatCommand(), pluginConfig.getCommands().isRainbowChat());
         CommandManager.register(new WikiCommand(), pluginConfig.getCommands().isWiki());
         CommandManager.register(new YouTubeCommand(), pluginConfig.getCommands().isYouTube());
         CommandManager.register(new OnaMiala10LatCommand(), pluginConfig.getCommands().isOnamiala10lat());
         CommandManager.register(new FaQCommand(), pluginConfig.getCommands().isFaq());
         CommandManager.register(new EmergencyNumberCommand(), pluginConfig.getCommands().isEmergencyNumber());
-        //CommandManager.register(new ZielarzCommand(), pluginConfig.getCommands().isZielarz());
         CommandManager.register(new EventCommand(), pluginConfig.getCommands().isEvent());
         CommandManager.register(new VapeCommand(), pluginConfig.getCommands().isVape());
         CommandManager.register(new RockPaperScissorsCommand(), pluginConfig.getCommands().isRockPaperScissors());
@@ -412,7 +393,6 @@ public class Main extends JavaPlugin {
         CommandManager.register(new HomesCommand(), pluginConfig.getCommands().isHomes());
         CommandManager.register(new PokeBallCommand(), pluginConfig.getCommands().isPokeBall());
         CommandManager.register(new BcCommand(), pluginConfig.getCommands().isBroadcast());
-        CommandManager.register(new AboveNameShopCommand(), pluginConfig.getCommands().isAboveNameShop());
         CommandManager.register(new TpCommand(), pluginConfig.getCommands().isTeleport());
         CommandManager.register(new ChatCommand(), pluginConfig.getCommands().isChat());
         CommandManager.register(new ClearCommand(), pluginConfig.getCommands().isClear());
@@ -456,7 +436,6 @@ public class Main extends JavaPlugin {
         CommandManager.register(new WebsiteCommand(), pluginConfig.getCommands().isWebsite());
         CommandManager.register(new VanishCommand(), pluginConfig.getCommands().isVanish());
         CommandManager.register(new RankCommand(), pluginConfig.getCommands().isRank());
-        CommandManager.register(new YTCommand(), pluginConfig.getCommands().isYt());
         CommandManager.register(new NightCommand(), pluginConfig.getCommands().isNight());
         CommandManager.register(new SunCommand(), pluginConfig.getCommands().isSun());
         CommandManager.register(new StormCommand(), pluginConfig.getCommands().isStorm());
@@ -471,7 +450,6 @@ public class Main extends JavaPlugin {
         CommandManager.register(new PingCommand(), pluginConfig.getCommands().isPing());
         CommandManager.register(new GodModCommand(), pluginConfig.getCommands().isGodMod());
         //CommandManager.register(new PlayerWarpCommand(), pluginConfig.getCommands().isPlayerwarp());
-        CommandManager.register(new MagnetCommand(), pluginConfig.getCommands().isMagnet());
         CommandManager.register(new CheckCommand(), pluginConfig.getCommands().isCheck());
         CommandManager.register(new AdmitsCommand(), pluginConfig.getCommands().isCheck());
         CommandManager.register(new PraceCommand(), pluginConfig.getCommands().isPracealiases());
@@ -483,6 +461,7 @@ public class Main extends JavaPlugin {
         CommandManager.register(new TikTokCommand(), pluginConfig.getCommands().isTiktok());
         CommandManager.register(new WorldCommand(), pluginConfig.getCommands().isWorld());
         CommandManager.register(new ElytraGiveCommand(), pluginConfig.getCommands().isElytraGive());
+        CommandManager.register(new LevelCommand(), pluginConfig.getCommands().isLevel());
     }
 
     public void loadTasks() {

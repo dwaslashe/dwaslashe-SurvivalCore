@@ -32,7 +32,7 @@ public class SunCommand extends Command {
             if (CooldownManager.checkDelay(p) == true) {
                 return;
             }
-            CooldownManager.addColdown(p, "10m");
+            CooldownManager.addCooldown(p, "10m");
             Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniłeś pogode");
             Bukkit.getWorld("world").setStorm(false);
         }

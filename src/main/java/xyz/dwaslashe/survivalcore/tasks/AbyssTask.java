@@ -43,21 +43,53 @@ public class AbyssTask extends BukkitRunnable {
     public void run() {
         setTime(getTime() - 1);
         if (getTime() == 900) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#ffd56c15 minut");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("&f楹 &#fc2419Przedmioty zostaną przeniesione do otchłani za &#ffd56c15min &fᎠ");
+            Api.sendAbyssNotify("");
         } else if (getTime() == 600) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#ffd56c10 minut");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("&f楹 &#fc2419Przedmioty zostaną przeniesione do otchłani za &#ffd56c10min &fᎠ");
+            Api.sendAbyssNotify("");
         } else if (getTime() == 300) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#ffd56c5 minut");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("&f楹 &#fc2419Przedmioty zostaną przeniesione do otchłani za &#ffd56c5min &fᎠ");
+            Api.sendAbyssNotify("");
         } else if (getTime() == 120) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#ffd56c2 minuty");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("&f楹 &#fc2419Przedmioty zostaną przeniesione do otchłani za &#ffd56c2min &fᎠ");
+            Api.sendAbyssNotify("");
         } else if (getTime() == 15) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#ffd56c15 sekund");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("&f楹 &#fc2419Przedmioty zostaną przeniesione do otchłani za &#ffd56c15sek &fᎠ");
+            Api.sendAbyssNotify("");
         } else if (getTime() == 3) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#ffd56c3 sekundy");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("&f楹 &#fc2419Przedmioty zostaną przeniesione do otchłani za &#ffd56c3sek &fᎠ");
+            Api.sendAbyssNotify("");
         } else if (getTime() == 2) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#ffd56c2 sekundy");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("&f楹 &#fc2419Przedmioty zostaną przeniesione do otchłani za &#ffd56c2sek &fᎠ");
+            Api.sendAbyssNotify("");
         } else if (getTime() == 1) {
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzedmioty zostaną przeniesione do otchłani za &#ffd56c1 sekunde");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("&f楹 &#fc2419Przedmioty zostaną przeniesione do otchłani za &#ffd56c1sek &fᎠ");
+            Api.sendAbyssNotify("");
         }
         if (getTime() == 0) {
             abyssList.clear();
@@ -75,15 +107,27 @@ public class AbyssTask extends BukkitRunnable {
                     entity.remove();
                 }
             }));
-            Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FPrzeniesiono &#FFF679" + ref.moved + " &#7DE95Fprzedmiotów do otchłani! Otchłan zostanie otwarta za &#ffd56c5 sekund!");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+            Api.sendAbyssNotify("");
+            Api.sendAbyssNotify("&f楸 &#4cf739Przeniesiono &#fcb419" + ref.moved + "x &#4cf739przedmiotów do otchłani! Otchłań zostanie otwarta za &#ffd56c5sek &fᎠ");
+            Api.sendAbyssNotify("");
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 AbyssTask.opened = true;
-                Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#7DE95FOtchlan została otwarta &#FFF679/otchlan");
+                Api.sendAbyssNotify("");
+                Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+                Api.sendAbyssNotify("");
+                Api.sendAbyssNotify("&f楸 &#4cf739Otchłań została otwarta &#fcb419/otchlan");
+                Api.sendAbyssNotify("");
             }, 100L);
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 AbyssTask.opened = false;
                 AbyssTask.setTime(320);
-                Api.sendAbyssNotify("&#FFD700&lOTCHŁAŃ &8>> &#FF301FOtchlan zostala zamknieta!");
+                Api.sendAbyssNotify("");
+                Api.sendAbyssNotify("        &#FFD700&lDZIURA DO OTCHŁANI");
+                Api.sendAbyssNotify("");
+                Api.sendAbyssNotify("&f楹 &#fc2419Otchłań została zamknięta!");
+                Api.sendAbyssNotify("");
             }, 1200L);
 
         }

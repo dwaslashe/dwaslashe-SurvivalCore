@@ -8,7 +8,6 @@ api-version: 1.19
 loadbefore:
   - WorldGuard
 depend:
-  - Duels
   - Multiverse-Core
   - Vault
   - LuckPerms
@@ -17,7 +16,11 @@ depend:
   - SA-Economy
   - minePlots
   - dwaslashe-TabList
+  - LuckPerms
+  - q1zZ-DiscordRewards
 softdepend:
+  - Duels
+  - ItemsAdder
   - PlaceholderAPI
 #  - WGRegionEvents
   - WorldGuard

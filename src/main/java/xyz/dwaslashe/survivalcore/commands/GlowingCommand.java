@@ -41,6 +41,8 @@ public class GlowingCommand extends Command {
         } else wrongUsage();
     }
 
+
+
     private void openGui(int guiID, Player player) {
         //0
         if (guiID == 0) {

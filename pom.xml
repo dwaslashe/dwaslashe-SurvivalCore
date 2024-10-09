@@ -91,7 +91,12 @@
         <!--
         Depends Jar
         -->
-
+        <dependency>
+            <groupId>com.github.LoneDev6</groupId>
+            <artifactId>api-itemsadder</artifactId>
+            <version>3.6.1</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>armorequipevent</groupId>
             <artifactId>armorequipevent</artifactId>
@@ -133,6 +138,13 @@
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/item-nbt-api-plugin-2.9.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>discord-rewards</groupId>
+            <artifactId>q1zDiscordRaewardas2</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/ciapc/OneDrive/Pulpit/IntelliJ Projects/dwaslashe-SurvivalCore/libs/q1zZ-DiscordRewards-0.6.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.saidora</groupId>

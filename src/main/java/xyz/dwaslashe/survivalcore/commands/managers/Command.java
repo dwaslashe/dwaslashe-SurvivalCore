@@ -138,7 +138,7 @@ public abstract class Command extends org.bukkit.command.Command {
             }
         } else {
             if (!hasPermission()) {
-                ((Player) commandSender).sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#FF3131Nie posiadasz uprawnień &8(&#FFC42E{permission}&8) &8<<".replace("{permission}", getPermission())));
+                ((Player) commandSender).sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(Main.pluginConfig.getMessages().getPrefixFail() + " &#FF3131Nie posiadasz uprawnień &8(&#FFC42E{permission}&8) &f楹".replace("{permission}", getPermission())));
             } else {
                 commandExecute(commandSender, strings);
             }

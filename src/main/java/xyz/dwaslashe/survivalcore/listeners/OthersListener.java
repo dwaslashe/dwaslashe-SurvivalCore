@@ -65,141 +65,11 @@ public class OthersListener implements Listener {
     private int id = 0;
 
     protected static final Map<String, Long> delayHook = Maps.newHashMap();
-    protected static final Map<String, Long> delayConsumeApple = Maps.newHashMap();
-    protected static final Map<String, Long> delayPlantDrugHook = Maps.newHashMap();
-
-    private static ItemStack enchanted_golden_apple = new ItemApi(Material.ENCHANTED_GOLDEN_APPLE).getItemStack();
-
-    public static ItemStack chestnut = new ItemApi(Material.DARK_OAK_BUTTON)
-            .setName("&#c77818Kasztan")
-            .setLore(Arrays.asList("", " &#E7E7E7Przepal kasztan aby zdobyć pieczonego kasztana!"))
-            .getItemStack();
-
-    public static ItemStack magnet = new ItemApi(Material.LIGHTNING_ROD)
-            .setName("&#FF10F0Magnez")
-            .setLore(Arrays.asList("", " &#E7E7E7Mając magnez w ekwipunku itemy", " &#E7E7E7które niszczysz idą do twojego ekwipunku!"))
-            .getItemStack();
 
     public static ItemStack pokeBall = new ItemApi(Material.SNOWBALL)
             .setName("&#ee1515Poke&#f0f0f0Ball")
             .setLore(Arrays.asList("", " &#E7E7E7Masz &#9DF89F20% &#E7E7E7szans na złapanie zwierzęcia w jajko", " &#E7E7E7wyrzucając &#ee1515Poke&#f0f0f0Balla &#E7E7E7prosto w zwierzecie!"))
             .getItemStack();
-
-    public static ItemStack weed = new ItemApi(Material.GREEN_DYE)
-            .setName("&x&3&4&9&6&1&4Zioło")
-            .setLore(Arrays.asList("", " &x&#fcb419&7&#fcb419&7&#fcb419&7Aby skonsumować musisz posiadać zapalniczkę i", " &x&#fcb419&7&#fcb419&7&#fcb419&7papier aby zajarać blanta!", "", " &x&f&b&f&d&8&#fc2419&nKliknij prawym, aby zapalić zioło!"))
-            .getItemStack();
-
-    public static ItemStack weedLow = new ItemApi(Material.GREEN_DYE)
-            .setName("&x&f&#4cf739&2&d&1&#fcb419Konopia niskiej jakości")
-            .setLore(Arrays.asList("", " &x&#fcb419&7&#fcb419&7&#fcb419&7Przepal w piecu aby móc ją skonsumować", " &x&#fcb419&7&#fcb419&7&#fcb419&7lub sprzedaj za pieniądze u dilera!"))
-            .getItemStack();
-
-    public static ItemStack weedMedium = new ItemApi(Material.GREEN_DYE)
-            .setName("&x&f&#4cf739&7&#4cf739&1&#fcb419Konopia średniej jakości")
-            .setLore(Arrays.asList("", " &x&#fcb419&7&#fcb419&7&#fcb419&7Przepal w piecu aby móc ją skonsumować", " &x&#fcb419&7&#fcb419&7&#fcb419&7lub sprzedaj za pieniądze u dilera!"))
-            .getItemStack();
-
-    public static ItemStack weedHigh = new ItemApi(Material.GREEN_DYE)
-            .setName("&x&3&b&f&#4cf739&1&#fcb419Konopia wysokiej jakości")
-            .setLore(Arrays.asList("", " &x&#fcb419&7&#fcb419&7&#fcb419&7Przepal w piecu aby móc ją skonsumować", " &x&#fcb419&7&#fcb419&7&#fcb419&7lub sprzedaj za pieniądze u dilera!"))
-            .getItemStack();
-
-    public static ItemStack cleanCocaine = new ItemApi(Material.SUGAR)
-            .setName("&x&#fcb419&d&b&0&7&2Czysta kokaina")
-            .setLore(Arrays.asList("", " &x&#fcb419&7&#fcb419&7&#fcb419&7Wciągnij ją lub sprzedaj u dilera!", "", " &x&f&b&f&d&8&#fc2419&nKliknij prawym, aby wciągnąć do nosa kokaine!"))
-            .getItemStack();
-
-    public static ItemStack cleanAmphetamine = new ItemApi(Material.SUGAR)
-            .setName("&x&d&1&#fcb419&3&#fcb419&dCzysta amfetamina")
-            .setLore(Arrays.asList("", " &x&#fcb419&7&#fcb419&7&#fcb419&7Wciągnij ją lub sprzedaj u dilera!", "", " &x&f&b&f&d&8&#fc2419&nKliknij prawym, aby wciągnąć do nosa amfetamine!"))
-            .getItemStack();
-
-    public static ItemStack hoochLow = new ItemApi(Material.HONEY_BOTTLE)
-            .setName("&x&f&5&#4cf739&7&4&2Bimber niskiej jakości")
-            .setLore(Arrays.asList("", " &x&#fcb419&7&#fcb419&7&#fcb419&7Sprzedaj u Włodzimierza Białego aby umylić mu wieczór"))
-            .getItemStack();
-
-    public static ItemStack hoochMedium = new ItemApi(Material.HONEY_BOTTLE)
-            .setName("&x&d&#fcb419&9&4&3&3Bimber średniej jakości")
-            .setLore(Arrays.asList("", " &x&#fcb419&7&#fcb419&7&#fcb419&7Sprzedaj u Włodzimierza Białego aby umylić mu wieczór"))
-            .getItemStack();
-
-    public static ItemStack hoochHigh = new ItemApi(Material.HONEY_BOTTLE)
-            .setName("&x&b&5&7&2&1&9Bimber wysokiej jakości")
-            .setLore(Arrays.asList("", " &x&#fcb419&7&#fcb419&7&#fcb419&7Sprzedaj u Włodzimierza Białego aby umylić mu wieczór"))
-            .getItemStack();
-
-    public static ItemStack elementPinata = new ItemApi(Material.PLAYER_HEAD)
-            .setOwnerURL("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzAzNzkyNjYzNWIyNWU4ZjM4ZTc5YjdmNWM4MmQ2YTc3MTVkY2EwN2MyZWI5ZmIyZDJkNWIwOGYwMDdmODczNSJ9fX0=")
-            .setName("&#ff0000F&#ff3600r&#ff6d00a&#ffa400g&#ffda00m&#dbff00e&#6dff00n&#00ff00t &#00926dp&#0024dbi&#1500dbn&#3600a6i&#55008ea&#7500b0t&#9400d3y")
-            .setLore(Arrays.asList("", " &#E7E7E7Mając odpowiednią ilość odłamków możesz zamieniać je na", " &#E7E7E7różne itemy. Handlarz odłamaków znajdziesz na spawnie."))
-            .getItemStack();
-
-    public static ItemStack elementEnderDragon = new ItemApi(Material.ENDER_EYE)
-            .setName("<#aa2bff>Fragment Smoka</#912bff>")
-            .setLore(Arrays.asList("", " &#E7E7E7Mając odpowiednią ilość odłamków możesz zamieniać je na", " &#E7E7E7różne itemy. Handlarz odłamaków znajdziesz na spawnie."))
-            .getItemStack();
-
-    //@EventHandler
-    //public void onShopBuyDrugs(ShopPostTransactionEvent event) {
-    //    Player player = event.getResult().getPlayer();
-    //    if (event.getResult().getResult() == ShopTransactionResult.ShopTransactionResultType.SUCCESS && (event.getResult().getShopAction().equals(ShopManager.ShopAction.SELL) || event.getResult().getShopAction().equals(ShopManager.ShopAction.SELL_ALL))) {
-    //        //System.out.println("lore: " + event.getResult().getShopItem().getItem().getLore());
-    //        //System.out.println("displayname: " + event.getResult().getShopItem().getItem().getI18NDisplayName());
-    //        //System.out.println("material: " + event.getResult().getShopItem().getItem().getType());
-    //        if (event.getResult().getShopItem().getItem().equals(weed) || event.getResult().getShopItem().getItem().equals(weedMedium) || event.getResult().getShopItem().getItem().equals(weedLow) || event.getResult().getShopItem().getItem().equals(weedHigh) || event.getResult().getShopItem().getItem().isSimilar(cleanCocaine) || event.getResult().getShopItem().getItem().isSimilar(cleanAmphetamine) || event.getResult().getShopItem().getItem().equals(hoochLow) || event.getResult().getShopItem().getItem().equals(hoochMedium) || event.getResult().getShopItem().getItem().equals(hoochHigh)) {
-    //            System.out.println("[DIRTY WITHDRAW] Money amount: " + event.getResult().getPrice() + ", Player: " + event.getResult().getPlayer().getName() + ", Amount sell drugs: " + event.getResult().getAmount());
-    //            UserManager.getInstance().getUser(player).ifPresent(user -> {
-    //                user.withdraw(event.getResult().getPrice());
-    //            });
-    //            Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Jako iż sprzedajesz narkotyki dostałeś &#3dfc49brudną gotówke&#4cf739, która musisz wyprać");
-    //            ItemStack dirtCash = makeDirtCash(event.getResult().getPrice(), Arrays.asList(
-    //                    "",
-    //                    " &#E7E7E7Wartość: &#FFF88F" + event.getResult().getPrice() + " &f"));
-    //            Api.giveOrDrop(player, dirtCash);
-    //        }
-    //    }
-    //}
-
-    public static ItemStack makeDirtCash(double value, List<String> lore) {
-        return ItemHelper.edit(new ItemStack(Material.MAP)).editNbtTagCompound(nbtItem -> {
-            nbtItem.setDouble("dirty-money-value",  value);
-        }).editItemMeta(ItemMeta.class, itemMeta -> {
-            itemMeta.setDisplayName(Api.fixColor("&#ab5824Brudny banknot gotówki"));
-            itemMeta.setLore(Api.fixColor(lore));
-        }).getItemStack();
-    }
-
-
-    //@EventHandler
-    //public void onPurchasePlayerShop(ShopPurchaseEvent event) {
-    //    Player ownerShop = Bukkit.getPlayer(event.getShop().getOwner());
-    //    Player player = event.getPlayer();
-    //    if (ownerShop == null) {
-    //        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz kupować ani sprzedawać gdy właściciel sklepu jest offline!");
-    //        event.setCancelled(true);
-    //    } else if (!ownerShop.isOnline()) {
-    //        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz kupować ani sprzedawać gdy właściciel sklepu jest offline!");
-    //        event.setCancelled(true);
-    //    }
-    //}
-
-    //@EventHandler
-    //public void onDrugPlant(DrugPlantPlantEvent event) {
-    //    Player player = event.getPlayer();
-    //    if (event.isCancelled()) return;
-    //    if (delayPlantDrugHook.containsKey(player.getName()) && delayPlantDrugHook.get(player.getName()) > System.currentTimeMillis()) {
-    //        if (player.hasPermission("core.cooldown.bypass")) return;
-    //        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zasadzić sadzonke narkotyku musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayPlantDrugHook.get(player.getName()))));
-    //        event.setCancelled(true);
-    //        player.closeInventory();
-    //        return;
-    //    }
-    //    delayPlantDrugHook.remove(player.getName());
-    //    event.setCancelled(false);
-    //    delayPlantDrugHook.put(player.getName(), TimerApi.parseDateDiff("15s", true));
-    //}
 
     @EventHandler
     public void onDamageHusband(EntityDamageByEntityEvent event) {
@@ -248,7 +118,7 @@ public class OthersListener implements Listener {
         //if (!command.getPermission().isEmpty()) return;
         if (!command.testPermissionSilent(event.getPlayer())) {
             if (command.getPermission() == null) return;
-            event.getPlayer().sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor(" &8>> &#FF3131Nie posiadasz uprawnień &8(&#FFC42E{permission}&8) &8<<".replace("{permission}", command.getPermission())));
+            event.getPlayer().sendTitle(Api.fixColor(Main.pluginConfig.getMessages().getIp()), Api.fixColor("&f楹 &#FF3131Nie posiadasz uprawnień &8(&#FFC42E{permission}&8) &f楹".replace("{permission}", command.getPermission())));
             event.setCancelled(true);
         } else return;
     }
@@ -261,7 +131,7 @@ public class OthersListener implements Listener {
             if (victim.getLocation().getWorld().getName().equals("spawn") && !RegionApi.isInRegion(victim.getLocation(), "pvp")) {
                 Player player = ((Player) event.getDamager()).getPlayer();
                 if (delayHook.containsKey(player.getName()) && delayHook.get(player.getName()) > System.currentTimeMillis()) {
-                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zaczepić gracza musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player.getName()))));
+                    Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zaczepić gracza musisz poczekać &#fcb419{TIME} &fᎠ".replace("{TIME}", TimerApi.secondsToString(delayHook.get(player.getName()))));
                     player.closeInventory();
                     return;
                 }
@@ -269,32 +139,12 @@ public class OthersListener implements Listener {
                 delayHook.remove(player.getName());
 
                 Api.sendMessage(player,  Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zaczepiłeś gracza");
-                victim.sendTitle(Api.fixColor("&#95eb34&lHej"), Api.fixColor("&8>> &#4cf739Gracz &#fcb419" + attacker.getDisplayName() + "&#4cf739 zaczepił Cię!"));
+                victim.sendTitle(Api.fixColor("&#95eb34&lHej &f\uE214"), Api.fixColor("&f楸 &#4cf739Gracz &#fcb419" + player.getDisplayName() + "&#4cf739 zaczepił Cię! &f楸"));
                 victim.playSound(victim.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1.0F, 1.0F);
 
                 delayHook.put(player.getName(), TimerApi.parseDateDiff("5s", true));
             }
         }
-    }
-
-    public static ShapedRecipe getRecipeMagnet() {
-        ItemStack item = magnet;
-        ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_magnet"), item);
-        rec.shape(new String[]{"ADA", "BCB", "BBB"});
-        rec.setIngredient('A', Material.REDSTONE_BLOCK);
-        rec.setIngredient('B', Material.IRON_INGOT);
-        rec.setIngredient('C', Material.STICK);
-        rec.setIngredient('D', Material.AIR);
-        return rec;
-    }
-
-    public static ShapedRecipe getRecipeEnchantedApple() {
-        ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("wywrotkamc_enchanted_apple"), enchanted_golden_apple);
-        rec.shape(new String[]{"ABA", "BCB", "ABA"});
-        rec.setIngredient('A', Material.NETHERITE_INGOT);
-        rec.setIngredient('B', Material.GOLD_BLOCK);
-        rec.setIngredient('C', Material.GOLDEN_APPLE);
-        return rec;
     }
 
     @EventHandler
@@ -405,12 +255,6 @@ public class OthersListener implements Listener {
         Player player = event.getPlayer();
 
         if (!event.isCancelled()) {
-            if (event.getBlock().getType() == Material.OAK_LEAVES || event.getBlock().getType() == Material.SPRUCE_LEAVES || event.getBlock().getType() == Material.BIRCH_LEAVES || event.getBlock().getType() == Material.JUNGLE_LEAVES || event.getBlock().getType() == Material.ACACIA_LEAVES || event.getBlock().getType() == Material.DARK_OAK_LEAVES || event.getBlock().getType() == Material.MANGROVE_LEAVES || event.getBlock().getType() == Material.CHERRY_LEAVES || event.getBlock().getType() == Material.AZALEA_LEAVES || event.getBlock().getType() == Material.FLOWERING_AZALEA_LEAVES) {
-                if (RandomApi.getChance(10.0)) {
-                    event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), chestnut);
-                }
-            }
-
             if (Main.pluginConfig.getEvents().getOpenChatBlockBreak().isEnable()) {
                 User user = UserCache.getInstance().compute(player.getUniqueId());
                 if (user.getBlockBreak() != (Main.pluginConfig.getEvents().getOpenChatBlockBreak().getBreakMaxBlocks() + 2)) {
@@ -530,7 +374,7 @@ public class OthersListener implements Listener {
             if (!player.hasPermission("core.place.nether")) {
                 World nether = Bukkit.getWorld("world_nether");
                 if (nether.getName().equalsIgnoreCase(event.getBlock().getWorld().getName())) {
-                    Api.sendActionBar(player, "&8>> <#f23518>Postawiony blok zniknie za  <#FDBD01>60 sekund &8<<");
+                    Api.sendActionBar(player, "&f楹 <#fc2419>Postawiony blok zniknie za  <#FDBD01>60 sekund &fᎠ &f楹");
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -540,7 +384,7 @@ public class OthersListener implements Listener {
                 } else if (!player.hasPermission("core.place.end")) {
                     World end = Bukkit.getWorld("world_the_end");
                     if (end.getName().equalsIgnoreCase(event.getBlock().getWorld().getName())) {
-                        Api.sendActionBar(player, "&8>> <#f23518>Postawiony blok zniknie za <#FDBD01>60 sekund &8<<");
+                        Api.sendActionBar(player, "&f楹 <#fc2419>Postawiony blok zniknie za  <#FDBD01>60 sekund &fᎠ &f楹");
                         new BukkitRunnable() {
                             @Override
                             public void run() {
@@ -609,48 +453,6 @@ public class OthersListener implements Listener {
     }
 
     @EventHandler
-    public void onOpenSpecifyChest(InventoryOpenEvent event) {
-        if (event.getInventory().getType().equals(InventoryType.CHEST)) {
-            Location location = event.getInventory().getLocation();
-            Player player = (Player) event.getPlayer();
-            if (location != null) {
-
-                Block block = event.getInventory().getLocation().getBlock();
-                BlockState state = block.getState();
-                if (state instanceof Chest) {
-                    Chest chest = (Chest) state;
-                    if (chest.getBlock().hasMetadata("CaseBlockEvent")) {
-                        block.removeMetadata("CaseBlockEvent", Main.plugin);
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
-                        Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Jesteś pierwszy, który otwiera tą skrzynie! Gratuluje =)");
-                        ParticleManager.getInstance().removeParticle("caseBlock");
-                        EventCommand.eventMap.remove("SKRZYNIA");
-                        DHAPI.removeHologram("case");
-                    } else if (chest.getBlock().hasMetadata("PirateBlockEvent")) {
-                        if (!player.hasPermission("core.open.piratechest")) {
-                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set core.open.piratechest");
-                            Api.sendMessage(player, "&7&oLiczyłem na prawdziwy skarb..");
-                            Api.giveOrDrop(player, new ItemStack(Material.GUNPOWDER, 21));
-                            Api.giveOrDrop(player, new ItemStack(Material.TURTLE_SPAWN_EGG, 1));
-                            Api.giveOrDrop(player, new ItemStack(Material.GOLD_INGOT, 19));
-                            Api.giveOrDrop(player, new ItemStack(Material.POISONOUS_POTATO, 8));
-                            Api.giveOrDrop(player, new ItemStack(Material.MILK_BUCKET, 1));
-                            Api.giveOrDrop(player, new ItemStack(Material.PUFFERFISH, 1));
-                            Api.giveOrDrop(player, new ItemStack(Material.SUSPICIOUS_STEW, 1));
-                            event.setCancelled(true);
-                        } else {
-                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
-                            Api.sendMessage(player, "&7&oSkarb jest już pusty.. nie ma co tu szukać.");
-                            event.setCancelled(true);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler
     public void onBreakMeteor(BlockBreakEvent event) {
         if (event.getBlock().getType() == Material.MAGMA_BLOCK && event.getBlock().hasMetadata("MeteorBlock")) {
             Player player = event.getPlayer();
@@ -689,22 +491,6 @@ public class OthersListener implements Listener {
                 event.getBlock().removeMetadata("MeteorBlock", Main.getPlugin());
                 event.getBlock().setMetadata("MeteorBlock", new FixedMetadataValue(Main.getPlugin(), health));
             }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerEatEnchantedApple(PlayerItemConsumeEvent event) {
-        Player player = event.getPlayer();
-        if (event.getItem().getType() == Material.ENCHANTED_GOLDEN_APPLE) {
-
-            if (delayConsumeApple.containsKey(player.getName()) && delayConsumeApple.get(player.getName()) > System.currentTimeMillis()) {
-                if (player.hasPermission("core.cooldown.bypass")) return;
-                Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Aby zjeść znowu złote jabłko musisz poczekać &#fcb419{TIME}".replace("{TIME}", TimerApi.secondsToString(delayConsumeApple.get(player.getName()))));
-                event.setCancelled(true);
-                return;
-            }
-            delayConsumeApple.remove(player.getName());
-            delayConsumeApple.put(player.getName(), TimerApi.parseDateDiff("2m", true));
         }
     }
 

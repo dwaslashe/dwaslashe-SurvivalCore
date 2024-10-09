@@ -10,7 +10,6 @@ import xyz.dwaslashe.survivalcore.managers.CooldownManager;
 import xyz.dwaslashe.survivalcore.utils.Api;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class RepairCommand extends Command {
@@ -33,7 +32,7 @@ public class RepairCommand extends Command {
             if (CooldownManager.checkDelay(p) == true) {
                 return;
             }
-            CooldownManager.addColdown(p, "5m");
+            CooldownManager.addCooldown(p, "5m");
             ItemStack itemStack = p.getItemInHand();
             if (itemStack == null || itemStack.getType() == Material.AIR) {
                 Api.sendMessage(p, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Nie możesz naprawić powietrza");

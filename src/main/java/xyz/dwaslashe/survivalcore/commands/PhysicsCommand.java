@@ -40,20 +40,20 @@ public class PhysicsCommand extends Command {
     private void openGui(int guiID, Player player) {
         //0
         if (guiID == 0) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Animacja upadku drzewa", 5);
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "&fᵩɌ", 5);
 
             UserTree userTree = UserTreeCache.getInstance().compute(player.getUniqueId());
 
             ItemStack glass_lime = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setCustomModelData(11202);
+                    itemMeta.setCustomModelData(11232);
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Aktywne"));
                 });
             });
 
             ItemStack glass_red = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setCustomModelData(11196);
+                    itemMeta.setCustomModelData(11218);
                     itemMeta.setDisplayName(Api.fixColor("&#FF3131Nieaktywne"));
                 });
             });
@@ -70,7 +70,7 @@ public class PhysicsCommand extends Command {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2YxMzQ2MDkyYzgwZDNkYjIxN2VmZTRjOTM2OTY5MWU2MWM4YWZjMWIyODc0MWZhNTA0ODJjOTJjOWZkM2QxOCJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#c47926Domyślna"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &#4cf739" + ((userTree.getAnimation().equals("simple")) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &#4cf739" + ((userTree.getAnimation().equals("simple")) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &f᎘ &#FBFD8CAby włączyć/wyłączyć animacje")));
                 });
             });
 
@@ -79,7 +79,7 @@ public class PhysicsCommand extends Command {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGRiMzA1YjBlNzRiZjljOTIzMzgzYzI5M2UzZjEyMTliM2FlNDY0YzY4OThjN2FkZTYzZmI4ZjM0OTU1MzYwMSJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#C2B280Piaskowa"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &#4cf739" + ((userTree.getAnimation().equals("sand")) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &#4cf739" + ((userTree.getAnimation().equals("sand")) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &f᎘ &#FBFD8CAby włączyć/wyłączyć animacje")));
                 });
             });
 
@@ -88,7 +88,7 @@ public class PhysicsCommand extends Command {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjllOGE3YjM3ZjM0MmU4ZmI0NThhOWM5ODlmNTE5NmMyNjUxYjg3ODExZGU1NGZlMDVlNjFiZjRkMjg3Yjk5YiJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#ed994aSzybka"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &#4cf739" + ((userTree.getAnimation().equals("quick")) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &#4cf739" + ((userTree.getAnimation().equals("quick")) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &f᎘ &#FBFD8CAby włączyć/wyłączyć animacje")));
                 });
             });
 
@@ -97,13 +97,13 @@ public class PhysicsCommand extends Command {
                 inventoryHelper.editSkullMetaWithProperty(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ4ZWRjYjAwZTE2NGYxMTRhMTBlZDhjN2ExNjgwNWE2NTVjZDdmOWQwMDY1MDBlOGEyYThkM2Y1M2IzMTVjOCJ9fX0=");
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
                     itemMeta.setDisplayName(Api.fixColor("&#39ff14Realna"));
-                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &#4cf739" + ((userTree.getAnimation().equals("animation")) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &#FBFD8C&nKliknij aby włączyć/wyłączyć informacje!")));
+                    itemMeta.setLore(Api.fixColor(Arrays.asList("", " &#E7E7E7Aktywne: &#4cf739" + ((userTree.getAnimation().equals("animation")) ? "&#39FF14Tak" : "&#FF3131Nie"), "", " &f᎘ &#FBFD8CAby włączyć/wyłączyć animacje")));
                 });
             });
 
             inventoryHelper.click(e -> {
                 e.setCancelled(true);
-                if (e.getSlot() == 10) {
+                if (e.getSlot() == 11) {
                     UserTreeCache.getInstance().compute(player.getUniqueId(), User -> {
                         if (!User.getAnimation().contains("simple")) {
                             User.setAnimation("simple");
@@ -111,7 +111,7 @@ public class PhysicsCommand extends Command {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniono rodzaj animacji na &#fcb419domyślną!");
                         }
                     });
-                } else if (e.getSlot() == 12) {
+                } else if (e.getSlot() == 13) {
                     UserTreeCache.getInstance().compute(player.getUniqueId(), User -> {
                         if (!User.getAnimation().contains("sand")) {
                             User.setAnimation("sand");
@@ -119,7 +119,7 @@ public class PhysicsCommand extends Command {
                             Api.sendMessage(player, Main.pluginConfig.getMessages().getPrefixSuccess() + "&#4cf739Pomyślnie zmieniono rodzaj animacji na &#fcb419piaskową!");
                         }
                     });
-                } else if (e.getSlot() == 14) {
+                } else if (e.getSlot() == 15) {
                     UserTreeCache.getInstance().compute(player.getUniqueId(), User -> {
                         if (!User.getAnimation().contains("quick")) {
                             User.setAnimation("quick");
@@ -140,12 +140,12 @@ public class PhysicsCommand extends Command {
                 }
             });
 
-            inventoryHelper.setItem(10, simple);
-            inventoryHelper.setItem(19, (userTree.getAnimation().equals("simple")) ? glass_lime : glass_red);
-            inventoryHelper.setItem(12, sand);
-            inventoryHelper.setItem(21, (userTree.getAnimation().equals("sand")) ? glass_lime : glass_red);
-            inventoryHelper.setItem(14, quick);
-            inventoryHelper.setItem(23, (userTree.getAnimation().equals("quick")) ? glass_lime : glass_red);
+            inventoryHelper.setItem(11, simple);
+            inventoryHelper.setItem(20, (userTree.getAnimation().equals("simple")) ? glass_lime : glass_red);
+            inventoryHelper.setItem(13, sand);
+            inventoryHelper.setItem(22, (userTree.getAnimation().equals("sand")) ? glass_lime : glass_red);
+            inventoryHelper.setItem(15, quick);
+            inventoryHelper.setItem(24, (userTree.getAnimation().equals("quick")) ? glass_lime : glass_red);
             //inventoryHelper.setItem(16, animation);
             //inventoryHelper.setItem(25, (userTree.getAnimation().equals("animation")) ? glass_lime : glass_red);
             inventoryHelper.setItem(40, back);

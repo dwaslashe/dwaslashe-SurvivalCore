@@ -33,20 +33,20 @@ public class ChatManagerCommand extends Command {
     private void openGui(int guiID, Player player) {
         //0
         if (guiID == 0) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Zarządzanie czatem", 5);
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "&fᵩɉ", 5);
 
             User user = UserCache.getInstance().compute(player.getUniqueId());
 
             ItemStack glass_lime = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setCustomModelData(11202);
+                    itemMeta.setCustomModelData(11232);
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Aktywne"));
                 });
             });
 
             ItemStack glass_red = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setCustomModelData(11196);
+                    itemMeta.setCustomModelData(11218);
                     itemMeta.setDisplayName(Api.fixColor("&#FF3131Nieaktywne"));
                 });
             });
@@ -175,20 +175,20 @@ public class ChatManagerCommand extends Command {
         }
 
         if (guiID == 1) {
-            InventoryHelper inventoryHelper = new InventoryHelper(player, "Zarządzanie czatem", 5);
+            InventoryHelper inventoryHelper = new InventoryHelper(player, "&fᵩɊ", 5);
 
             User user = UserCache.getInstance().compute(player.getUniqueId());
 
             ItemStack glass_lime = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setCustomModelData(11202);
+                    itemMeta.setCustomModelData(11232);
                     itemMeta.setDisplayName(Api.fixColor("&#39FF14Aktywne"));
                 });
             });
 
             ItemStack glass_red = inventoryHelper.prepareItemStack(Material.PAPER, itemStack -> {
                 inventoryHelper.editMetaForItemStack(itemStack, itemMeta -> {
-                    itemMeta.setCustomModelData(11196);
+                    itemMeta.setCustomModelData(11218);
                     itemMeta.setDisplayName(Api.fixColor("&#FF3131Nieaktywne"));
                 });
             });

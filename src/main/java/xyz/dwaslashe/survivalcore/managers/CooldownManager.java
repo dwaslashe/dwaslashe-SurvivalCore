@@ -12,9 +12,9 @@ import java.util.Map;
 public class CooldownManager {
     protected static final Map<CommandSender, Long> delay = Maps.newHashMap();
 
-    public static void addColdown(CommandSender s, String time) {
+    public static void addCooldown(CommandSender s, String time) {
         if (delay.containsKey(s) && delay.get(s) > System.currentTimeMillis()) {
-            Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Komende możesz użyć za &#fcb419" + TimerApi.secondsToString(delay.get(s)));
+            Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Komende możesz użyć za &#fcb419" + TimerApi.secondsToString(delay.get(s)) + " &fᎠ");
             return;
         }
         delay.remove(s);
@@ -30,7 +30,7 @@ public class CooldownManager {
 
     public static boolean checkDelay(CommandSender s) {
         if (delay.containsKey(s) && delay.get(s) > System.currentTimeMillis()) {
-            Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Komende możesz użyć za &#fcb419" + TimerApi.secondsToString(delay.get(s)));
+            Api.sendMessage(s, Main.pluginConfig.getMessages().getPrefixFail() + "&#fc2419Komende możesz użyć za &#fcb419" + TimerApi.secondsToString(delay.get(s)) + " &fᎠ");
             return true;
         } else return false;
     }
