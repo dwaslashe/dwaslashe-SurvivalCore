@@ -1,37 +1,51 @@
-- ogarnac administracje aby ostrzegala osoby zamiast od razu mute
-- set pirata w statku
-- set michala aniola w kosciele, bedzie mozna kupic alkohol
-- event codzienne zrzut/meteoryt/boss 
-- strefa afk
-- zwiekszyc border i od razu dostep od rang do rtp kratek
-- zrobic mechanizm, ktory bedzie tworzyl narkotyki, zioło to fern
-i tworzenie mefedronu/krysztal/lsd/benzo/kokaina z brewingstand i drugim jakims gui
-zrobic npc na spawnie ukryty gdzie mozna sprzedawac narkotyki, ktory co dwa dni zmienia miejsce i zeby /sklep drugs, bylby wylaczony w innych swiatach
-- customowe itemy zrobic zeby ladne byly
-- za zaproszenie na discord mozna dostac jakies nagrody
-- event o kubek wywrotki, czas dwa tygodnie, temat budowli wywrotki
-- usunac dane z swiata na wszelki wypadek
-- event ox, skrzynki, wyscig pojazdami, wojny magazynowe, kupowanie pojazdow
-- na spawn zamiast hologramow bannery zdjeciowe
-- zrobic /podarujelytre, i jest animacja jak coinflip i jest 35% szans na to ze sie zmieni elytra
-/- naprawic /ignore i przebudowac to
-/- dokonczyc caly end z strukturami i przedmiotami, i zaktualizowac to z moim pluginem, zeby smok sie zrespil musi byc 10 osob wlaczyc w endzie dzialki i zrobic z znikaniem przedmiotow, majac totem i spadajac do voida zyjesz nadal (plik stellarity/functions/mechanics/main)
-/- dodac zeby pisac na czacie musisz wykopac 100 blokow
-/- kamien papier nozyce
-/- dodac boomboxy za 100k
-/- system voucherow
-/- chestsort zrobic
-/- turniej postawiajacy na szali pieniadze 1v1
-/- ochrone gracza na nowo napisac i wrzucic do core
-/- komenda anvil
-/- dodac invsee i enderchest dla offline graczy
-/- warpy graczy sprwadzajace dzialke czy nie zginiesz
-/- ulepszenia globalne
-/- dodac placeholder czasu przebytego w strefie afk
-/- sluby na nowo napisac
-/- zwiekszyc wybor tytulow
-/- dodac interakcje pocałunku z graczem z powoleniem drugiego gracza
-/- dodanie liczenie progressu bossbara w antylogout zeby w dol lecial
-/- vanish naprawic i zrobic dokladniejszy	
-/- dodac cel pieniedzy na spawn
-/- dodac pixelowa glowke wchodzac na serwer i informacje
+# 🚀 Minecraft Core Plugin (ARCHIWUM)
+
+Zaawansowany, rozbudowany plugin typu **Core / Essential** do serwera Minecraft (Spigot / Paper). Projekt integruje w sobie mechaniki rozgrywki, zaawansowane zarządzanie graczami, systemy ekonomii, customowe przedmioty oraz wsparcie dla zewnętrznych usług (np. Discord).
+
+---
+
+## 🌟 Główne Funkcje & Mechaniki
+
+Na podstawie struktury projektu, plugin odpowiada za kompleksową obsługę serwera:
+
+### ⚔️ Mechaniki Gry i Przedmioty
+* **Customowe Przedmioty i Craftingi:** Obsługa własnych przedmiotów, receptur craftingu (`CustomItem`, `ItemCraftListener`, `CustomItemsListener`).
+* **System Otchłani / Śmietnika (Abyss):** Automatyczne czyszczenie przedmiotów z ziemi i dedykowane menu otchłani (`AbyssTask`, `AbyssCommand`, `Abyss.java`).
+* **Skrzynie / Case System:** System skrzyń niespodzianek wraz z przedmiotami dropu (`Case`, `CaseItem`).
+* **Walka i Ochrona:** Wbudowany anty-logout / system walki oraz ochrona graczy/administracji (`PlayerCombatListener`, `LogoutManager`, `AdminProtectionCommand`).
+* **Levelowanie Smoka:** Dedykowana mechanika poziomów smoka Ender (`DragonLevel`, `DragonLevelListener`, `DragonLevelCache`).
+* **Vouchery i Różdżki:** System voucherów oraz różdżek do sprzedaży działek (`VoucherListener`, `PluginVouchers`, `PlotSellWandListener`).
+
+### 👥 Systemy Społecznościowe i Gracza
+* **System Małżeństw (Marry):** Możliwość wchodzenia w związki przez graczy (`Marry.java`, `MarryCache`).
+* **Warpy Graczy (Player Warps):** Prywatne warpy tworzone i zarządzane przez graczy (`PlayerWarp`, `PlayerWarpCache`).
+* **System Sprawdzania (Check/Admits):** Narzędzie dla administracji do sprawdzania graczy podejrzanych o chety (`CheckCommand`, `AdmitsCommand`).
+* **Zarządzanie Czasem i Pogodą:** Prywatna zmiana czasu/pogody dla gracza oraz ustawianie jasności (`PlayerTime`, `GammaCommand`, `DayCommand`).
+
+### ⚙️ Administracja i Logika
+* **Zarządzanie Czatami:** Moduł kontroli czatu, wiadomości automatyczne oraz integracja z BossBarem (`ChatCommand`, `AutoMessageTask`, `AutoBossBarTask`).
+* **Integracja z Discordem:** Dedykowany helper i komenda do powiadomień/synchronizacji z Discordem (`DiscordCommand`, `DiscordHelper`).
+* **Wsparcie PlaceholderAPI:** Wbudowane własne zmienne i hooki do PlaceholderAPI (`PlaceholderHooks`).
+* **Wydajny Caching:** System pamięci podręcznej (Cache) optymalizujący zapytania bazy danych (`UserCache`, `ItemCache`, `DragonLevelCache` i inne).
+
+---
+
+## 📂 Struktura Projektu (Pakiety)
+
+```text
+src/main/java/...
+├── cache/         # Pamięć podręczna (User, Warps, DragonLevel, Marry, itp.)
+├── commands/      # Komendy graczy i administracji (Abyss, Check, Fly, GodMod, itp.)
+├── configs/       # Konfiguracje pluginu, rang, voucherów i serializatory
+├── database/      # Obsługa połączenia i operacji na bazie danych
+├── enums/         # Definicje stałych (kolory, typy rąk, znaki obrazów)
+├── function/      # Funkcje pomocnicze
+├── helpers/       # Helpery (Discord, Ekwipunek, Reflection, String, BiReplace)
+├── listeners/     # Listenery zdarzeń Bukkit/Spigot (Chat, Combat, Join, BlockBreak)
+├── managers/      # Managerowie (Cooldown, Logout, Teleport)
+├── model/         # Modele i interfejsy (CustomItem)
+├── objects/       # Obiekty domenowe (User, Case, Warp, Abyss, Protection)
+├── parsers/       # Parser lokalizacji (LocationParser)
+├── placeholder/   # Hooki do PlaceholderAPI
+├── tasks/         # Zadania asynchroniczne i pętle (AbyssTask, AutoMessage, BossBar)
+└── utils/         # Narzędzia API (BossBar, Chat, Picture, Region, License)
